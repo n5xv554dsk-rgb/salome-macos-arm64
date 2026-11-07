@@ -1,0 +1,52 @@
+<?xml version='1.0'?>
+<proc>
+   <objref name="Param_Double_Port" id="IDL:Ports/Param_Double_Port:1.0"/>
+   <type name="bool" kind="bool"/>
+   <type name="double" kind="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <type name="string" kind="string"/>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="hostname" value="localhost"/>
+   </container>
+   <container name="MasterContainer">
+      <property name="hostname" value="localhost"/>
+      <property name="nb_component_nodes" value="1"/>
+      <property name="parallelLib" value="Dummy"/>
+   </container>
+   <container name="WorkerContainer">
+      <property name="hostname" value="localhost"/>
+      <property name="nb_component_nodes" value="2"/>
+      <property name="parallelLib" value="Mpi"/>
+   </container>
+   <forloop name="ForLoop0" nsteps="10">
+      <bloc name="Bloc1">
+         <service name="StartMaster2">
+            <component>MASTER</component>
+            <load container="MasterContainer"/>
+            <method>StartMaster</method>
+            <outstream name="master_port" type="Param_Double_Port"/>
+         </service>
+         <service name="StartWorker3">
+            <component>WORKER</component>
+            <load container="WorkerContainer"/>
+            <method>StartWorker</method>
+            <instream name="worker_port" type="Param_Double_Port"/>
+         </service>
+         <stream>
+            <fromnode>StartMaster2</fromnode> <fromport>master_port</fromport>
+            <tonode>StartWorker3</tonode> <toport>worker_port</toport>
+         </stream>
+      </bloc>
+   </forloop>
+   <parameter>
+      <tonode>ForLoop0</tonode><toport>nsteps</toport>
+      <value><int>10</int></value>
+   </parameter>
+   <presentation name="ForLoop0" x="9" y="80.5" width="495.5" height="319"/>
+   <presentation name="ForLoop0.Bloc1" x="9" y="109.5" width="477" height="200.5"/>
+   <presentation name="ForLoop0.Bloc1.StartMaster2" x="9" y="81.5" width="227.5" height="110"/>
+   <presentation name="ForLoop0.Bloc1.StartWorker3" x="245.5" y="80.5" width="222" height="110"/>
+   <presentation name="__ROOT__" x="0" y="0" width="514" height="408.5"/>
+</proc>

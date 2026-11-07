@@ -1,0 +1,172 @@
+default :
+{
+    name : "URANIE"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python', 'root','nlopt','lapack', 'boost']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+version_4_9_0_FD44 :
+{
+    compil_script : "URANIE-4.9.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.9.0-Source.tar.gz"
+    }
+    patches: ['URANIE-4.9.0-imatrix_ivector.patch']
+    depend : ['Python', 'root','nlopt','lapack', 'boost', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_9_0_UB26_04 :
+{
+    compil_script : "URANIE-4.9.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.9.0-Source.tar.gz"
+    }
+    patches: ['URANIE-4.9.0-imatrix_ivector.patch']
+    depend : ['Python', 'root','nlopt','lapack', 'boost', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_9_0_FD42 :
+{
+    compil_script : "URANIE-4.9.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.9.0-Source.tar.gz"
+    }
+    patches: ['URANIE-4.9.0-imatrix_ivector.patch']
+    depend : ['Python', 'root','nlopt','lapack', 'boost', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_9_0 :
+{
+    compil_script : "URANIE-4.9.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.9.0-Source.tar.gz"
+    }
+    patches: []
+    depend : ['Python', 'root','nlopt','lapack', 'boost', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_8_0 :
+{
+    compil_script : "URANIE-4.8.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.8.0-Source.tar.gz"
+    }
+    patches: []
+    depend : ['Python', 'root','nlopt','lapack', 'boost','jsoncpp', 'FMILibrary', 'libxml2', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_8_0_DB09 :
+{
+    compil_script : "URANIE-4.8.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.8.0-Source.tar.gz"
+    }
+    patches: ["URANIE-4.8.0-p002.patch"]
+    depend : ['Python', 'root','nlopt','lapack', 'boost','jsoncpp', 'FMILibrary', 'libxml2', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_8_0_CO7 :
+{
+    compil_script : "URANIE-4.8.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.8.0-Source.tar.gz"
+    }
+    patches: ["URANIE-4.8.0-p002.patch"]
+    depend : ['Python', 'root','nlopt','openblas', 'boost','jsoncpp', 'FMILibrary', 'libxml2', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_8_0_CO8 :
+{
+    compil_script : "URANIE-4.8.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.8.0-Source.tar.gz"
+    }
+    patches: ["URANIE-4.8.0-p002.patch"]
+    depend : ['Python', 'root','nlopt','openblas', 'boost','jsoncpp', 'FMILibrary', 'libxml2', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_8_0_CO9 :
+{
+    compil_script : "URANIE-4.8.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.8.0-Source.tar.gz"
+    }
+    patches: ["URANIE-4.8.0-p002.patch"]
+    depend : ['Python', 'root','nlopt','openblas', 'boost','jsoncpp', 'FMILibrary', 'libxml2', 'fftw']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    opt_depend: ["openmpi"]
+}
+
+version_4_7_0 :
+{
+    compil_script : "URANIE-4.7.0.sh"
+    archive_info :
+    {
+        archive_name : "URANIE-4.7.0-Source.tar.gz"
+    }
+    patches: ["URANIE-4.7.0-rootlogon.patch"]
+    opt_depend: ["openmpi"]
+}
+
+version_4_7_0_win :
+{
+    compil_script : "URANIE-4.7.0.bat"
+    depend : ['Python', 'root','nlopt', 'boost', 'pthreads']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    patches: ["URANIE-4.7.0-rootlogon.patch", "URANIE-4.7.0-pthreads.patch"]
+    opt_depend: []
+}
+
+version_4_5_0 :
+{
+    compil_script : "URANIE-4.5.0.sh"
+    patches: ['URANIE-4.5.0.patch']
+}
+
+version_4_5_0_win :
+{
+    compil_script : "URANIE-4.5.0.bat"
+    depend : ['Python', 'root','nlopt', 'boost', 'pthreads']
+    build_depend : ["cmake", 'swig', 'cppunit']
+    patches: ['URANIE-4.5.0.patch', 'URANIE-FindROOT.cmake.patch']
+}

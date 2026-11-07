@@ -1,0 +1,171 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+// ---
+// File   : HexoticPlugin_Algorithm.idl
+// Author : Lioka RAZAFINDRAZAKA (CEA)
+// ---
+//
+#ifndef _SMESH_HexoticALGORITHM_IDL_
+#define _SMESH_HexoticALGORITHM_IDL_
+
+#include "SMESH_Hypothesis.idl"
+#include "SMESH_Mesh.idl"
+#include "GEOM_Gen.idl"
+
+/*!
+ * HexoticPlugin: interfaces to Hexotic related hypotheses and algorithms
+ */
+module HexoticPLUGIN
+{
+  typedef sequence<string> string_array;
+
+  /*!
+   * Type definitions for the size maps
+   */
+  struct HexoticPluginSizeMap {
+    string entry;
+    double size;
+  };
+
+  typedef sequence<HexoticPluginSizeMap> HexoticPluginSizeMapsList;
+
+  /*!
+   * HexoticPlugin_Hexotic: interface of Hexotic algorithm
+   */
+  interface HexoticPlugin_Hexotic : SMESH::SMESH_3D_Algo
+  {
+  };
+
+  /*!
+   * HexoticPlugin_Hypothesis: interface of "Hexotic parameters" hypothesis
+   */
+  interface HexoticPlugin_Hypothesis : SMESH::SMESH_Hypothesis
+  {
+    void SetHexesMinLevel(in long value);
+    long GetHexesMinLevel();
+
+    void SetHexesMaxLevel(in long value);
+    long GetHexesMaxLevel();
+
+    void SetMinSize(in double value);
+    double GetMinSize();
+
+    void SetMaxSize(in double value);
+    double GetMaxSize();
+
+    void SetGeomApproxAngle(in double angle);
+    double GetGeomApproxAngle();
+
+    void SetHexoticIgnoreRidges(in boolean value);
+    boolean GetHexoticIgnoreRidges();
+
+    void SetHexoticInvalidElements(in boolean value);
+    boolean GetHexoticInvalidElements();
+
+    void SetHexoticSharpAngleThreshold(in double value);
+    double GetHexoticSharpAngleThreshold();
+
+    void SetHexoticNbProc(in long value);
+    long GetHexoticNbProc();
+
+    void SetHexoticWorkingDirectory(in string path) raises (SALOME_CMOD::SALOME_Exception);
+    string GetHexoticWorkingDirectory();
+
+    void SetHexoticSdMode(in long value);
+    long GetHexoticSdMode();
+
+    void SetHexoticVerbosity(in long value);
+    long GetHexoticVerbosity();
+
+    void SetHexoticMaxMemory(in long value);
+    long GetHexoticMaxMemory();
+
+    void SetKeepFiles(in boolean toKeep);
+    boolean GetKeepFiles();
+
+    void SetStandardOutputLog(in boolean logInStandardOutput);
+    boolean GetStandardOutputLog();
+
+    void SetRemoveLogOnSuccess(in boolean removeLogOnSuccess);
+    boolean GetRemoveLogOnSuccess();
+
+    /*!
+     * Set advanced option value
+     */
+    void SetOptionValue(in string optionName,
+                        in string optionValue) raises (SALOME_CMOD::SALOME_Exception);
+    string GetOptionValue(in string optionName) raises (SALOME_CMOD::SALOME_Exception);
+    void UnsetOption(in string optionName);
+    /*!
+     * Adds custom advanced option and its value
+     */
+    void SetAdvancedOption(in string optionsAndValues) // in a form "option_1 v1 option_2 v2'"
+      raises (SALOME_CMOD::SALOME_Exception);
+    string GetAdvancedOption();
+    void AddOption(in string optionName, in string optionValue);
+    string GetOption(in string optionName);
+    void SetTextOptions(in string option);// obsolete
+    string GetTextOptions(); // obsolete
+    /*!
+     * Return array of strings each of which is option name concatenated
+     * with option value devided by semicolon - "option_name:option_value:option_type".
+     * Option value is empty if an option is not set.
+     * option_type: 1 if user-define, 0 if default
+     * Note: the method is mostly for interaction with GUI.
+     */
+    string_array GetOptionValues();
+    string_array GetAdvancedOptionValues();
+    /*!
+     * Set option values each in the form "option_name[:option_value][:option_type]".
+     * Note: the method is mostly for interaction with GUI.
+     */
+    void SetOptionValues(in string_array options) raises (SALOME_CMOD::SALOME_Exception);
+    void SetAdvancedOptionValues(in string_array options);
+
+
+    void SetSizeMapEntry(in string entry, in double size);
+    void UnsetSizeMapEntry(in string entry);
+
+    void SetSizeMap(in GEOM::GEOM_Object GeomObj, in double size);
+    void UnsetSizeMap(in GEOM::GEOM_Object GeomObj);
+
+    HexoticPluginSizeMapsList GetSizeMaps();
+
+    void SetNbLayers(in long theVal);
+    long GetNbLayers();
+
+    void SetFirstLayerSize(in double theVal);
+    double GetFirstLayerSize();
+
+    void SetDirection(in boolean theVal);
+    boolean GetDirection();
+
+    void SetGrowth(in double theVal);
+    double GetGrowth();
+
+    void SetFacesWithLayers(in SMESH::long_array theVal);
+    SMESH::long_array GetFacesWithLayers();
+
+    void SetImprintedFaces(in SMESH::long_array theVal);
+    SMESH::long_array GetImprintedFaces();
+  };
+};
+
+#endif

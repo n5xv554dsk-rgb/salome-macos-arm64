@@ -1,0 +1,82 @@
+# Copyright (C) 2014-2026  CEA, EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+###
+# Macro to show SALOME object in ParaView viewer.
+# 
+# The macro inspects current selection obtained from SALOME GUI
+# and displays supported objects in the viewer:
+# - GEOM object
+# - SMESH mesh object
+###
+
+import tempfile, os
+
+from salome.kernel import SALOME_CMOD
+from salome.kernel import salome
+salome.salome_init()
+
+session = salome.naming_service.Resolve('/Kernel/Session')
+selection = session.getSelection()
+
+import pvsimple
+
+for entry in selection:
+    sobj = salome.myStudy.FindObjectID(entry)
+    try:
+        from salome.kernel import GEOM
+        from salome.geom import geomBuilder
+        geompy = geomBuilder.New()
+        go = sobj.GetObject()._narrow(GEOM.GEOM_Object)
+        if go:
+            tmpf = tempfile.NamedTemporaryFile(suffix='.vtk')
+            fname = tmpf.name
+            tmpf.close()
+            geompy.ExportVTK(go, fname)
+            pvsimple.ShowParaviewView()
+            p = pvsimple.LegacyVTKReader(FileNames=[fname])
+            renderView = pvsimple.GetActiveViewOrCreate('RenderView')
+            pd = pvsimple.Show(p, renderView)
+            renderView.ResetCamera()
+            os.remove(fname)
+            pass
+    except:
+        # not geom object
+        pass
+    try: 
+        from salome.kernel import SMESH
+        from salome.smesh import smeshBuilder
+        mesh = smeshBuilder.New()
+        mo = sobj.GetObject()._narrow(SMESH.SMESH_Mesh)
+        if mo:
+            tmpf = tempfile.NamedTemporaryFile(suffix='.med')
+            fname = tmpf.name
+            tmpf.close()
+            mo.ExportMED(fname, True, True, True)
+            pvsimple.ShowParaviewView()
+            p = pvsimple.MEDReader(FileNames=fname)
+            renderView = pvsimple.GetActiveViewOrCreate('RenderView')
+            pd = pvsimple.Show(p, renderView)
+            renderView.ResetCamera()
+            os.remove(fname)
+            pass
+    except:
+        # not mesh object
+        pass
+    pass

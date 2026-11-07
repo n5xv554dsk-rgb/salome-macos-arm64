@@ -1,0 +1,122 @@
+default :
+{
+    name : "netcdf"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    archive_info :
+    {
+       archive_name : "netcdf-c-" + $APPLICATION.products.netcdf + ".tar.gz"
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python', 'lapack', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen']
+    build_depend : ["cmake", "swig"]
+    opt_depend : ['openmpi']
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      single_install_dir : "no"
+      incremental : "yes"
+    }
+}
+
+default_win :
+{
+    properties :
+    {
+      single_install_dir : "no"
+      incremental : "yes"
+    }
+    depend : ['Python', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'pthreads']
+    opt_depend : ['lapack', 'openblas']
+}
+
+version_4_9_2:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.9.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.9.2" + $VARS.scriptExtension
+    patches : []
+}
+
+version_4_9_2_CO7:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.9.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.9.2" + $VARS.scriptExtension
+    depend : ['Python', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen']
+    opt_depend : ['openmpi', 'openblas', 'lapack']
+    patches : []
+}
+
+version_4_9_2_CO8:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.9.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.9.2" + $VARS.scriptExtension
+    depend : ['Python', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen']
+    opt_depend : ['openmpi', 'openblas', 'lapack']
+    patches : []
+}
+
+version_4_9_2_CO9:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.9.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.9.2" + $VARS.scriptExtension
+    depend : ['Python', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen']
+    opt_depend : ['openmpi', 'openblas', 'lapack']
+    patches : []
+}
+
+version_4_9_2_win :
+{
+    properties :
+    {
+      single_install_dir : "yes"
+      incremental : "yes"
+    }
+}
+
+version_4_6_2:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.6.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.6.2" + $VARS.scriptExtension
+    patches : ['netcdf-4.6.2-001.patch']
+}
+
+version_4_6_2_FD42:
+{
+    archive_info :
+    {
+      archive_name  : "netcdf-c-4.6.2.tar.gz"
+    }
+    compil_script :  "netcdf-4.6.2" + $VARS.scriptExtension
+    patches : ['netcdf-4.6.2-001.patch','netcdf-4.6.2-002.patch']
+}
+
+version_4_6_2_win :
+{
+    properties :
+    {
+      single_install_dir : "yes"
+      incremental : "yes"
+    }
+}

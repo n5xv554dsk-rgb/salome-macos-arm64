@@ -1,0 +1,12 @@
+<document>
+  <section name="COMPONENT">
+    <!-- Major module parameters -->
+    <parameter name="name" value="Component"/>
+    <parameter name="version" value="@SALOMECOMPONENT_VERSION@"/>
+    <parameter name="gui" value="no"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="COMPONENT" value="%COMPONENT_ROOT_DIR%/share/salome/resources/component"/>
+  </section>
+</document>

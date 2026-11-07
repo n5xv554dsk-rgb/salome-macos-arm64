@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='us-ascii' ?>
+<begin-catalog>
+  <path-prefix-list></path-prefix-list>
+  <type-list>
+    <type name="ErrorCode" kind="int"/>
+  </type-list>
+  <component-list>
+    <component>
+      <component-name>CALCULATOR</component-name>
+      <component-username>CALCULATOR</component-username>
+      <component-type></component-type>
+      <component-author>SALOME team</component-author>
+      <component-version>@SALOMECALCULATOR_VERSION@</component-version>
+      <component-comment></component-comment>
+      <component-icone></component-icone>
+      <constraint>'linux' ~ OS</constraint>
+      <component-interface-list>
+        <component-interface-name>CALCULATOR_Gen</component-interface-name>
+        <component-interface-comment></component-interface-comment>
+        <component-service-list>
+          <component-service>
+            <service-name>convergenceCriteria</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Calculate maximum relative difference of field with the previous one</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>double</outParameter-type>
+                <outParameter-comment>Convergence criterion value</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>applyLin</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Apply to each (scalar) field component the linear function x -> ax+b</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+              <inParameter>
+                <inParameter-name>a</inParameter-name>
+                <inParameter-type>double</inParameter-type>
+                <inParameter-comment>First coefficient of linear function</inParameter-comment>
+              </inParameter>
+              <inParameter>
+                <inParameter-name>b</inParameter-name>
+                <inParameter-type>double</inParameter-type>
+                <inParameter-comment>Second coefficient of linear function</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>Resulting field</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>add</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Sum two fields</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field1</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>First input field</inParameter-comment>
+              </inParameter>
+              <inParameter>
+                <inParameter-name>field2</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>First input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>Resulting field</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>norm2</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get Euclidian norm of field</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>double</outParameter-type>
+                <outParameter-comment>Euclidian norm value</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>normL2</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get L2 norm of field</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>double</outParameter-type>
+                <outParameter-comment>L2 norm value</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>normL1</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get L1 norm of field</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>double</outParameter-type>
+                <outParameter-comment>L1 norm value</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>normMax</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get max norm of field</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>double</outParameter-type>
+                <outParameter-comment>Max norm value</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>printField</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Print out the coordinates and field values to standard output</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list></outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>cloneField</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Clone source field into four copies.</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list>
+              <inParameter>
+                <inParameter-name>field</inParameter-name>
+                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                <inParameter-comment>Input field</inParameter-comment>
+              </inParameter>
+            </inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>clone1</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>First resulting clone field</outParameter-comment>
+              </outParameter>
+              <outParameter>
+                <outParameter-name>clone2</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>Second resulting clone field</outParameter-comment>
+              </outParameter>
+              <outParameter>
+                <outParameter-name>clone3</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>Third resulting clone field</outParameter-comment>
+              </outParameter>
+              <outParameter>
+                <outParameter-name>clone4</outParameter-name>
+                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                <outParameter-comment>Fourth resulting clone field</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>isDone</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get last operation status</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list></inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>boolean</outParameter-type>
+                <outParameter-comment>Last operation status</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+          <component-service>
+            <service-name>getErrorCode</service-name>
+            <service-author>SALOME team</service-author>
+            <service-version>@SALOMECALCULATOR_VERSION@</service-version>
+            <service-comment>Get last error code</service-comment>
+            <service-by-default>0</service-by-default>
+            <inParameter-list></inParameter-list>
+            <outParameter-list>
+              <outParameter>
+                <outParameter-name>return</outParameter-name>
+                <outParameter-type>ErrorCode</outParameter-type>
+                <outParameter-comment>Last error code</outParameter-comment>
+              </outParameter>
+            </outParameter-list>
+            <DataStream-list></DataStream-list>
+          </component-service>
+        </component-service-list>
+      </component-interface-list>
+    </component>
+  </component-list>
+</begin-catalog>

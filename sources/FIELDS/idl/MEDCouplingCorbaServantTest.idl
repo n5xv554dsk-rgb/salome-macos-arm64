@@ -1,0 +1,69 @@
+// Copyright (C) 2007-2026  CEA, EDF, OPEN CASCADE
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+// Author : Anthony Geay (CEA/DEN)
+
+#ifndef __MEDCOUPLINGCORBASERVANTTEST_IDL__
+#define __MEDCOUPLINGCORBASERVANTTEST_IDL__
+
+#include "MEDCouplingCorbaServant.idl"
+
+module SALOME_TEST
+{
+  interface MEDCouplingMeshFieldFactory
+  {
+    void destroyFactory();
+    void shutdownOrb();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface get1DMesh();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface get2DMesh();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface get3DMesh();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface get3DSurfMesh();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface get0DMesh();
+    SALOME_MED::MEDCouplingUMeshCorbaInterface getM1DMesh();
+    SALOME_MED::MEDCouplingExtrudedMeshCorbaInterface getExtrudedMesh();
+    SALOME_MED::MEDCouplingCMeshCorbaInterface getCMesh();
+    SALOME_MED::MEDCouplingCurveLinearMeshCorbaInterface getCLMesh();
+    SALOME_MED::MEDCoupling1SGTUMeshCorbaInterface get1SGTUMesh();
+    SALOME_MED::MEDCoupling1DGTUMeshCorbaInterface get1DGTUMesh();
+    SALOME_MED::MEDCouplingIMeshCorbaInterface getIMesh();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldScalarOn2DNT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldNodeScalarOn2DNT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldScalarOn3DNT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldScalarOn3DSurfWT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldScalarOn3DSurfCOTI();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldScalarOn2DLT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldGaussPt2DWT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldGaussPtNE2DWT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldVectorOnExtrudedWT();
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface getFieldVectorOnCMeshWT();
+    SALOME_MED::MEDCouplingFieldTemplateCorbaInterface getFieldTemplateCellOn2D();
+    SALOME_MED::MEDCouplingFieldTemplateCorbaInterface getFieldTemplateNodeOn2D();
+    SALOME_MED::MEDCouplingFieldTemplateCorbaInterface getFieldTemplateGaussPtOn2D();
+    SALOME_MED::MEDCouplingFieldTemplateCorbaInterface getFieldTemplateGaussNEOn2D();
+    SALOME_MED::MEDCouplingMultiFieldsCorbaInterface getMultiFields1();
+    SALOME_MED::DataArrayDoubleCorbaInterface getArrayDouble1();
+    SALOME_MED::DataArrayDoubleCorbaInterface getArrayDouble2();
+    SALOME_MED::DataArrayDoubleCorbaInterface getArrayDouble3();
+    SALOME_MED::DataArrayIntCorbaInterface getArrayInt1();
+    SALOME_MED::DataArrayIntCorbaInterface getArrayInt2();
+    SALOME_MED::DataArrayIntCorbaInterface getArrayInt3();
+    SALOME_MED::MEDCouplingFieldOverTimeCorbaInterface getMultiFields2();
+  };
+};
+
+#endif

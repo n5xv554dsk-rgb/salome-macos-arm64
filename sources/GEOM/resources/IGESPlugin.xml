@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="IGESPlugin"
+               server-lib="IGESPluginEngine"
+               gui-lib="IGESPluginGUI">
+    <actions>
+      <action label="Import_IGES"
+              menu="FILE/IMPORT:10/IMPORTIGES"
+              status-bar="IMPORTIGES">
+      </action>
+      <action label="Export_IGES"
+              menu="FILE/EXPORT:10/EXPORTIGES"
+              status-bar="EXPORTIGES">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

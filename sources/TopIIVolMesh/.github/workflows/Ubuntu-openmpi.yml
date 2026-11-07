@@ -1,0 +1,60 @@
+name: Ubuntu-latest-openmpi
+
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
+      - '**.md'
+      - '**/.gitignore'
+      - '**/demos/**'
+      - '**/etc/**'
+      - '**/man/**'
+    branches: [ "master" ]
+  pull_request:
+    paths-ignore:
+      - '**/README.md'
+      - '**.md'
+      - '**/.gitignore'
+      - '**/demos/**'
+      - '**/etc/**'
+      - '**/man/**'
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libopenmpi-dev
+        sudo apt-get install autoconf automake
+        which mpicxx
+        mpicxx --version
+        which g++
+        g++ --version
+
+    - name: configure
+      run: autoreconf -i && ./configure
+
+    - name: make
+      run: make
+
+    - name: make check
+      run: |
+        set +e                     # Ignore errors from make check
+        make check                 # Run tests
+        status=$?                  # Capture exit code of make check
+        mkdir -p "$GITHUB_WORKSPACE/artifacts"
+        find . \( -name "*.log" -o -name "*.txt" \) -exec cp --parents {} "$GITHUB_WORKSPACE/artifacts/" \; || true
+        exit $status               # Re-raise make check's status to mark the step as failed if it should
+
+    - name: Upload artifacts
+      if: always()  # upload logs even if test failed
+      uses: actions/upload-artifact@v4
+      with:
+        name: check-logs
+        path: ${{ github.workspace }}/artifacts

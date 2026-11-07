@@ -1,0 +1,49 @@
+Les macros INCLUDE, INCLUDE_MATERIAU et POURSUITE ont un fonctionnement spécial.<BR>
+Les concepts produits par ces macros sont obtenus par une interpretation séparée
+du fichier de commandes correspondant. Les concepts produits sont ensuite inclus
+dans le contexte du jeu de commandes principal.<BR>
+La mise à jour du jeu de commandes et de ses includes et poursuites
+est presque complètement automatique. Cependant dans quelques cas particuliers
+le mécanisme de mise à jour peut être pris en défaut.
+
+<BR> <BR>
+Les principes retenus sont les suivants :
+<BR> <BR>
+
+1- Un fichier invalide n'est pas du tout pris en compte meme si quelques
+commandes de ce fichier sont valides
+<BR><BR>
+
+2- Il est possible de visualiser (bouton droit de la souris sur l'icone de
+la macro -> menu View) le contenu de ces types de macros. Le bouton (icone
+loupe) permet de visualiser le source du fichier inclus.
+<BR><BR>
+
+3- Les fichiers inclus sont mémorisés en fonction de leur UNITE
+pour les INCLUDE, du nom de matériau pour les INCLUDE_MATERIAU et comme poursuite
+pour une POURSUITE (il n'est pas possible d'avoir plus d'une POURSUITE par fichier).
+ATTENTION : comme on s'appuie sur l'UNITE pour memoriser les fichers inclus il est
+conseillé d'utiliser des numéros d'UNITE différents sinon la reactualisation sera
+faite avec le meme fichier pour des INCLUDE différents.
+<BR><BR>
+
+4- Pour changer les fichiers inclus, il faut passer par l'onglet FICHIER, modifier
+le nom du fichier et appuyer sur le bouton Valider. Il est possible en passant par
+cet onglet de forcer la prise en compte d'un fichier include partiellement valide
+ce qui n'est pas possible lors de l'import initial. Pour changer un fichier INCLUDE
+contenu dans un INCLUDE ou dans une POURSUITE, il faut editer l'INCLUDE ou la POURSUITE
+englobante (voir 6.) et passer par l'onglet FICHIER.
+<BR><BR>
+
+5- Le nom d'un fichier INCLUDE_MATERIAU est construit à partir des valeurs des mots-clés
+de la commande, il n'est donc jamais demandé explicitement à l'utilisateur.
+
+<BR><BR>
+6- Il est possible d'editer un fichier include ou poursuite. Pour cela, il suffit d'utiliser
+l'entrée "Edit" du menu contextuel de l'étape en question (bouton droit de la souris).
+Le fichier include ou poursuite en cours d'edition apparaitra dans un onglet distinct.
+Les modifications dans un fichier include ou poursuite sont normalement propagées au fichier
+principal et aux autres includes et poursuites. Il est cependant possible que quelques cas
+tordus ne soient pas correctement traités. Dans le doute, une demande de rapport de validation
+peut permettre de réactualiser l'état des différents fichiers.
+

@@ -1,0 +1,180 @@
+// Copyright (C) 2007-2026  CEA, EDF, OPEN CASCADE
+//
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+// Authors : Guillaume Boulant (EDF) - 01/06/2011
+
+#ifndef _MED_DATAMANAGER_IDL_
+#define _MED_DATAMANAGER_IDL_
+
+#include "SALOME_GenericObj.idl"
+#include "SALOME_Exception.idl"
+
+module MEDCALC
+{
+  struct DatasourceHandler {
+    long id;
+    string name;
+    string uri;
+    // The source could be a filepath or the ior of a field servant
+  };
+
+  struct MeshHandler {
+    long id;
+    string name;
+    long sourceid;
+  };
+  typedef sequence<MeshHandler> MeshHandlerList;
+
+  /**
+   * The Fieldseries is a virtual object that does not exist in the MED
+   * data model (at least in the MEDCoupling data model). It is just a
+   * point that aggregates a list of fields that rely on the same mesh
+   * with the same type (the fields in a timeseries differ by their
+   * time step).
+   *
+   * Then you could have a field with no fieldseries associated but
+   * directly associated to a mesh. That is typically the case of
+   * fields created by MED operations: if you operate two fields
+   * coming from 2 different timeseries (and relying on the same
+   * mesh), you obtain a field that can not be associated to the
+   * original timeseries. Then this new created field must be directly
+   * associated to its underlying mesh (as defined in the MEDCoupling
+   * data model).
+   *
+   * In conclusion, the fieldseries is a facilities for data
+   * management but must not be a structuration of the data model. The
+   * association is not:
+   *
+   *   field->fieldseries->mesh
+   *
+   * but:
+   *
+   *   field->fieldseries (optional)
+   *        ->mesh        (mandatory)
+   *
+   * and:
+   *
+   *   fieldseries->mesh  (mandatory)
+   */
+  struct FieldseriesHandler {
+    long id;
+    string name;
+    long   type;
+    long   meshid;
+    long   nbIter;
+  };
+  typedef sequence<FieldseriesHandler> FieldseriesHandlerList;
+
+  // The FieldHandler structure is a lightweight data structure that
+  // represents a single field (as understood in MEDCoupling model).
+  struct FieldHandler {
+    long   id;
+    long   fieldseriesId;
+    string fieldname; // @warn : if fieldseriesId then get from fieldseries->name
+    string meshname;  // @deprecated: replace by meshid and get from mesh->name
+    long   meshid;
+    long   type;      // @warn : if fieldseriesId then get from fieldseries->type
+    long   iteration;
+    long   order;
+    string source;    // @deprecated : get from mesh->datasource->uri
+  };
+
+  typedef sequence<FieldHandler> FieldHandlerList;
+  typedef sequence<long> FieldIdList;
+
+  struct InterpolationParameters {
+    double precision;
+    double defaultValue;
+    boolean reverse;
+    string method;
+    string nature;
+    string intersectionType;
+  };
+
+  interface MEDDataManager: SALOME_CMOD::GenericObj
+  {
+
+    //==========================================================
+    // Datasource management
+    //==========================================================
+    DatasourceHandler loadDatasource(in string filepath);
+    DatasourceHandler getDatasourceHandler(in string filepath);
+    DatasourceHandler getDatasourceHandlerFromID(in long sourceid);
+
+    //==========================================================
+    // Mesh data management
+    //==========================================================
+
+    MeshHandler     getMeshHandler(in long meshId) raises (SALOME_CMOD::SALOME_Exception);
+    MeshHandlerList getMeshHandlerList(in long datasourceId);
+
+    //==========================================================
+    // Field data management
+    //==========================================================
+    FieldseriesHandlerList getFieldseriesListOnMesh(in long meshId);
+    FieldHandlerList getFieldListInFieldseries(in long fieldseriesId);
+
+    long getFieldIdAtTimestamp(in long fieldseriesId, in double timestamp);
+
+    FieldHandler     getFieldHandler(in long fieldHandlerId);
+    FieldHandlerList getFieldHandlerList();
+    // __GBO__ Maybe it could be useful to define a getFieldHandlerList with a datasourceId in argument
+    string           getFieldRepresentation(in long fieldHandlerId);
+
+    // Persistency management
+    void             saveFields(in string filepath, in FieldIdList list)
+      raises (SALOME_CMOD::SALOME_Exception);
+    void             markAsPersistent(in long fieldHandlerId, in boolean persistent);
+    void             savePersistentFields(in string filepath)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+
+    void updateFieldMetadata(in long   fieldHandlerId,
+                             in string fieldname,
+                             in long   iteration,
+                             in long   order,
+                             in string source);
+
+    //void saveFields(in FieldHandlerList fieldHandlerList, in string filepath);
+
+    double getFieldTimestamp(in long fieldHandlerId);
+
+    void changeUnderlyingMesh(in long fieldHandlerId, in long meshHandlerId)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    FieldHandler interpolateField(in long fieldHandlerId, in long meshHandlerId, in InterpolationParameters params)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    //==========================================================
+    // General purpose data management
+    //==========================================================
+    void   setEventListenerIOR(in string ior);
+    string getEventListenerIOR() raises (SALOME_CMOD::SALOME_Exception);
+
+    // Print out server data
+    void serverlog();
+
+    void cleanUp() raises (SALOME_CMOD::SALOME_Exception);
+  };
+};
+
+#endif // _MED_DATAMANAGER_IDL_

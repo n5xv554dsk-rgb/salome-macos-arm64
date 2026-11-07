@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Welcome to MDM</h1>
+    </div>
+    <ul class="navbar">
+        <li><a href="commandes.html">Commandes</a>
+        <li><a href="jeuDeDonnees.html">Jeu De Donnees</a>
+        <li><a href="aide.html">Aide</a>
+    </ul>
+<!--
+    <div class="container">
+        <h2>{{titre}}</h2>
+        {%- for commande in listeCommandes %}
+        <li>{{ commande }}
+        {% endfor %}
+    </div>
+-->
+{% endblock %}

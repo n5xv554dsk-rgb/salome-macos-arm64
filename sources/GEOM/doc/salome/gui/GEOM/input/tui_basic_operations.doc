@@ -1,0 +1,21 @@
+/*!
+
+\page tui_basic_operations_page Basic Operations
+
+\anchor tui_partition
+<br><h2>Partition</h2>
+\tui_script{basic_operations_ex01.py}
+
+\anchor tui_archimede
+<br><h2>Archimede</h2>
+\tui_script{basic_operations_ex02.py}
+
+\anchor tui_restore_prs_params
+<br><h2>Restore presentation parameters and sub-shapes</h2>
+\tui_script{basic_operations_ex03.py}
+
+\anchor tui_shared_shapes
+<br><h2>Get shared shapes</h2>
+\tui_script{basic_operations_ex04.py}
+
+*/

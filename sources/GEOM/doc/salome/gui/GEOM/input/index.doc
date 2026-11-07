@@ -1,0 +1,39 @@
+/*!
+
+\mainpage Introduction to Geometry
+
+\image html geomscreen.png
+
+\b Geometry module of SALOME is destined for:
+- \subpage import_export_geom_obj_page "import and export of geometrical models"
+  in IGES, BREP, STEP, STL, XAO and VTK formats;
+- \subpage create_geom_obj_page "construction of geometrical objects"
+  using a wide range of functions;
+- \subpage view_geom_obj_page "viewing geometrical objects" in the OCC
+  viewer;
+- \subpage transform_geom_obj_page "transformation of geometrical objects"
+  using various algorithms;
+- \subpage repairing_operations_page "optimization of geometrical objects";
+- viewing information about geometrical objects using
+  \subpage using_measurement_tools_page "measurement tools";
+- \subpage pictures_page "designing shapes from pictures";
+- \subpage geom_field_page "defining fields".
+
+It is possible to easily set parameters via the variables predefined in
+  \subpage using_notebook_geom_page "SALOME notebook".
+
+Geometry module preferences are described in the
+\subpage geometry_preferences_page section of SALOME Geometry Help.
+
+Almost all geometry module functionalities are accessible via
+\subpage python_interface "Geometry module Python Interface"
+
+You can find the answer to some Frequently Asked Questions in this page:
+- \subpage faq "Frequently Asked Questions"
+
+\image html image3.png "Example of Geometry module usage for engineering tasks"
+
+There are also \subpage related_docs_page "additional reference documents"
+for Geometry module that can be useful.
+
+*/

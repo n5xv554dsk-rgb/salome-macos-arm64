@@ -1,0 +1,60 @@
+/*!
+
+\page tui_test_measures_page GEOM_TestMeasures.py
+
+\anchor swig_TestMeasures
+<br><h2>GEOM_TestMeasures.py</h2>
+
+\dontinclude GEOM_TestMeasures.py
+\skipline def TestMeasureOperations
+
+\until PointCoordinates
+
+\anchor swig_PointCoordinates
+\until CheckShape
+
+\anchor swig_CheckShape
+\until Detect Self-intersections
+
+\anchor swig_CheckSelfIntersections
+\until Detect Self-intersections fast
+
+\anchor swig_CheckSelfIntersectionsFast
+\until Fast intersection
+
+\anchor swig_FastIntersection
+\until WhatIs
+
+\anchor swig_WhatIs
+\until BasicProperties
+
+\anchor swig_BasicProperties
+\until BoundingBox
+
+\anchor swig_BoundingBox
+\until Inertia
+
+\anchor swig_Inertia
+\until Tolerance
+
+\anchor swig_Tolerance
+\until MakeCDG
+
+\anchor swig_MakeCDG
+\until But must be
+
+\until face0
+
+\anchor swig_GetNormal
+\until MinDistance
+
+\anchor swig_MinDistance
+\until in one plane
+
+\anchor swig_GetAngle
+\until Error
+
+\anchor swig_GetAngleRadians
+\until pass
+
+*/

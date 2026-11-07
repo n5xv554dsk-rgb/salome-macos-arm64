@@ -1,0 +1,19 @@
+/*!
+
+\page color_page Color
+
+\n You can change the filling color of your object in the standard
+<b>Select Color</b> menu accessible by right-clicking on an object and
+selecting \b Color in the pop-up menu box.               
+
+This functionality is available only if \em artificial
+\ref material_page "material model" is assigned to the selected shape.
+
+\n <b>TUI Command:</b> <em>gg.setColor(ID, Short, Short, Short)</em>
+
+\image html selectcolor.png
+
+Our <b>TUI Scripts</b> provide you with useful examples of 
+\ref tui_change_color "Changing Display Parameters".
+
+*/

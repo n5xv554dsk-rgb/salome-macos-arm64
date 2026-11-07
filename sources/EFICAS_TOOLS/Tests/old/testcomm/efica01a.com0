@@ -1,0 +1,49 @@
+POURSUITE(CODE=_F(  NOM = 'EFICA01A'))
+
+INCLUDE_MATERIAU(   NOM_AFNOR='18MND5',      TYPE_MODELE='REF',
+                      VARIANTE='A',          TYPE_VALE='NOMI',
+                     NOM_MATER='MAT3',       INFO=1               )
+
+CHMAT3=AFFE_MATERIAU(  MAILLAGE=MAILLA3,
+                       AFFE=_F(  TOUT='OUI', MATER = MAT3, TEMP_REF = 20.))
+
+riginor = 2.88E7 
+
+TRAN_GE2=DYNA_TRAN_MODAL(  MASS_GENE=MGEN_BIC,   RIGI_GENE=RGEN_BIC,
+                 METHODE='EULER',
+                 AMOR_REDUIT=( 0.07,  0.07, ),
+                MODE_STAT=MSTA_BIC,EXCIT=(
+                _F(  VECT_GENE = VECT_X1,  ACCE = ACCELER1,
+                       MULT_APPUI = 'OUI',
+                       DIRECTION = ( 1., 0., 0.,), NOEUD = 'NO1',
+                       VITE = VITESSE1, DEPL = DEPLACE1), 
+                _F(  VECT_GENE = VECT_X2,  ACCE = ACCELER2,
+                       MULT_APPUI = 'OUI',
+                       DIRECTION = ( 1., 0., 0.,), NOEUD = 'NO11',
+                       VITE = VITESSE2, DEPL = DEPLACE2)), 
+                CHOC=_F(  GROUP_NO_1 = 'MASSES1',
+                       GROUP_NO_2 = 'MASSES2',
+                       OBSTACLE = GRILLE,
+                       INTITULE = 'NO2/NO12',
+                       NORM_OBST = (0., 0., 1.,),
+                       DIST_1 = 0.4495,
+                       DIST_2 = 0.4495,
+                       RIGI_NOR = riginor,
+                       AMOR_NOR = 0.,
+                       RIGI_TAN = 0.,
+                       COULOMB = 0.),
+                 INCREMENT=_F( INST_INIT = 0.,  INST_FIN = 1.,  PAS = 0.00025),
+                ARCHIVAGE=_F(  PAS_ARCH = 8)
+                )
+
+LISTIMP=DEFI_LIST_REEL(  DEBUT=0.,
+                    INTERVALLE=_F(  JUSQU_A = 1.,  NOMBRE = 500))
+
+RESUA1=REST_BASE_PHYS(  RESU_GENE=TRAN_GE1,
+                        LIST_INST=LISTIMP,
+                        INTERPOL='LIN',
+                        NOM_CHAM='DEPL',
+                        MULT_APPUI='OUI'
+                       )
+
+FIN()

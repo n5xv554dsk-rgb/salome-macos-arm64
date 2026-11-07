@@ -1,0 +1,78 @@
+The py2cpp library was created in order to make easier the call of a python 
+function within c++ sources. It provides conversion functions to and from a
+python object for some basic c++ types (int, double, std:: string and 
+collections for these types: std::vector, std::list, std::map). It is possible 
+to add your own conversion functions for your own types.
+
+Example of use
+---------------
+
+Consider you have the following python file "mymodule.py":
+
+________________________________________________________________________________
+def myfunction(a, b):
+  return "The result is", a/b
+________________________________________________________________________________
+  
+You can call this function from c++ this way:
+
+________________________________________________________________________________
+  #include "TypeConversions.hxx"
+  #include "Result.hxx"
+  #include "PyFunction.hxx"
+  ...
+  Py_Initialize();
+  ...
+  std::string s;
+  double d;
+  py2cpp::PyFunction fn;
+  fn.load("mymodule", "myfunction");
+  py2cpp::pyResult(s,d) = fn(1,2);
+  ...
+  std::cout << "String parameter from the python function:" << s << std::endl;
+  std::cout << "Double parameter from the python function:" << d << std::endl;
+  ...
+  Py_Finalize();
+________________________________________________________________________________
+
+The full example which also deals with possible errors, can be this:
+
+________________________________________________________________________________
+  #include "TypeConversions.hxx"
+  #include "Result.hxx"
+  #include "PyFunction.hxx"
+
+  #include <iostream>
+
+  int main()
+  {
+    Py_Initialize();
+    {
+    std::string s;
+    double d;
+    py2cpp::PyFunction fn;
+    fn.load("mymodule", "myfunction");
+    if(!fn)
+    {
+      std::cerr << "Impossible to load myfunction from the module mymodule!";
+      std::cerr << std::endl;
+      std::cerr << py2cpp::getLastPyError();
+    }
+    else
+    {
+      try
+      {
+        py2cpp::pyResult(s,d) = fn(1, 2);
+        std::cout << "String parameter from the python function:" << s << std::endl;
+        std::cout << "Double parameter from the python function:" << d << std::endl;
+      }
+      catch(const py2cpp::Exception& err)
+      {
+        std::cerr << err.what();
+      }
+    }
+    }
+    Py_Finalize();
+    return 0;
+  }
+________________________________________________________________________________

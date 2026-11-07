@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+APPLICATION :
+{
+    name    : 'MEDCOUPLING-master-native'
+    workdir : $LOCAL.workdir + $VARS.sep + $APPLICATION.name + '-' + $VARS.dist
+    tag     : 'master'
+    base    : 'no'
+    debug   : 'no'
+    python3 : 'yes'
+    environ :
+    {
+        build :
+        {
+           CONFIGURATION_ROOT_DIR : $workdir + $VARS.sep + "SOURCES" + $VARS.sep + "CONFIGURATION"
+           SALOME_USE_64BIT_IDS : '1'
+        }
+        launch :
+        {
+           PYTHONIOENCODING:"UTF_8"
+        }
+    }
+    products :
+    {
+        # PREREQUISITES :
+        alabaster : 'native'
+        Babel : 'native'
+        boost : 'native'
+        certifi : 'native'
+        click : 'native'
+        cmake : '3.31.6'
+        cppunit : 'native'
+        chardet : 'native'
+        Cython : 'native'
+        docutils : 'native'
+        doxygen : 'native'
+        graphviz : 'native'
+        hdf5 : '1.14.6'
+        idna : 'native'
+        imagesize : 'native'
+        Jinja2 : 'native'
+        lapack : 'native'
+        libxml2 : 'native'
+        markupsafe : 'native'
+        medfile : '6.0.1'
+        metis : 'native'
+        mpi4py : 'native'
+        numpy : 'native'
+        openmpi: 'native'
+        pockets : 'native'
+        Pygments : 'native'
+        pyparsing : 'native'
+        Python : 'native'
+        pytz : 'native'
+        requests : 'native'
+        scipy : 'native'
+        scotch : {tag: '6.1.2', section: 'version_6_1_2_MPI', hpc: 'yes', base: 'no'}
+        setuptools : 'native'
+        six : 'native'
+        snowballstemmer : 'native'
+        Sphinx : 'native'
+        sphinxcontrib_napoleon : 'native'
+        sphinxcontrib_websupport : 'native'
+        sphinxintl: 'native'
+        swig : '4.0.2'
+        packaging : 'native'
+        urllib3 : 'native'
+
+        # SALOME MODULES :
+        'CONFIGURATION'
+        'MEDCOUPLING' : {tag:'master', base:'no', section:'default_MPI', hpc:'yes'}
+    }
+    test_base :
+    {
+        name : "SALOME"
+        tag : "SalomeV9"
+    }
+    properties :
+    {
+        git_server : 'tuleap'
+        pip : 'yes'
+        pip_install_dir : 'python'
+        single_install_dir : "no"
+    }
+}
+__overwrite__ :
+[
+    #
+    {
+        __condition__ : "VARS.dist in ['CO9']"
+        'APPLICATION.products.lapack'           : '3.8.0'
+        'APPLICATION.products.openmpi'          : '4.1.5'
+        'APPLICATION.products.sphinxintl'       : {tag: '0.9.10',  base: 'no', section: 'version_0_9_10_no_pip' }
+    }
+    {
+         __condition__ : "VARS.dist in ['CO10']"
+        'APPLICATION.rm_products' : ['sphinxcontrib_websupport']
+        'APPLICATION.products.cmake'                    : 'native'
+        'APPLICATION.products.Cython'                   : {tag: 'native',          base: 'no', section: 'default_CO10'          }
+        'APPLICATION.products.sphinxintl'               : {tag: '0.9.10',          base: 'no', section: 'version_0_9_10_no_pip' }
+    }
+    {
+        __condition__ : "VARS.dist in ['FD40']"
+        'APPLICATION.products.openmpi'          : '4.1.5'
+        'APPLICATION.products.Cython'           : {tag: 'native',     base: 'no', section: 'default_FD40'}
+    }
+    {
+        __condition__ : "VARS.dist in ['FD42']"
+        'APPLICATION.products.cmake'            : 'native'
+        'APPLICATION.products.Cython'           : {tag: 'native',         base: 'no', section: 'default_FD42' }
+    }
+]

@@ -1,0 +1,9 @@
+# Sample model with range option taken from EnSight 8 User Manual p 11-30
+
+FORMAT
+
+type:  ensight gold
+
+GEOMETRY
+
+model: range_structured.geo

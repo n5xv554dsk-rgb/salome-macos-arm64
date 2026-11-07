@@ -1,0 +1,663 @@
+default :
+{
+    name : "KERNEL"
+    build_source : "cmake"
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/kernel.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "kernel.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/kernel.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : ["Python",
+              "boost",
+              "cppunit",
+              "numpy",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH",
+              "psutil",
+              "CAS"
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    opt_depend : ["SALOMEBOOTSTRAP", "lapack", "openblas"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+        incremental : "yes"
+    }
+    patches: []
+}
+
+default_win :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=%SWIG_ROOT_DIR%/bin/swig.exe -DCMAKE_CXX_COMPILER_ARCHITECTURE_ID=x64 -DBOOST_ROOT=%BOOST_ROOT_DIR% -DBOOST_DEBUG=ON -DBoost_ADDITIONAL_VERSIONS=\"%BOOST_VERSION% %BOOST_VERSION_MajorMinor%\" -DBOOST_INCLUDEDIR=%Boost_INCLUDE_DIR% -DBOOST_LIBRARYDIR=%BOOST_LIBRARY_DIR%b -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH",
+              "graphviz",
+              "psutil",
+              "CAS"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP", "lapack", "openblas"]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+}
+
+default_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "sphinx_rtd_theme",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP"]
+}
+
+default_32BIT_IDS :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=OFF"
+}
+
+default_FD44 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+default_UB26_04 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+default_FD42 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+default_FD40 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+default_CO10 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+default_DB13 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+
+version_V10_0_0 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON"
+}
+
+version_V10_0_0_DB13 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V10_0_0_FD42 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+version_V10_0_0_CO10 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V10_0_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP"]
+}
+
+version_V9_16_0 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON"
+}
+
+version_V9_16_0_UB26_04 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+version_V9_16_0_DB13 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_16_0_FD40 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_16_0_FD42 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+version_V9_16_0_FD44 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+version_V9_16_0_CO10 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_16_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP", "lapack", "openblas"]
+}
+
+version_V9_16_0_win :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=%SWIG_ROOT_DIR%/bin/swig.exe -DCMAKE_CXX_COMPILER_ARCHITECTURE_ID=x64 -DBOOST_ROOT=%BOOST_ROOT_DIR% -DBOOST_DEBUG=ON -DBoost_ADDITIONAL_VERSIONS=\"%BOOST_VERSION% %BOOST_VERSION_MajorMinor%\" -DBOOST_INCLUDEDIR=%Boost_INCLUDE_DIR% -DBOOST_LIBRARYDIR=%BOOST_LIBRARY_DIR%b -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH",
+              "graphviz",
+              "psutil",
+              "CAS"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP", "lapack", "openblas"]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+}
+
+version_V9_15_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+    opt_depend : ["SALOMEBOOTSTRAP"]
+}
+
+version_V9_15_0_DB13 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_15_0_FD42 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-FD42-V9_15_0-calcium.patch']
+}
+
+version_V9_15_0_FD40 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_15_0_CO10 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+    patches : ['KERNEL-CO10-V9_15_0-calcium.patch']
+}
+
+version_V9_14_0_FD40:
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=\"-Wno-error=implicit-function-declaration\""
+}
+
+version_V9_13_0_UB24_04 :
+{
+    patches: ['KERNEL-UB24.04-V9_13_0_configparser.patch']
+}
+
+version_V9_10_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+}
+
+version_V9_9_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_64BIT_IDS=ON "
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "cppunit",
+              "openmpi",
+              "LIBBATCH",
+              "psutil"
+              ]
+}
+
+version_V9_2_0_CO8 :
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON "
+    depend : ["Python",
+              "boost",
+              "cppunit",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH"
+              ]
+  patches: ['SPNS-32926-KERNEL-V9_2_0.FindXDR.patch']
+}
+
+version_V8_5_0_to_V9_6_0:
+{
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON "
+    depend : ["Python",
+              "boost",
+              "cppunit",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH"
+              ]
+}
+
+version_7_8_0_to_8_4_0 :
+{
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "LIBBATCH"
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig"
+}
+
+
+# this section is equivalent with version_7_8_0_to_8_4_0, without LIBBATCH
+ALAMOS_SALOME_9 :
+{
+    name : "KERNEL"
+    build_source : "cmake"
+    cmake_options : "-DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/kernel.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "kernel.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/kernel.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : ["Python",
+              "boost",
+              "cppunit",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz"
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        has_unit_tests
+    }
+}
+
+ALAMOS_SALOME_9_win :
+{
+    name : "KERNEL"
+    build_source : "cmake"
+    cmake_options : " -DSWIG_EXECUTABLE=%SWIG_ROOT_DIR%/bin/swig.exe"
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "graphviz",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "pthreads"
+            ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/kernel.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "kernel.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/kernel.git"
+      }
+    }
+    environ :
+    {
+    }
+}
+
+version_ALAMOS_SALOME_9_10_0_win :
+{
+    name : "KERNEL"
+    build_source : "cmake"
+    cmake_options : " -DSWIG_EXECUTABLE=%SWIG_ROOT_DIR%/bin/swig.exe"
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "graphviz",
+              "libxml2",
+              "Sphinx",
+              "sphinxintl",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz",
+              "pthreads"
+            ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    get_source : "git"
+    git_info:
+    {
+        repo : $PROJECTS.projects.salome.git_info.default_git_server + "modules/kernel.git"
+        repo_dev : $PROJECTS.projects.salome.git_info.default_git_server_dev + "kernel.git"
+    }
+    environ :
+    {
+    }
+    patches: ['KERNEL-9.10.0-visual-2019.patch']
+}
+
+# this section is equivalent with version_7_8_0_to_8_4_0, without LIBBATCH
+ALAMOS :
+{
+    name : "KERNEL"
+    build_source : "cmake"
+    cmake_options : "-DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/kernel.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "kernel.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/kernel.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "lapack",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "Jinja2",
+              "setuptools",
+              "Pygments",
+              "pytz"
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        has_unit_tests
+    }
+}
+
+version_V6_6_0 :
+{
+    name : "KERNEL"
+    build_source : "autotools"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/kernel.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "kernel.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/kernel.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : ["Python",
+              "boost",
+              "numpy",
+              "hdf5",
+              "omniORB",
+              "omniORBpy",
+              "docutils",
+              "libxml2",
+              "Sphinx",
+              "Jinja2",
+              "setuptools",
+              "Pygments"
+              ]
+    opt_depend : ["LIBBATCH"]
+    build_depend : ["swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        has_unit_tests
+    }
+}

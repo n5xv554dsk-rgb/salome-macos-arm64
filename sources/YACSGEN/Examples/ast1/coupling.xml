@@ -1,0 +1,168 @@
+<proc>
+
+<container name="A">
+  <property name="workingdir" value="diro1"/>
+</container>
+
+<container name="B">
+</container>
+
+<datanode name="datain">
+  <parameter name="f1" type="double">
+    <value><double>23</double> </value>
+  </parameter>
+</datanode>
+
+<service name="node1" >
+  <component>caster</component>
+  <method>s1</method>
+  <load container="A"/>
+  <inport name="jdc" type="string"/>
+  <inport name="argv" type="string"/>
+  <inport name="a" type="double"/>
+  <inport name="b" type="int"/>
+  <inport name="c" type="string"/>
+  <outport name="fort:8" type="file"/>
+  <outport name="d" type="double"/>
+  <instream name="aa" type="CALCIUM_double"/>
+  <instream name="ab" type="CALCIUM_double"/>
+  <instream name="ac" type="CALCIUM_integer"/>
+  <instream name="ad" type="CALCIUM_real"/>
+  <instream name="ae" type="CALCIUM_string"/>
+  <instream name="af" type="CALCIUM_complex"/>
+  <instream name="ag" type="CALCIUM_logical"/>
+  <outstream name="ba" type="CALCIUM_double"/>
+  <outstream name="bb" type="CALCIUM_double"/>
+</service>
+
+<service name="node2" >
+  <component>cfort</component>
+  <method>s1</method>
+  <load container="B"/>
+  <inport name="a" type="double"/>
+  <inport name="b" type="int"/>
+  <inport name="c" type="string"/>
+  <outport name="d" type="double"/>
+  <outport name="e" type="int"/>
+  <outport name="f" type="string"/>
+  <instream name="a" type="CALCIUM_double"/>
+  <instream name="b" type="CALCIUM_double"/>
+  <outstream name="ba" type="CALCIUM_double"/>
+  <outstream name="bb" type="CALCIUM_double"/>
+  <outstream name="bc" type="CALCIUM_integer"/>
+  <outstream name="bd" type="CALCIUM_real"/>
+  <outstream name="be" type="CALCIUM_string"/>
+  <outstream name="bf" type="CALCIUM_complex"/>
+  <outstream name="bg" type="CALCIUM_logical"/>
+</service>
+
+<inline name="node98" >
+  <script>
+    <code>print "dans python node:",p1</code>
+  </script>
+  <inport name="p1" type="double"/>
+</inline>
+
+<inline name="ljdc" >
+  <script>
+    <code>f=open(comm)</code>
+    <code>jdc=f.read()</code>
+    <code>f.close()</code>
+  </script>
+  <inport name="comm" type="string"/>
+  <outport name="jdc" type="string"/>
+</inline>
+
+<outnode name="dataout" >
+  <parameter name="f1" type="file" ref="monfichier"/>
+</outnode>
+
+<!--datalinks -->
+<stream>
+<fromnode>node1</fromnode><fromport>ba</fromport>
+<tonode>node2</tonode><toport>a</toport>
+</stream>
+<stream>
+<fromnode>node1</fromnode><fromport>bb</fromport>
+<tonode>node2</tonode><toport>b</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>ba</fromport>
+<tonode>node1</tonode><toport>aa</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>bb</fromport>
+<tonode>node1</tonode><toport>ab</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>bc</fromport>
+<tonode>node1</tonode><toport>ac</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>bd</fromport>
+<tonode>node1</tonode><toport>ad</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>be</fromport>
+<tonode>node1</tonode><toport>ae</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>bf</fromport>
+<tonode>node1</tonode><toport>af</toport>
+</stream>
+<stream>
+<fromnode>node2</fromnode><fromport>bg</fromport>
+<tonode>node1</tonode><toport>ag</toport>
+</stream>
+
+<datalink>
+   <fromnode>node1</fromnode><fromport>fort:8</fromport>
+   <tonode>dataout</tonode> <toport>f1</toport>
+</datalink>
+<datalink>
+   <fromnode>node1</fromnode><fromport>d</fromport>
+   <tonode>node98</tonode> <toport>p1</toport>
+</datalink>
+<datalink>
+   <fromnode>datain</fromnode><fromport>f1</fromport>
+   <tonode>node2</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>ljdc</fromnode><fromport>jdc</fromport>
+   <tonode>node1</tonode> <toport>jdc</toport>
+</datalink>
+
+<parameter>
+  <tonode>node1</tonode> <toport>a</toport>
+  <value><double>23</double> </value>
+</parameter>
+<parameter>
+  <tonode>node1</tonode> <toport>b</toport>
+  <value><int>23</int> </value>
+</parameter>
+<parameter>
+  <tonode>node1</tonode> <toport>c</toport>
+  <value><string>hello</string> </value>
+</parameter>
+
+<parameter>
+  <tonode>node2</tonode> <toport>b</toport>
+  <value><int>23</int> </value>
+</parameter>
+<parameter>
+  <tonode>node2</tonode> <toport>c</toport>
+  <value><string>hello</string> </value>
+</parameter>
+
+<parameter>
+  <tonode>ljdc</tonode> <toport>comm</toport>
+  <value><string>f.comm</string> </value>
+</parameter>
+
+<parameter>
+  <tonode>node1</tonode> <toport>argv</toport>
+  <value><string>-memjeveux 4 </string> </value>
+</parameter>
+
+</proc>
+

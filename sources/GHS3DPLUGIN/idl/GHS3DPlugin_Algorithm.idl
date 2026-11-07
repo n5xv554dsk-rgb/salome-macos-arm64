@@ -1,0 +1,328 @@
+// Copyright (C) 2004-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+//  File   : GHS3D_Algorithm.idl
+//  Author : Julia DOROVSKIKH
+//
+#ifndef _GHS3D_Algorithm_IDL_
+#define _GHS3D_Algorithm_IDL_
+
+#include "SALOME_Exception.idl"
+#include "SMESH_Hypothesis.idl"
+#include "SMESH_Mesh.idl"
+
+/*!
+ * GHS3DPlugin: interfaces to GHS3D related hypotheses and algorithms
+ */
+module GHS3DPlugin
+{
+  typedef sequence<string> string_array;
+
+  typedef sequence<double,3> TCoords;
+  struct GHS3DEnforcedVertex {
+    string name;
+    string geomEntry;
+    boolean isCompound;
+    TCoords coords;
+    string groupName;
+    double size;
+  };
+  
+  typedef sequence<GHS3DEnforcedVertex> GHS3DEnforcedVertexList;
+
+  struct GHS3DEnforcedMesh {
+    string name;
+    string entry;
+    SMESH::ElementType elementType;
+    string groupName;
+  };
+  
+  typedef sequence<GHS3DEnforcedMesh> GHS3DEnforcedMeshList;
+
+  /*!
+   * GHS3DPlugin_GHS3D: interface of "MG-Tetra" algorithm
+   */
+  interface GHS3DPlugin_GHS3D : SMESH::SMESH_3D_Algo
+  {
+    SMESH::SMESH_Mesh importGMFMesh(in string aGMFFileName);
+  };
+
+  /*!
+   * Parameters of "MG-Tetra" algorithm
+   */
+  interface GHS3DPlugin_Hypothesis : SMESH::SMESH_Hypothesis
+  {
+    /*!
+     * To mesh "holes" in a solid or not. Default is to mesh.
+     */
+    void SetToMeshHoles(in boolean toMesh);
+    boolean GetToMeshHoles();
+    /*!
+     *Set lower boundary of mesh element size
+     */
+    void SetMinSize(in double theMinSize);
+    double GetMinSize();
+    /*!
+     *Set upper boundary of mesh element size
+     */
+    void SetMaxSize(in double theMaxSize);
+    double GetMaxSize();
+    /*!
+     *  Activate/deactivate volume proximity computation
+     */
+    void SetVolumeProximity( in boolean toUse );
+    boolean GetVolumeProximity();
+    /*!
+     * Set number of surface element layers to be generated due to volume proximity
+     */
+    void SetNbVolumeProximityLayers( in short nbLayers );
+    short GetNbVolumeProximityLayers();
+    /*!
+     * To make groups of volumes of different domains when mesh is generated from skin.
+     * Default is to make groups.
+     * This option works only (1) for the mesh w/o shape and (2) if GetToMeshHoles() == true
+     */
+    void SetToMakeGroupsOfDomains(in boolean toMakeGroups);
+    boolean GetToMakeGroupsOfDomains();
+    /*!
+     * Maximal size of memory to be used by the algorithm (in Megabytes).
+     * Negative value means not to use this option
+     */
+    void SetMaximumMemory(in float MB) raises (SALOME_CMOD::SALOME_Exception);
+    float GetMaximumMemory();
+    /*!
+     * Initial size of memory to be used by the algorithm (in Megabytes) in
+     * automatic memory adjustment mode. Default is zero.
+     * Negative value means not to use this option
+     */
+    void SetInitialMemory(in float MB) raises (SALOME_CMOD::SALOME_Exception);
+    float GetInitialMemory();
+    /*!
+     * Optimization level: 0-none, 1-light, 2-medium, 3-strong. Default is medium
+     */
+    void SetOptimizationLevel(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetOptimizationLevel();
+    /*!
+     * Algorithm selection: 0-MGTetra HPC, 1-MGTetra
+     */
+    void SetAlgorithm(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetAlgorithm();
+    /*!
+     * Set use number of threads
+     */
+    void SetUseNumOfThreads(in boolean setThread) raises (SALOME_CMOD::SALOME_Exception);
+    boolean GetUseNumOfThreads();
+    /*!
+     * Set number of threads to use
+     */
+    void SetNumOfThreads(in short numThreads);
+    short GetNumOfThreads();
+     /*!
+     * PThreadMode defined for MGTetra
+     */
+    void SetPthreadMode(in short pThreadMode) raises (SALOME_CMOD::SALOME_Exception);
+    short GetPthreadMode();
+     /*!
+     * ParallelMode defined for MGTetra HPC
+     */
+    void SetParallelMode(in short parallelMode) raises (SALOME_CMOD::SALOME_Exception);
+    short GetParallelMode();
+    /*!
+     * Path to working directory
+     */
+    void SetWorkingDirectory(in string path) raises (SALOME_CMOD::SALOME_Exception);
+    string GetWorkingDirectory();
+    /*!
+     * To keep working files or remove them. Log file remains in case of errors anyway.
+     */
+    void SetKeepFiles(in boolean toKeep);
+    boolean GetKeepFiles();
+    /*!
+     * Verbose level [0-10]
+     *  0 - no standard output,
+     *  2 - prints the data, quality statistics of the skin and final meshes and
+     *     indicates when the final mesh is being saved. In addition the software
+     *     gives indication regarding the CPU time.
+     * 10 - same as 2 plus the main steps in the computation, quality statistics
+     *     histogram of the skin mesh, quality statistics histogram together with
+     *     the characteristics of the final mesh.
+     */
+    void SetVerboseLevel(in short level);
+    short GetVerboseLevel();
+    /*!
+     * To create new nodes
+     */
+    void SetToCreateNewNodes(in boolean toCreate);
+    boolean GetToCreateNewNodes();
+    /*!
+     * To use boundary recovery version which tries to create mesh on a very poor
+     * quality surface mesh
+     */
+    void SetToUseBoundaryRecoveryVersion(in boolean toUse);
+    boolean GetToUseBoundaryRecoveryVersion();
+    /*!
+     * Applies finite-element correction by replacing overconstrained elements where
+     * it is possible. The process is cutting first the overconstrained edges and
+     * second the overconstrained facets. This insure that no edges have two boundary
+     * vertices and that no facets have three boundary vertices.
+     */
+    void SetFEMCorrection(in boolean toUseFem);
+    boolean GetFEMCorrection();
+    /*!
+     * To removes initial central point.
+     */
+    void SetToRemoveCentralPoint(in boolean toRemove);
+    boolean GetToRemoveCentralPoint();
+    /*!
+     * To define the volumic gradation
+     */
+    void SetGradation(in double gradation);
+    double GetGradation();
+    /*!
+     * Print log in standard output
+     */
+    void SetStandardOutputLog(in boolean logInStandardOutput);
+    boolean GetStandardOutputLog();
+    /*!
+    * Remove log file on success
+    */
+    void SetRemoveLogOnSuccess(in boolean removeLogOnSuccess);
+    boolean GetRemoveLogOnSuccess();
+    /*!
+     * Set advanced option value
+     */
+    void SetOptionValue(in string optionName,
+                        in string optionValue) raises (SALOME_CMOD::SALOME_Exception);
+    string GetOptionValue(in string optionName) raises (SALOME_CMOD::SALOME_Exception);
+    void UnsetOption(in string optionName);
+    /*!
+     * Adds custom advanced option and its value
+     */
+    void SetAdvancedOption(in string optionsAndValues) // in a form "option_1 v1 option_2 v2'"
+      raises (SALOME_CMOD::SALOME_Exception);
+    string GetAdvancedOption();
+    void AddOption(in string optionName, in string optionValue);
+    string GetOption(in string optionName);
+    void SetTextOption(in string option); // obsolete
+    string GetTextOption(); // obsolete
+    /*!
+     * Return array of strings each of which is option name concatenated
+     * with option value devided by semicolon - "option_name:option_value:option_type".
+     * Option value is empty if an option is not set.
+     * option_type: 1 if user-define, 0 if default
+     * Note: the method is mostly for interaction with GUI.
+     */
+    string_array GetOptionValues();
+    string_array GetAdvancedOptionValues();
+    /*!
+     * Set option values each in the form "option_name[:option_value][:option_type]".
+     * Note: the method is mostly for interaction with GUI.
+     */
+    void SetOptionValues(in string_array options) raises (SALOME_CMOD::SALOME_Exception);
+    void SetAdvancedOptionValues(in string_array options);
+
+    /*!
+     * To set an enforced vertex
+     */
+    boolean SetEnforcedVertex(in double x, in double y, in double z, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamed(in double x, in double y, in double z, in double size, in string vertexName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexWithGroup(in double x, in double y, in double z, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamedWithGroup(in double x, in double y, in double z, in double size, in string vertexName, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeom(in GEOM::GEOM_Object theVertex, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeomWithGroup(in GEOM::GEOM_Object theVertex, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    double GetEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    double GetEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    GHS3DEnforcedVertexList GetEnforcedVertices();
+    void ClearEnforcedVertices();
+   /*!
+    * Set/get/unset an enforced vertex (private method for GUI)
+    */
+    boolean p_SetEnforcedVertex(in double size, in double x, in double y, in double z,
+                             in string theVertexName, in string theVertexEntry, in string groupName,
+                             in boolean isCompound) raises (SALOME_CMOD::SALOME_Exception);
+    
+    boolean SetEnforcedMesh(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedMeshWithGroup(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    
+    /* OBSOLETE FUNCTIONS */
+    boolean SetEnforcedMeshSize(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedMeshSizeWithGroup(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    /* OBSOLETE FUNCTIONS */
+    
+    GHS3DEnforcedMeshList GetEnforcedMeshes();
+    void ClearEnforcedMeshes();
+
+   /*!
+    * Set/get/unset an enforced vertex (private method for GUI)
+    */
+    boolean p_SetEnforcedMesh(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in string name, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+
+    // GUI methods
+    double GetMaxSizeDefault();
+    double GetMinSizeDefault();
+    void SetMinMaxSizeDefault( in double theMinSize, in double theMaxSize );
+  };
+
+  /*!
+   * GHS3DPlugin_Optimizer: interface of "MG-Tetra Optimization" algorithm
+   */
+  interface GHS3DPlugin_Optimizer : SMESH::SMESH_3D_Algo
+  {
+  };
+
+  enum PThreadsMode { SAFE, AGGRESSIVE, NONE };
+  enum Mode { NO, YES, ONLY };
+
+  /*!
+   * Parameters of "MG-Tetra Optimization" algorithm
+   *
+   * params inherited from GHS3DPlugin_Hypothesis:
+   * - create new nodes
+   * - optimization level
+   * - init and max memory
+   * - work dir
+   * - verbosity
+   * - log to file
+   * - keep work files
+   * - remove log file
+   * - advanced options
+   */
+  interface GHS3DPlugin_OptimizerHypothesis: GHS3DPlugin_Hypothesis
+  {
+    void SetOptimization( in Mode optMode );
+    Mode GetOptimization();
+
+    void SetSplitOverConstrained( in Mode ovcMode );
+    Mode GetSplitOverConstrained();
+
+    void SetSmoothOffSlivers( in boolean toSmooth );
+    boolean GetSmoothOffSlivers();
+
+    void SetPThreadsMode( in PThreadsMode mode );
+    PThreadsMode GetPThreadsMode();
+
+    void SetMaximalNumberOfThreads( in short nb );
+    short GetMaximalNumberOfThreads();
+  };
+
+};
+
+#endif

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="newSchema_1">
+   <property name="DefaultStudyID" value="1"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <type name="double" kind="double"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <sequence name="intvec" content="int"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="stringvec" content="string"/>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="claui2c6"/>
+   </container>
+   <container name="container3">
+   </container>
+   <service name="s20">
+      <component>caster</component>
+      <load container="container3"/>
+      <method>s2</method>
+      <inport name="jdc" type="string"/>
+      <inport name="a" type="double"/>
+      <outport name="d" type="double"/>
+   </service>
+   <inline name="PyScript1">
+      <script><code><![CDATA[o2="""DEBUT(PAR_LOT="NON")
+print a
+d=2*a
+"""
+o4="""print a
+d=2*a
+"""
+]]></code></script>
+      <outport name="o2" type="string"/>
+      <outport name="o4" type="string"/>
+   </inline>
+   <service name="s200">
+      <node>s20</node>
+      <method>s2</method>
+      <inport name="jdc" type="string"/>
+      <inport name="a" type="double"/>
+      <outport name="d" type="double"/>
+   </service>
+   <control> <fromnode>s20</fromnode> <tonode>s200</tonode> </control>
+   <control> <fromnode>PyScript1</fromnode> <tonode>s20</tonode> </control>
+   <control> <fromnode>PyScript1</fromnode> <tonode>s200</tonode> </control>
+   <datalink control="false">
+      <fromnode>s20</fromnode> <fromport>d</fromport>
+      <tonode>s200</tonode> <toport>a</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>PyScript1</fromnode> <fromport>o2</fromport>
+      <tonode>s20</tonode> <toport>jdc</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>PyScript1</fromnode> <fromport>o4</fromport>
+      <tonode>s200</tonode> <toport>jdc</toport>
+   </datalink>
+   <parameter>
+      <tonode>s20</tonode><toport>a</toport>
+      <value><double>5.2</double></value>
+   </parameter>
+   <parameter>
+      <tonode>s200</tonode><toport>a</toport>
+      <value><double>5.2</double></value>
+   </parameter>
+   <presentation name="PyScript1" x="24" y="64" width="158" height="90" expanded="1" expx="24" expy="64" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="s20" x="288.5" y="34" width="158" height="90" expanded="1" expx="288.5" expy="34" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="s200" x="508" y="40" width="158" height="90" expanded="1" expx="508" expy="40" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="670" height="158" expanded="1" expx="0" expy="0" expWidth="670" expHeight="158" shownState="0"/>
+</proc>

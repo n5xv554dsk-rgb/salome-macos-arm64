@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="newSchema_1">
+   <property name="executor" value="workloadmanager"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <type name="double" kind="double"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <sequence name="intvec" content="int"/>
+   <struct name="stringpair">
+      <member name="name" type="string"/>
+      <member name="value" type="string"/>
+   </struct>
+   <sequence name="propvec" content="stringpair"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="seqboolvec" content="boolvec"/>
+   <sequence name="seqdblevec" content="dblevec"/>
+   <sequence name="seqintvec" content="intvec"/>
+   <sequence name="seqpyobj" content="pyobj"/>
+   <sequence name="stringvec" content="string"/>
+   <sequence name="seqstringvec" content="stringvec"/>
+   <container name="DefaultContainer">
+      <property name="container_kind" value="Salome"/>
+      <property name="attached_on_cloning" value="0"/>
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="localhost"/>
+   </container>
+   <container name="container0">
+      <property name="container_kind" value="Salome"/>
+      <property name="attached_on_cloning" value="0"/>
+      <property name="nb_parallel_procs" value="1"/>
+      <property name="type" value="multi"/>
+   </container>
+   <optimizer name="OptimizerLoop0" nbranch="4" loopWeight="-1" lib="plugin.py" entry="myalgosync">
+      <remote name="Solver" elementaryWeight="-1">
+         <script><code><![CDATA[import pickle
+import traceback
+import importlib
+inputvals=pickle.loads(i0.encode())
+idefixstudy=importlib.import_module(studymodule)
+error=None
+result=None
+try:
+  result=idefixstudy._exec(**inputvals)
+except Exception as e:
+  error=str(e)
+  if not error :
+    error = "Exception " + repr(e)
+  traceback.print_exc()
+o0=pickle.dumps((error, result), protocol=0).decode()
+]]></code></script>
+         <load container="container0"/>
+         <inport name="i0" type="string"/>
+         <inport name="studymodule" type="string"/>
+         <outport name="o0" type="string"/>
+      </remote>
+   </optimizer>
+   <inline name="Initialisation">
+      <script><code><![CDATA[import json
+
+with open("idefixconfig.json", "r") as f:
+  config = json.load(f)
+nbbranches=config["nbbranches"]
+studymodule=config["studymodule"]
+
+prescript = None
+try:
+  with open("idefix_prescript.py") as f:
+    prescript = f.read()
+except FileNotFoundError:
+   pass
+if not prescript is None:
+  exec(prescript)
+]]></code></script>
+      <load container="DefaultContainer"/>
+      <outport name="nbbranches" type="int"/>
+      <outport name="studymodule" type="string"/>
+   </inline>
+   <control> <fromnode>Initialisation</fromnode> <tonode>OptimizerLoop0</tonode> </control>
+   <datalink control="false">
+      <fromnode>OptimizerLoop0</fromnode> <fromport>evalSamples</fromport>
+      <tonode>OptimizerLoop0.Solver</tonode> <toport>i0</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>Initialisation</fromnode> <fromport>nbbranches</fromport>
+      <tonode>OptimizerLoop0</tonode> <toport>nbBranches</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>Initialisation</fromnode> <fromport>studymodule</fromport>
+      <tonode>OptimizerLoop0.Solver</tonode> <toport>studymodule</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>OptimizerLoop0.Solver</fromnode> <fromport>o0</fromport>
+      <tonode>OptimizerLoop0</tonode> <toport>evalResults</toport>
+   </datalink>
+   <parameter>
+      <tonode>OptimizerLoop0</tonode><toport>nbBranches</toport>
+      <value><int>4</int></value>
+   </parameter>
+   <presentation name="OptimizerLoop0" x="180.5" y="34.5" width="170" height="214" expanded="1" expx="180.5" expy="34.5" expWidth="170" expHeight="214" shownState="0"/>
+   <presentation name="OptimizerLoop0.Solver" x="8" y="120" width="158" height="90" expanded="1" expx="8" expy="120" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="Initialisation" x="14" y="34" width="158" height="90" expanded="1" expx="14" expy="34" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="354.5" height="252.5" expanded="1" expx="0" expy="0" expWidth="354.5" expHeight="252.5" shownState="0"/>
+</proc>

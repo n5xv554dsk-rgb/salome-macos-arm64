@@ -1,0 +1,55 @@
+#!/bin/sh
+# Copyright (C) 2009-2026  EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+ROOT=/local/cchris/Salome/YACSGEN/V6/YACSGEN/Examples/ast2
+
+cat > temp.comm << END
+END
+
+cat > temp.export << END
+P actions make_etude
+P version STA10.3
+P nomjob salome
+P ncpus 1
+A memjeveux 4.000000
+P mem_aster 100
+A tpmax 60
+P memjob 32768
+P mpi_nbcpu 1
+P mpi_nbnoeud 1
+P tpsjob 1
+
+P mode batch
+
+P soumbtc oui
+P consbtc oui
+F conf $ROOT/install/share/salome/resources/astmod/caster_config.txt D 0
+F comm $PWD/temp.comm D 1
+F exec $ROOT/myaster/aster.exe D 0
+R cmde $ROOT/myaster/commande D 0
+F mess $PWD/messages R 6
+F resu $PWD/resu R 8
+F erre $PWD/erre R 9
+END
+
+/local/cchris/Aster/V10.3/aster/bin/as_run temp.export
+
+sleep 5
+echo "Fin du script"

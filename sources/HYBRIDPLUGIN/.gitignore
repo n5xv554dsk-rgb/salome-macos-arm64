@@ -1,0 +1,23 @@
+# Compiled source
+#################
+*.pyc
+*.pyo
+
+# Edition bak
+#################
+*~
+*.bak
+*.old
+*_old
+
+.nfs*
+
+# AUTOTOOLS
+#################
+Makefile.in
+aclocal.m4
+adm_local/unix/config_files/l*m4
+adm_local/unix/config_files/ltmain.sh
+autom4te.cache
+configure
+

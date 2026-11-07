@@ -1,0 +1,37 @@
+default :
+{
+    name : "EFICAS_TOOLS"
+    build_source : "cmake"
+    cmake_options : "-DPYTHON_EXECUTABLE=${PYTHONBIN}  -DWITH_TELEMAC_CATA=ON  -DBUILD_DOC=ON"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/eficas_tools.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "eficas_tools.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/eficas_tools.git"
+      }
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['GUI', 'Sphinx']
+    build_depend : ["cmake"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties:
+    {
+        incremental : "yes"
+        is_SALOME_product: "yes"
+    }
+}
+
+default_win :
+{
+    build_source : "cmake"
+    depend : ['GUI', 'Sphinx', 'zlib']
+    cmake_options : ' -DPYTHON_EXECUTABLE=%PYTHONBIN%  -DWITH_TELEMAC_CATA=ON -DSALOME_GUI_BUILD_WITH_QT5:BOOL=ON -DBUILD_DOC=ON -DPYTHON_ROOT_DIR=%PYTHON_ROOT_DIR%   -DPYTHON_INCLUDE_PATH:STRING=%PYTHON_ROOT_DIR%/include -DPYTHON_LIBRARY=%PYTHON_ROOT_DIR%/libs/python%PYTHON_VERSION:.=%.lib -DPYUIC5=%PYUIC5%'
+}

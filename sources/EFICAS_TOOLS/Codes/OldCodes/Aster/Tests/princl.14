@@ -1,0 +1,11 @@
+
+mmo=AFFE_MODELE(MAILLAGE=xx,
+                AFFE=_F(TOUT='OUI',
+                        PHENOMENE='MECANIQUE',
+                        MODELISATION='3D',),);
+
+MACRO_MATR_ASSE(MODELE=mmo,
+                NUME_DDL=CO('nume'),
+                MATR_ASSE=_F(MATRICE=CO('mmb'),
+                             OPTION='RIGI_MECA',),);
+

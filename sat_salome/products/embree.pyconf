@@ -1,0 +1,90 @@
+default :
+{
+    name : "embree"
+    build_source : "cmake"
+    cmake_options : " -DEMBREE_ISPC_SUPPORT=ON -DEMBREE_TUTORIALS=OFF -DCMAKE_INSTALL_LIBDIR=lib"
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['ispc','tbb']
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+default_win :
+{
+   cmake_options : '  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DEMBREE_ISPC_SUPPORT=ON -DEMBREE_TUTORIALS=OFF -DEMBREE_TASKING_SYSTEM=TBB -DTBB_ROOT=%TBB_DIR% '
+   depend : ['ispc','tbb']
+   properties :
+   {
+      incremental : "yes"
+      single_install_dir: "yes"
+   }
+}
+
+version_4_4_0 :
+{
+  archive_info : {archive_name : "embree-4.4.0.tar.gz"}
+}
+
+
+version_3_13_5 :
+{
+    build_source : "script"
+    compil_script :  "embree-3.13.5" + $VARS.scriptExtension
+    archive_info : {archive_name : "embree-3.13.5-x86_64.tar.gz"}
+    patches : []
+    depend : []
+}
+
+version_3_13_1_FD44 :
+{
+  patches : ['embree-3.13.1-gcc15.patch']
+}
+
+version_3_13_1_UB26_04 :
+{
+  patches : ['embree-3.13.1-gcc15.patch']
+}
+
+version_3_13_1_FD42 :
+{
+  patches : ['embree-3.13.1-gcc15.patch']
+}
+
+version_3_12_2_FD42 :
+{
+  patches : ['embree-3.12.2-gcc15.patch']
+}
+
+version_3_3_0_CO6 :
+{
+  patches : ['embree-3.5.2-centos6.patch']
+}
+
+version_3_5_2_CO6 :
+{
+  patches : ['embree-3.5.2-centos6.patch']
+}
+
+version_3_3_0_DB10 :
+{
+  depend: ['ispc']
+}
+
+version_3_3_0_UB18_0_4 :
+{
+  depend: ['ispc']
+}
+
+version_3_3_0_UB16_0_4 :
+{
+  depend: ['ispc']
+}

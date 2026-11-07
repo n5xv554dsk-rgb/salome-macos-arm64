@@ -1,0 +1,5 @@
+Le paquet libsaxonb-java doit être installé.
+
+tar Jxvf profiles_cocagne_echantillon.tar.xz
+./generateXmlProfile4dbInDirectory profiles_cocagne_echantillon.ref
+

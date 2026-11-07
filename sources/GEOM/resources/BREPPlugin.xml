@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="BREPPlugin"
+               server-lib="BREPPluginEngine"
+               gui-lib="BREPPluginGUI">
+    <actions>
+      <action label="Import_BREP"
+              menu="FILE/IMPORT:10/IMPORTBREP"
+              status-bar="IMPORTBREP"
+	      accel="Ctrl+I">
+      </action>
+      <action label="Export_BREP"
+              menu="FILE/EXPORT:10/EXPORTBREP"
+              status-bar="EXPORTBREP"
+	      accel="Ctrl+E">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

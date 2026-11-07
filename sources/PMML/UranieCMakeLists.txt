@@ -1,0 +1,142 @@
+#-------------------------------------------------------------------------
+# Set generic module variables: LIB_NAME, MODULE_DIR, SOURCE_PATH and
+# BINARY_PATH.
+#-------------------------------------------------------------------------
+
+set(LIB_NAME pmmllib)
+
+message(STATUS "")
+message(STATUS "    >> BUILDING ${LIB_NAME} library ...")
+
+
+set(INCLUDE_DIRECTORIES ${ROOT_INCLUDE_DIR}
+                        ${LIBXML2_INCLUDE_DIR}
+                        ${ICONV_INCLUDE_DIR_WIN}
+                        ${CMAKE_CURRENT_SOURCE_DIR}
+                        )
+include_directories(${INCLUDE_DIRECTORIES})
+
+
+#-------------------------------------------------------------------------
+# Unix options of compilation for this module
+#-------------------------------------------------------------------------
+
+if(UNIX)
+    add_definitions(-g)
+endif(UNIX)
+
+if(WIN32)
+    add_definitions(-FIw32pragma.h)
+endif(WIN32)
+
+
+#-------------------------------------------------------------------------
+# Set sources variable
+#-------------------------------------------------------------------------
+
+set(PMMLLIB_SRCS
+  PMMLlib.cxx
+  )
+
+
+#-------------------------------------------------------------------------
+# Set header variable
+#-------------------------------------------------------------------------
+
+CHANGE_FILE_EXTENSION(*.cxx *.hxx PMMLLIB_HEADERS "${PMMLLIB_SRCS}")
+
+#-------------------------------------------------------------------------
+# Generates dictionaries
+#-------------------------------------------------------------------------
+
+set(PMMLLIB_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/PMMLlibLinkDef.h)
+set(PMML_ROOTMAP lib${LIB_NAME}.rootmap)
+set(PMMLLIB_ROOTMAP ${CMAKE_CURRENT_BINARY_DIR}/${PMML_ROOTMAP})
+set(PMML_PCM lib${LIB_NAME}_rdict.pcm)
+set(PMMLLIB_PCM ${CMAKE_CURRENT_BINARY_DIR}/${PMML_PCM})
+
+if (ROOT5)
+add_custom_command(OUTPUT PMMLlibDict.cxx PMMLlibDict.h
+                   COMMAND rootcint -f ${CMAKE_CURRENT_BINARY_DIR}/PMMLlibDict.cxx
+                                    -c -DWITH_LIBXML2 -DHAVE_NAMESPACES
+                                    -I${CMAKE_CURRENT_SOURCE_DIR}
+                                    -I${LIBXML2_INCLUDE_DIR}
+                                    -I${ICONV_INCLUDE_DIR_WIN}
+                                    -I${ROOT_INCLUDE_DIR}
+                                    -p ${PMMLLIB_HEADERS}
+                                    ${PMMLLIB_LINKDEF}
+                   DEPENDS ${PMMLLIB_HEADERS} ${PMMLLIB_LINKDEF} ${ROOTCINTDEP})
+else (ROOT5)
+set(PMML_LIB lib${LIB_NAME})
+
+add_custom_command(
+    OUTPUT PMMLlibDict.cxx ${PMMLLIB_ROOTMAP} ${PMML_RDICT}
+    COMMAND rootcling -f ${CMAKE_CURRENT_BINARY_DIR}/PMMLlibDict.cxx
+        -s ${PMML_LIB}
+        -rml ${PMML_LIB} -rmf ${PMMLLIB_ROOTMAP}
+        -c -DWITH_LIBXML2 -DHAVE_NAMESPACES
+        -I${CMAKE_INSTALL_PREFIX}/include -I${CMAKE_CURRENT_SOURCE_DIR} -I${LIBXML2_INCLUDE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}
+        -I${ICONV_INCLUDE_DIR_WIN} -I${ROOT_INCLUDE_DIR}
+        -p ${PMMLLIB_HEADERS}
+        ${PMMLLIB_LINKDEF}
+    DEPENDS ${PMMLLIB_HEADERS} ${PMMLLIB_LINKDEF} ${ROOTCINTDEP}
+)
+endif (ROOT5)
+
+#-------------------------------------------------------------------------
+# Generates the target "mapPMMLlib" to create this module rootmap file
+#-------------------------------------------------------------------------
+
+if(ROOT5)
+add_custom_target(map${LIB_NAME} ${rlibmap_cmd} -f
+                 -o ${PMMLLIB_ROOTMAP}
+                 -l ${LIB_NAME}
+                 -d ${LIBXML2_LIBRARIES}
+                 -c ${PMMLLIB_LINKDEF})
+
+add_dependencies(map${LIB_NAME} ${LIB_NAME})
+
+add_dependencies(map map${LIB_NAME})
+endif(ROOT5)
+
+#-------------------------------------------------------------------------
+# Create the library
+#-------------------------------------------------------------------------
+
+link_directories(${ROOT_LIBRARY_DIR})
+add_library(${LIB_NAME} SHARED ${PMMLLIB_SRCS} PMMLlibDict.cxx)
+target_link_libraries(${LIB_NAME} ${LIBXML2_LIBRARIES} ${ROOT_LIBRARIES})
+if(WIN32)
+    set_target_properties(${LIB_NAME} PROPERTIES ${ROOT_LIBRARY_PROPERTIES} LINK_FLAGS -DEF:${LIB_NAME}.def)
+    set_source_files_properties(${LIB_NAME}.def PROPERTIES GENERATED 1)
+
+    set(lib_objs ${LIB_NAME}.dir/${CMAKE_CFG_INTDIR}/*.obj)
+    add_custom_command(TARGET ${LIB_NAME} PRE_LINK
+                       COMMAND bindexplib
+                       ARGS -o ${LIB_NAME}.def lib${LIB_NAME} ${lib_objs}
+                       DEPENDS bindexplib)
+else()
+    set_target_properties(${LIB_NAME} PROPERTIES ${ROOT_LIBRARY_PROPERTIES})
+endif()
+
+
+#-------------------------------------------------------------------------
+# Install target
+#-------------------------------------------------------------------------
+
+install(TARGETS ${LIB_NAME} EXPORT ${CMAKE_PROJECT_NAME}Exports
+                            DESTINATION ${CMAKE_INSTALL_PREFIX}/${runtimedir})
+
+# Install rootmap
+install(FILES ${PMMLLIB_ROOTMAP} ${PMMLLIB_PCM} DESTINATION ${CMAKE_INSTALL_PREFIX}/${runtimedir})
+
+# Install headers
+install(FILES ${PMMLLIB_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+  PERMISSIONS OWNER_READ GROUP_READ WORLD_READ OWNER_WRITE GROUP_WRITE OWNER_EXECUTE GROUP_EXECUTE
+  )
+
+message(STATUS "    >> BUILDING ${LIB_NAME} library ... - Built")
+
+#-----------------------------------------------------------------------
+# End of the main section of the CMakeLists file
+#-----------------------------------------------------------------------

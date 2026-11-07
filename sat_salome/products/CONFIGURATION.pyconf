@@ -1,0 +1,83 @@
+default :
+{
+    name : "CONFIGURATION"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/configuration.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "configuration.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/configuration.git"
+      }
+    }
+    depend : [ ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    properties :
+    {
+        compilation : "no"
+        configure_dependency : "yes"  # the source of this module is required for the configuration of salome
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        sources_in_package : "yes"
+        incremental: "yes"
+    }
+
+    patches : []
+}
+
+default_FD44:
+{
+  patches: ['CONFIGURATION_boost_1_89.patch', 'CONFIGURATION-FD44-V9_16_0.patch']
+}
+
+default_UB26_04:
+{
+  patches: ['CONFIGURATION_scotch_7.patch', 'CONFIGURATION_boost_1_89.patch']
+}
+
+version_V9_16_0_UB26_04:
+{
+  patches: ['CONFIGURATION_scotch_7.patch', 'CONFIGURATION_boost_1_89.patch']
+}
+
+version_V9_16_0_FD44:
+{
+  patches: ['CONFIGURATION_boost_1_89.patch', 'CONFIGURATION-FD44-V9_16_0.patch']
+}
+
+version_V9_16_0_ALAMOS :
+{
+  patches: ['CONFIGURATION_V9_16_0-FindSalomeVTK.patch']
+}
+
+version_V9_15_0_FD42 :
+{
+  patches: ['CONFIGURATION-FD42-V9_15_0.patch']
+}
+
+version_V9_14_0_FD40 :
+{
+  patches: ['BOS-43712-CONFIGURATION-V9_14_0.patch']
+}
+
+version_V9_10_0_FD37 :
+{
+  patches: ['SPNS-32377-CONFIGURATION-V9_10_0.patch']
+}
+
+version_V9_9_0_FD36 :
+{
+  patches: ['SPNS-29988-CONFIGURATION-V9_9_0.patch']
+}
+
+version_V9_2_0_CO8 :
+{
+  patches: ['SPNS-32926-CONFIGURATION-V9_2_0.FindXDR.patch', 'SPNS-32926-CONFIGURATION-V9_2_0.XDATA.patch']
+}
+
+version_V9_2_0_DB10 :
+{
+  patches: ['SPNS-32926-CONFIGURATION-V9_2_0.XDATA.patch']
+}
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<ns1:Essai xmlns:ns1="http://chercheurs.edf.com/logiciels/Essai" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ns1:step_Essai typeUtilisateur="lASSD" xsi:type="ns1:T_DefinitionDsSimpDsOper">
+		<ns1:creeUserAssd typeUtilisateur="laClasseUser">aa</ns1:creeUserAssd>
+	</ns1:step_Essai>
+	<ns1:step_Essai xsi:type="ns1:T_DefinitionDsSimpDsOper">
+		<ns1:creeUserAssd>aa</ns1:creeUserAssd>
+	</ns1:step_Essai>
+</ns1:Essai>
+

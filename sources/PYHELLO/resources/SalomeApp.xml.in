@@ -1,0 +1,23 @@
+<document>
+  <section name="PYHELLO">
+    <!-- Major module parameters -->
+    <parameter name="name"            value="PyHello"/>
+    <parameter name="icon"            value="PYHELLO.png"/>
+    <parameter name="library"         value="SalomePyQtGUI"/>
+    <parameter name="documentation"   value="pyhello_help"/>
+    <parameter name="version"         value="@SALOMEPYHELLO_VERSION@"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="PYHELLO"         value="%PYHELLO_ROOT_DIR%/share/salome/resources/pyhello"/>
+  </section>
+  <section name="pyhello_help" >
+    <parameter name="User's Guide/PyHello module" value="%PYHELLO_ROOT_DIR%/share/doc/salome/gui/PYHELLO/index.html;;http://docs.salome-platform.org/latest/gui/PYHELLO/index.html"/>
+  </section>
+  <section name="windows_geometry">
+    <parameter name="PYHELLO" value="#00 #00 #00 #FF #00 #00 #00 #00 #FD #00 #00 #00 #02 #00 #00 #00 #00 #00 #00 #01 #00 #00 #00 #02 #6B #FC #02 #00 #00 #00 #01 #FB #00 #00 #00 #22 #00 #6F #00 #62 #00 #6A #00 #65 #00 #63 #00 #74 #00 #42 #00 #72 #00 #6F #00 #77 #00 #73 #00 #65 #00 #72 #00 #44 #00 #6F #00 #63 #00 #6B #01 #00 #00 #00 #59 #00 #00 #02 #6B #00 #00 #00 #53 #00 #FF #FF #FF #00 #00 #00 #03 #00 #00 #05 #40 #00 #00 #00 #53 #FC #01 #00 #00 #00 #01 #FB #00 #00 #00 #22 #00 #70 #00 #79 #00 #74 #00 #68 #00 #6F #00 #6E #00 #43 #00 #6F #00 #6E #00 #73 #00 #6F #00 #6C #00 #65 #00 #44 #00 #6F #00 #63 #00 #6B #01 #00 #00 #00 #00 #00 #00 #05 #40 #00 #00 #00 #46 #00 #FF #FF #FF #00 #00 #04 #38 #00 #00 #02 #6B #00 #00 #00 #04 #00 #00 #00 #04 #00 #00 #00 #08 #00 #00 #00 #08 #FC #00 #00 #00 #02 #00 #00 #00 #02 #00 #00 #00 #02 #00 #00 #00 #1C #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #53 #00 #74 #00 #61 #00 #6E #00 #64 #00 #61 #00 #72 #00 #64 #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #1A #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #4D #00 #6F #00 #64 #00 #75 #00 #6C #00 #65 #00 #73 #01 #00 #00 #00 #CE #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #02 #00 #00 #00 #01 #00 #00 #00 #0E #00 #50 #00 #79 #00 #48 #00 #65 #00 #6C #00 #6C #00 #6F #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00"/>
+  </section>
+  <section name="windows_visibility">
+    <parameter name="PYHELLO" value="#00 #00 #00 #00 #03 #00 #00 #00 #0E #00 #50 #00 #79 #00 #48 #00 #65 #00 #6C #00 #6C #00 #6F #01 #00 #00 #00 #1A #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #4D #00 #6F #00 #64 #00 #75 #00 #6C #00 #65 #00 #73 #01 #00 #00 #00 #1C #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #53 #00 #74 #00 #61 #00 #6E #00 #64 #00 #61 #00 #72 #00 #64 #01 #01 #00 #00 #00 #02 #00 #00 #00 #22 #00 #6F #00 #62 #00 #6A #00 #65 #00 #63 #00 #74 #00 #42 #00 #72 #00 #6F #00 #77 #00 #73 #00 #65 #00 #72 #00 #44 #00 #6F #00 #63 #00 #6B #01 #00 #00 #00 #22 #00 #70 #00 #79 #00 #74 #00 #68 #00 #6F #00 #6E #00 #43 #00 #6F #00 #6E #00 #73 #00 #6F #00 #6C #00 #65 #00 #44 #00 #6F #00 #63 #00 #6B #01"/>
+  </section>
+</document>

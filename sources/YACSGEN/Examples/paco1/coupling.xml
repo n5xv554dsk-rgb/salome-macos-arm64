@@ -1,0 +1,34 @@
+<?xml version='1.0'?>
+<proc>
+   <type name="bool" kind="bool"/>
+   <type name="double" kind="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <type name="string" kind="string"/>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="hostname" value="localhost"/>
+   </container>
+   <container name="DummyContainer">
+      <property name="nb_component_nodes" value="1"/>
+      <property name="parallelLib" value="Dummy"/>
+   </container>
+   <service name="run0">
+      <component>paco1</component>
+      <load container="DummyContainer"/>
+      <method>run</method>
+      <inport name="a" type="double"/>
+      <inport name="b" type="double"/>
+      <outport name="c" type="double"/>
+   </service>
+   <parameter>
+      <tonode>run0</tonode><toport>a</toport>
+      <value><double>5</double></value>
+   </parameter>
+   <parameter>
+      <tonode>run0</tonode><toport>b</toport>
+      <value><double>4</double></value>
+   </parameter>
+   <presentation name="run0" x="9" y="80.5" width="227.5" height="139"/>
+   <presentation name="__ROOT__" x="0" y="0" width="246" height="228.5"/>
+</proc>

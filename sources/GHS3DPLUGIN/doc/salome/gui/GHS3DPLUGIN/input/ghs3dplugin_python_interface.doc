@@ -1,0 +1,68 @@
+/*!
+
+\page ghs3dplugin_python_interface_page Python Interface
+
+\note The former name of MG-Tetra mesher is \a GHS3D and names
+of the corresponding classes and modules still include \a "GHS3D".
+
+Python package GHS3DPluginBuilder defines
+GHS3DPluginBuilder.GHS3D_Algorithm class providing access
+to the MG-Tetra meshing algorithm and its parameters.
+
+You can get an instance of this class by calling
+smeshBuilder.Mesh.Tetrahedron(algo=smeshBuilder.MG_Tetra) or 
+smeshBuilder.Mesh.Tetrahedron(algo=smeshBuilder.GHS3D). This call
+creates an algorithm (if not yet exist), assigns it to the mesh and
+returns an instance of GHS3DPluginBuilder.GHS3D_Algorithm to the caller.
+
+The class of algorithm has methods to set up meshing parameters.
+
+Below you can see examples of usage of this class for tetrahedral mesh generation.
+
+\anchor tui_ghs3d
+
+-# \ref tui_ghs3d_basic
+-# \ref tui_ghs3d_enforced_vertices
+-# \ref tui_ghs3d_enforced_meshes
+-# \ref tui_ghs3d_optimization
+
+\section tui_ghs3d_basic Construction of Mesh using MG-Tetra algorithm
+
+\anchor example_GHS3DPlugin
+<h2>Example of mesh generation with MG-Tetra algorithm:</h2>
+\tui_script{ghs3ddemo.py}
+
+
+\image html ghs3d_screenshot.png MG-Tetra mesh without hypothesis
+
+\ref tui_ghs3d "Back to top"
+
+\section tui_ghs3d_enforced_vertices Adding enforced vertices
+
+<h2>Example of enforced vertices with MG-Tetra algorithm:</h2>
+\tui_script{ghs3d_enfvert.py}
+
+
+\image html ghs3d_screenshot_enf1.png MG-Tetra mesh with enforced vertex
+\image html ghs3d_screenshot_enf2.png MG-Tetra mesh with enforced vertex from GEOM vertex
+
+\ref tui_ghs3d "Back to top"
+
+\section tui_ghs3d_enforced_meshes Adding enforced mesh
+
+<h2>Example of enforced meshes with MG-Tetra algorithm:</h2>
+\tui_script{ghs3d_enfmesh.py}
+
+\image html ghs3d_screenshot_enf3.png
+\image html ghs3d_screenshot_enf4.png
+\image html ghs3d_screenshot_enf5.png
+\image html ghs3d_screenshot_enf6.png
+
+\section tui_ghs3d_optimization Mesh optimization
+
+<h2>Example of mesh optimization with MG-Tetra Optimization:</h2>
+\tui_script{ghs3d_optimization.py}
+
+\ref tui_ghs3d "Back to top"
+
+*/

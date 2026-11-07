@@ -1,0 +1,35 @@
+default :
+{
+    name : "SALOME"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/SALOME.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "SALOME.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/SALOME.git"
+      }
+    }
+    environ :
+    {
+        _SalomeAppConfig : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "salome"
+    }
+    depend : ["KERNEL", "GUI", "Python", "Sphinx", "qt"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        is_salome_application : "yes"
+        incremental : "yes"
+    }
+    post_script: "fix_permissions.sh"
+}
+
+default_win :
+{
+    depend : ["KERNEL", "GUI", "Python", "Sphinx", "qt", "sphinxintl"]
+}

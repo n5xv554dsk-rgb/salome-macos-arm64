@@ -1,0 +1,49 @@
+
+.. _featuresPlugin:
+
+Features plug-in
+================
+
+Features plug-in provides a set of common topological operations. It implements the following features:
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 2
+
+   booleanOperations.rst
+   angularCopyFeature.rst
+   boundingBoxFeature.rst
+   chamferFeature.rst
+   checkSharedFaceFeature.rst
+   copyFeature.rst
+   defeaturingFeature.rst
+   extrusionCutFeature.rst
+   extrusionFeature.rst
+   extrusionFuseFeature.rst
+   fillet1dFeature.rst
+   filletFeature.rst
+   fuseFeatureFaces.rst
+   geometryCalculationFeature.rst
+   glueFeatureFaces.rst
+   importResultFeature.rst
+   limitToleranceFeature.rst
+   linearCopyFeature.rst
+   loftFeature.rst
+   measurementFeature.rst
+   normalToFaceFeature.rst
+   offsetFeature.rst
+   pipeFeature.rst
+   placementFeature.rst
+   pointCoordinatesFeature.rst
+   recoverFeature.rst
+   removeExtraEdgesFeature.rst
+   removeSubShapesFeature.rst
+   revolutionCutFeature.rst
+   revolutionFeature.rst
+   revolutionFuseFeature.rst
+   rotationFeature.rst
+   sewingFeature.rst
+   symmetryFeature.rst
+   thicknessFeature.rst
+   transformationFeature.rst
+   translationFeature.rst

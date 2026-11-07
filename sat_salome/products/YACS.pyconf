@@ -1,0 +1,144 @@
+default :
+{
+    name : "YACS"
+    build_source : "cmake"
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/yacs.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "yacs.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/yacs.git"
+      }
+    }
+    environ :
+    {
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "yacs"
+    }
+    depend : [
+              "KERNEL",
+              "GUI", 
+              "Python", 
+              "qt", 
+              "boost", 
+              "omniORB", 
+              "docutils",
+              "graphviz",
+              "libxml2", 
+              "Sphinx", 
+              "Jinja2", 
+              "setuptools", 
+              "Pygments", 
+              "six", 
+              "pytz", 
+              "markupsafe"
+              ]
+    opt_depend : ['pmml']
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+
+    nb_proc : 4
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+        incremental : "yes"
+    }
+    patches : []
+}
+
+default_win :
+{
+  patches : []
+}
+
+version_master_FD32:
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_master_CO9 :
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V10_0_0_CO9 :
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_16_0_CO9:
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_15_0_CO9:
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_14_0_FD32:
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_14_0_CO9 :
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_13_0_FD32:
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_13_0_CO9 :
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_V9_12_0_CO9 :
+{
+    cmake_options : " -DSALOME_YACS_USE_EMBEDDED_PMML=OFF -DQT_HELP_GENERATOR=${QT5_ROOT_DIR}/bin/qhelpgenerator -DQt5LinguistTools_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5LinguistTools"
+}
+
+version_9_2_0_to_9_8_0 :
+{
+    cmake_options : ""
+    patches : ["yacs_cea_v2.patch"]
+}
+
+# bug in cmake for multi proc compilation
+from_7_7_0_to_8_5_0 :
+{
+    cmake_options : ""
+    nb_proc : 1
+} 
+
+# autotools are used for version 6
+# do not depend upon six, pytz, markupsafe
+version_V6_6_0 :
+{
+    build_source : "autotools"
+    depend : [
+              "KERNEL",
+              "GUI", 
+              "Python", 
+              "qt", 
+              "boost", 
+              "omniORB", 
+              "docutils", 
+              "graphviz",
+              "libxml2", 
+              "Sphinx", 
+              "Jinja2", 
+              "setuptools", 
+              "Pygments"
+              ]
+    build_depend : ["swig", "doxygen", "cppunit"]
+} 

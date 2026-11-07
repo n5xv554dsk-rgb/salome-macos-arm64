@@ -1,0 +1,20 @@
+.. SHAPER documentation master file, created by
+   sphinx-quickstart on Fri Aug  3 11:29:53 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to SHAPER documentation!
+==================================
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   General/Introduction.rst
+   General/Tutorial.rst
+<insert here>
+
+.. toctree::
+   :hidden:
+
+   General/TUI_scripts.rst

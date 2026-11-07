@@ -1,0 +1,49 @@
+/*!
+
+\page tui_basic_geom_objs_page Basic Geometrical Objects
+
+\anchor tui_creation_point
+<br><h2>Creation of a Point</h2>
+\tui_script{basic_geom_objs_ex01.py}
+
+\anchor tui_creation_line
+<br><h2>Creation of a Line</h2>
+\tui_script{basic_geom_objs_ex02.py}
+
+\anchor tui_creation_circle
+<br><h2>Creation of a Circle</h2>
+\tui_script{basic_geom_objs_ex03.py}
+
+\anchor tui_creation_ellipse
+<br><h2>Creation of an Ellipse</h2>
+\tui_script{basic_geom_objs_ex04.py}
+
+\anchor tui_creation_arc
+<br><h2>Creation of an Arc</h2>
+\tui_script{basic_geom_objs_ex05.py}
+
+\anchor tui_creation_curve
+<br><h2>Creation of a Curve</h2>
+\tui_script{basic_geom_objs_ex06.py}
+
+\anchor tui_creation_vector
+<br><h2>Creation of a Vector</h2>
+\tui_script{basic_geom_objs_ex07.py}
+
+\anchor tui_creation_plane
+<br><h2>Creation of a Plane</h2>
+\tui_script{basic_geom_objs_ex08.py}
+
+\anchor tui_creation_lcs
+<br><h2>Creation of a Local Coordinate System</h2>
+\tui_script{basic_geom_objs_ex09.py}
+
+\anchor tui_creation_surface
+<br><h2>Creation of a Surface From Face</h2>
+\tui_script{basic_geom_objs_ex10.py}
+
+\anchor tui_creation_polyline
+<br><h2>Creation of 2D Polyline</h2>
+\tui_script{polyline.py}
+
+*/

@@ -1,0 +1,68 @@
+<!-- XML component catalog -->
+<begin-catalog>
+
+<!-- Path prefix information -->
+
+<path-prefix-list>
+</path-prefix-list>
+
+<type-list>
+  <objref name="SALOME_MED/DataArrayCorbaInterface" id="IDL:SALOME_MED/DataArrayCorbaInterface:1.0"/>
+  <objref name="SALOME_MED/MEDCouplingFieldDoubleCorbaInterface" id="IDL:SALOME_MED/MEDCouplingFieldDoubleCorbaInterface:1.0"/>
+  <objref name="SALOME_MED/MEDCouplingFieldTemplateCorbaInterface" id="IDL:SALOME_MED/MEDCouplingFieldTemplateCorbaInterface:1.0"/>
+  <objref name="SALOME_MED/MEDCouplingMeshCorbaInterface" id="IDL:SALOME_MED/MEDCouplingMeshCorbaInterface:1.0"/>
+  <objref name="SALOME_MED/DataArrayIntCorbaInterface" id="IDL:SALOME_MED/DataArrayIntCorbaInterface:1.0">
+      <base>SALOME_MED/DataArrayCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/DataArrayDoubleCorbaInterface" id="IDL:SALOME_MED/DataArrayDoubleCorbaInterface:1.0">
+      <base>SALOME_MED/DataArrayCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MEDCouplingUMeshCorbaInterface" id="IDL:SALOME_MED/MEDCouplingUMeshCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingMeshCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MEDCouplingExtrudedMeshCorbaInterface" id="IDL:SALOME_MED/MEDCouplingExtrudedMeshCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingMeshCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MEDCouplingCMeshCorbaInterface" id="IDL:SALOME_MED/MEDCouplingCMeshCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingMeshCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MEDCouplingCurveLinearMeshCorbaInterface" id="IDL:SALOME_MED/MEDCouplingCurveLinearMeshCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingMeshCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/ParaMEDCouplingFieldDoubleCorbaInterface" id="IDL:SALOME_MED/ParaMEDCouplingFieldDoubleCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/ParaMEDCouplingUMeshCorbaInterface" id="IDL:SALOME_MED/ParaMEDCouplingUMeshCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingUMeshCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MPIMEDCouplingFieldDoubleCorbaInterface" id="IDL:SALOME_MED/MPIMEDCouplingFieldDoubleCorbaInterface:1.0">
+      <base>SALOME_MED/ParaMEDCouplingFieldDoubleCorbaInterface</base>
+  </objref>
+  <objref name="SALOME_MED/MEDCouplingMultiFieldsCorbaInterface" id="IDL:SALOME_MED/MEDCouplingMultiFieldsCorbaInterface:1.0"/>
+  <objref name="SALOME_MED/MEDCouplingFieldOverTimeCorbaInterface" id="IDL:SALOME_MED/MEDCouplingFieldOverTimeCorbaInterface:1.0">
+      <base>SALOME_MED/MEDCouplingMultiFieldsCorbaInterface</base>
+  </objref>
+</type-list>
+
+<!-- Component list -->
+<component-list>
+
+        <component>
+                <component-name>MEDFactory</component-name>
+                <component-username>MEDCalc Factory</component-username>
+                <component-type>FIELDS</component-type>
+                <component-author>Guillaume Boulant</component-author>
+                <component-version>@SALOMEFIELDS_VERSION@</component-version>
+                <component-comment>Factory of SALOME components for MED Field operations</component-comment>
+        </component>
+
+        <component>
+            <component-name>FIELDS</component-name>
+            <component-username>Fields</component-username>
+            <component-type>FIELDS</component-type>
+            <component-version>@SALOMEFIELDS_VERSION@</component-version>
+            <component-comment>FIELDS component engine</component-comment>
+        </component>
+
+</component-list>
+</begin-catalog>

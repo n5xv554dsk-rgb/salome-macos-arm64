@@ -1,0 +1,6 @@
+#& MODIF COMMANDE  DATE 24/06/2002   AUTEUR F1BHHAJ J.ANGLES
+YACS_INIT=PROC(nom="YACS_INIT",op=181,
+                   fr="Initialisation YACS",
+                   COMPO=SIMP(statut='o',typ='I'),
+                  ) 
+

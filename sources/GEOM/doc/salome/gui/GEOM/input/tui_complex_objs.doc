@@ -1,0 +1,49 @@
+/*!
+
+\page tui_complex_objs_page Complex Objects
+
+\anchor tui_creation_prism
+<br><h2>Creation of a Prism</h2>
+\tui_script{complex_objs_ex01.py}
+
+\anchor tui_creation_revolution
+<br><h2>Creation of a Revolution</h2>
+\tui_script{complex_objs_ex02.py}
+
+\anchor tui_creation_filling
+<br><h2>Creation of a Filling</h2>
+\tui_script{complex_objs_ex03.py}
+
+\anchor tui_creation_pipe
+<br><h2>Creation of a Pipe</h2>
+\tui_script{complex_objs_ex04.py}
+
+\anchor tui_creation_pipe_with_diff_sec
+<br><h2>Creation of a PipeWithDifferentSections</h2>
+\tui_script{complex_objs_ex05.py}
+
+\anchor tui_creation_pipe_with_shell_sec
+<br><h2>Creation of a PipeWithShellSections</h2>
+\tui_script{complex_objs_ex06.py}
+
+\anchor tui_creation_pipe_without_path
+<br><h2>Creation of a PipeShellsWithoutPath</h2>
+\tui_script{complex_objs_ex07.py}
+
+\anchor tui_creation_pipe_binormal_along_vector
+<br><h2>Creation of a PipeBiNormalAlongVector</h2>
+\tui_script{complex_objs_ex08.py}
+
+\anchor tui_creation_pipe_path
+<br><h2>Creation of a Middle Path</h2>
+\tui_script{complex_objs_ex09.py}
+
+\anchor tui_creation_tangent_plane_on_face
+<br><h2>Creation of Tangent Plane On Face</h2>
+\tui_script{complex_objs_ex10.py}
+
+\anchor tui_creation_thickness
+<br><h2>Applying a Thickness to Face, Shell or Solid</h2>
+\tui_script{complex_objs_ex11.py}
+
+*/

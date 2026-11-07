@@ -1,0 +1,76 @@
+/*!
+
+\page multi_rotation_operation_page Multi Rotation
+
+\n To produce a <b>Multi Rotation</b> in the <b>Main Menu</b> select
+<b>Operations - > Transformation - > Multi Rotation</b>
+
+\n This operation creates a compound of several rotated shapes basing on the initial shape.
+
+
+In case of  <b>Simple Multi Rotation</b> the object is multiplied by rotation.
+
+\image html neo-mrot1.png
+
+The following parameters and options can be defined in this dialog:
+- <b>Result Name</b>;
+- <b> Main Object </b> to be rotated;
+- \b Vector defines the axis of rotation (DZ by default);
+- <b>Angular step</b> is the angle by which the object is rotated. By default 
+(if the checkbox is not checked), it is 2 * \a PI / \a NbTimes;
+- <b>Nb. Times</b> is the number of rotated shape copies in the resulting compound. If \a NbTimes = 1, the result contains only the
+initial shape;
+- \ref restore_presentation_parameters_page "Advanced options".
+
+\n The \b Result will be a \b GEOM_Object (compound).
+
+\n <b>TUI Commands:</b>
+\n <em>geompy.MultiRotate1DNbTimes(Shape, Axis, NbTimes)</em>
+\n <em>geompy.MultiRotate1DByStep(Shape, Axis, AngleStep, NbTimes)</em>
+
+\b <b>NB!</b> There is another way to execute a Multi-rotation
+operation, which is currently accessible only via TUI commands:
+<em>geompy.MakeMultiRotation1DNbTimes(Shape, Dir, Point, NbTimes)</em>,
+<em>geompy.MakeMultiRotation1DByStep(Shape, Dir, Point, AngleStep, NbTimes)</em>,
+which works in the same way, but the Axis is defined by direction and point.
+
+\image html multi_rotation1d1.png "The initial object"
+
+\image html multi_rotation1d2.png "The result of a simple multi-rotation"
+
+In case of  <b>Double Multi Rotation</b> the object is multiplied by rotation and additionally translated several times in each direction.
+
+\image html neo-mrot2.png
+
+The following parameters and options can be defined in this dialog:
+- <b>Result Name</b>;
+- <b> Main Object </b> to be rotated;
+- \b Vector defines the axis of rotation (DZ by default);
+- <b>Angular step</b> is the angle by which the object is rotated. By default 
+(if the checkbox is not checked), it is 2 * \a PI / \a NbTimes;
+- <b>Nb. Times</b> (\a NbTimes1) is the number of rotated shape copies in the resulting compound;
+- \b Reverse checkbox allows changing the direction of translation;
+- <b> Radial step </b> is the distance between the shape copies in the same direction. Translation direction passes through the center of gravity of the
+initial shape and its projection on the rotation axis;
+- <b>Nb. Times</b> (\a NbTimes2) is the number of shape copies in the same direction. If \a NbTimes2 = 1, the result is the same as for <b>Simple Multi Rotation</b>. If both \a NbTimes1 and \a NbTimes2 are equal to 1, the result will contain only the initial non-transformed shape;
+- \ref restore_presentation_parameters_page "Advanced options".
+
+\n <b>TUI Commands:</b>
+\n <em>geompy.MultiRotate2DNbTimes(Shape, Axis, NbTimes1, RadialStep, NbTimes2)</em>
+\n <em>geompy.MultiRotate2DByStep(Shape, Axis, AngleStep, NbTimes1, RadialStep, NbTimes2)</em>
+
+<b>NB!</b> There is another way to execute a Double Multi-rotation
+operation, which is currently accessible only via TUI commands: 
+<em>geompy.MakeMultiRotation2DNbTimes(Shape, Dir, Point, NbTimes1, RadialStep, NbTimes2)</em>,
+<em>geompy.MakeMultiRotation2DByStep(Shape, Dir, Point, AngleStep, NbTimes1, RadialStep, NbTimes2)</em>,
+which works in the same way, but the Axis is defined by direction and point.
+
+
+\image html multi_rotation2d1.png "The initial object"
+
+\image html multi_rotation2d2.png "The result of a double multi-rotation"
+
+Our <b>TUI Scripts</b> provide you with useful examples of the use of
+\ref tui_multi_rotation "Transformation Operations".
+
+*/

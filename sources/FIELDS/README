@@ -1,0 +1,107 @@
+Documentation for the MEDMEM library and related tools is given in
+$(prefix)/doc/user/html/index.html
+
+I : Major evolution of the Med Memory package between V2.2.x and V3.2.x :
+=========================================================================
+
+The Med Memory may be used as a stand alone package with only the C++ and the
+python layers (adding --without-kernel at the configure step). In this case
+there are no links with the SALOME KERNEL.
+
+In this version,
+
+- mesh defined with polygones/polyhedra mixed with usual types of cells;
+
+- the Med File drivers of the Med Memory support the V2.1 as well as the
+  V2.2 versions of the Med File layer. The requirement of the Salome platform
+  is only Med File V2.2, the V2.1 version is emberked in the Med Memory.
+
+- Using the Med file (V2.1 and V2.2) and GIBI drivers; fields laying on a
+  partial support;
+
+- Fields defined on cells mesh with multiple gauss points,
+
+may be mounted in memory and treated.
+
+With all those new functionalities, most of the Med Memory client codes
+based on previous releases of the Med Memory should work; but minor changes
+should be done for the get/set field classes methods:
+
+- the getValue() and the setValue(T *) methods take no MED_EN::medModeSwitch
+  parameter;
+- the getValueI (resp. setValueI) should be replaced by getRow(int )
+  (resp. setRow(int ,T*) if the field is in full interlacing mode (using the
+  method getInterlacingType() of the class FIELD_). If the field is stored in
+  no interlacing mode getValueIJ (resp. setValueIJ) should be replaced by
+  getColumn(int ) (resp. setColumn(int ,T*)).
+
+Intensive debugging was carried throughout the entire Med Memory C++ Layer:
+
+  - especially on the major user's C++ classes (such as MED, MESH,
+    SUPPORT and FIELD);
+
+  - the C++ drivers classes on those major classes. Especially the
+    Med File and the GIBI drivers are read/write ones. The VTK drivers
+    are only for the writing; and finally the PORFLOW drivers may only
+    be used for the MESH class in the reading mode.
+
+The Med Client layer of the Med Memory has been tested in a full
+Server/Client configuration.
+
+II : MedMemory building and installation :
+=========================================
+
+It's very simple :
+
+./configure --prefix=path_to_your_installation_directory
+make
+make install
+
+eventually if the user or the installer needs to build an installation of Med
+Memory as a stand alone package, he may use the configure option
+--without-kernel. By default the full debug options are set:
+      - compilation using -g option
+      - Med Memory debugging information history using -D_DEBUG_ option.
+
+The user may get all configure option with :
+  ./configure --help
+
+The user may set optimization option :
+  ./configure --enable-production --disable-debug (use compiler flags -O)
+
+In order to avoid most of the problem the user or the installer should first
+check the HDF5HOME and the MED2HOME environment variables. This version of
+Med Memory with Med File V2.2.2, V2.2.3, as well as V2.3.0 but with the
+version of HDF5 V1.6.3. In the installation of Med File you should take care
+of the $HDF5HOME environment variable. This warning is especially intended
+to the user of The Med Memory in stand alone (without the SALOME KERNEL
+component).
+
+III : MedMemory testing :
+=========================
+
+After installation of the Med Memory; the user may find a large set of test
+files in Med File V2.1, V2.2, GIBI format.
+
+To check the Med Memory installation, in the directory
+path_to_your_installation_directory/bin/salome you may find a set of python
+scripts and test executable. To ckeck the deep layers (C++, Python) of the Med
+Memory, the installer may run:
+
+- testMedMemGeneral.py,
+- medMeshing_test.py
+- test_profil_MedFieldDriver.py
+- testGaussLocalization.py
+- med_field_anal.py
+- test_MEDMEM_MeshingFlica
+- test_MEDMEM_Meshing_poly
+- test_MEDMEM_MeshingPoly
+
+To check the upper layer (CORBA, Client), the installer may run in the SALOME
+Python console:
+
+ - Med_Gen_test.py
+ - medClient_test.py
+ - testMedAlliances1.py
+ - testMedAlliances.py
+ - testMeshAlliances.py

@@ -1,0 +1,334 @@
+// Copyright (C) 2007-2026  CEA, EDF, OPEN CASCADE
+//
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+//  File   : NETGENPlugin_Algorithm.idl
+//  Author : Julia DOROVSKIKH
+//
+#ifndef _SMESH_NETGENALGORITHM_IDL_
+#define _SMESH_NETGENALGORITHM_IDL_
+
+#include "SALOME_Exception.idl"
+#include "SMESH_Hypothesis.idl"
+#include "SMESH_Group.idl"
+#include "GEOM_Gen.idl"
+
+/*!
+ * NETGENPlugin: interfaces to NETGEN related hypotheses and algorithms
+ */
+module NETGENPlugin
+{
+  typedef sequence<string> string_array;
+  /*!
+   * NETGENPlugin_NETGEN_3D: interface of "Tetrahedron (Netgen)" algorithm
+   */
+  interface NETGENPlugin_NETGEN_3D : SMESH::SMESH_3D_Algo
+  {
+  };
+
+  /*!
+   * NETGENPlugin_NETGEN_3D: interface of "Remote Tetrahedron (Netgen)" algorithm
+   */
+  interface NETGENPlugin_NETGEN_3D_Remote : NETGENPlugin::NETGENPlugin_NETGEN_3D
+  {
+  };
+
+  /*!
+   * NETGENPlugin_NETGEN_2D: interface of "Netgen 1D-2D" algorithm
+   */
+  interface NETGENPlugin_NETGEN_2D : SMESH::SMESH_2D_Algo
+  {
+  };
+
+  /*!
+   * NETGENPlugin_NETGEN_2D3D: interface of "Netgen 1D-2D-3D" algorithm
+   */
+  interface NETGENPlugin_NETGEN_2D3D : SMESH::SMESH_3D_Algo
+  {
+  };
+
+  /*!
+   * NETGENPlugin_NETGEN_2D_ONLY: interface of "Netgen 2D" algorithm,
+   * generating 2D elements on a geometrical face taking
+   * into account pre-existing nodes on face boundaries
+   */
+  interface NETGENPlugin_NETGEN_2D_ONLY : SMESH::SMESH_2D_Algo
+  {
+  };
+
+  /*!
+   * NETGENPlugin_NETGEN_2D: interface of "Remote Triangle (Netgen)" algorithm
+   */
+  interface NETGENPlugin_NETGEN_2D_Remote : NETGENPlugin::NETGENPlugin_NETGEN_2D_ONLY
+  {
+  };
+
+  /*!
+   * NETGENPlugin_Remesher_2D: interface of "NETGEN Remesher" algorithm,
+   * generating 2D elements basing on an existing 2D mesh
+   */
+  interface NETGENPlugin_Remesher_2D : SMESH::SMESH_2D_Algo
+  {
+  };
+
+  /*!
+   * NETGENPlugin_Hypothesis: interface of "NETGEN parameters" hypothesis
+   */
+  interface NETGENPlugin_Hypothesis : SMESH::SMESH_Hypothesis
+  {
+    void    SetMaxSize(in double value);
+    double  GetMaxSize();
+
+    void    SetMinSize(in double value);
+    double  GetMinSize();
+
+    void    SetSecondOrder(in boolean value);
+    boolean GetSecondOrder();
+
+    void    SetOptimize(in boolean value);
+    boolean GetOptimize();
+
+    void    SetFineness(in long value);
+    long    GetFineness();
+
+    void    SetGrowthRate(in double value);
+    double  GetGrowthRate();
+
+    void    SetNbSegPerEdge(in double value);
+    double  GetNbSegPerEdge();
+
+    void    SetChordalErrorEnabled(in boolean value);
+    boolean GetChordalErrorEnabled();
+    void    SetChordalError(in double value);
+    double  GetChordalError();
+
+    void    SetNbSegPerRadius(in double value);
+    double  GetNbSegPerRadius();
+
+    void    SetQuadAllowed(in boolean value);
+    boolean GetQuadAllowed();
+
+    void    SetUseSurfaceCurvature(in boolean value);
+    boolean GetUseSurfaceCurvature();
+
+    void    SetFuseEdges(in boolean value);
+    boolean GetFuseEdges();
+
+    void    SetLocalSizeOnShape(in GEOM::GEOM_Object GeomObj, in double localSize)
+      raises (SALOME_CMOD::SALOME_Exception);
+    void    SetLocalSizeOnEntry(in string entry, in double localSize);
+    double  GetLocalSizeOnEntry(in string entry);
+    string_array GetLocalSizeEntries();
+    void    UnsetLocalSizeOnEntry(in string entry);
+
+    void    SetMeshSizeFile(in string fileName);
+    string  GetMeshSizeFile();
+
+    void    SetNbSurfOptSteps(in short nb );
+    short   GetNbSurfOptSteps();
+
+    void    SetNbVolOptSteps(in short nb );
+    short   GetNbVolOptSteps();
+
+    void    SetElemSizeWeight(in double size );
+    double  GetElemSizeWeight();
+
+    void    SetWorstElemMeasure(in short val );
+    short   GetWorstElemMeasure();
+
+    void    SetNbThreads(in short val );
+    short   GetNbThreads();
+
+    void    SetUseDelauney(in boolean toUse);
+    boolean GetUseDelauney();
+
+    void    SetCheckOverlapping(in boolean toCheck );
+    boolean GetCheckOverlapping();
+
+    void    SetCheckChartBoundary(in boolean toCheck );
+    boolean GetCheckChartBoundary();
+  };
+
+  /*!
+   * NETGENPlugin_Hypothesis_2D: interface of "NETGEN 2D parameters" hypothesis
+   */
+  interface NETGENPlugin_Hypothesis_2D : NETGENPlugin_Hypothesis
+  {
+  };
+
+  /*!
+   * interface of "NETGEN 2D parameters" hypothesis used by NETGENPlugin_NETGEN_2D_ONLY algorithm
+   */
+  interface NETGENPlugin_Hypothesis_2D_ONLY : NETGENPlugin_Hypothesis_2D
+  {
+  };
+
+  /*!
+   * interface of "NETGEN 3D parameters" hypothesis used by NETGENPlugin_NETGEN_3D algorithm
+   */
+  interface NETGENPlugin_Hypothesis_3D : NETGENPlugin_Hypothesis
+  {
+  };
+
+  /*!
+   * interface of "NETGEN Remesher parameters" hypothesis used by NETGENPlugin_Remesher_2D algorithm
+   */
+  interface NETGENPlugin_RemesherHypothesis_2D : NETGENPlugin_Hypothesis_2D
+  {
+    /*!
+     * \brief Set/get ridge angle
+     */
+    void    SetRidgeAngle(in double angle );
+    double  GetRidgeAngle();
+
+    void    SetEdgeCornerAngle(in double angle );
+    double  GetEdgeCornerAngle();
+
+    void    SetChartAngle(in double angle );
+    double  GetChartAngle();
+
+    void    SetOuterChartAngle(in double angle );
+    double  GetOuterChartAngle();
+
+    void    SetRestHChartDistFactor(in double f );
+    double  GetRestHChartDistFactor();
+
+    void    SetRestHChartDistEnable(in boolean enable );
+    boolean GetRestHChartDistEnable();
+
+    void    SetRestHLineLengthFactor(in double f );
+    double  GetRestHLineLengthFactor();
+
+    void    SetRestHLineLengthEnable(in boolean enable );
+    boolean GetRestHLineLengthEnable();
+
+    void    SetRestHCloseEdgeFactor(in double f );
+    double  GetRestHCloseEdgeFactor();
+
+    void    SetRestHCloseEdgeEnable(in boolean enable );
+    boolean GetRestHCloseEdgeEnable();
+
+    void    SetRestHSurfCurvFactor(in double f );
+    double  GetRestHSurfCurvFactor();
+
+    void    SetRestHSurfCurvEnable(in boolean enable );
+    boolean GetRestHSurfCurvEnable();
+
+    void    SetRestHEdgeAngleFactor(in double f );
+    double  GetRestHEdgeAngleFactor();
+
+    void    SetRestHEdgeAngleEnable(in boolean enable );
+    boolean GetRestHEdgeAngleEnable();
+
+    void    SetRestHSurfMeshCurvFactor(in double f );
+    double  GetRestHSurfMeshCurvFactor();
+
+    void    SetRestHSurfMeshCurvEnable(in boolean enable );
+    boolean GetRestHSurfMeshCurvEnable();
+
+    void    SetKeepExistingEdges(in boolean toKeep );
+    boolean GetKeepExistingEdges();
+
+    void    SetMakeGroupsOfSurfaces(in boolean toMake );
+    boolean GetMakeGroupsOfSurfaces();
+
+    void    SetLoadMeshOnCancel(in boolean toLoad );
+    boolean GetLoadMeshOnCancel();
+
+    void SetFixedEdgeGroup( in SMESH::SMESH_GroupBase edgeGroup );
+    SMESH::SMESH_GroupBase GetFixedEdgeGroup( in SMESH::SMESH_Mesh mesh );
+  };
+
+  /*!
+   * NETGENPlugin_Hypothesis: interface of "NETGEN 2D simple parameters" hypothesis
+   */
+  interface NETGENPlugin_SimpleHypothesis_2D : SMESH::SMESH_Hypothesis
+  {
+    /*!
+     * Sets <number of segments> value
+     */
+    void SetNumberOfSegments(in long nb) raises (SALOME_CMOD::SALOME_Exception);
+    /*!
+     * Returns <number of segments> value.
+     * Can be zero in case if LocalLength() has been set
+     */
+    long GetNumberOfSegments();
+
+    /*!
+     * Sets <segment length> value
+     */
+    void SetLocalLength(in double segmentLength);
+    /*!
+     * Returns <segment length> value.
+     * Can be zero in case if NumberOfSegments() has been set
+     */
+    double GetLocalLength();
+
+    /*!
+     * Sets <maximum element area> to be dependent on 1D discretization
+     */
+    void LengthFromEdges();
+    /*!
+     * Sets <maximum element area> value.
+     * Zero or negative value means same as LengthFromEdges().
+     */
+    void SetMaxElementArea(in double area);
+    /*!
+     * Returns <maximum element area> value.
+     * Can be zero in case of LengthFromEdges()
+     */
+    double GetMaxElementArea();
+
+    /*!
+     * Enables/disables generation of quadrangular faces
+     */
+    void SetAllowQuadrangles(in boolean toAllow);
+    /*!
+     * Returns true if generation of quadrangular faces is enabled
+     */
+    boolean GetAllowQuadrangles();
+  };
+
+  /*!
+   * NETGENPlugin_SimpleHypothesis_3D: interface of "NETGEN 3D simple parameters" hypothesis
+   */
+  interface NETGENPlugin_SimpleHypothesis_3D : NETGENPlugin_SimpleHypothesis_2D
+  {
+    /*!
+     * Sets <maximum element volume> to be dependent on 2D discretization
+     */
+    void LengthFromFaces();
+    /*!
+     * Sets <maximum element volume> value.
+     * Zero or negative value means same as LengthFromFaces().
+     */
+    void SetMaxElementVolume(in double volume);
+
+    /*!
+     * Returns <maximum element volume> value
+     * Can be zero in case of LengthFromFaces()
+     */
+    double GetMaxElementVolume();
+  };
+
+};
+
+#endif

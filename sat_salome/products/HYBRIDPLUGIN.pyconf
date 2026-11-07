@@ -1,0 +1,42 @@
+default :
+{
+    name : "HYBRIDPLUGIN"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/hybridplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "hybridplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/hybridplugin.git"
+      }
+    }
+    environ :
+    {
+        _SMESH_MeshersList : "HYBRIDPlugin"
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "hybridplugin"
+    }
+    depend : [
+             "KERNEL",
+             "GUI",
+             "GEOM", 
+             "SMESH",
+             "Python",
+             "qt", 
+             "boost", 
+             "CAS",  
+             "omniORB",  
+             "MeshGems" 
+              ]
+    build_depend : ["cmake", "doxygen"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+        incremental : "yes"
+    }
+} 

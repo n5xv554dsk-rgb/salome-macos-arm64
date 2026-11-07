@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+N=8
+test "x$1" = "x" && DIR="profiles_cocagne_echantillon" || DIR="$1"
+
+for i in $DIR/*.xml
+do
+  (xmllint --noout --path $PWD --schema cata_profile.xsd "$i" && \
+  ./generateXmlProfile4db $i && \
+  xmllint --noout --path $PWD --schema cata_profile_DB_XSLT.xsd "$i.db"
+  echo "" ) &
+  if [[ $(jobs -r -p | wc -l) -ge $N ]]; then wait -n; fi
+done > validateAndTransfrom_xml_files_v3.log 2>&1
+wait

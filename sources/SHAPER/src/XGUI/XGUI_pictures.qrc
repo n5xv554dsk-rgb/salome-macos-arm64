@@ -1,0 +1,103 @@
+ <!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>pictures/new.png</file>
+     <file>pictures/open.png</file>
+     <file>pictures/save.png</file>
+     <file>pictures/close.png</file>
+     <file>pictures/redo.png</file>
+     <file>pictures/undo.png</file>
+     <file>pictures/rebuild.png</file>
+     <file>pictures/preferences.png</file>
+     <file>pictures/copy.png</file>
+
+     <file>pictures/params_folder.png</file>
+     <file>pictures/constr_folder.png</file>
+     <file>pictures/constr_object.png</file>
+     <file>pictures/constr_object_modified.png</file>
+     <file>pictures/part_ico.png</file>
+     <file>pictures/properties.png</file>
+     <file>pictures/features.png</file>
+     <file>pictures/point_ico.png</file>
+
+     <file>pictures/x_point.png</file>
+     <file>pictures/y_point.png</file>
+     <file>pictures/z_point.png</file>
+     <file>pictures/x_size.png</file>
+     <file>pictures/y_size.png</file>
+     <file>pictures/z_size.png</file>
+
+     <file>pictures/button_cancel.png</file>
+     <file>pictures/button_help.png</file>
+     <file>pictures/button_ok.png</file>
+     <file>pictures/button_ok_error.png</file>
+     <file>pictures/button_ok-plus.png</file>
+     <file>pictures/button_plus.png</file>
+
+     <file>pictures/assembly.png</file>
+     <file>pictures/delete.png</file>
+     <file>pictures/rename_edit.png</file>
+     <file>pictures/eye_pencil.png</file>
+     <file>pictures/eye_pencil_closed.png</file>
+     <file>pictures/clean_history.png</file>
+
+     <file>pictures/view_prefs.png</file>
+     <file>pictures/module.png</file>
+     <file>pictures/shading.png</file>
+     <file>pictures/wireframe.png</file>
+     <file>pictures/arrow.png</file>
+
+     <file>pictures/solid.png</file>
+     <file>pictures/compsolid.png</file>
+     <file>pictures/compoundofsolids.png</file>
+     <file>pictures/edge.png</file>
+     <file>pictures/vertex.png</file>
+     <file>pictures/face.png</file>
+     <file>pictures/compound.png</file>
+     <file>pictures/shell.png</file>
+     <file>pictures/wire.png</file>
+     <file>pictures/result.png</file>
+     <file>pictures/find_result.png</file>
+
+     <file>pictures/eyeclosed.png</file>
+     <file>pictures/eyemiclosed.png</file>
+     <file>pictures/eyeopen.png</file>
+
+     <file>pictures/transparency.png</file>
+     <file>pictures/solid32.png</file>
+     <file>pictures/face32.png</file>
+     <file>pictures/edge32.png</file>
+     <file>pictures/vertex32.png</file>
+     <file>pictures/features_folder.png</file>
+     <file>pictures/create_folder.png</file>
+     <file>pictures/insert_folder_after.png</file>
+     <file>pictures/insert_folder_before.png</file>
+     <file>pictures/move_out_after.png</file>
+     <file>pictures/move_out_before.png</file>
+     <file>pictures/recover.png</file>
+     <file>pictures/selection.png</file>
+     <file>pictures/autoapply_start.png</file>
+     <file>pictures/autoapply_stop.png</file>
+     <file>pictures/whatis.png</file>
+
+     <file>pictures/arrow-left.png</file>
+     <file>pictures/arrow-right.png</file>
+     <file>pictures/filter.png</file>
+     <file>pictures/plus_minus.png</file>
+     <file>pictures/arrow-up.png</file>
+     <file>pictures/arrow-down.png</file>
+     <file>pictures/configure_toolbars.png</file>
+     <file>pictures/add.png</file>
+     <file>pictures/reverce.png</file>
+     <file>pictures/color.png</file>
+     <file>pictures/autocolor.png</file>
+     <file>pictures/normal-view-inversed.png</file>
+     <file>pictures/normal-view.png</file>
+     <file>pictures/move_to_end.png</file>
+     <file>pictures/move_to_end_split.png</file>
+     <file>pictures/ArrowCursor.png</file>
+     <file>pictures/CrossCursor.png</file>
+     <file>pictures/HandCursor.png</file>
+     <file>pictures/iso_lines.png</file>
+     <file>pictures/edges_dir.png</file>
+ </qresource>
+ </RCC>

@@ -1,0 +1,49 @@
+default :
+{
+    name : "libxslt"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    system_info : 
+    {
+        rpm : ["libxslt"]
+        rpm_dev : ["libxslt-devel"]
+        apt : ["libxslt"]
+        apt_dev : ["libxslt-dev"]
+    }
+    archive_info:
+    {
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python' ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+default_win :
+{
+    depend : ['Python', 'libxml2' ]
+   properties:
+   {
+     incremental : "yes"
+     single_install_dir : "yes"
+   }
+}
+
+version_1_1_34 :
+{
+  patches : []
+}
+
+version_1_1_34_win :
+{
+  patches : ['libxslt-1.1.34-config-windows.patch']
+}

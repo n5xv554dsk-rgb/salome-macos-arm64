@@ -1,0 +1,3 @@
+Pour mettre à jour le parser de fichier au format Asterv5, il faut
+recompiler le fichier tables.tag en faisant :
+   make

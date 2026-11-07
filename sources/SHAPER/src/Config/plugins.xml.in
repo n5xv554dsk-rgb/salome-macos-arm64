@@ -1,0 +1,28 @@
+<plugins module="PartSet">
+  <!-- Initialization plugin must be first here to initialize the PartSet document -->
+  <plugin library="InitializationPlugin"/>
+  <plugin library="PartSetPlugin" configuration="plugin-PartSet.xml"/>
+  <plugin library="SketchPlugin" configuration="plugin-Sketch.xml"/>
+  <plugin library="ConstructionPlugin" configuration="plugin-Construction.xml"/>
+  <plugin library="BuildPlugin" configuration="plugin-Build.xml"/>
+  <plugin library="PrimitivesPlugin" configuration="plugin-Primitives.xml"/>
+  <!--<plugin library="GDMLPlugin" configuration="plugin-GDML.xml"/>-->
+  <plugin library="FeaturesPlugin" configuration="plugin-Features.xml"/>
+  <plugin library="CollectionPlugin" configuration="plugin-Collection.xml"/>
+  <plugin library="ExchangePlugin" configuration="plugin-Exchange.xml"/>
+  <plugin script="addons_Features" configuration="addons_Features.xml"/>
+  <plugin library="SketchPlugin" configuration="plugin-SketchDrawer.xml"/>
+  <plugin library="SketchPlugin" configuration="plugin-SketchCopy.xml"/>
+  <plugin script="ConnectorPlugin" configuration="plugin-Connector.xml" dependency="GEOM"/>
+  <plugin library="ParametersPlugin" configuration="plugin-Parameters.xml"/>
+@DEFAULT_SOLVER@
+<!--
+@ALL_SOLVERS@
+-->
+  <plugin library="GeomValidators"/>
+  <plugin library="FiltersPlugin" configuration="plugin-Filters.xml"/>
+  <plugin library="DFBrowser" internal="true"/>
+<!--
+  <plugin library="SamplePanelPlugin" configuration="plugin-SamplePanel.xml"/>
+-->
+</plugins>

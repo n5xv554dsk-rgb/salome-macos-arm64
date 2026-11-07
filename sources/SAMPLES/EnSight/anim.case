@@ -1,0 +1,12 @@
+#
+# Simple quad example with texture coords.
+#
+FORMAT
+type:  ensight gold
+
+GEOMETRY
+model:                       anim.geo
+
+VARIABLE
+scalar per node:             S anim.S
+scalar per node:             T anim.T

@@ -1,0 +1,14 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>resources/default_action_icon.svg</file>
+<file>resources/default_folder_action_icon.svg</file>
+<file>resources/default_folder_icon.svg</file>
+<file>resources/find.svg</file>
+<file>resources/shortcut_disable.svg</file>
+<file>resources/shortcut_restore.svg</file>
+<file>resources/sort_ascending.svg</file>
+<file>resources/sort_ascending_leading_key.svg</file>
+<file>resources/sort_descending.svg</file>
+<file>resources/sort_descending_leading_key.svg</file>
+</qresource>
+</RCC>

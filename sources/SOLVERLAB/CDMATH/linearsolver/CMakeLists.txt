@@ -1,0 +1,6 @@
+PROJECT(linearsolver)
+
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(inc)
+
+

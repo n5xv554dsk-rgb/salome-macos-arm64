@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<meshers>
+
+<meshers-group name      ="Hexotic"
+               resources ="HexoticPLUGIN"
+               idl-module="HexoticPlugin"
+               server-lib="HexoticEngine"
+               gui-lib   ="HexoticPluginGUI">
+  <hypotheses>
+    <hypothesis type    ="MG-Hexa Parameters"
+                label-id="MG-Hexa Parameters"
+                icon-id ="mesh_hypo_Hexotic.png"
+                dim     ="3">
+      <python-wrap>
+        <accumulative-methods>
+          SetSizeMap
+          UnsetSizeMap
+        </accumulative-methods>
+      </python-wrap>
+    </hypothesis>
+  </hypotheses>
+  <algorithms>
+
+    <algorithm type     ="MG-Hexa"
+               label-id ="MG-Hexa"
+               icon-id  ="mesh_algo_Hexotic.png"
+               group-id ="1"
+               priority ="50"
+               hypos    ="MG-Hexa Parameters"
+               input    ="TRIA,QUAD"
+               output   ="HEXA"
+               need-geom="false"
+               dim      ="3">
+      <python-wrap>
+        <algo>MG-Hexa=Hexahedron(algo=smeshBuilder.MG_Hexa)</algo>
+        <hypo>MG-Hexa Parameters=Parameters()</hypo>
+      </python-wrap>
+    </algorithm>
+
+  </algorithms>
+</meshers-group>
+
+</meshers>

@@ -1,0 +1,87 @@
+<source>
+  <toolbox id="MeasureKind">
+    <box id="Length" title="Edge length" icon="icons/Features/meas_length_32x32.png">
+      <shape_selector id="edge_for_length"
+                      icon="icons/Features/edge.png"
+                      label="Edge"
+                      tooltip="Select an edge"
+                      shape_types="edge"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="edge"/>
+      </shape_selector>
+    </box>
+    <box id="Distance" title="Distance between objects" icon="icons/Features/meas_distance_32x32.png">
+      <shape_selector id="distance_from"
+                      icon=""
+                      label="From"
+                      tooltip="Select a shape"
+                      shape_types="vertex edge wire face shell solid objects"
+                      default="">
+      </shape_selector>
+      <shape_selector id="distance_to"
+                      icon=""
+                      label="To"
+                      tooltip="Select a shape"
+                      shape_types="vertex edge wire face shell solid objects"
+                      default="">
+      </shape_selector>
+    </box>
+    <box id="Radius" title="Radius of circular edge, cylindrical surface or sphere" icon="icons/Features/meas_radius_32x32.png">
+      <shape_selector id="circular"
+                      icon=""
+                      label="Object"
+                      tooltip="Select an edge or face"
+                      shape_types="edge face"
+                      default="">
+        <validator id="FeaturesPlugin_ValidatorCircular"/>
+      </shape_selector>
+    </box>
+    <box id="Angle" title="Angle between edges" icon="icons/Features/meas_angle_32x32.png">
+      <shape_selector id="angle_from"
+                      icon="icons/Features/edge.png"
+                      label="First edge"
+                      tooltip="Select an edge"
+                      shape_types="edge"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="edge"/>
+        <validator id="GeomValidators_Intersected" parameters="angle_to"/>
+      </shape_selector>
+      <shape_selector id="angle_to"
+                      icon="icons/Features/edge.png"
+                      label="Second edge"
+                      tooltip="Select an edge"
+                      shape_types="edge"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="edge"/>
+        <validator id="GeomValidators_Intersected" parameters="angle_from"/>
+      </shape_selector>
+    </box>
+    <box id="AngleBy3Points" title="Angle by 3 points" icon="icons/Features/meas_angle3p_32x32.png">
+      <shape_selector id="angle_point_1"
+                      icon="icons/Features/point.png"
+                      label="Start point"
+                      tooltip="Select a point"
+                      shape_types="vertex"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+      </shape_selector>
+      <shape_selector id="angle_point_2"
+                      icon="icons/Features/point.png"
+                      label="Angle apex"
+                      tooltip="Select a point"
+                      shape_types="vertex"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+      </shape_selector>
+      <shape_selector id="angle_point_3"
+                      icon="icons/Features/point.png"
+                      label="End point"
+                      tooltip="Select a point"
+                      shape_types="vertex"
+                      default="">
+        <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+      </shape_selector>
+    </box>
+  </toolbox>
+  <label id="result" isSelectable="true"/>
+</source>

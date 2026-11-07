@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="proc">
+   <property name="DefaultStudyID" value="1"/>
+   <objref name="CALCIUM_double" id="IDL:Ports/Calcium_Ports/Calcium_Double_Port:1.0"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <objref name="GEOM_Object" id="IDL:GEOM/GEOM_Object:1.0"/>
+   <struct name="SALOME_TYPES/Parameter">
+      <member name="name" type="string"/>
+      <member name="value" type="string"/>
+   </struct>
+   <sequence name="SALOME_TYPES/ParameterList" content="SALOME_TYPES/Parameter"/>
+   <sequence name="SALOME_TYPES/VarList" content="string"/>
+   <type name="double" kind="double"/>
+   <sequence name="Value1D" content="double"/>
+   <sequence name="SALOME_TYPES/Value" content="Value1D"/>
+   <sequence name="SALOME_TYPES/ValueList" content="SALOME_TYPES/Value"/>
+   <struct name="SALOME_TYPES/ParametricInput">
+      <member name="inputVarList" type="SALOME_TYPES/VarList"/>
+      <member name="outputVarList" type="SALOME_TYPES/VarList"/>
+      <member name="inputValues" type="SALOME_TYPES/ValueList"/>
+      <member name="specificParameters" type="SALOME_TYPES/ParameterList"/>
+   </struct>
+   <type name="int" kind="int"/>
+   <struct name="SALOME_TYPES/ParametricOutput">
+      <member name="outputValues" type="SALOME_TYPES/ValueList"/>
+      <member name="specificOutputInfos" type="SALOME_TYPES/ParameterList"/>
+      <member name="returnCode" type="int"/>
+      <member name="errorMessage" type="string"/>
+   </struct>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <sequence name="intvec" content="int"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="stringvec" content="string"/>
+   <container name="A">
+   </container>
+   <container name="B">
+   </container>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="localhost"/>
+   </container>
+   <service name="MakeBoxDXDYDZ0">
+      <component>GEOM_Superv</component>
+      <load container="DefaultContainer"/>
+      <method>MakeBoxDXDYDZ</method>
+      <inport name="theDX" type="double"/>
+      <inport name="theDY" type="double"/>
+      <inport name="theDZ" type="double"/>
+      <outport name="return" type="GEOM_Object"/>
+   </service>
+   <outnode name="StudyOutNode2" kind="study">
+      <parameter name="i3" type="GEOM_Object" ref="/GEOM_Superv_1/Box_2"/>
+   </outnode>
+   <service name="s20">
+      <component>compo2</component>
+      <load container="DefaultContainer"/>
+      <method>s2</method>
+      <inport name="a" type="GEOM_Object"/>
+      <outport name="aa" type="GEOM_Object"/>
+   </service>
+   <control> <fromnode>MakeBoxDXDYDZ0</fromnode> <tonode>s20</tonode> </control>
+   <control> <fromnode>MakeBoxDXDYDZ0</fromnode> <tonode>StudyOutNode2</tonode> </control>
+   <datalink control="false">
+      <fromnode>MakeBoxDXDYDZ0</fromnode> <fromport>return</fromport>
+      <tonode>s20</tonode> <toport>a</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>MakeBoxDXDYDZ0</fromnode> <fromport>return</fromport>
+      <tonode>StudyOutNode2</tonode> <toport>i3</toport>
+   </datalink>
+   <parameter>
+      <tonode>MakeBoxDXDYDZ0</tonode><toport>theDX</toport>
+      <value><double>10</double></value>
+   </parameter>
+   <parameter>
+      <tonode>MakeBoxDXDYDZ0</tonode><toport>theDY</toport>
+      <value><double>10</double></value>
+   </parameter>
+   <parameter>
+      <tonode>MakeBoxDXDYDZ0</tonode><toport>theDZ</toport>
+      <value><double>10</double></value>
+   </parameter>
+   <presentation name="s20" x="298.75" y="32" width="158" height="63" expanded="1" expx="298.75" expy="32" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="MakeBoxDXDYDZ0" x="1.75" y="46.25" width="158" height="117" expanded="1" expx="1.75" expy="46.25" expWidth="158" expHeight="117" shownState="0"/>
+   <presentation name="StudyOutNode2" x="296.75" y="104.25" width="158" height="63" expanded="1" expx="296.75" expy="104.25" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="460.75" height="171.25" expanded="1" expx="0" expy="0" expWidth="460.75" expHeight="171.25" shownState="0"/>
+</proc>

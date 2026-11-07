@@ -1,0 +1,50 @@
+default :
+{
+    name : "DOCUMENTATION"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/documentation.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "documentation.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/documentation.git"
+      }
+    }
+    environ :
+    {
+    }
+    cmake_options : "-DSALOME_INSTALL_MODULES_DOC=ON -DSALOME_CREATE_SYMLINKS=ON -DSALOME_RELATIVE_SYMLINKS=ON"
+    depend : [
+             "KERNEL", 
+             "Sphinx", 
+             "Python", 
+             "docutils", 
+             "setuptools", 
+             "six", 
+             "pytz", 
+             "markupsafe" 
+             ]
+    # To reduce the (long) list, we only declare tip of the dependencies tree (for instance, SMESH will be automatically used through its plugins)
+    opt_depend : [SHAPER, PARAVIS, HEXABLOCK, HELLO, PYHELLO, ADAO, HOMARD, JOBMANAGER, BLSURFPLUGIN, GHS3DPLUGIN, GHS3DPRLPLUGIN, GMSHPLUGIN, HYBRIDPLUGIN, HexoticPLUGIN, NETGENPLUGIN]
+    build_depend : ["cmake", "doxygen"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties :    
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+    }
+}
+
+default_win :
+{
+    cmake_options : "-DSALOME_INSTALL_MODULES_DOC=ON"
+}
+
+version_6_6_0_to_9_7_0 :
+{
+    cmake_options : "-DSALOME_INSTALL_MODULES_DOC=ON"
+}

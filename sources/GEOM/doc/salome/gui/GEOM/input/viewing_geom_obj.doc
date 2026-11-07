@@ -1,0 +1,87 @@
+/*!
+
+\page view_geom_obj_page Viewing geometrical objects
+
+Newly created or imported geometrical objects are added as items in the Object Browser and displayed in
+the <b>OCC 3D Viewer</b>.
+
+See the corresponding topic about the \subpage arranging_study_objects_page "Operations available in the Object Browser for Geometry module".
+
+<b>OCC 3D Viewer</b> is described in the documentation on <b>GUI
+module</b>.
+
+After the object has appeared in the Viewer, you can select it with
+left mouse click to change its presentation parameters and access to
+other useful options by right-clicking on the selected object.
+
+\image html dialog.png
+
+<ul>
+<li><b>Rename</b> - allows to change the name of the geometric
+object.</li>
+<li><b>Delete</b> - irreversibly deletes the selected object from the
+viewer and from the Object Browser.</li> 
+<li><b>Create Group</b> - allows to create group.</li> 
+<li>\subpage display_mode_page "Display Mode" - allows to select between
+Wireframe and Shading presentation.</li>
+<li>\subpage bring_to_front_page "Bring To Front" - allows to bring to 
+front of the viewer the selected geometrical object.</li>
+<li><b>Clear Top Level State</b> - allows to remove from the viewer foreground 
+geometrical objects that have been placed there via <b>Bring To Front</b> command.</li>
+<li>\subpage color_page "Color" - allows to change the filling color in
+the standard <b>Select Color</b> menu.</li>
+<li>\subpage transparency_page "Transparency" - allows to change the
+transparency of geometrical objects.</li>
+<li>\subpage isolines_page "Isos" - allows to change the number of
+isolines displayed within a shape.</li>
+<li>\subpage deflection_page "Deflection" - allows to change the
+deflection coefficient of a shape.</li>
+<li>\subpage material_page "Material" - allows to change the
+material properties of a shape.</li>
+<li>\subpage point_marker_page "Point Marker" - allows to change the
+representation of geometrical vertices.</li>
+<li>\subpage line_width_page "Line Width" - allows to change the
+width of edges and isolines.</li>
+<li><b>Auto color</b> / <b>Disable auto color</b> - activates the auto color
+mode. When the auto color mode is enabled, the groups created on the
+sub-shapes of the selected geometrical object are automatically
+coloured by the unique colors. TUI Commands :
+<em>go.SetAutoColor(enable)</em>, <em>enabled = go.GetAutoColor()</em></li>
+<li><b>Hide</b> - allows to hide the selected geometrical object from the
+viewer. TUI Command : <em>sg.EraseOnly(ID)</em></li>
+
+\image html image18.png
+
+<li><b>Hide all</b> - hides all objects from the viewer. TUI
+Command: <em>sg.EraseAll()</em></li>
+
+\image html image26.png
+
+<li><b>Show Only</b> - displays only the selected
+geometrical object. TUI Command: <em>sg.DisplayOnly(ID)</em></li>
+
+\image html image33.png
+
+<li><b>Show all dimensions</b> - shows all of the persistent dimensions created for the selected geometrical object.</li>
+<li><b>Hide all dimensions</b> - hides all of the persistent dimensions created for the selected geometrical object.</li>
+<li>\subpage dependency_tree_page "Show dependency tree" - shows the dependency tree with parents and children of the selected object
+in a new 2D View Window.</li>
+<li>\subpage reduce_study_page "Reduce study" - allows reducing the study by removing objects from it.</li>
+<li><b>Dump view</b> - exports an object from the viewer in bmp, png,
+jpg or jpeg image format.</li>
+<li><b>Change background</b> - allows to redefine the background
+color. By default it is black.</li>
+</ul>
+
+Some of these functionalities are available through right-clicking
+on the viewer background:
+
+\image html image22.png <br>
+
+<ul>
+<li><b>Select Only</b> provides a filter for exclusive selection of objects of a certain type.</li>
+</ul>
+
+
+
+*/

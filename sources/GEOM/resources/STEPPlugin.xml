@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="STEPPlugin"
+               server-lib="STEPPluginEngine"
+               gui-lib="STEPPluginGUI">
+    <actions>
+      <action label="Import_STEP"
+              menu="FILE/IMPORT:10/IMPORTSTEP"
+              status-bar="IMPORTSTEP">
+      </action>
+      <action label="Export_STEP"
+              menu="FILE/EXPORT:10/EXPORTSTEP"
+              status-bar="EXPORTSTEP">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

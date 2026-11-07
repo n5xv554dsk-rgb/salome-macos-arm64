@@ -1,0 +1,20 @@
+#!/bin/zsh
+source "${0:A:h}/env_build.sh"
+export OMNIORB_USER_PATH="${TMPDIR:-/tmp}"
+mkdir -p "${OMNIORB_USER_PATH}"
+
+if [ "$1" = "shell" ]; then
+  shift
+  if [ $# -eq 0 ]; then
+    exec "${SHELL:-/bin/zsh}"
+  else
+    exec "$@"
+  fi
+elif [ "$1" = "python" ]; then
+  shift
+  exec "${PYTHONBIN}" "$@"
+elif [ "$1" = "killall" ]; then
+  exec "${PYTHONBIN}" "${KERNEL_ROOT_DIR}/bin/salome/killSalome.py"
+else
+  exec "${PYTHONBIN}" "${KERNEL_ROOT_DIR}/bin/salome/runSalome.py" "$@"
+fi

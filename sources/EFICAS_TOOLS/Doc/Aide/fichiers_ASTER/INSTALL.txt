@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//FR">
+<html>
+<head>
+
+<TITLE> Installation Standard d Eficas </TITLE> 
+</head>
+
+<body>
+
+<H1>
+1- Installation standard
+</H1> 
+
+Pour installer EFICAS a partir de la distribution : <nom_distrib>.tgz<BR>
+faire :<BR>
+<dd>tar xzvf <nom_distrib>.tgz<BR> </dd><BR>
+
+ce qui a pour effet de créer un répertoire de nom V1EficasV1_16a4AsterSTA9.
+<BR><BR>
+
+Pour modifier l'emplacement de la doc, le chemin d'accès à Acrobat Reader,
+les catalogues, il faut modifier le fichier 
+<BR>                editeur.ini <BR>
+dans le répertoire Aster ou utiliser le sous-menu "Parametres Eficas" du men Options .
+<BR><BR>
+ATTENTION : <BR>
+Si Eficas est installé dans un répertoire particulier d'administration 
+dans lequel les utilisateurs n'ont pas le droit d'écriture,<BR>
+ il faut que l'administrateur lance Eficas pour générer
+les fichiers et catalogues compilés .pyc 
+<BR><BR>
+
+
+2- Utilisation d'Eficas
+<BR>
+<BR>
+Pour utiliser Eficas, aller dans le répertoire Aster et faire :
+<BR>        python eficas_aster.py
+<BR>
+<BR>
+3- Installation avec un noyau pré-installé
+<BR>
+<BR>
+Aller dans le répertoire Aster du répertoire Eficas
+et modifier le fichier prefs.py comme suit :
+Mettre dans la variable CODE_PATH le chemin absolu vers
+le répertoire contenant les deux répertoires Noyau et Validation que vous voulez
+utiliser à la place de ceux fournis dans la livraison d'Eficas
+<BR>
+Pour changer les catalogues, modifier le fichier editeur.ini dans le répertoire Aster
+</body>
+</html>

@@ -1,0 +1,53 @@
+
+
+ANALYSE DU MAILLAGE
+===================
+
+     Maillage apres adaptation                         
+     PLAQUE_0                                                                        
+     Date de creation : jeudi 3 avril 2014 a 13 h 21 mn 21 s            
+     Dimension : 3
+     Degre : 2
+     C'est un maillage obtenu apres      3 adaptations.
+     Le niveau minimum actif est :     0
+     Le niveau maximum actif est :     2
+
+         Direction    |       Unite       |  Minimum   |  Maximum
+     ---------------------------------------------------------------
+     X                | INCONNUE          |-0.40000E-01| 0.40000E-01
+     Y                | INCONNUE          |-0.30000E-01| 0.30000E-01
+     Z                | INCONNUE          |-0.30854E-01| 0.30854E-01
+
+
+   NOMBRE D'ENTITES DU CALCUL
+   ==========================
+
+
+     ************************************************************
+     *                      Noeuds                              *
+     ************************************************************
+     * Nombre total                                *       1212 *
+     * . dont sommets d'aretes                     *        317 *
+     * . dont milieux d'aretes                     *        895 *
+     ************************************************************
+
+     ************************************************************
+     *                      Segments                            *
+     ************************************************************
+     * Nombre total                                *        101 *
+     * . dont aretes isolees                       *          0 *
+     * . dont aretes de bord de regions 2D         *         53 *
+     * . dont aretes internes aux faces/volumes    *         48 *
+     ************************************************************
+
+     ************************************************************
+     *                      Triangles                           *
+     ************************************************************
+     * Nombre total                                *        579 *
+     ************************************************************
+     * . du niveau   0                             *         33 *
+     * . du niveau   0.5                           *         14 *
+     * . du niveau   1                             *        148 *
+     * . du niveau   1.5                           *         48 *
+     * . du niveau   2                             *        336 *
+     ************************************************************

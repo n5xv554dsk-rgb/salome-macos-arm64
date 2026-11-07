@@ -1,0 +1,106 @@
+default :
+{
+    name : "NETGENPLUGIN"
+    build_source : "cmake"
+    cmake_options: " -DSALOME_CXX_STANDARD=17 "
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/netgenplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "netgenplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/netgenplugin.git"
+      }
+    }
+    environ :
+    {
+        _SMESH_MeshersList : "NETGENPlugin"
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "netgenplugin"
+    }
+    depend : [
+             "KERNEL",
+             "MEDCOUPLING",
+             "GEOM",
+             "SMESH",
+             "Python",
+             "qt",
+             "boost",
+             "CAS",
+             "freeimage",
+             "hdf5",
+             "medfile",
+             "omniORB",
+             "docutils",
+             "netgen",
+             "ParaView",
+             "six",
+             "pytz"
+              ]
+    build_depend : ["swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}
+
+default_win :
+{
+    cmake_options : " -DZLIB_LIBRARY=%ZLIB_BIN%  -DZLIB_INCLUDE_DIR=%ZLIB_INCLUDE_DIR% -DSALOME_CXX_STANDARD=17 "
+    depend : [
+             "KERNEL",
+             "MEDCOUPLING",
+             "GEOM",
+             "SMESH",
+             "Python",
+             "qt",
+             "boost",
+             "CAS",
+             "freeimage",
+             "hdf5",
+             "medfile",
+             "omniORB",
+             "docutils",
+             "netgen",
+             "ParaView",
+             "six",
+             "pytz",
+             "zlib"
+              ]
+}
+
+version_V9_3_0 :
+{
+  patches : []
+}
+
+version_V9_3_0_win :
+{
+  patches : ['NETGENPlugin_Mesh.patch']
+}
+
+version_V6_6_0 :
+{
+    build_source : "autotools"
+    depend : [
+             "KERNEL",
+             "GEOM",
+             "SMESH",
+             "Python",
+             "qt",
+             "boost",
+             "CAS",
+             "freeimage",
+             "hdf5",
+             "medfile",
+             "omniORB",
+             "docutils",
+             "netgen",
+             "ParaView"
+             ]
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+#test "x$1" = "x" && DIR="profiles_cocagne_echantillon" || DIR="$1"
+test "x$1" = "x" && DIR="../datas" || DIR="$1"
+
+for i in $DIR/*.xml
+do
+  echo $i 
+  xmllint --noout --path $PWD --schema cata_profile.xsd "$i" && \
+  ./generateXmlProfile4db $i && \
+  xmllint --noout --path $PWD --schema cata_profile_DB_XSLT.xsd "$i.db" && \
+  python chargeDataBase.py -f "$i.db"
+  echo ""
+done > validateAndTransfrom_xml_files.log 2>&1

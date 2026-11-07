@@ -1,0 +1,185 @@
+default :
+{
+    name : "JOBMANAGER"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/jobmanager.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "jobmanager.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/jobmanager.git"
+      }
+    }
+    environ :
+    {
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "jobmanager"
+    }
+    depend : [
+             "LIBBATCH", 
+             "KERNEL", 
+             "GUI", 
+             "Python",
+             "qt", 
+             "omniORB",
+             "boost", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "docutils", 
+             "six", 
+             "pytz", 
+             "markupsafe"
+             ]
+    build_depend : ["cmake", "cppunit"]
+    opt_depend : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+    }
+}
+
+default_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH", 
+             "KERNEL", 
+             "GUI", 
+             "Python",
+             "qt", 
+             "omniORB",
+             "boost", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "docutils", 
+             "six", 
+             "pytz", 
+             "markupsafe",
+             "openmpi"
+             ]
+}
+
+version_V10_0_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH", 
+             "KERNEL", 
+             "GUI", 
+             "Python",
+             "qt", 
+             "omniORB",
+             "boost", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "docutils", 
+             "six", 
+             "pytz", 
+             "markupsafe",
+             "openmpi"
+             ]
+}
+
+version_V9_16_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH",
+             "KERNEL",
+             "GUI",
+             "Python",
+             "qt",
+             "omniORB",
+             "boost",
+             "Sphinx",
+             "Jinja2",
+             "setuptools",
+             "Pygments",
+             "docutils",
+             "six",
+             "pytz",
+             "markupsafe",
+             "openmpi"
+             ]
+}
+
+version_V9_15_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH",
+             "KERNEL",
+             "GUI",
+             "Python",
+             "qt",
+             "omniORB",
+             "boost",
+             "Sphinx",
+             "Jinja2",
+             "setuptools",
+             "Pygments",
+             "docutils",
+             "six",
+             "pytz",
+             "markupsafe",
+             "openmpi"
+             ]
+}
+
+version_V9_10_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH", 
+             "KERNEL", 
+             "GUI", 
+             "Python",
+             "qt", 
+             "omniORB",
+             "boost", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "docutils", 
+             "six", 
+             "pytz", 
+             "markupsafe",
+             "openmpi"
+             ]
+}
+
+version_V9_9_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "LIBBATCH", 
+             "KERNEL", 
+             "GUI", 
+             "Python",
+             "qt", 
+             "omniORB",
+             "boost", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "docutils", 
+             "six", 
+             "pytz", 
+             "markupsafe",
+             "openmpi"
+             ]
+}

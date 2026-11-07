@@ -1,0 +1,111 @@
+/*!
+
+\page create_sketcher_page 2D Sketcher
+
+The 2D Sketcher allows drawing arbitrary 2D shapes. 
+
+To create a <b>2D Sketch</b> select in the main menu  <b>New Entity -> Basic -> 2D Sketch</b>. 
+
+\image html sketcher_dlg.png
+
+At first it is necessary to define the reference coordinate system, where the sketch will be created:
+- The XOY plane of the <b>Global coordinate system</b> is suggested by default (if no plane or planar face is selected when <b>2D Sketcher</b> is activated). 
+- If any Local Coordinate Systems have been created in the study earlier, they can be selected as a reference coordinate system in the corresponding list box.
+- The \b Arrow button allows selecting a \b plane or a <b>planar face</b> in the viewer or in the object browser as the reference coordinate system for the sketch. The start point will be set in the \b geometric \b center of the face.  
+- <b>Restore</b> button orientates the viewer correspondingly to the chosen working plane and fits the scene to show all objects. 
+
+It is possible to create sketches of two types:
+- \b Profiles made of <b>line segments</b> and \b arcs, or 
+- \b Rectangles. 
+
+<h2>Creation of a Profile by straight segments</h2>
+
+- Choose \b segment radio button to start a \b profile.
+
+- Define the start point. By default the start point of the curve is located at the origin of the reference coordinate system. A point in 2D Sketcher can be defined in one of three ways: 
+
+  - By \b Absolute coordinates. Select \b Absolute radio button in \b Points group, input \b X and \b Y values and click \b Apply button:
+  \image html 2dsketch1.png
+  
+  - By \b Relative coordinates. Select \b Relative radio button in \b Points group, input \b DX and \b DY values and click \b Apply button. 
+  \image html 2dsketch2.png
+
+  - By \b Selection of an existing point. Select \b Selection radio button in \b Points group, select a point in the viewer or in the object browser and click \b Apply button.
+  \image html 2dsketch3.png
+
+- Define the next point. Together these two points form the first segment of the sketch.
+
+Alternatively to the definition by \b Points it is possible to define segments by \b Direction and \b Distance.  
+ 
+- The \b Direction can be:
+
+  - Defined by an \b Angle to the previous segment.
+  \image html 2dsketch4.png
+  
+  - \b Perpendicular to the previous segment (i.e. the Angle is 90 degrees).
+  \image html 2dsketch5.png
+  
+  - \b Tangent (collinear) to the previous segment (i.e. the Angle is 0 degrees).
+  \image html 2dsketch6.png
+  
+  - Defined by <b>VX-VY</b> vector coordinates.   
+  \image html 2dsketch7.png
+	
+- The \b Distance can be defined: 
+
+  - By the absolute segment \b Length
+  - By \b DX - the length of segment projection on X-axis. 
+  - By \b DY - the length of segment projection on Y-axis. 
+	
+- Proceed with creation of the sketch segments and click \b Apply after each step. The drawn segments will be displayed in the viewer. 
+- Use \b Undo and \b Redo buttons to cancel an erroneously applied segment or to restore it. 
+- To finalize, click <b>"Close"</b> button to apply the created wire "as is". 
+- Alternatively, click <b>"Sketch Closure"</b> to close the Sketch by a straight line
+from the last created segment to the start point and apply it.
+
+<h2>Creation of a Profile by ark segments </h2>
+
+If an \b ark radio button is chosen, \b Point or \b Direction define the location of the next point of the sketch, but this point and the previous one are connected by an ark segment. 
+
+\image html 2dsketch10.png "Ark segments"
+	
+- By default, <b>None (Tangential)</b> radio button is selected as <b>Additional Parameter</b>,  and the arc is \b tangential to the end of the sketch, which means that it is created on two points as a half-circle with radius equal to a half of the distance between these points.
+
+\image html 2dsketch12.png
+
+- \b Radius radio-button allows creating a more limited arc segment by defining a custom ark radius, which must be greater than half of the distance between the last point and the end point of the arc. 
+	
+\image html 2dsketch8.png
+
+- Finally, \b Center radio-button allows explicitly defining the center of the circle. If an arc segment cannot be built on the defined points, a warning is shown.
+	
+\image html 2dsketch9.png 
+	
+<h2>Creation of a Rectangle profile</h2>
+
+\n To draw a \b rectangle, select a \b rectangle radio button.
+
+\image html sketcher_dlg2.png
+
+Draw a rectangle with the mouse directly in the view or input the coordinates of its two opposite vertices in the dialog.
+
+<h2>TUI Commands</h2>
+
+<em>geompy.MakeSketcherOnPlane(Command, WorkingPlane)</em>
+
+This algorithm creates a sketcher (wire or face), following the textual description, passed through the <i>Command</i> argument. The edges of the resulting wire or face will be arcs of circles and/or linear segments.
+
+- \em Command is a string, defining the sketcher by the coordinates of points in the current LCS.
+- <em>WorkingPlane</em> can be a Local CS, a plane, or a planar face.
+
+Another way to create the 2D Sketcher in TUI is using Sketcher2D interface.
+
+<em>sk = geompy.Sketcher2D()</em> - returns an instance of Sketcher2D interface <i>sk</i>.
+
+\image html sketch_example.png
+
+See the \ref gsketcher.Sketcher2D "Sketcher2D" interface documentation for more information.
+
+Our <b>TUI Scripts</b> provide you with useful examples of the use of
+\ref tui_sketcher_page "2D Sketcher".
+*/

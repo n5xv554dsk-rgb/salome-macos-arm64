@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HYBRIDPluginGUI_StdWidget_QTD</class>
+ <widget class="QWidget" name="HYBRIDPluginGUI_StdWidget_QTD">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>398</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>HYBRID_VL_OPTIONS</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>HYBRID_NB_LAYERS</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="SalomeApp_IntSpinBox" name="myNbOfBoundaryLayers"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>HYBRID_SIZE_MODE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="myBoundaryLayersSizeMode">
+        <item>
+         <property name="text">
+          <string>HYBRID_GLOBAL</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_LOCAL</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>HYBRID_1ST_LAYER_HEIGHT</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>HYBRID_HEIGHT_IS_RELATIVE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="myHeightIsRelative">
+        <item>
+         <property name="text">
+          <string>HYBRID_NO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_YES</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>HYBRID_GROWTH_OF_LAYERS</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="myBoundaryLayersGrowth">
+        <item>
+         <property name="text">
+          <string>HYBRID_LAYER_GROWTH_DOWNWARD</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_LAYER_GROWTH_UPWARD</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>HYBRID_MAX_ELEM_ANGLE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="SMESHGUI_SpinBox" name="myBoundaryLayersMaxElemAngle"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>HYBRID_GEOM_PROGRESSION</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="SMESHGUI_SpinBox" name="myBoundaryLayersProgression"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>HYBRID_IMPRINTING</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QComboBox" name="myImprinting">
+        <item>
+         <property name="text">
+          <string>HYBRID_NO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_YES</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>HYBRID_SNAPPING</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QComboBox" name="mySnapping">
+        <item>
+         <property name="text">
+          <string>HYBRID_NO</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_YES</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="SMESHGUI_SpinBox" name="myHeightFirstLayer"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>HYBRID_OTHER_OPTIONS</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>HYBRID_GENERATION_ELEMENT</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="myElementGeneration">
+        <item>
+         <property name="text">
+          <string>HYBRID_GENERATION_TETRA_DOMINANT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_GENERATION_HEXA_DOMINANT</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_GENERATION_CARTESIAN_CORE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HYBRID_GENERATION_EXTRUSION_ONLY</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="myCoreSizeEnabled">
+        <property name="text">
+         <string>HYBRID_CORE_SIZE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="SMESHGUI_SpinBox" name="myCoreSize"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>438</width>
+       <height>7</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SalomeApp_IntSpinBox</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SalomeApp_IntSpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SMESHGUI_SpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header location="global">SMESHGUI_SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

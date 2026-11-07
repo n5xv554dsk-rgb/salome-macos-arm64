@@ -1,0 +1,287 @@
+<!--
+  Copyright (C) 2006-2026  CEA/DEN, EDF R&D
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+-->
+
+<proc>
+    <!-- types -->
+    <!-- inline -->
+
+<inline name="node_0_0" >
+<script><code>
+c=a+b
+print(c)
+</code></script>
+<inport name="a" type="int"/>
+<inport name="b" type="int"/>
+<outport name="c" type="int"/>
+</inline>
+
+
+<node name="node_1_0" type="node_0_0"></node>
+<node name="node_1_1" type="node_0_0"></node>
+<node name="node_2_0" type="node_0_0"></node>
+<node name="node_2_1" type="node_0_0"></node>
+<node name="node_2_2" type="node_0_0"></node>
+
+<inline name="node_3_0" >
+<script><code>
+c=a+b/0
+print(c)
+</code></script>
+<inport name="a" type="int"/>
+<inport name="b" type="int"/>
+<outport name="c" type="int"/>
+</inline>
+
+
+<node name="node_3_1" type="node_0_0"></node>
+<node name="node_3_2" type="node_0_0"></node>
+<node name="node_3_3" type="node_0_0"></node>
+<node name="node_4_0" type="node_0_0"></node>
+<node name="node_4_1" type="node_0_0"></node>
+<node name="node_4_2" type="node_0_0"></node>
+<node name="node_4_3" type="node_0_0"></node>
+<node name="node_4_4" type="node_0_0"></node>
+<node name="node_5_0" type="node_0_0"></node>
+<node name="node_5_1" type="node_0_0"></node>
+<node name="node_5_2" type="node_0_0"></node>
+<node name="node_5_3" type="node_0_0"></node>
+<node name="node_5_4" type="node_0_0"></node>
+<node name="node_5_5" type="node_0_0"></node>
+
+
+    <!-- service -->
+    <!-- control -->
+
+    
+<control> <fromnode>node_0_0</fromnode> <tonode>node_1_0</tonode> </control>
+<control> <fromnode>node_0_0</fromnode> <tonode>node_1_1</tonode> </control>
+<control> <fromnode>node_1_0</fromnode> <tonode>node_2_0</tonode> </control>
+<control> <fromnode>node_1_0</fromnode> <tonode>node_2_1</tonode> </control>
+<control> <fromnode>node_1_1</fromnode> <tonode>node_2_1</tonode> </control>
+<control> <fromnode>node_1_1</fromnode> <tonode>node_2_2</tonode> </control>
+<control> <fromnode>node_2_0</fromnode> <tonode>node_3_0</tonode> </control>
+<control> <fromnode>node_2_0</fromnode> <tonode>node_3_1</tonode> </control>
+<control> <fromnode>node_2_1</fromnode> <tonode>node_3_1</tonode> </control>
+<control> <fromnode>node_2_1</fromnode> <tonode>node_3_2</tonode> </control>
+<control> <fromnode>node_2_2</fromnode> <tonode>node_3_2</tonode> </control>
+<control> <fromnode>node_2_2</fromnode> <tonode>node_3_3</tonode> </control>
+<control> <fromnode>node_3_0</fromnode> <tonode>node_4_0</tonode> </control>
+<control> <fromnode>node_3_0</fromnode> <tonode>node_4_1</tonode> </control>
+<control> <fromnode>node_3_1</fromnode> <tonode>node_4_1</tonode> </control>
+<control> <fromnode>node_3_1</fromnode> <tonode>node_4_2</tonode> </control>
+<control> <fromnode>node_3_2</fromnode> <tonode>node_4_2</tonode> </control>
+<control> <fromnode>node_3_2</fromnode> <tonode>node_4_3</tonode> </control>
+<control> <fromnode>node_3_3</fromnode> <tonode>node_4_3</tonode> </control>
+<control> <fromnode>node_3_3</fromnode> <tonode>node_4_4</tonode> </control>
+<control> <fromnode>node_4_0</fromnode> <tonode>node_5_0</tonode> </control>
+<control> <fromnode>node_4_0</fromnode> <tonode>node_5_1</tonode> </control>
+<control> <fromnode>node_4_1</fromnode> <tonode>node_5_1</tonode> </control>
+<control> <fromnode>node_4_1</fromnode> <tonode>node_5_2</tonode> </control>
+<control> <fromnode>node_4_2</fromnode> <tonode>node_5_2</tonode> </control>
+<control> <fromnode>node_4_2</fromnode> <tonode>node_5_3</tonode> </control>
+<control> <fromnode>node_4_3</fromnode> <tonode>node_5_3</tonode> </control>
+<control> <fromnode>node_4_3</fromnode> <tonode>node_5_4</tonode> </control>
+<control> <fromnode>node_4_4</fromnode> <tonode>node_5_4</tonode> </control>
+<control> <fromnode>node_4_4</fromnode> <tonode>node_5_5</tonode> </control>
+
+
+    <!-- datalinks -->
+
+    
+<datalink>
+   <fromnode>node_0_0</fromnode> <fromport>c</fromport>
+   <tonode>node_1_0</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_0_0</fromnode> <fromport>c</fromport>
+   <tonode>node_1_1</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_1_0</fromnode> <fromport>c</fromport>
+   <tonode>node_2_0</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_1_0</fromnode> <fromport>c</fromport>
+   <tonode>node_2_1</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_1_1</fromnode> <fromport>c</fromport>
+   <tonode>node_2_1</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_1_1</fromnode> <fromport>c</fromport>
+   <tonode>node_2_2</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_0</fromnode> <fromport>c</fromport>
+   <tonode>node_3_0</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_0</fromnode> <fromport>c</fromport>
+   <tonode>node_3_1</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_1</fromnode> <fromport>c</fromport>
+   <tonode>node_3_1</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_1</fromnode> <fromport>c</fromport>
+   <tonode>node_3_2</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_2</fromnode> <fromport>c</fromport>
+   <tonode>node_3_2</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_2_2</fromnode> <fromport>c</fromport>
+   <tonode>node_3_3</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_0</fromnode> <fromport>c</fromport>
+   <tonode>node_4_0</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_0</fromnode> <fromport>c</fromport>
+   <tonode>node_4_1</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_1</fromnode> <fromport>c</fromport>
+   <tonode>node_4_1</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_1</fromnode> <fromport>c</fromport>
+   <tonode>node_4_2</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_2</fromnode> <fromport>c</fromport>
+   <tonode>node_4_2</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_2</fromnode> <fromport>c</fromport>
+   <tonode>node_4_3</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_3</fromnode> <fromport>c</fromport>
+   <tonode>node_4_3</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_3_3</fromnode> <fromport>c</fromport>
+   <tonode>node_4_4</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_0</fromnode> <fromport>c</fromport>
+   <tonode>node_5_0</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_0</fromnode> <fromport>c</fromport>
+   <tonode>node_5_1</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_1</fromnode> <fromport>c</fromport>
+   <tonode>node_5_1</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_1</fromnode> <fromport>c</fromport>
+   <tonode>node_5_2</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_2</fromnode> <fromport>c</fromport>
+   <tonode>node_5_2</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_2</fromnode> <fromport>c</fromport>
+   <tonode>node_5_3</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_3</fromnode> <fromport>c</fromport>
+   <tonode>node_5_3</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_3</fromnode> <fromport>c</fromport>
+   <tonode>node_5_4</tonode> <toport>a</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_4</fromnode> <fromport>c</fromport>
+   <tonode>node_5_4</tonode> <toport>b</toport>
+</datalink>
+<datalink>
+   <fromnode>node_4_4</fromnode> <fromport>c</fromport>
+   <tonode>node_5_5</tonode> <toport>a</toport>
+</datalink>
+
+
+    <!--parameters -->
+
+    
+
+    <parameter>
+        <tonode>node_0_0</tonode> <toport>a</toport>
+        <value><int>0</int></value>
+    </parameter>
+    <parameter>
+        <tonode>node_0_0</tonode> <toport>b</toport>
+        <value><int>1</int></value>
+    </parameter>
+    
+<parameter>
+   <tonode>node_1_0</tonode> <toport>a</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_1_1</tonode> <toport>b</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_2_0</tonode> <toport>a</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_2_2</tonode> <toport>b</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_3_0</tonode> <toport>a</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_3_3</tonode> <toport>b</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_4_0</tonode> <toport>a</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_4_4</tonode> <toport>b</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_5_0</tonode> <toport>a</toport>
+   <value><int>0</int></value>
+</parameter>
+<parameter>
+   <tonode>node_5_5</tonode> <toport>b</toport>
+   <value><int>0</int></value>
+</parameter>
+
+
+</proc>
+    

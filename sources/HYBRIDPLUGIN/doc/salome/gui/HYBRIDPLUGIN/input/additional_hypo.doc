@@ -1,0 +1,29 @@
+/*!
+
+\page additional_hypo_page Layers Meshes
+
+\n <b>Layers Meshes</b> be used to set layers mesh generation.
+
+<li>
+This hypothesis allows creation of layers of highly stretched hexahedra, prisms, and tetrahedra) near
+mesh boundary (onto the wrap), which is beneficial for high quality viscous
+computations. The elements constructed on the layer mesh faces are
+actually hexahedra and prisms and tetraheda.
+</li>
+
+For more detailed description of the this additional hypothesis please refer Distene MG-hybrid User's Guide
+(not yet!, waiting for first official release).
+
+
+\image html hybrid_cylinder_couvercle2.png "Example of a Hybrid 3D mesh with a layer (on top couvercle)"
+\image html hybrid_cylinder_couvercle4.png "Example of a Hybrid 3D mesh with a layer (on top couvercle)"
+\image html hybrid_cylinder_couvercle7.png "Example of a Hybrid 3D mesh with a layer (zoom on top couvercle)"
+
+\image html hybrid_example_cylinder_all1.png "Example of a Hybrid 3D mesh with a layer (blue sky at all wrap)"
+\image html hybrid_example_cylinder_all_layers_and_tetra.png "Example of a Hybrid 3D mesh with a layer (at all wrap, zoom on top)"
+\image html hybrid_example_cylinder_all_layers_and_tetra2.png "Example of a Hybrid 3D mesh with a layer (at all wrap, another zoom on top)"
+
+\image html hybrid_example_cylinder_pyramids.png "Example of a Hybrid 3D mesh with hexa_dominant (only visualize pyramids and hexahedra)"
+
+
+*/

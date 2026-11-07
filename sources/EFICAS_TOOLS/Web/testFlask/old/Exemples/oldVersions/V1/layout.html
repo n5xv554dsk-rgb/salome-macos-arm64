@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{titre}}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <meta name="description" content={{description}}>
+  </head>
+
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+
+</html>
+

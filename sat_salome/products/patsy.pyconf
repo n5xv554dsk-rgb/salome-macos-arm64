@@ -1,0 +1,38 @@
+default :
+{
+    name : "patsy"
+    build_source : "script"
+    compil_script : "pip_install" + $VARS.scriptExtension
+    get_source : "archive"
+    system_info : 
+    {
+        rpm : ['python3-patsy']
+        rpm_dev : ['python3-patsy']
+        apt : ['python3-patsy']
+        apt_dev : ['python3-patsy']
+    }
+    environ :
+    {
+        env_script : $name + ".py"
+    }
+    depend : ["Python", "setuptools"]
+    opt_depend : ['pandas']
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_5_4_no_pip :
+{
+   compil_script : "patsy-0.5.4" + $VARS.scriptExtension 
+    properties:
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}

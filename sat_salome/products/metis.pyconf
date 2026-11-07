@@ -1,0 +1,59 @@
+default :
+{
+    name : "metis"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    system_info :
+    {
+       rpm : ["metis"]
+       rpm_dev : ["metis-devel"]
+       apt : ["libmetis5"]
+       apt_dev : ["libmetis-dev"]
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : []
+    build_depend : ["cmake"]
+    patches : [ ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+       incremental : "yes"
+       is_SALOME_module:"no"
+    }
+}
+
+version_5_1_0  :
+{
+    compil_script :  "metis-5.1.0" + $VARS.scriptExtension
+    patches : [ "metis-use_cat_not_more.patch" ]
+}
+
+version_5_1_0_p10  :
+{
+    compil_script :  "metis-5.1.0-p10" + $VARS.scriptExtension
+    patches : [ "metis-use_cat_not_more.patch" ]
+}
+
+version_5_1_0_win  :
+{
+    patches: [ 'metis-use_cat_not_more.patch','metis-5.1.0_windows.patch']
+    properties :
+    {
+       incremental : "yes"
+       single_install_dir: 'yes' # aimed to solve sat #18914
+    }
+}
+
+version_5_0_2  :
+{
+    name : "metis"
+    build_source : "script"
+    compil_script :  "metis_5_0_2.sh"
+    patches : [ "metis-use_cat_not_more.patch" ]
+}

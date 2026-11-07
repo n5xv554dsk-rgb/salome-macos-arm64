@@ -1,0 +1,156 @@
+# Copyright (C) 2009-2026  EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+# Configuration file
+# $Id$
+# $Name$
+#
+# Fields are separated by a " | " (the space is significative)
+#
+# Keywords :
+#  ENV_SH     : environment script (absolute filename or relative to current directory)
+#  LIB        : archiver
+#  BIBL       : librairies linked with Code_Aster (with options -L/-l eventually)
+#  PYTHON     : Python binary
+#  LINK       : linker command
+#  OPTL       : linker options
+#  CC         : C compiler command
+#  DEFS       : pre-processor #define commands separated by space or comma
+#               they will be added to all compilation options OPTx_x
+#  OPTC_D     : C compiler options using DEBUG mode
+#  OPTC_O     : C compiler options using NODEBUG mode
+#  INCL       : C include flags
+#  F77        : Fortran compiler command
+#  OPTF_D     : Fortran compiler options using DEBUG mode
+#  OPTF_O     : Fortran compiler options using NODEBUG mode
+#  INCLF      : Fortran include flags
+#  F90        : Fortran 90 compiler command
+#  OPTF90_D   : Fortran 90 compiler options using DEBUG mode
+#  OPTF90_O   : Fortran 90 compiler options using NODEBUG mode
+#  INCLF90    : Fortran 90 include flags
+#  G77_AGLA   : used only for configuration management of EDF version
+#  SUPERV     : Code_Aster Python packages
+#  REPPY      : name of 'bibpyt' in the temporary execution directory
+#  ARGPYT     : main python module
+#  ARGEXE     : arguments passed to Code_Aster executable
+#  REPOUT     : tools directory
+#  MAKE_SURCH_OFFI/MAKE_CAPY_OFFI : Python modules to compiling elements catalogs
+#  CRP / CRS  : tools to check source files and programming rules
+#  ID_PERF    : a label to identify a group of machines (use by TEST_TEMPS command)
+#
+ID_PERF        | id      | -     | claui2c6
+#
+ENV_SH         | env     | -     | /local/cchris/Aster/V10.3/aster/STA10.3/profile.sh
+#
+LIB            | ar      | ?     | /usr/bin/ar -rv
+#
+BIBL           | python  | 2.4   | -L/local/cchris/pkg/python2.7/install/lib -L/local/cchris/pkg/python2.7/install/lib/python2.7/config -lpython2.7
+BIBL           | med     | 2.3.5 | -L/local/cchris/Aster/V10.3/aster/public/med-2.3.6/lib -lmed
+BIBL           | hdf5    | 1.6.5 | -L/local/cchris/Aster/V10.3/aster/public/hdf5-1.6.9/lib -lhdf5
+BIBL           | zmat    | 8.4   | 
+BIBL           | mumps   | ?     | /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libdmumps.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libzmumps.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libsmumps.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libcmumps.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libmumps_common.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libpord.a /local/cchris/Aster/V10.3/aster/public/mumps-4.9.2/lib/libmpiseq.a -L/local/cchris/Aster/V10.3/aster/public/metis-4.0/lib -lmetis
+BIBL           | scotch  | 4.0   | 
+BIBL           | math    | ?     | -L/usr/lib -llapack -L/usr/lib -lblas -L/usr/lib/gcc/x86_64-linux-gnu/4.3 -lgfortran
+BIBL           | mpi     | 2     | 
+BIBL           | c++     | ?     | -L/usr/lib/gcc/x86_64-linux-gnu/4.3 -lstdc++ -lsupc++
+BIBL           | sys     | ?     | -Wl,--allow-multiple-definition -Wl,--export-dynamic -ldl -lutil -lm -lpthread -lz
+BIBL           | salome  | ?     | -L/local/cchris/Salome/Install/KERNEL_V6/lib/salome -lCalciumC -lSalomeDSCSuperv -lSalomeDSCContainer -lSalomeDatastream -lSalomeDSCSupervBasic -Wl,--rpath -Wl,/local/cchris/Salome/Install/KERNEL_V6/lib/salome
+#
+DEFS           | defined | ?     | LINUX64 _HAVE_MUMPS _DISABLE_SCOTCH
+#
+NOBUILD        | option  | ?     | 
+#
+PYTHON         | python  | 2.4   | /local/cchris/Salome/envSalome6/spython/bin/python
+#
+LINK           | link    | ?     | /usr/bin/gfortran
+OPTL           | link    | ?     | -fopenmp
+#
+CC             | cc      | ?     | /usr/bin/gcc
+OPTC_D         | cc      | ?     | -c -g  -fno-stack-protector -fPIC -fopenmp
+OPTC_O         | cc      | ?     | -c -O2 -fno-stack-protector -fPIC -fopenmp
+INCL           | include | ?     | -I/local/cchris/Aster/V10.3/aster/STA10.3/bibc/include -I/local/cchris/pkg/python2.7/install/include/python2.7 -I/local/cchris/Salome/envSalome6/spython/lib/python2.7/site-packages/numpy/core/include -I/local/cchris/Aster/V10.3/aster/public/hdf5-1.6.9/include
+#
+F77            | f77     | ?     | /usr/bin/gfortran
+OPTF_D         | f77     | ?     | -c -g  -fPIC  -fopenmp  -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+OPTF_O         | f77     | ?     | -c -O2 -fPIC  -fopenmp  -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+INCLF          | include | ?     | -I/local/cchris/Salome/Install/KERNEL_V6/include/salome
+#
+F90            | f90     | ?     | /usr/bin/gfortran
+OPTF90_D       | f90     | ?     | -c -g  -ffixed-line-length-0 -x f77-cpp-input -fPIC  -fopenmp  -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+OPTF90_O       | f90     | ?     | -c -O2 -ffixed-line-length-0 -x f77-cpp-input -fPIC  -fopenmp  -fdefault-double-8 -fdefault-integer-8 -fdefault-real-8
+INCLF90        | include | ?     |  -I/local/cchris/Aster/V10.3/aster/STA10.3/bibf90/include_mumps-4.9.2
+#
+G77_AGLA       | g77     | ?     | unused
+#
+SRCFOR         | src     | 11-04 | bibfor
+SRCF90         | src     | 11-04 | bibf90
+SRCFERM        | src     | 11-04 | fermetur
+SRCC           | src     | 11-04 | bibc
+SRCPY          | src     | 11-04 | bibpyt
+SRCCATA        | src     | 11-04 | catalo
+SRCCAPY        | src     | 11-04 | catapy
+SRCTEST        | src     | 11-04 | astest
+SRCMAT         | src     | 11-04 | materiau
+SRCHIST        | src     | 11-04 | histor
+#
+MAKE           | build   | -     | debug nodebug
+BIN_NODBG      | bin     | 11-04 | asteru
+BIN_DBG        | bin     | 11-04 | asterd
+BINCMDE        | bin     | 11-04 | commande
+BINELE         | bin     | 11-04 | elements
+BINPICKLED     | bin     | 11-04 | cata_ele.pickled
+BINLIB_NODBG   | bin     | 11-04 | lib/libaster.a
+BINLIB_DBG     | bin     | 11-04 | lib/libasterd.a
+BINLIBF_NODBG  | bin     | 02-05 | lib/libferm.a
+BINLIBF_DBG    | bin     | 02-05 | lib/libfermd.a
+BINOBJ_NODBG   | bin     | 11-04 | obj/aster
+BINOBJF_NODBG  | bin     | 11-04 | obj/ferm
+BINOBJ_DBG     | bin     | 11-04 | obj/asterd
+BINOBJF_DBG    | bin     | 11-04 | obj/fermd
+#
+REPPY          | exec    | 11-04 | Python
+ARGPYT         | exec    | 03-02 | Execution/E_SUPERV.py
+ARGEXE         | exec    | 03-02 | -eficas_path ./Python
+#
+MAKE_SURCH_OFFI | build  | 11-04 | Lecture_Cata_Ele/make_surch_offi.py
+MAKE_CAPY_OFFI  | build  | 11-04 | Lecture_Cata_Ele/make_capy_offi.py
+#
+REPOUT         | exec    | 11-04 | /local/cchris/Aster/V10.3/aster/outils
+REPMAT         | exec    | 02-05 | /local/cchris/Aster/V10.3/aster/STA10.3/materiau
+REPDEX         | exec    | 02-05 | /local/cchris/Aster/V10.3/aster/STA10.3/datg
+#
+SUPERV         | exec    | 03-02 | Accas
+SUPERV         | exec    | 03-02 | Build
+SUPERV         | exec    | 03-02 | Comportement
+SUPERV         | exec    | 03-02 | Execution
+SUPERV         | exec    | 03-02 | Intranet
+SUPERV         | exec    | 03-02 | Macro
+SUPERV         | exec    | 12-06 | Meidee
+SUPERV         | exec    | 09-06 | Messages
+SUPERV         | exec    | 03-02 | Noyau
+SUPERV         | exec    | 05-04 | Outils
+SUPERV         | exec    | 01-07 | SD
+SUPERV         | exec    | 01-03 | Stanley
+SUPERV         | exec    | 03-02 | Utilitai
+SUPERV         | exec    | 03-02 | Validation
+#
+GZIP           | tool    | ?     | ?GZIP?
+#
+I18N           | i18n    | -     | 
+

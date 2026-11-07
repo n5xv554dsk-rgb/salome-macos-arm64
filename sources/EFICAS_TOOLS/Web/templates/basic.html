@@ -1,0 +1,81 @@
+<!-- <!doctype html> -->
+<!-- <html lang="en"> -->
+<!--   <head> -->
+<!--     <title>{% block title %} MyFORM {{titre}} {% endblock %}</title> -->
+<!--     <meta charset="utf-8"> -->
+<!--     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}"> -->
+<!--     <meta name="description" content={{description}}> -->
+<!--     <link rel="shortcut icon" href="../images/favicon-32x32.png"> -->
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+
+<!--   <\!-- <div class="container"> -\-> -->
+<!--   <\!--   {% block content %} {% endblock %} -\-> -->
+<!--   <\!-- </div> -\-> -->
+
+<!-- <\!-- <title>Bienvenue, visiteur du futur !</title> -\-> -->
+<!-- <\!-- <div class="content"> -\-> -->
+<!-- <\!--   <h2>Identification</h2> -\-> -->
+<!-- <\!--   <hr> -\-> -->
+
+<!-- <\!--   <form method="POST" action="/"> -\-> -->
+<!-- <\!--     <label>Utilisateur</label><br /> -\-> -->
+<!-- <\!--     <input type="text" name="user" id="user"><br /> -\-> -->
+<!-- <\!--     <label>Mot de passe</label><br /> -\-> -->
+<!-- <\!--     <input type="password" name="passwd" id="passwd"><br/> -\-> -->
+<!-- <\!--     <select name="active" id="active"> -\-> -->
+<!-- <\!--       <option value="no">Non</option> -\-> -->
+<!-- <\!--       <option value="yes">Oui</option> -\-> -->
+<!-- <\!--     </select><br /> -\-> -->
+<!-- <\!--     <input type="submit" name="action" value="register"> -\-> -->
+<!-- <\!--   </form> -\-> -->
+<!-- <\!-- </div> -\-> -->
+
+<!--   </head> -->
+
+<!-- <div class="content"> -->
+<!--   <h2>Identification</h2> -->
+<!--   <hr> -->
+<!--   <form method="POST" action="/"> -->
+<!--     {% for field in form %} -->
+<!--     {{ field.label }} -->
+<!--     {{ field }}<br/> -->
+<!--     {% endfor %} -->
+<!--   </form> -->
+<!-- </div> -->
+
+
+<!-- </html> -->
+
+
+<!doctype html>
+<html>
+  <head>
+    <title>Bienvenue, visiteur du futur !</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=stylesheet type=text/css href="{{ url_for('static',
+					     filename='bootstrap.min.css') }}" media="screen">
+    <link rel=stylesheet type=text/css href="{{ url_for('static',
+					     filename='bootstrap-theme.min.css') }}" media="screen">
+  </head>
+  <body>
+    <div class="content" style="padding: 10px; width: 300px;">
+      <form method="POST" action="/form">
+	<fieldset>
+	  <legend>Identification</legend>
+	  {% for field in form %}
+	  <div class="form-group">
+	    {% if field.type == 'SubmitField' %}
+	      {{ field(class="btn btn-primary") }}
+	    {% else %}
+	      {{ field.label }}
+	      {{ field(class="form-control") }}
+	    {% endif %}
+	  </div>
+	  {% endfor %}
+	</fieldset>
+      </form>
+    </div>
+  </body>
+</html>

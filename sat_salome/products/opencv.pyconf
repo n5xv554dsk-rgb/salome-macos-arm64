@@ -1,0 +1,132 @@
+default :
+{
+    name : "opencv"
+    build_source : "script"
+    compil_script :  $name  + $VARS.scriptExtension
+    get_source : "archive"
+    system_info : 
+    {
+        rpm : ["opencv"]
+        rpm_dev : ["opencv-devel"]
+        apt : ["python3-opencv"]
+        apt_dev : ["libopencv-dev"]
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["Python", "Sphinx", "numpy"]
+    build_depend : ["cmake"]
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+default_win:
+{
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "yes"
+    }
+}
+
+version_3_2_0 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", 
+               "SPNS-29988-opencv-3.2.0-persistence.patch", 
+               "opencv-3.2.0-python2-cmake.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch"]
+}
+
+version_3_2_0_FD44 :
+{
+    patches : ["opencv-3.2.0-ccache.patch",
+               "SPNS-29988-opencv-3.2.0-persistence.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch",
+               "opencv-Revert-cuda-fix-fp16-compilation.patch",
+               "opencv-Revert-check-FP16-build-condition-correctly.patch"]
+}
+
+version_3_2_0_UB26_04 :
+{
+    patches : ["opencv-3.2.0-ccache.patch",
+               "SPNS-29988-opencv-3.2.0-persistence.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch",
+               "opencv-Revert-cuda-fix-fp16-compilation.patch",
+               "opencv-Revert-check-FP16-build-condition-correctly.patch"]
+}
+
+version_3_2_0_CO10 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", 
+               "SPNS-29988-opencv-3.2.0-persistence.patch", 
+               "SPNS-29988-opencv-3.2.0-cv2.patch", 
+               "opencv-Revert-cuda-fix-fp16-compilation.patch", 
+               "opencv-Revert-check-FP16-build-condition-correctly.patch"]
+}
+
+version_3_2_0_FD42 :
+{
+    patches : ["opencv-3.2.0-ccache.patch",
+               "SPNS-29988-opencv-3.2.0-persistence.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch",
+               "opencv-Revert-cuda-fix-fp16-compilation.patch",
+               "opencv-Revert-check-FP16-build-condition-correctly.patch"]
+}
+
+version_3_2_0_FD40 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", "SPNS-29988-opencv-3.2.0-persistence.patch", "SPNS-29988-opencv-3.2.0-cv2.patch"]
+}
+
+version_3_2_0_FD38 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", "SPNS-29988-opencv-3.2.0-persistence.patch", "SPNS-29988-opencv-3.2.0-cv2.patch"]
+}
+
+version_3_2_0_FD37 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", "SPNS-29988-opencv-3.2.0-persistence.patch", "SPNS-29988-opencv-3.2.0-cv2.patch"]
+}
+
+version_3_2_0_FD36 :
+{
+    patches : ["opencv-3.2.0-ccache.patch", "SPNS-29988-opencv-3.2.0-persistence.patch", "SPNS-29988-opencv-3.2.0-cv2.patch"]
+}
+
+version_3_2_0_DB12 :
+{
+    patches : ["opencv-3.2.0-ccache.patch",
+               "SPNS-29988-opencv-3.2.0-persistence.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch"
+              ]
+}
+
+version_3_2_0_win :
+{
+    patches : ["opencv-3.2.0-ccache.patch",
+               "opencv-3.2.0_windows.patch",
+               "SPNS-29988-opencv-3.2.0-cv2.patch",
+               "opencv-3.2.0.p004-shuffle.patch"
+              ]
+}
+
+version_3_2_0_with_ffmpeg :
+{
+    archive_info : {archive_name : "opencv-3.2.0.tar.gz"}
+    compil_script :  "opencv-3.2.0-with-ffmpeg" + $VARS.scriptExtension
+    patches : ["opencv-3.2.0-ccache.patch", "opencv-with-ffmpeg.patch"]
+    depend : ["Python", "Sphinx", "numpy", "ffmpeg", "lapack"]
+}
+
+
+version_2_4_6_1 :
+{
+    patches : ["opencv-2.4.6.1-gcc6.patch"]
+}

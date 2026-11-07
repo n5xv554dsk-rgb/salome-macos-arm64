@@ -1,0 +1,10 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Objects:"
+                  tooltip="Select edges, wires or faces."
+                  shape_types="edges wires faces"
+                  concealment="true">
+    <validator id="BuildPlugin_ValidatorBaseForBuild" parameters="edge,wire,face,compound"/>
+  </multi_selector>
+  <validator id="BuildPlugin_ValidatorBaseForFace" parameters="base_objects"/>
+</source>

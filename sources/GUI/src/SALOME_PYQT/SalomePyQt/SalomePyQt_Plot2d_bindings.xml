@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<!--
+/****************************************************************************
+**
+** Copyright (C) 2007-2025  CEA, EDF, OPEN CASCADE
+**
+** Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+** CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Lesser General Public
+** License as published by the Free Software Foundation; either
+** version 2.1 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public
+** License along with this library; if not, write to the Free Software
+** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+**
+** See http:**www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+**
+**
+****************************************************************************/
+-->
+
+<typesystem package="SalomePyQt">
+
+  <primitive-type name="bool"/>
+  <load-typesystem name="typesystem_core.xml" generate="no"/>
+  <load-typesystem name="typesystem_gui.xml" generate="no"/>
+  <load-typesystem name="typesystem_widgets.xml" generate="no"/>
+  <enum-type name="Axis"/>
+  <enum-type name="ObjectType"/>
+  <object-type name="Plot2d_Object" generate="no"/>
+  <object-type name="Plot2d_Curve" generate="yes">
+    <add-function signature="addPoint( double, double, const QString&amp;)">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 double x = (double)%1;
+                 double y = (double)%2;
+                 QString name= (QString)%3;
+                 %CPPSELF.addPoint(x,y,name);
+                 Py_RETURN_NONE;        
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="clearAllPoints()">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 %CPPSELF.clearAllPoints();
+                 Py_RETURN_NONE;        
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="deletePoint(int)">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 int i = (int)%1;
+                 %CPPSELF.deletePoint(i);
+                 Py_RETURN_NONE;        
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="insertPoint( int, double, double, const QString&amp; )">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 int i    = (int)%1;
+                 double x = (double)%2;
+                 double y = (double)%3;
+                 QString name= (QString)%4;
+                 %CPPSELF.insertPoint(i, x,y,name);
+                 Py_RETURN_NONE;        
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="setName( const QString&amp; )">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 QString name= (QString)%1;
+                 %CPPSELF.setName(name);
+                 Py_RETURN_NONE;        
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="setXAxis(Axis)">
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 int ax = (int)%1;
+                 %CPPSELF.setXAxis(QwtPlot::Axis(ax));
+                 Py_RETURN_NONE;
+        ]]>
+      </inject-code>
+    </add-function>
+    
+    <add-function signature="getXAxis()" return-type='int'>
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 return PyLong_FromLong((long)%CPPSELF.getXAxis());
+        ]]>
+      </inject-code>
+    </add-function>      
+    
+    <add-function signature="setYAxis(Axis)">
+      <inject-code class="native" position="beginning">
+        <![CDATA[
+                 int ay = (int)%1;
+                 %CPPSELF.setYAxis(QwtPlot::Axis(ay));
+                 Py_RETURN_NONE;
+        ]]>
+      </inject-code>
+    </add-function>
+    
+    <add-function signature="getYAxis()" return-type='int'>
+      <inject-code class="target" position="beginning">
+        <![CDATA[
+                 return PyLong_FromLong((long)%CPPSELF.getYAxis());
+        ]]>
+      </inject-code>
+    </add-function>
+    <add-function signature="addPoints(PyObject*, PyObject*)" return-type="PyObject*">
+      <inject-code class="target" position="beginning">
+      <![CDATA[
+              PyObject *a0, *a1;
+              if (!PyArg_ParseTuple(args, "OO", &a0, &a1)){
+                 PyErr_Format(PyExc_TypeError,"Please provide inputs!");
+                 Py_RETURN_NONE;
+               }
+               int nx = PyList_Size(a0);
+               int ny = PyList_Size(a1);
+               if( nx != ny ) {
+                 PyErr_Format(PyExc_TypeError,"The dimension of x and y should be the same. It is %d and %d currently.", nx, ny);
+                 Py_RETURN_NONE;
+               }
+               for (int i = 0; i < nx; i++) {
+                 PyObject* pX = PyList_GetItem(a0, i);
+                 PyObject* pY = PyList_GetItem(a1, i);
+                 if (!pX || !pY) {
+                   PyErr_SetString(PyExc_TypeError, "Failed to get items from the input lists.");
+                   Py_RETURN_NONE;
+                 }
+                 double aX = PyFloat_AsDouble(pX);
+                 double aY = PyFloat_AsDouble(pY);
+                 if (PyErr_Occurred()) {
+                     PyErr_SetString(PyExc_TypeError, "Failed to convert list items to float.");
+                     Py_RETURN_NONE;
+                   }
+                   %CPPSELF.addPoint(aX, aY);
+                 }
+                 Py_RETURN_NONE;
+      ]]>
+      </inject-code>
+    </add-function>
+    <rejection class="Plot2d_Curve" function-name="setDeviationData" />
+    <rejection class="Plot2d_Curve" function-name="getDeviationData" />
+  </object-type>
+</typesystem>

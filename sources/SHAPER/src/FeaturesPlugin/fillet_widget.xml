@@ -1,0 +1,55 @@
+<source>
+  <toolbox id="creation_method">
+    <box id="fixed_radius"
+         title="Fixed radius"
+         tooltip="Fillet with fixed radius"
+         icon="icons/Features/fillet_fixed_radius.png">
+      <multi_selector id="main_objects"
+                      label="Faces or/and edges"
+                      icon=""
+                      tooltip="Select objects"
+                      shape_types="edges faces"
+                      use_choice="false"
+                      concealment="true">
+        <validator id="PartSet_DifferentObjects"/>
+        <validator id="FeaturesPlugin_ValidatorFilletSelection"/>
+      </multi_selector>
+      <doublevalue id="radius1"
+                   label="Radius"
+                   tooltip="Fillet radius."
+                   min="0"
+                   default="2">
+        <validator id="GeomValidators_Positive"/>
+      </doublevalue>
+    </box>
+    <box id="variable_radius"
+         title="Varying radius"
+         tooltip="Fillet with varying radius"
+         icon="icons/Features/fillet_var_radius.png">
+      <multi_selector id="main_objects"
+                      label="Faces or/and edges"
+                      icon=""
+                      tooltip="Select objects"
+                      shape_types="edges faces"
+                      use_choice="false"
+                      concealment="true">
+        <validator id="PartSet_DifferentObjects"/>
+        <validator id="FeaturesPlugin_ValidatorFilletSelection"/>
+      </multi_selector>
+      <doublevalue id="radius1"
+                   label="Start radius"
+                   tooltip="Fillet radius at start point."
+                   min="0"
+                   default="2">
+        <validator id="GeomValidators_Positive"/>
+      </doublevalue>
+      <doublevalue id="radius2"
+                   label="End radius"
+                   tooltip="Fillet radius at end point."
+                   min="0"
+                   default="2">
+        <validator id="GeomValidators_Positive"/>
+      </doublevalue>
+    </box>
+  </toolbox>
+</source>

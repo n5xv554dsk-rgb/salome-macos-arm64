@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
+<context>
+    <name>@default</name>
+    <message>
+        <source>APP_DEFAULT_ICO</source>
+        <translation>icon_default.png</translation>
+    </message>
+    <message>
+        <source>ABOUT</source>
+        <translation>icon_about.png</translation>
+    </message>
+    <message>
+        <source>ABOUT_SPLASH</source>
+        <translation>icon_about.png</translation>
+    </message>
+    <message>
+        <source>APP_BASE_LOGO</source>
+        <translation>icon_applogo.png</translation>
+    </message>
+    <message>
+        <source>ICON_SELECT</source>
+        <translation>icon_select.png</translation>
+    </message>
+    <message>
+        <source>APP_MODULE_ICO</source>
+        <translation>icon_module.png</translation>
+    </message>
+        <message>
+        <source>ICON_WWW</source>
+        <translation>icon_earth.png</translation>
+    </message>
+    <message>
+        <source>ICON_LIFE_RIGN</source>
+        <translation>icon_life_ring.png</translation>
+    </message>
+    <message>
+        <source>ICON_ADD_MODULE</source>
+        <translation>icon_add_module.png</translation>
+    </message>
+    <message>
+        <source>ICON_REMOVE_MODULE</source>
+        <translation>icon_remove_module.png</translation>
+    </message>
+    <message>
+        <source>ICON_INFO_MODULE</source>
+        <translation>icon_info_module.png</translation>
+    </message>
+</context>
+</TS>

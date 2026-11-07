@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns="http://chercheurs.edf.com/logiciels/efficas" xmlns:efficas="http://chercheurs.edf.com/logiciels/efficas" targetNamespace="http://chercheurs.edf.com/logiciels/efficas" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0" vc:minVersion="1.1">
+	<!--<xs:import  schemaLocation="./Model Efficas (1.1)  v5.xsd" namespace="http://chercheurs.edf.com/logiciels/efficas"/>
+-->
+	<xs:override schemaLocation="./Model Efficas (1.1)  v9.xsd">
+		<xs:attribute name="attribut" type="AT_attribut"/> 
+		<xs:simpleType name="AT_attribut">
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="n"/>
+				<xs:enumeration value="o"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<!--		<xs:complexType name="essai">
+			<xs:sequence>
+				<xs:element ref="valeurDef" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute ref="attribut" default="n"/>
+		</xs:complexType>
+-->
+		<xs:complexType name="T_SIMP">
+			<xs:sequence>
+				<xs:element ref="doc" minOccurs="0"/>
+				<xs:element ref="portee" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>La portée pouurait devenir un attribut de SIMP. Une autre solution consisterait a créer un SIMPG pour distinguer les @nom uniques des SIMP a portée globale des autres.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="valeurDef" minOccurs="0"/>
+				<xs:element ref="valeurSugg" minOccurs="0"/>
+				<xs:element ref="plageValeur" minOccurs="0"/>
+				<xs:element ref="nomTypeAttendu"/>
+				<xs:element ref="validators" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute ref="nom" use="required"/>
+			<xs:attribute ref="statut" default="o"/>
+			<xs:attribute ref="minOccurences" default="1"/>
+			<xs:attribute ref="maxOccurences" default="1">
+				<xs:annotation>
+					<xs:documentation>La valeur -1 equivaut à oo</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="attribut" default="n">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="n"/>
+						<xs:enumeration value="o"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<!-- Les deux lignes suivantes ne fonctionnent pas car il faut que la cible référencée soit déjà définie dans le fichier importé ? -->
+			<!--		<xs:attribute  default="n"  ref="attribut"/>-->
+			<!--		<xs:attribute  default="n"  name="attribut" type="AT_attribut" />-->
+		</xs:complexType>
+	</xs:override>
+</xs:schema>

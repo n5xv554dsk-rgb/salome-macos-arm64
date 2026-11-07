@@ -1,0 +1,16 @@
+#ifndef __EFICAS_GEN__
+#define __EFICAS_GEN__
+
+#include "SALOME_Component.idl"
+#include "SALOMEDS.idl"
+#include "SALOME_Exception.idl"
+
+module EFICAS_ORB
+{
+  interface EFICAS_Gen : Engines::EngineComponent, SALOMEDS::Driver
+  {
+  };
+};
+
+#endif
+

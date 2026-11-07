@@ -1,0 +1,101 @@
+# Copyright (C) 2015-2026  OPEN CASCADE
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12 FATAL_ERROR)
+PROJECT(PyEditor C CXX)
+
+# Versioning
+# ===========
+# Project name, uppercase / lowercase
+STRING(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UC)
+STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LC)
+
+# Include common macros
+# =====================
+SET(CONFIGURATION_ROOT_DIR $ENV{CONFIGURATION_ROOT_DIR} CACHE PATH "Path to the Salome CMake configuration files")
+IF(EXISTS ${CONFIGURATION_ROOT_DIR})
+  LIST(APPEND CMAKE_MODULE_PATH "${CONFIGURATION_ROOT_DIR}/cmake")
+  INCLUDE(SalomeMacros NO_POLICY_SCOPE)
+ELSE()
+  MESSAGE(FATAL_ERROR "We absolutely need the Salome CMake configuration files, please define CONFIGURATION_ROOT_DIR !")
+ENDIF()
+
+# Platform setup
+# ==============
+INCLUDE(SalomeSetupPlatform)
+
+# Options
+# =======
+OPTION(BUILD_SHARED_LIBS "Build shared libraries" ON)
+OPTION(BUILD_EXECUTABLE "Build executable" ON)
+OPTION(BUILD_PYMODULE "Build Python module" ON)
+
+# Detect prerequisites
+# ====================
+
+# Qt
+FIND_PACKAGE(SalomeQt5 REQUIRED)
+IF(BUILD_PYMODULE)
+  # Python
+  FIND_PACKAGE(SalomePythonInterp REQUIRED)
+  FIND_PACKAGE(SalomePythonLibs REQUIRED)
+  SALOME_LOG_OPTIONAL_PACKAGE(SalomePythonInterp BUILD_PYMODULE)
+  SALOME_LOG_OPTIONAL_PACKAGE(SalomePythonLibs BUILD_PYMODULE)
+  IF (NOT SALOME_USE_PYSIDE)
+    # Sip (should come after Python and before PyQt)
+    FIND_PACKAGE(SalomeSIP REQUIRED)
+    SALOME_LOG_OPTIONAL_PACKAGE(SalomeSIP BUILD_PYMODULE)
+    # PyQt
+    FIND_PACKAGE(SalomePyQt5 REQUIRED)
+    SALOME_LOG_OPTIONAL_PACKAGE(SalomePyQt5 BUILD_PYMODULE)
+  ENDIF(NOT SALOME_USE_PYSIDE)
+ENDIF(BUILD_PYMODULE)
+
+# Detection summary report
+SALOME_PACKAGE_REPORT_AND_CHECK()
+
+# Directories
+#
+# Directories have to be given after prerequisites (to be able to use
+# Python version string for example).
+# ===================================================================
+SET(PYEDITOR_INSTALL_BINS bin CACHE PATH "Install path: binaries")
+SET(PYEDITOR_INSTALL_LIBS lib CACHE PATH "Install path: libraries")
+SET(PYEDITOR_INSTALL_PYTHON lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages CACHE PATH "Install path: Python module")
+SET(PYEDITOR_INSTALL_HEADERS include CACHE PATH "Install path: headers")
+SET(PYEDITOR_INSTALL_RES share/resources CACHE PATH "Install path: resources")
+SET(PYEDITOR_INSTALL_CMAKE lib/cmake/${PROJECT_NAME_LC} CACHE PATH "Install path: cmake files")
+
+MARK_AS_ADVANCED(PYEDITOR_INSTALL_BINS PYEDITOR_INSTALL_LIBS PYEDITOR_INSTALL_PYTHON
+                 PYEDITOR_INSTALL_HEADERS PYEDITOR_INSTALL_RES PYEDITOR_INSTALL_CMAKE)
+
+SET(PYEDITOR_EXPORT_NAME ${PROJECT_NAME} CACHE STRING "Export name")
+MARK_AS_ADVANCED(PYEDITOR_EXPORT_NAME)
+
+# Subdirs
+# =======
+ADD_SUBDIRECTORY(src)
+
+# Export configuration and targets
+# ================================
+IF(NOT PYEDITOR_SUBPROJECT)
+  # Install the export set for use with the install-tree
+  INSTALL(EXPORT ${PYEDITOR_EXPORT_NAME}TargetGroup DESTINATION ${PYEDITOR_INSTALL_CMAKE}
+          FILE ${PROJECT_NAME}Targets.cmake)
+ENDIF()

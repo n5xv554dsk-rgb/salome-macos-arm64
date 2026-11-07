@@ -1,0 +1,95 @@
+<source>
+  <sketch_launcher id="sketch"
+                   attribute_list_id="base"
+                   label="Select:&lt;br /&gt;
+1. Planar face of non-sketch object or a plane. Sketch creation will be started.&lt;br /&gt;
+2. An existing sketch face or contour. Extrusion will be filled by it.&lt;br /&gt;
+3. An existing result shape of kind: wires/edges/vertices. Extrusion will be filled by it."
+                  shape_types="Vertices Edges Faces"
+                  type_icons=":/icons/revolution_vertex32.png :/icons/revolution_edge32.png :/icons/revolution_face32.png"
+                  default_type = "2"
+                  use_choice="true">
+    <validator id="FeaturesPlugin_ValidatorCompositeLauncher" parameters="base,Sketch"/>
+  </sketch_launcher>
+  <multi_selector id="base"
+                  label="Base objects:"
+                  tooltip="Select a base objects"
+                  shape_types="Vertices Edges Faces"
+                  type_icons=":/icons/revolution_vertex32.png :/icons/revolution_edge32.png :/icons/revolution_face32.png"
+                  default_type = "2"
+                  use_choice="true"
+                  concealment="true">
+    <validator id="FeaturesPlugin_ValidatorBaseForGeneration" parameters="vertex,edge,wire,face,shell,compound"/>
+  </multi_selector>
+  <shape_selector id="axis_object"
+                  icon="icons/Features/axis.png"
+                  label="Axis"
+                  tooltip="Select an edge for axis"
+                  shape_types="edge"
+                  geometrical_selection="true"
+                  default="">
+    <validator id="GeomValidators_ShapeType" parameters="line"/>
+  </shape_selector>
+  <toolbox id="CreationMethod">
+    <box id="ByAngles"
+         title="By angles"
+         icon="icons/Features/angle_up_down_32x32.png">
+      <groupbox>
+        <doublevalue id="to_angle"
+                     label="Angle"
+                     step="1.0"
+                     default="360"
+                     icon="icons/Features/angle_up.png"
+                     tooltip="To angle"/>
+      </groupbox>
+      <groupbox>
+        <doublevalue id="from_angle"
+                     label="Angle"
+                     step="1.0"
+                     default="0"
+                     icon="icons/Features/angle_down.png"
+                     tooltip="From angle"/>
+      </groupbox>
+    </box>
+    <box id="ByPlanesAndOffsets"
+         title="By bounding planes and angles"
+         icon="icons/Features/plane_inverted_32x32.png">
+      <groupbox title="From">
+        <shape_selector id="from_object"
+                        icon="icons/Features/plane.png"
+                        label="Plane face"
+                        tooltip="Bounding plane (select a planar face)"
+                        shape_types="face"
+                        geometrical_selection="true"
+                        default="&lt;base sketch&gt;">
+          <validator id="GeomValidators_Face" parameters="plane"/>
+        </shape_selector>
+        <doublevalue id="from_offset"
+                     label="Angle"
+                     step="1.0"
+                     default="0"
+                     icon="icons/Features/angle_up_down.png"
+                     tooltip="Angle for &quot;from&quot; bounding plane"/>
+      </groupbox>
+      <groupbox title="To">
+        <shape_selector id="to_object"
+                        icon="icons/Features/plane_inverted.png"
+                        label="Plane face"
+                        tooltip="Bounding plane (select a planar face)"
+                        shape_types="face"
+                        geometrical_selection="true"
+                        default="&lt;base sketch&gt;">
+          <validator id="GeomValidators_Face" parameters="plane"/>
+        </shape_selector>
+        <doublevalue id="to_offset"
+                     label="Angle"
+                     step="1.0"
+                     default="0"
+                     icon="icons/Features/angle_up_down.png"
+                     tooltip="Angle for &quot;to&quot; bounding plane"/>
+      </groupbox>
+    </box>
+  </toolbox>
+  <validator id="GeomValidators_ZeroOffset" parameters="CreationMethod,ByAngles,base,to_angle,from_angle,to_object,to_offset,from_object,from_offset"/>
+  <validator id="FeaturesPlugin_ValidatorBaseForGenerationSketchOrSketchObjects" parameters="base"/>
+</source>

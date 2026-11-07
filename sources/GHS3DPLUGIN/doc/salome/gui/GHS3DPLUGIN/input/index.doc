@@ -1,0 +1,35 @@
+/*!
+
+\mainpage Introduction to MG-Tetra plug-in
+
+MG-Tetra plug-in adds two meshing algorithm to the SALOME Mesh: 
+<b> MG-Tetra or MG-Tetra HPC</b> (former GHS3D) and <b>MG-Tetra Optimization</b>.
+
+<b> MG-Tetra or MG-Tetra HPC</b> meshing algorithm is destined for:
+  - Meshing 3D geometric entities: solids are split into tetrahedral (pyramidal) elements.
+  - Generating 3D meshes from 2D meshes (triangles and quadrangles), working without geometrical objects.
+
+<b>MG-Tetra Optimization</b> algorithm optimizes linear tetrahedral
+meshes not based on geometry. 
+- To be able to optimize a mesh generated on geometry, copy
+this mesh (menu <b>Mesh > Copy Mesh</b>) and assign MG-Tetra
+Optimization algorithm to the new mesh in <b>Edit Mesh</b> dialog.
+- To re-optimize a just optimized mesh, invoke <b>Clear Mesh
+  Data</b> command and then \b Compute the mesh again.
+
+\note MG-Tetra plug-in uses MG-Tetra commercial mesher and requires a
+license to be used within the Mesh module.
+To obtain a license, visit http://www.meshgems.com/meshgems-products.html
+
+To manage parameters of the MG-Tetra mesher use 
+\subpage ghs3d_hypo_page and \subpage additional_hypo_page. 
+Parameters of MG-Tetra Optimization can be managed via \subpage optimization_page.
+
+Also all MG-Tetra functionalities are accessible via
+\subpage ghs3dplugin_python_interface_page "MG-Tetra Python interface".
+
+
+\image html image2.gif "Example of a tetrahedral 3D mesh"
+
+
+*/

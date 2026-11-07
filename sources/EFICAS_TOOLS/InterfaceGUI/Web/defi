@@ -1,0 +1,11 @@
+    def __init__(self,code, fichierCata=None, langue=None, fichierComm=None,appWeb=None) :
+    def toWebApp(self,fction,*args, **kwargs):
+    def litFichierComm(self,fichierComm=None):
+    def getListeCommandes(self):
+    def getListeMotsClesFilsPossibles(self,nomCommande):
+    def getDicoForFancy(self,obj,debug=0) :
+    def changeValeur(self,id,valeur) :
+    def updateSDName(self,id,sdnom) :
+    def suppNode(self,id):
+    def appendChild(self,id,name,pos=None):
+    def saveFile(self,fileName):

@@ -1,0 +1,55 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+// Author : Anthony Geay (CEA/DEN)
+
+#pragma once
+
+#include "MEDCoupling.hxx"
+#include "MCType.hxx"
+
+#include "NormalizedUnstructuredMesh.hxx"
+
+namespace MEDCoupling
+{
+class MEDCouplingCMesh;
+}
+
+template <int SPACEDIM>
+class MEDCOUPLING_EXPORT MEDCouplingNormalizedCartesianMesh
+{
+   public:
+    static const int MY_SPACEDIM = SPACEDIM;
+    static const int MY_MESHDIM = SPACEDIM;
+    typedef mcIdType MyConnType;
+    static const INTERP_KERNEL::NumberingPolicy My_numPol = INTERP_KERNEL::ALL_C_MODE;
+
+   public:
+    MEDCouplingNormalizedCartesianMesh(const MEDCoupling::MEDCouplingCMesh *mesh);
+    // void getBoundingBox(double *boundingBox) const;
+    // INTERP_KERNEL::NormalizedCellType getTypeOfElement(int eltId) const;
+    // int getNumberOfNodesOfElement(int eltId) const;
+    // int getNumberOfNodes() const;
+    mcIdType getNumberOfElements() const;
+    mcIdType nbCellsAlongAxis(int axis) const;
+    const double *getCoordsAlongAxis(int axis) const;
+    ~MEDCouplingNormalizedCartesianMesh();
+
+   private:
+    const MEDCoupling::MEDCouplingCMesh *_mesh;
+};

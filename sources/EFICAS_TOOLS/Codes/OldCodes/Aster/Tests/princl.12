@@ -1,0 +1,15 @@
+MMAA=LIRE_MAILLAGE()
+
+mo=AFFE_MODELE(MAILLAGE=MMAA,
+               AFFE=_F(TOUT='OUI',
+                       PHENOMENE='MECANIQUE',
+                       MODELISATION='3D',),);
+
+MACRO_MATR_ASSE(MODELE=mo,
+                NUME_DDL=CO('numdl'),
+                MATR_ASSE=_F(MATRICE=CO('mmm'),
+                             OPTION='RIGI_MECA',),);
+
+mmm=FACT_LDLT(reuse =mmm,
+             MATR_ASSE=mmm,);
+

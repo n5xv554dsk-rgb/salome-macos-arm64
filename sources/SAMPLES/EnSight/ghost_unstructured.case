@@ -1,0 +1,9 @@
+# Sample model with ghost elements taken from EnSight User Manual p 11-28
+
+FORMAT
+
+type:  ensight gold
+
+GEOMETRY
+
+model: ghost_unstructured.geo

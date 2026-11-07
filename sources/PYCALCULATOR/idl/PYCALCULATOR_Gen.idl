@@ -1,0 +1,96 @@
+// Copyright (C) 2007-2026  CEA, EDF, OPEN CASCADE
+//
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+//============================================================================
+// File   : PYCALCULATOR.idl
+// Author : Vadim SANDLER, OPEN CASCADE S.A.S. (vadim.sandler@opencascade.com)
+//============================================================================
+
+#ifndef PYCALCULATOR_IDL
+#define PYCALCULATOR_IDL
+
+#include "SALOME_Component.idl"
+#include "MEDCouplingCorbaServant.idl"
+
+/*! 
+  \ingroup examples
+  This package contains the interface for %PYCALCULATOR component
+  as an example in %SALOME application.
+*/
+
+module PYCALCULATOR_ORB {
+
+  /*!
+    \brief Interface of the %PYCALCULATOR component
+  */
+  interface PYCALCULATOR_Gen : Engines::EngineComponent
+  {
+    /*!
+      \brief Clone field.
+      \param field a field
+      \return a field which is a copy of \a field
+    */
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface
+              Clone(in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field);
+
+    /*!
+      \brief Add two fields.
+      \param field1 first field
+      \param field2 second field
+      \return a field which is result of addition of \a field1 and \a field2
+    */
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface
+              Add(in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field1,
+		  in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field2);
+
+    /*!
+      \brief Multiply two fields.
+      \param field1 first field
+      \param field2 second field
+      \return a field which is result of multiplication of \a field1 and \a field2
+    */
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface
+              Mul(in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field1,
+		  in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field2);
+
+    /*!
+      \brief Add a constant to a field.
+      \param field a field
+      \param val a constant
+      \return a field which is result of addition of \a val to \a field
+    */
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface
+              AddConstant(in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field,
+			  in double val);
+    /*!
+      \brief Multiply a field to a constant.
+      \param field a field
+      \param val a constant
+      \return a field which is result of multiplication of \a field to \a val
+    */
+    SALOME_MED::MEDCouplingFieldDoubleCorbaInterface
+              MulConstant(in SALOME_MED::MEDCouplingFieldDoubleCorbaInterface field,
+			  in double val);
+  };
+};
+
+#endif

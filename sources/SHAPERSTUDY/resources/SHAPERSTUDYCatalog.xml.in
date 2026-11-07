@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='us-ascii' ?>
+<!-- XML component catalog -->
+<begin-catalog>
+  <!-- Path prefix information -->
+  <path-prefix-list />
+  <!-- Types -->
+  <type-list />
+  <!-- Components -->
+  <component-list>
+    <!-- SHAPERSTUDY component -->
+    <component>
+      <!-- General information -->
+      <component-name>SHAPERSTUDY</component-name>
+      <component-username>SHAPERSTUDY</component-username>
+      <component-type>GEOM</component-type>
+      <component-author>SALOME team</component-author>
+      <component-version>@SALOMESHAPERSTUDY_VERSION@</component-version>
+      <component-comment>CAD modeler</component-comment>
+      <component-impltype>1</component-impltype>
+      <component-icone>SHAPERSTUDY.png</component-icone>
+      <constraint></constraint>
+      <!-- Component interface -->
+      <component-interface-list>
+        <component-interface-name>SHAPERSTUDY_ORB/Gen</component-interface-name>
+        <component-interface-comment>SHAPERSTUDY module engine</component-interface-comment>
+	<!-- Services -->
+        <component-service-list />
+      </component-interface-list>
+    </component>
+  </component-list>
+</begin-catalog>

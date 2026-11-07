@@ -1,0 +1,39 @@
+h1 {
+    border: 2px #eee solid;
+    color: brown;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px; 
+    font-family: 'Open Sans';
+    background-color: #278fb4;
+}
+
+h2 {
+    border: 2px #eee solid;
+    color: brown;
+    text-align: center;
+    padding: 10px;
+}
+
+h3 {
+    border: 2px #eee solid;
+    color: brown;
+    text-align: center;
+    text-align: center;
+}
+
+ul.navbar {
+  border: 2px #eee solid;
+  color: brown;
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+  text-align: center; 
+  display: inline;
+  background-color: #278fb4;
+}
+
+ul.navbar li {
+  display:inline-block;
+  margin: 0 30px;
+}

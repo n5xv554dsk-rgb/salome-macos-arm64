@@ -1,0 +1,11 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Points and vertices:"
+                  tooltip="Select points or vertices objects."
+                  shape_types="vertices"
+                  concealment="true">
+    <validator id="GeomValidators_DifferentShapes"/>
+  </multi_selector>
+  <boolvalue id="closed" label="Closed" tooltip="Closes the polyline." default="false"/>
+  <validator id="GeomValidators_MinObjectsSelected" parameters="base_objects,2"/>
+</source>

@@ -1,0 +1,187 @@
+/*!
+
+\page geometry_preferences_page Geometry preferences
+
+\anchor pref_settings <h2>Settings</h2>
+
+In the \b Geometry module you can set preferences for visualization of
+geometrical figures, which can be used right now or in later sessions 
+with this module according to the preferences.
+
+
+\image html pref15.png
+
+\par
+To redefine any color click on the corresponding line to access to
+the <b>Select Color</b> dialog box.
+
+<ul>
+<li><b>General</b></li>
+<ul>
+<li><b>Default display mode</b> - allows to choose between wireframe, shading or 
+shading with edges.</li>
+<li><b>Default shading color</b> - allows to select default shading
+color.</li>
+<li><b>Edges in shading</b> - allows to select default edges color in shading mode.</li>
+<li><b> Default wireframe color</b> - allows to select default
+wireframe color (to be applied to any lines not being free boundaries
+or isolated lines).</li>
+<li><b>Color of free boundaries</b> - allows to select default color for free boundaries.</li>
+<li><b>Color of edges, vectors and wires</b> - allows to select
+default color for edges, vectors and wires (isolated lines).</li>
+<li><b>Color of points</b> - allows to select default color for
+vertices.</li>
+<li><b>Color of isolines</b> - allows to select default color for
+isolines.</li>
+<li><b>Color of labels</b> - allows to select default color for
+labels (textual fields, shape name).</li>
+<li><b>Top level color</b> - allows to select default color for objects which 
+were brought to the viewer foreground.</li>
+<li><b>Top level display mode</b> - allows to select default top level display mode between:</li>
+<ul>
+<li><b>Show additional wireframe actor</b> - allows to have the shading actor at its usual 
+place (in the back) and add the additional wireframe actor in the viewer foreground.</li>
+<li><b>Keep current display mode</b> - allows to use current display mode of object.</li>
+<li><b>Wireframe</b> - allows to switch display mode to wireframe mode after 
+"top-level" operation.</li>
+<li><b>Shading</b> - allows to switch display mode to shading mode after 
+"top-level" operation.</li>
+<li><b>Shading With Edges</b> - allows to switch display mode to shading with edges mode after 
+"top-level" operation.</li>
+</ul>
+<li><b>Default transparency</b> - allows to define default transparency value.</li>
+<li><b>Default deflection coefficient</b> - allows to define default deflection
+coefficient for lines and surfaces. A smaller coefficient provides
+better quality of a shape in the viewer.</li>
+<li><b>Show predefined materials in popup menu</b> - allows to customize the displaying of popup menu with list of 
+predefined materials.</li>
+<li><b>Default material</b> - allows to define default material.</li>
+<li><b>Subshapes color for editing a group</b> - allows to select default color for subshapes in a group.</li>
+<li><b>Default edges width</b> - allows to define default width of the edges.</li>
+<li><b>Default isolines width</b> - allows to define default width of the isolines.</li>
+<li><b>Preview edges width</b> - allows to define width of the edges for preview.</li>
+<li><b>Measures line width</b> - allows to define lines width of measurements tools.</li>
+<li><b>Step value for spin boxes</b> - allows to define the increment
+of values set in spin boxes.</li>
+<li><b>Automatic bring to front</b> - when the option is on, the objects selected by the user automatically become "top-level".</li>
+
+</ul>
+</ul>
+
+<ul>
+<li><b>Dimensions (Measurements)</b> - a group of preferences controlling the presentation of dimensions.</li>
+<ul>
+<li><b>Color</b> - allows to define color for persistent dimension presentations.</li>
+<li><b>Line width</b> - allows to define pixel width of dimension lines.</li>
+<li><b>Font height</b> - allows to define height of dimension text.</li>
+<li><b>Length of arrows</b> - allows to define length of dimension arrows.</li>
+<li><b>Length measurement units</b> - allows to define units of measurement for lengths dimensions.</li>
+<li><b>Angle measurement units</b> - allows to define units of measurement for angles dimensions.</li>
+<li><b>Show units of measurements</b> - when this option is on, the measurement units are added as prefix to value label of dimension.</li>
+<li><b>Default flyout length</b> - allows to define default flyout length used when creating the dimensions. The length can be interactively changed after creation by moving the flyouts.</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Default number of isolines</b> - allows to specify the default number of isolines along <b>Along U</b> and <b>Along V</b> coordinate axes. They are shown on each selected face. For example:
+
+\image html isos.png
+
+This preference is not related with <b>Create Isoline</b> operation. 
+By default <b>Along U</b> and <b>Along V</b> are null and isolines are not drawn. </li>
+ 
+</ul>
+
+<ul>
+<li><b>Input fields precision</b> - a group of preferences controlling input
+  precision for floating-point data. The semantics of the precision
+  values is described in detail in <em>Using input widgets</em>
+  chapter of GUI documentation (Introduction to Salome Platform /
+  Introduction to GUI / Using input widgets). In brief: \b positive
+  precision value is the maximum allowed number of digits after the
+  decimal point in the fixed-point format; \b nagative precision value
+  is the maximum allowed number of significant digits in mantissa in
+  either the fixed-point or scientific format.</li>
+<ul>
+<li><b>Length precision</b> - allows to adjust input precision of coordinates and dimensions.</li>
+<li><b>Angular precision</b> - allows to adjust input precision of angles.</li>
+<li><b>Length tolerance precision</b> - allows to adjust input precision of tolerance of coordinates and dimensions.</li>
+<li><b>Angular tolerance precision</b> - allows to adjust input precision of tolerance of angles.</li>
+<li><b>Weight precision</b> - allows to adjust input precision of weight and mass.</li>
+<li><b>Density precision</b> - allows to a just input precision of density.</li>
+<li><b>Parametric precision</b> - allows to adjust input precision of parametric values.</li>
+<li><b>Parametric tolerance precision</b> - allows to adjust input precision of tolerance in parametric space.</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Default marker of points</b></li>
+<ul>
+<li><b>Type</b> - allows to select the default symbol for representation of
+points (cross, asterisk, etc.).</li>
+<li><b>Size</b> - allows to define the default size of the marker from 1
+(smallest) to 7 (largest).</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Scalar bar for field presentation</b></li>
+<ul>
+<li><b>X position</b> - allows to define the parametric X position of the scalar bar.</li>
+<li><b>Y position</b> - allows to define the parametric Y position of the scalar bar.</li>
+<li><b>Width</b> - allows to define the parametric width of the scalar bar.</li>
+<li><b>Height</b> - allows to define the parametric height of the scalar bar.</li>
+<li><b>Text height</b> - allows to define the font height of the scalar bar labels.</li>
+<li><b>Number of intervals</b> - allows to define the number of scalar bar intervals.</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Origin and base vectors</b></li>
+<ul>
+<li><b>Length of base vectors</b> - allows to define the length
+of base vectors.</li>
+<li><b>Auto create</b> - allows to automatically create a point
+of origin and three base vectors of the rectangular coordinate
+system immediately after the module activation.</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Operations</b></li>
+<ul>
+<li><b>Preview</b> - allows to customize the displaying preview by default.</li>
+<li><b>Hide input objects from the viewer</b> - allows automatic hiding of input 
+shapes from the 3D viewer (OCC and VTK) in all operations of Geometry module.</li>
+</ul>
+</ul>
+
+\anchor pref_dependency_tree <h2>Dependency Tree</h2>
+
+This tab groups preferences for visualization of <b>Dependency Tree</b> in the 2D Viewer.
+
+\image html pref_dep_tree.png
+
+<ul>
+<li><b>General</b></li>
+<ul>
+<li><b>Hierarchy type</b> - allows to choose the default display mode of the dependency tree.</li>
+<li><b>Possibility to move nodes</b> - enables/disables the possibility of moving nodes by default.</li>
+</ul>
+</ul>
+
+<ul>
+<li><b>Color</b></li>
+<ul>
+<li><b>Background color</b> - allows to select the default background color.</li>
+<li><b>Default node color</b> - allows to select the default node color.</li>
+<li><b>Main node color</b> - allows to select the default main node color.</li>
+<li><b>Unpublished node color</b> - allows to select the default node color for unpublished objects.</li>
+<li><b>Selected node color</b> - allows to select the default selected node color.</li>
+<li><b>Default arrow color</b> - allows to select the default arrow color.</li>
+<li><b>Highlighted arrow color</b> - allows to select the default highlighted arrow color.</li>
+<li><b>Selected arrow color</b> - allows to select the default selected arrow color.</li>
+</ul>
+</ul>
+
+*/

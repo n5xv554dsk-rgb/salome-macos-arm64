@@ -1,0 +1,456 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="tutorial_4">
+   <property name="DefaultStudyID" value="1"/>
+   <objref name="CALCIUM_real" id="IDL:Ports/Calcium_Ports/Calcium_Real_Port:1.0"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <objref name="HOMARD_Boundary" id="IDL:HOMARD/HOMARD_Boundary:1.0"/>
+   <objref name="HOMARD_Cas" id="IDL:HOMARD/HOMARD_Cas:1.0"/>
+   <objref name="HOMARD_Hypothesis" id="IDL:HOMARD/HOMARD_Hypothesis:1.0"/>
+   <objref name="HOMARD_Iteration" id="IDL:HOMARD/HOMARD_Iteration:1.0"/>
+   <objref name="HOMARD_Zone" id="IDL:HOMARD/HOMARD_Zone:1.0"/>
+   <objref name="Study" id="IDL:SALOMEDS/Study:1.0"/>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <type name="double" kind="double"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <sequence name="intvec" content="int"/>
+   <struct name="stringpair">
+      <member name="name" type="string"/>
+      <member name="value" type="string"/>
+   </struct>
+   <sequence name="propvec" content="stringpair"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="seqboolvec" content="boolvec"/>
+   <sequence name="seqdblevec" content="dblevec"/>
+   <sequence name="seqint" content="int"/>
+   <sequence name="seqintvec" content="intvec"/>
+   <sequence name="seqpyobj" content="pyobj"/>
+   <sequence name="stringvec" content="string"/>
+   <sequence name="seqstringvec" content="stringvec"/>
+   <container name="DefaultContainer">
+      <property name="container_kind" value="Salome"/>
+      <property name="attached_on_cloning" value="0"/>
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="localhost"/>
+   </container>
+   <bloc name="Etude_Initialisation">
+      <inline name="StudyCreation">
+         <script><code><![CDATA[
+import orbmodule
+import SALOMEDS_idl
+
+import HOMARD
+import HOMARD_Gen_idl
+import HOMARD_Cas_idl
+import HOMARD_Iteration_idl
+import HOMARD_Hypothesis_idl
+import HOMARD_Zone_idl
+import HOMARD_Boundary_idl
+
+clt = orbmodule.client()
+CurrentStudy = clt.Resolve("/Study")
+]]></code></script>
+         <load container="DefaultContainer"/>
+         <outport name="CurrentStudy" type="Study"/>
+      </inline>
+      <service name="UpdateStudy">
+         <component>HOMARD</component>
+         <load container="DefaultContainer"/>
+         <method>UpdateStudy</method>
+      </service>
+      <service name="CreateHypothesis_1">
+         <node>Etude_Initialisation.UpdateStudy</node>
+         <method>CreateHypothesis</method>
+         <inport name="HypoName" type="string"/>
+         <outport name="return" type="HOMARD_Hypothesis"/>
+      </service>
+      <service name="CreateCase">
+         <node>Etude_Initialisation.UpdateStudy</node>
+         <method>CreateCase</method>
+         <inport name="CaseName" type="string"/>
+         <inport name="MeshName" type="string"/>
+         <inport name="FileName" type="string"/>
+         <outport name="return" type="HOMARD_Cas"/>
+      </service>
+      <inline name="Hypo_Options_1">
+         <script><code><![CDATA[# Raffinement uniforme
+Hypo.SetUnifRefinUnRef(1)
+# Filtrage par des groupes
+Hypo.AddGroup('T1_INT_I')
+Hypo.AddGroup('T1_INT_O')
+Hypo.AddGroup('T2_INT')
+]]></code></script>
+         <load container="DefaultContainer"/>
+         <inport name="Hypo" type="HOMARD_Hypothesis"/>
+      </inline>
+      <inline name="Case_Options">
+         <script><code><![CDATA[# Options
+# =========
+# Repertoire d'execution
+Case.SetDirName(DirName)
+# Liens avec les frontieres
+Case.AddBoundary(CAO.GetName())
+# Resultats
+# =========
+# Iteration 0 associee
+Iter0 = Case.GetIter0()
+]]></code></script>
+         <load container="DefaultContainer"/>
+         <inport name="Case" type="HOMARD_Cas"/>
+         <inport name="DirName" type="string"/>
+         <inport name="CAO" type="HOMARD_Boundary"/>
+         <outport name="Iter0" type="HOMARD_Iteration"/>
+      </inline>
+      <service name="CreateBoundaryCAO">
+         <node>Etude_Initialisation.UpdateStudy</node>
+         <method>CreateBoundaryCAO</method>
+         <inport name="BoundaryName" type="string"/>
+         <inport name="FileName" type="string"/>
+         <outport name="return" type="HOMARD_Boundary"/>
+      </service>
+      <service name="CreateHypothesis_2">
+         <node>Etude_Initialisation.UpdateStudy</node>
+         <method>CreateHypothesis</method>
+         <inport name="HypoName" type="string"/>
+         <outport name="return" type="HOMARD_Hypothesis"/>
+      </service>
+      <inline name="Hypo_Options_2">
+         <script><code><![CDATA[# Raffinement uniforme
+Hypo.SetUnifRefinUnRef(1)
+# Filtrage par des groupes
+Hypo.AddGroup('T1_EXT_I')
+Hypo.AddGroup('T1_EXT_O')
+Hypo.AddGroup('T2_EXT')
+]]></code></script>
+         <load container="DefaultContainer"/>
+         <inport name="Hypo" type="HOMARD_Hypothesis"/>
+      </inline>
+      <control> <fromnode>StudyCreation</fromnode> <tonode>UpdateStudy</tonode> </control>
+      <control> <fromnode>UpdateStudy</fromnode> <tonode>CreateBoundaryCAO</tonode> </control>
+      <control> <fromnode>CreateHypothesis_1</fromnode> <tonode>Hypo_Options_1</tonode> </control>
+      <control> <fromnode>CreateCase</fromnode> <tonode>Case_Options</tonode> </control>
+      <control> <fromnode>Hypo_Options_1</fromnode> <tonode>CreateHypothesis_2</tonode> </control>
+      <control> <fromnode>Case_Options</fromnode> <tonode>CreateHypothesis_1</tonode> </control>
+      <control> <fromnode>CreateBoundaryCAO</fromnode> <tonode>CreateCase</tonode> </control>
+      <control> <fromnode>CreateBoundaryCAO</fromnode> <tonode>Case_Options</tonode> </control>
+      <control> <fromnode>CreateHypothesis_2</fromnode> <tonode>Hypo_Options_2</tonode> </control>
+      <datalink control="false">
+         <fromnode>CreateHypothesis_1</fromnode> <fromport>return</fromport>
+         <tonode>Hypo_Options_1</tonode> <toport>Hypo</toport>
+      </datalink>
+      <datalink control="false">
+         <fromnode>CreateCase</fromnode> <fromport>return</fromport>
+         <tonode>Case_Options</tonode> <toport>Case</toport>
+      </datalink>
+      <datalink control="false">
+         <fromnode>CreateBoundaryCAO</fromnode> <fromport>return</fromport>
+         <tonode>Case_Options</tonode> <toport>CAO</toport>
+      </datalink>
+      <datalink control="false">
+         <fromnode>CreateHypothesis_2</fromnode> <fromport>return</fromport>
+         <tonode>Hypo_Options_2</tonode> <toport>Hypo</toport>
+      </datalink>
+   </bloc>
+   <forloop name="ForLoop" nsteps="2">
+      <inline name="HOMARD_2">
+         <script><code><![CDATA[import os
+#
+# Hypothese
+# =========
+# . Nom de l'hypothese
+# --------------------
+HypoName = Hypo.GetName()
+#
+# Nom de la future iteration et du futur maillage
+# ==========================
+# . Nom de l'iteration precedente
+LastIterName = LastIter.GetName()
+# . Nom du maillage precedent
+LastMeshName = LastIter.GetMeshName()#
+#
+aux = '%d' % (NumAdapt+2)
+#
+IterName = LastIterName[:-1] + aux
+MeshName = LastMeshName[:-1] + aux
+#
+# Creation de l'iteration
+# =======================
+Iter = LastIter.NextIteration(IterName)
+#
+# Options de l'iteration
+# ======================
+# . Association de l'hypothese
+Iter.AssociateHypo(HypoName)
+#
+# . Le fichier du futur maillage
+aux = '%02d' % (NumAdapt+2)
+MeshFile = os.path.join (DirName, "maill."+aux+".med")
+Iter.SetMeshFile(MeshFile)
+#
+# . Le nom du futur maillage
+Iter.SetMeshName(MeshName)
+#
+# Calcul si le precedent s'est bien passe
+# ======
+if LastPb :
+  Pb = LastPb
+  MessInfo = "Erreur dans HOMARD pour l'adaptation numero %d" % LastPb
+else :
+  Error = Iter.Compute(1, 1)
+#
+  if Error :
+    Pb = NumAdapt+2
+    MessInfo = "Erreur dans HOMARD pour l'adaptation numero %d" % NumAdapt
+  else :
+    Pb = 0
+    MessInfo = ""
+
+]]></code></script>
+         <load container="DefaultContainer"/>
+         <inport name="NumAdapt" type="int"/>
+         <inport name="LastIter" type="HOMARD_Iteration"/>
+         <inport name="Hypo" type="HOMARD_Hypothesis"/>
+         <inport name="DirName" type="string"/>
+         <inport name="LastPb" type="int"/>
+         <outport name="MessInfo" type="string"/>
+         <outport name="MeshFile" type="string"/>
+         <outport name="Iter" type="HOMARD_Iteration"/>
+         <outport name="Pb" type="int"/>
+      </inline>
+      <datalink control="false">
+         <fromnode>HOMARD_2</fromnode> <fromport>Iter</fromport>
+         <tonode>HOMARD_2</tonode> <toport>LastIter</toport>
+      </datalink>
+      <datalink control="false">
+         <fromnode>HOMARD_2</fromnode> <fromport>Pb</fromport>
+         <tonode>HOMARD_2</tonode> <toport>LastPb</toport>
+      </datalink>
+   </forloop>
+   <inline name="Bilan">
+      <script><code><![CDATA[import sys
+import os
+if 'SALOME_USE_PYSIDE' in os.environ:
+  from PySide2.QtWidgets import QApplication, QWidget, QMessageBox
+else:
+  from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
+class App(QWidget):
+    def __init__(self, MessInfo, MeshFile):
+        super(App, self).__init__()
+        self.title = "Bilan"
+        self._MessInfo = MessInfo
+        self._MeshFile = MeshFile
+        self.initUI()
+    def initUI(self):
+        if self._MessInfo != "" :
+            button = QMessageBox.critical(self, self.title, self._MessInfo)
+        else :
+            MessInfo = "Le maillage final est dans le fichier : " + self._MeshFile
+            button = QMessageBox.information(self, self.title, MessInfo)
+        self.show()
+app = QApplication(sys.argv)
+ex = App(MessInfo, MeshFile)
+]]></code></script>
+      <load container="DefaultContainer"/>
+      <inport name="MessInfo" type="string"/>
+      <inport name="MeshFile" type="string"/>
+   </inline>
+   <inline name="DataInit">
+      <script><code><![CDATA[import os
+pathHomard = os.getenv("HOMARD_ROOT_DIR")
+data_dir = os.path.join(pathHomard, "share/doc/salome/gui/HOMARD/fr/_downloads")
+#
+# Maillage de la structure
+# . Nom du maillage
+MeshName = "PIQUAGE"
+# . Fichier du maillage
+FileName = os.path.join(data_dir, "tutorial_4.00.med")
+#
+# CAO
+# . Fichier XAO
+BFileName = os.path.join(data_dir, "tutorial_4.xao")
+#
+# Repertoire de travail
+if "LOGNAME" in os.environ :
+  user = os.environ ["LOGNAME"]
+else :
+  user = "anonymous"
+DirName = os.path.join( os.sep, "tmp", "HOMARD_"+user)
+if not os.path.isdir(DirName) :
+    os.mkdir (DirName)
+]]></code></script>
+      <load container="DefaultContainer"/>
+      <outport name="MeshName" type="string"/>
+      <outport name="FileName" type="string"/>
+      <outport name="BFileName" type="string"/>
+      <outport name="DirName" type="string"/>
+   </inline>
+   <inline name="HOMARD_1">
+      <script><code><![CDATA[import os
+#
+# Hypothese
+# =========
+# . Nom de l'hypothese
+# --------------------
+HypoName = Hypo.GetName()
+#
+# Nom de la future iteration et du futur maillage
+# ==========================
+# . Nom de l'iteration precedente
+LastIterName = LastIter.GetName()
+# . Nom du maillage precedent
+LastMeshName = LastIter.GetMeshName()
+#
+IterName = LastIterName + "_1"
+MeshName = LastMeshName + "_1"
+#
+# Creation de l'iteration
+# =======================
+Iter = LastIter.NextIteration(IterName)
+#
+# Options de l'iteration
+# ======================
+# . Association de l'hypothese
+Iter.AssociateHypo(HypoName)
+#
+# . Le fichier du futur maillage
+MeshFile = os.path.join (DirName, "maill.01.med")
+Iter.SetMeshFile(MeshFile)
+#
+# . Le nom du futur maillage
+Iter.SetMeshName(MeshName)
+#
+# Calcul
+# ======
+Error = Iter.Compute(1, 1)
+#
+# ============================
+# Arret si erreur
+if Error :
+    Pb = 1
+    MessInfo = "Erreur dans HOMARD pour la premiere adaptation"
+# Sinon on enchaine sur 2 autres adaptations
+else :
+    Pb= 0
+    MessInfo = ""
+
+]]></code></script>
+      <load container="DefaultContainer"/>
+      <inport name="LastIter" type="HOMARD_Iteration"/>
+      <inport name="Hypo" type="HOMARD_Hypothesis"/>
+      <inport name="DirName" type="string"/>
+      <outport name="MessInfo" type="string"/>
+      <outport name="MeshFile" type="string"/>
+      <outport name="Iter" type="HOMARD_Iteration"/>
+      <outport name="Pb" type="int"/>
+   </inline>
+   <control> <fromnode>Etude_Initialisation</fromnode> <tonode>HOMARD_1</tonode> </control>
+   <control> <fromnode>ForLoop</fromnode> <tonode>Bilan</tonode> </control>
+   <control> <fromnode>DataInit</fromnode> <tonode>HOMARD_1</tonode> </control>
+   <control> <fromnode>DataInit</fromnode> <tonode>Etude_Initialisation</tonode> </control>
+   <control> <fromnode>HOMARD_1</fromnode> <tonode>ForLoop</tonode> </control>
+   <datalink control="false">
+      <fromnode>ForLoop</fromnode> <fromport>index</fromport>
+      <tonode>ForLoop.HOMARD_2</tonode> <toport>NumAdapt</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>MeshName</fromport>
+      <tonode>Etude_Initialisation.CreateCase</tonode> <toport>MeshName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>FileName</fromport>
+      <tonode>Etude_Initialisation.CreateCase</tonode> <toport>FileName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>BFileName</fromport>
+      <tonode>Etude_Initialisation.CreateBoundaryCAO</tonode> <toport>FileName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>DirName</fromport>
+      <tonode>Etude_Initialisation.Case_Options</tonode> <toport>DirName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>DirName</fromport>
+      <tonode>ForLoop.HOMARD_2</tonode> <toport>DirName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>DataInit</fromnode> <fromport>DirName</fromport>
+      <tonode>HOMARD_1</tonode> <toport>DirName</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>HOMARD_1</fromnode> <fromport>MessInfo</fromport>
+      <tonode>Bilan</tonode> <toport>MessInfo</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>HOMARD_1</fromnode> <fromport>MeshFile</fromport>
+      <tonode>Bilan</tonode> <toport>MeshFile</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>HOMARD_1</fromnode> <fromport>Iter</fromport>
+      <tonode>ForLoop.HOMARD_2</tonode> <toport>LastIter</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>HOMARD_1</fromnode> <fromport>Pb</fromport>
+      <tonode>ForLoop.HOMARD_2</tonode> <toport>LastPb</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>Etude_Initialisation.CreateHypothesis_2</fromnode> <fromport>return</fromport>
+      <tonode>ForLoop.HOMARD_2</tonode> <toport>Hypo</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>ForLoop.HOMARD_2</fromnode> <fromport>MessInfo</fromport>
+      <tonode>Bilan</tonode> <toport>MessInfo</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>ForLoop.HOMARD_2</fromnode> <fromport>MeshFile</fromport>
+      <tonode>Bilan</tonode> <toport>MeshFile</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>Etude_Initialisation.Case_Options</fromnode> <fromport>Iter0</fromport>
+      <tonode>HOMARD_1</tonode> <toport>LastIter</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>Etude_Initialisation.CreateHypothesis_1</fromnode> <fromport>return</fromport>
+      <tonode>HOMARD_1</tonode> <toport>Hypo</toport>
+   </datalink>
+   <parameter>
+      <tonode>Etude_Initialisation.CreateBoundaryCAO</tonode><toport>BoundaryName</toport>
+      <value><string>CAO</string></value>
+   </parameter>
+   <parameter>
+      <tonode>Etude_Initialisation.CreateHypothesis_2</tonode><toport>HypoName</toport>
+      <value><string>Hypo_4_bis</string></value>
+   </parameter>
+   <parameter>
+      <tonode>ForLoop</tonode><toport>nsteps</toport>
+      <value><int>2</int></value>
+   </parameter>
+   <parameter>
+      <tonode>Etude_Initialisation.CreateCase</tonode><toport>CaseName</toport>
+      <value><string>tutorial_4</string></value>
+   </parameter>
+   <parameter>
+      <tonode>Etude_Initialisation.CreateHypothesis_1</tonode><toport>HypoName</toport>
+      <value><string>Hypo_4</string></value>
+   </parameter>
+   <presentation name="Etude_Initialisation.StudyCreation" x="4" y="32" width="158" height="63" expanded="1" expx="4" expy="32" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="Etude_Initialisation.UpdateStudy" x="163" y="32" width="158" height="63" expanded="1" expx="163" expy="32" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="Etude_Initialisation.Hypo_Options_1" x="163" y="214.605" width="158" height="63" expanded="1" expx="163" expy="214.605" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="Etude_Initialisation.CreateBoundaryCAO" x="4" y="96" width="158" height="90" expanded="1" expx="4" expy="96" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="Etude_Initialisation.Case_Options" x="322.605" y="98.2103" width="158" height="117" expanded="1" expx="322.605" expy="98.2103" expWidth="158" expHeight="117" shownState="0"/>
+   <presentation name="Etude_Initialisation.Hypo_Options_2" x="481.105" y="212.395" width="158" height="63" expanded="1" expx="481.105" expy="212.395" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="Etude_Initialisation.CreateHypothesis_2" x="321.5" y="242.71" width="158" height="63" expanded="1" expx="321.5" expy="242.71" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="Bilan" x="332.5" y="513.71" width="158" height="90" expanded="1" expx="332.5" expy="513.71" expWidth="158" expHeight="90" shownState="0"/>
+   <presentation name="ForLoop.HOMARD_2" x="7" y="62" width="158" height="171" expanded="1" expx="7" expy="62" expWidth="158" expHeight="171" shownState="0"/>
+   <presentation name="HOMARD_1" x="4" y="513.71" width="158" height="144" expanded="1" expx="4" expy="513.71" expWidth="158" expHeight="144" shownState="0"/>
+   <presentation name="DataInit" x="4" y="32" width="158" height="144" expanded="1" expx="4" expy="32" expWidth="158" expHeight="144" shownState="0"/>
+   <presentation name="Etude_Initialisation" x="4" y="203.5" width="643.105" height="309.71" expanded="1" expx="4" expy="203.5" expWidth="643.105" expHeight="309.71" shownState="0"/>
+   <presentation name="ForLoop" x="163" y="513.71" width="169" height="237" expanded="1" expx="163" expy="513.71" expWidth="169" expHeight="237" shownState="0"/>
+   <presentation name="Etude_Initialisation.CreateCase" x="163" y="97.1052" width="158" height="117" expanded="1" expx="163" expy="97.1052" expWidth="158" expHeight="117" shownState="0"/>
+   <presentation name="Etude_Initialisation.CreateHypothesis_1" x="4" y="214.605" width="158" height="63" expanded="1" expx="4" expy="214.605" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="651.105" height="754.71" expanded="1" expx="0" expy="0" expWidth="651.105" expHeight="754.71" shownState="0"/>
+</proc>

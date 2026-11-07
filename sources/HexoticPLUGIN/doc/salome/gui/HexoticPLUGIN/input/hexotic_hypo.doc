@@ -1,0 +1,170 @@
+/*!
+
+\page hexotic_hypo_page MG-Hexa Parameters hypothesis
+
+\n MG-Hexa Parameters hypothesis works only with <b>MG-Hexa</b> 
+algorithm. This algorithm is a commercial software.
+\n To get a license, visit http://www.meshgems.com/meshgems-products.html
+
+\section hexotic_general_parameters General parameters
+
+\image html hexotic_parameters.png
+
+<ul>
+<li><b>Name</b> - allows to define the name of the hypothesis (MG-Hexa 
+Parameters by default).</li>
+
+<li><b>Physical size</b> - defines size of elements
+  <ul>
+    <li><b>Type</b> - \a Global activates and \a None deactivates this option</li>
+
+    <li><b>Min size</b> - allows defining the minimal size of the elements (overrides <b>Nb. Hexes Max Level</b> value).</li>
+
+    <li><b>Max size</b> - allows defining the maximal size of the
+    elements (overrides <b>Nb. Hexes Min Level</b> value).</li>
+  </ul>
+</li>
+
+<li><b>Geometric size</b> - defines size of elements depending on curvature
+  <ul>
+    <li><b>Type</b> - \a Global activates and \a None deactivates this option</li>
+
+    <li><b>Mesh angle</b> - specifies the angle (in degrees) between two triangles
+    for the curvature based refinement. This angle should be in a
+    range between <b>ridge angle</b> and 180. This angle is a
+    threshold that will trigger the refinement: during the octree
+    building, each octant containing triangles that make an angle
+    greater than the threshold will be split. The process will be
+    repeated until every octants contain portion of the geometry
+    smoother than the threshold angle. </li>
+  </ul>
+</li>
+
+<li><b>Sub-domains mesh mode</b> - This option allows the user to mesh or not mesh internal subdomains (such as holes), or to mesh non-manifold domains.
+<ul>
+<li>sd 1 : meshes in inside/out mode: the internal cavities are ignored, the whole domain is meshed into a single domain;</li>
+<li>sd 2 : meshes only the internal main component. Internal holes (cavities) will not be meshed;</li>
+<li>sd 3 : meshes all cavities and generates subdomains accordingly;</li>
+<li>sd 4 : meshes non-manifold geometries as such and generates subdomains accordingly.</li>
+</ul>
+</li>
+</ul>
+
+\note If MG-CADSurf is used as 2D algo, and if a GMF file is defined as output file (using SetGMFFile(my2Dmesh.mesh)), then MG-Hexa will use this file as input.
+This allows to avoid the reconstruction of the GMF file from the SMESH structure and can improve the global computation time.
+
+<br><b>See Also</b> a sample TUI Script of the \ref tui_hexotic "creation of a MG-Hexa mesh"
+
+\section hexotic_adv_options Advanced parameters
+
+\image html hexotic_advanced_options.png
+
+In \b Advanced tab page you can specify advanced options of MG-Hexa not exposed in other pages.
+
+
+<b>Add option</b> adds a line to the table where you can type an option and its value as text.
+A check box in the first column activates/deactivates the option of the current row. A deactivated option will be erased upon pressing \a Ok.
+
+<ul>
+<li><b>Allow invalid elements</b> - specifies that the mesher must
+  conform as much as possible to the geometry (especially the sharp
+  edges). The resulting meshes may contain invalid elements (but with
+  positive volumes: for example, three vertices of an hexahedron on
+  the same edge), for the benefit of better geometry accuracy. </li>
+
+<li><b>Compute ridges</b> - Enables the computation of ridges. If set
+  to no, smooth meshes (without ridges) will be generated. A ridge is
+  a geometrical entity (a sharp edge). The resulting meshes will have
+  better quality elements, at the price of "smoothing" out the
+  geometry.
+</li>
+
+<li><b>Element order</b> - determines the order of the mesh elements
+  to be generated: \a linear or \a quadratic</li>
+
+<li><b>Enforce constant layer size</b> - force the first physical layer to have the same size throughout the mesh.</li>
+
+<li><b>Flatten hexa sides</b> - activates specific optimization process to flatten the sides of hexahedra.</li>
+
+<li><b>Nb. Hexes Min Level</b> - allows defining the minimal level of recursive partitioning on the initial octree cube.</li>
+
+<li><b>Nb. Hexes Max Level</b> - allows defining the maximal level of recursive partitioning on the initial octree cube.</li>
+
+<li><b>Maximal memory (MB)</b> - specifies the maximum allocatable memory in MegaBytes.
+</li>
+
+<li><b>Maximal number of threads</b> - specifies the number of threads to be used (this should be the number of cores or processors of a shared memory parallel architecture).
+</li>
+
+<li><b>Recover sharp angles</b> - subdivides elements around sharp angles up to <b>Nb. Hexes Max Level</b>.</li>
+
+<li><b>Ridge angle (degrees)</b> - specifies the angle between two triangles above which the hex mesher will consider the edge common to these two triangles as being a "ridge". A ridge is a geometrical entity (a sharp edge) which has to be kept as it is in the final hex mesh.The default value is 60 (degrees).<br>If you raise this value, the hex mesher will detect less ridges, and the final solid mesh will therefore be smoother. On the other hand, if you reduce this value, more ridges will be detected and the algorithm will face harder situations to conform to.
+</li>
+
+<li><b>Size map level</b> - when using a sizemap, sets the octree's
+  maximum subdivision level to apply to the sizemap.</li>
+
+<li><b>Tags</b> - sets how surface attributes must be considered. 
+  <ul>
+    <li>\a respect: preserve surface attributes </li>
+    <li>\a clear: clear surface attributes </li>
+  </ul>
+</li>
+
+<li><b>Working directory</b> - specifies the directory where the input/output files will be created.
+</li>
+
+<li><b>Verbosity</b> - specifies the verbose level to print information on meshing steps.
+</li>
+
+<li><b>Print log in a file</b> - if this option is checked on the log is printed in a 
+file placed in the working directory, otherwise it is printed on the standard output.
+</li>
+
+<li><b>Remove log on success</b> - if this option is checked on the log file is kept only
+if an error occurs during the computation. This option is only available if <b>Print log in a file</b>
+is enabled (there must be a log file to delete it) and <b>Keep all working files</b> is disabled 
+(in this case the log file is always kept). 
+</li>
+
+<li><b>Keep working files</b> - allows checking input and output files
+of MG-Hexa software, while usually these files are removed after the
+launch of the mesher. The log file (if any) is also kept if this option is checked.
+</li>
+</ul>
+
+\section hexotic_local_size_parameters Local size
+
+The local size allows you to drive locally the density of the 3D mesh. 
+The area where the mesh has to be refined is given as a geometrical shape.
+
+\image html hexotic_local_size_parameters.png
+ 
+<ul>
+<li><b>Selection field (Shape)</b> - Area where the hexahedral mesh has to be refined. You can select any kind of shape (vertex, edge, face, solid, ...). The shape can be a sub-shape of the main shape or not.</li>
+<li><b>Local size</b> - Expected size of the hexahedral mesh in (Solid) or near the given shape</li>
+<li><b>Add button</b> - Add the local size to the list of local sizes (showed on the left)</li>
+<li><b>Remove button</b> - Remove a local size from the list, select the local size in the list and press <i>Remove</i> </li>
+</ul>
+
+\note The local size will only influence the density towards a locally denser mesh. If the required density is coarser than the one determined automatically by the global size parameters 
+(min size, max size, min level, max level), it will be ignored and the default density will be used.
+
+\section hexotic_viscous_layers_parameters Viscous layers
+
+The viscous layers allows you to set up parameters of Viscous Layers supported by MG_Hexa mesher.
+
+\image html hexotic_vl_parameters.png
+ 
+<ul>
+<li><b>Number of layers</b> - number of boundary layers.</li>
+<li><b>Size of the first layer</b> - height of the first layer.</li>
+<li><b>Direction of the layers</b> - describes whether the layers grow inwards or outwards.</li>
+<li><b>Growth</b> - geometric progression for the boundary layer growth.</li>
+<li><b>Faces with layers</b> - list of surface references from which the boundary 
+layers should be grown.</li>
+<li><b>Imprinted faces</b> - list of surface references that can be imprinted by 
+boundary layers.</li>
+</ul>
+
+*/

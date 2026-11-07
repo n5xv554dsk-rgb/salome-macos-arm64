@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+# distribution codes
+# Code to use to replace the value returned by: lsb_release -si
+# If no code is found an error will be raised.
+DISTRIBUTIONS :
+{
+  "centos": "CO"
+  "rocky": "CO"
+  "almalinux": "CO"
+  "debian": "DB"
+  "fedora": "FD"
+  "linuxmint": "MN"
+  "mageia": "MG"
+  "mandriva": "MD"
+  "redhat": "CO"
+  "red hat": "CO"
+  "ubuntu": "UB"
+  "kde neon" :  "UB"
+  "tuxedo os" : "UB"
+  "linux mint": "UB"
+  "opensuse":"OS"
+  "Windows" : "W"
+}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block main_menu %}
+
+    <div class="row" data-spy="affix" id="row-main_menu">
+      <nav class="navbar navbar-inverse flex-column flex-md-row">
+	
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+	  </button>
+	  <a class="navbar-brand" href="#">MDM/Eficas</a>
+	</div>
+
+	<div class="collapse navbar-collapse" id="myNavbar">
+	<ul class="nav navbar-nav">
+	  
+	  <li class="dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+	      <li class="dropdown-header">Server Side</li> 
+	      <li class="dropdown-item">
+
+		<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#file_management" style="width:100%">File Management</button> -->
+		<a class="nav-link" href="#" data-toggle="modal" data-target="#file_management">File Management</a>
+		<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#available_catalogs" style="width:100%">Available Catalogs</button> -->
+		<!-- <a class="nav-link" href="#" data-toggle="modal" data-target="#available_catalogs">Choose a catalog</a> -->
+		<!-- <\!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#user_dataset" style="width:100%">User dataset</button> -\-> -->
+		<!-- <a class="nav-link" href="#" data-toggle="modal" data-target="#user_dataset">Choose a dataset</a> -->
+		<a class="nav-link" href="#" data-toggle="modal" data-target="#new_dataset">New Dataset</a>
+		
+	      </li> <!-- dropdown-item -->
+	      <!-- <li role="presentation" class="divider"></li> -->
+	      <!-- <li class="dropdown-header">Local Side</li>  -->
+              <!-- <li class="dropdown-item"><a class="nav-link" href="#">Set Catalog</a></li> -->
+              <!-- <li class="dropdown-item"><a class="nav-link" href="#">Open Dataset</a></li> -->
+            </ul> <!-- dropdown-menu -->
+	  </li>   <!-- dropdown      -->
+	  <!-- <li class="nav-item"><a class="nav-link" href="#">Editor</a></li> -->
+	  <!-- <li class="nav-item"><a class="nav-link" href="#">Dataset</a></li> -->
+	  <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
+
+	</ul> <!-- nav navbar-nav -->
+
+	<form class="navbar-form navbar-right" action="">
+	  <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search"></input>
+	  </div>
+	  <button type="submit" class="btn btn-default">Submit</button>
+	</form>
+
+	</div> <!-- collapse -->
+	
+
+      </nav>
+    </div>
+
+{% endblock %}
+

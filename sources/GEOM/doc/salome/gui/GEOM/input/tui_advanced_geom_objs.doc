@@ -1,0 +1,22 @@
+/*!
+
+\page tui_advanced_geom_objs_page Advanced Geometrical Objects
+
+\anchor tui_creation_pipetshape
+<br><h2>Creation of PipeTShape</h2>
+\tui_script{advanced_geom_objs_ex01.py}
+
+\anchor tui_creation_divideddisk
+<br><h2>Creation of DividedDisk</h2>
+\tui_script{advanced_geom_objs_ex02.py}
+
+\anchor tui_creation_dividedcylinder
+<br><h2>Creation of DividedCylinder</h2>
+\tui_script{advanced_geom_objs_ex03.py}
+
+\anchor tui_creation_smoothingsurface
+<br><h2>Creation of SmoothingSurface</h2>
+\tui_script{advanced_geom_objs_smoothingsurface.py}
+
+<!--@@ insert new functions before this line @@ do not remove this line @@-->
+*/

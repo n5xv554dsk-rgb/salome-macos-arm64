@@ -1,0 +1,415 @@
+..
+   Copyright (C) 2008-2026 EDF R&D
+
+   This file is part of SALOME ADAO module.
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+   See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+   Author: Jean-Philippe Argaud, jean-philippe.argaud@edf.fr, EDF R&D
+
+.. index:: single: ParticleSwarmOptimization
+.. index:: single: Essaim particulaire (Optimisation par)
+.. _section_ref_algorithm_ParticleSwarmOptimization:
+
+Algorithme de calcul "*ParticleSwarmOptimization*"
+--------------------------------------------------
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo01.rst
+
+Cet algorithme réalise une estimation de l'état d'un système, par minimisation
+d'une fonctionnelle d'écart :math:`J`, en utilisant une méthode évolutionnaire
+d'essaim particulaire. C'est une méta-heuristique qui ne requiert pas
+d'information particulière sur la fonctionnelle et qui ne nécessite pas les
+dérivées (sauf dans sa version hybride de type "VLS").
+
+Elle entre dans la même catégorie que les
+:ref:`section_ref_algorithm_DerivativeFreeOptimization`,
+:ref:`section_ref_algorithm_DifferentialEvolution`,
+:ref:`section_ref_algorithm_SimulatedAnnealing`,
+:ref:`section_ref_algorithm_TabuSearch`.
+
+C'est une méthode d'optimisation mono-objectif, permettant la recherche du
+minimum global d'une fonctionnelle d'erreur :math:`J` quelconque de type
+:math:`L^1`, :math:`L^2` ou :math:`L^{\infty}`, avec ou sans pondérations,
+comme décrit dans la section pour :ref:`section_theory_optimization`. Comme
+c'est une méta-heuristique d'optimisation, l'atteinte d'un résultat optimal
+global ou local n'est pas garantie (sauf dans sa version hybride de type
+"VLS"). La fonctionnelle d'erreur par défaut est celle de moindres carrés
+pondérés augmentés, classiquement utilisée en assimilation de données.
+
+Elle est basée sur l'évolution d'une population (appelée "essaim") d'états
+(chaque individu étant appelé une "particule" ou un "insecte"). Il existe
+diverses variantes de cet algorithme. On propose ici les formulations stables
+et robustes suivantes :
+
+.. index::
+    pair: Variant ; CanonicalPSO
+    pair: Variant ; OGCR
+    pair: Variant ; SPSO-2011
+    pair: Variant ; AIS PSO
+    pair: Variant ; SIS PSO
+    pair: Variant ; PSIS PSO
+    pair: Variant ; APSO
+    pair: Variant ; SPSO-2011-AIS
+    pair: Variant ; SPSO-2011-SIS
+    pair: Variant ; SPSO-2011-PSIS
+
+- "CanonicalPSO" (Canonical Particule Swarm Optimisation, voir
+  [ZambranoBigiarini13]_), algorithme classique dit "canonique" d'essaim
+  particulaire, robuste et définissant une référence des algorithmes d'essaims
+  particulaires,
+- "OGCR" (Simple Particule Swarm Optimisation), algorithme simplifié d'essaim
+  particulaire sans bornes sur les insectes ou les vitesses, déconseillé car
+  peu robuste, mais parfois beaucoup plus rapide,
+- "SPSO-2011" ou "SPSO-2011-AIS" (Standard Particle Swarm Optimisation 2011,
+  voir [ZambranoBigiarini13]_), algorithme de référence 2011 d'essaim
+  particulaire, robuste, performant et défini comme une référence des
+  algorithmes d'essaims particulaires. Cet algorithme est parfois appelé
+  ":math:`\omega`-PSO" ou "Inertia PSO" car il intègre une contribution dite
+  d'inertie, ou encore appelé "AIS" (pour "Asynchronous Iteration Strategy") ou
+  "APSO" (pour "Advanced Particle Swarm Optimisation") car il intègre la mise à
+  jour évolutive des meilleurs éléments, conduisant à une convergence
+  intrinsèquement améliorée de l'algorithme,
+- "SPSO-2011-SIS" (Standard Particle Swarm Optimisation 2011 with Synchronous
+  Iteration Strategy), très similaire à l'algorithme de référence 2011 et avec
+  une mise à jour synchrone, appelée "SIS", des particules,
+- "SPSO-2011-PSIS" (Standard Particle Swarm Optimisation 2011 with Parallel
+  Synchronous Iteration Strategy), similaire à l'algorithme "SPSO-2011-SIS"
+  avec mise à jour synchrone et parallélisation, appelée "PSIS", des
+  particules.
+
+.. index::
+    single: Variational Local Search
+    pair: Variant ; CanonicalPSO-VLS
+    pair: Variant ; OGCR-VLS
+    pair: Variant ; SPSO-2011-VLS
+    pair: Variant ; SPSO-2011-AIS-VLS
+    pair: Variant ; SPSO-2011-SIS-VLS
+    pair: Variant ; SPSO-2011-PSIS-VLS
+
+Chacune des méthodes ci-dessus peut voir l'aspect local de sa recherche
+accéléré par une méthode variationnelle "VLS" (Variational Local Search)
+concernant les meilleurs insectes de l'essaim. L'aspect global de la recherche
+reste préservé par la méthode d'essaim particulaire, mais il convient
+expérimentalement d'être très attentif à éviter la stagnation prématurée des
+meilleurs particules de l'essaim. Il suffit de suffixer le nom de la variante
+d'algorithme par "-VLS" pour activer l'accélération, comme par exemple
+"CanonicalPSO-VLS".
+
+Voici quelques suggestions pratiques pour une utilisation efficace de ces
+algorithmes :
+
+- La variante recommandée de cet algorithme est le "SPSO-2011" même si
+  l'algorithme "CanonicalPSO" reste par défaut le plus robuste. Dans le cas où
+  l'évaluation de l'état peut être réalisé en parallèle, on peut utiliser
+  l'algorithme "SPSO-2011-PSIS" même si sa convergence est parfois un peu moins
+  performante.
+- Le nombre de particules ou d'insectes usuellement recommandé varie entre 40
+  et 100 selon l'algorithme, à peu près indépendamment de la dimension de
+  l'espace des états. En général, les meilleurs performances sont obtenues pour
+  des populations de 70 à 500 particules. Même si la valeur par défaut de ce
+  paramètre de base provient d'une expérience étendue sur ces algorithmes, il
+  est recommandé de l'adapter à la difficulté des problèmes traités.
+- Le nombre recommandé de générations, lors de l'évolution de la population,
+  est souvent de l'ordre de 50, mais il peut facilement varier entre 25 et 500.
+- Le nombre maximal d'évaluation de la fonction de simulation doit usuellement
+  être limité entre quelques milliers et quelques dizaines de milliers de fois
+  la dimension de l'espace des états.
+- La fonctionnelle d'erreur décroît usuellement par palier (donc avec une
+  progression nulle de la valeur de fonctionnelle à chaque génération lorsque
+  l'on reste dans le palier), rendant *non recommandé* un arrêt sur critère de
+  décroissance de la fonction-coût. Il est normalement plus judicieux d'adapter
+  le nombre d'itérations ou de générations pour accélérer la convergence des
+  algorithmes.
+- Si le problème est contraint, il faut définir les bornes des variables (par
+  la variable "*Bounds*"). Si le problème est totalement non contraint, il est
+  indispensable de définir des bornes d'incrément (par la variable
+  "*BoxBounds*") pour circonscrire la recherche optimale de manière utile. De
+  manière similaire, si le problème est partiellement contraint, il est
+  recommandé (mais pas indispensable) de définir des bornes d'incrément. Dans
+  le cas où ces bornes d'incréments ne sont pas définies, ce sont les bornes
+  des variables qui seront utilisées comme bornes d'incréments.
+- L'usage des variantes hybrides d'accélération de type "VLS" va requérir la
+  disponibilité du gradient de l'opérateur (soit donné explicitement soit
+  demandé par différences finies à la définition), mais accélère normalement la
+  recherche locale. Il est donc judicieux de réduire notablement le nombre de
+  générations (qui peut être parfois réduit jusqu'à seulement 5 ou 10) tout en
+  spécifiant bien un nombre raisonnable d'insectes (de l'ordre par exemple de 1
+  à 5) faisant l'objet de cette recherche locale. Les paramètres de la
+  recherche hybride sont néanmoins à adapter finement pour chaque cas, sous
+  forme d'un compromis, pour disposer à la fois de la capacité globale et
+  locale de cette optimisation. En effet, une convergence locale trop rapide ou
+  une exploration globale trop restreinte peut réduire la capacité
+  algorithmique à bien explorer l'espace des solutions.
+
+Ces conseils sont à utiliser comme des indications expérimentales, et non comme
+des prescriptions, car ils sont à apprécier ou à adapter selon la physique de
+chaque problème que l'on traite.
+
+Le décompte du nombre d'évaluations de la fonction à simuler lors de cet
+algorithme est déterministe, à savoir le "*nombre d'itérations ou de
+générations*" multiplié par le "*nombre d'individus de la population*". Avec
+les valeurs par défaut de 40 à 100 individus sur 50 générations, il faut entre
+`40x50=2000` et `100*50=5000` évaluations par défaut, ce qui est notablement
+plus qu'en optimisation variationnelle. C'est pour cette raison que cet
+algorithme est usuellement intéressant lorsque la dimension de l'espace des
+états est grande, ou que les non-linéarités de la simulation rendent compliqué,
+ou invalide, l'évaluation du gradient de la fonctionnelle par approximation
+numérique. Mais il est aussi nécessaire que le calcul de la fonction à simuler
+ne soit pas trop coûteux pour éviter une durée d'optimisation rédhibitoire.
+
+Pour réduire le nombre de générations, on peut utiliser la méthode adaptative
+ASAPSO [Wang09]_ de modification de la localisation de la recherche optimale de
+l'essaim. Elle consiste à réduire linéairement la propension à la recherche
+globale de l'algorithme, et donc à favoriser la localisation de l'essaim.
+Lorsque le problème s'y prête, il est possible de réduire d'un facteur 2 à 5 le
+nombre de générations tout en obtenant une qualité sensiblement identique pour
+la meilleure particule. Deux mots-clés sont disponibles pour contrôler l'usage
+de cette méthode adaptative.
+
+Comme pour d'autres algorithmes, il est possible de calculer une quantité
+appelée la covariance *a posteriori* de l'essaim des particules. Néanmoins la
+signification de l'indicateur calculé ici diffère par nature d'une covariance
+établie par exemple en filtrage ou en variationnel. L'indicateur est calculé,
+de manière standard, comme la dispersion de l'ensemble des particules. Mais sa
+valeur est exclusivement à comparer à l'évaluation de cette même quantité pour
+l'essaim initial, et à utiliser dans un sens relatif de variation entre le
+début et la fin de la recherche optimale de l'algorithme. En effet, la
+dispersion initiale des particules est contrôlée par les paramètres
+d'initialisation de l'essaim dont le but est de couvrir l'espace de recherche,
+et la dispersion finale des particules reflète la performance de la
+localisation de la recherche optimale. Contrairement à la covariance des
+erreurs d'ébauche, qui intervient classiquement dans le calcul de l'objectif à
+optimiser et qui est liée à la variance de l'état optimal, la covariance
+calculée *a posteriori* ne reflète que la dispersion des particules. Pour
+l'usage correct de cet algorithme, lorsque le calcul de la covariance *a
+posteriori* est demandé, il est effectué pour l'essaim initial et pour l'essaim
+final.
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo12.rst
+
+.. include:: snippets/FeaturePropNonLocalOptimization.rst
+
+.. include:: snippets/FeaturePropDerivativeFree.rst
+
+.. include:: snippets/FeaturePropParallelAlgorithm.rst
+
+.. include:: snippets/FeaturePropConvergenceOnNumbers.rst
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo02.rst
+
+.. include:: snippets/Background.rst
+
+.. include:: snippets/BackgroundError.rst
+
+.. include:: snippets/EvolutionError.rst
+
+.. include:: snippets/EvolutionModel.rst
+
+.. include:: snippets/Observation.rst
+
+.. include:: snippets/ObservationError.rst
+
+.. include:: snippets/ObservationOperator.rst
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo03AdOp.rst
+
+.. include:: snippets/BoundsWithNone.rst
+
+.. include:: snippets/BoxBounds.rst
+
+.. include:: snippets/CognitiveAcceleration.rst
+
+.. include:: snippets/CognitiveAccelerationControl.rst
+
+.. include:: snippets/DistributionByComponents.rst
+
+.. include:: snippets/GlobalCostReductionTolerance.rst
+
+.. include:: snippets/HybridCostDecrementTolerance.rst
+
+.. include:: snippets/HybridMaximumNumberOfIterations.rst
+
+.. include:: snippets/HybridNumberOfLocalHunters.rst
+
+.. include:: snippets/HybridNumberOfWarmupIterations.rst
+
+.. include:: snippets/InertiaWeight.rst
+
+.. include:: snippets/InitializationPoint.rst
+
+.. include:: snippets/MaximumNumberOfFunctionEvaluations.rst
+
+.. include:: snippets/MaximumNumberOfIterations_50.rst
+
+.. include:: snippets/NumberOfInsects.rst
+
+.. include:: snippets/QualityCriterion.rst
+
+.. include:: snippets/SetSeed.rst
+
+.. include:: snippets/SocialAcceleration.rst
+
+.. include:: snippets/SocialAccelerationControl.rst
+
+.. include:: snippets/StoreInitialState.rst
+
+.. include:: snippets/SwarmInitialization.rst
+
+StoreSupplementaryCalculations
+  .. index:: single: StoreSupplementaryCalculations
+
+  *Liste de noms*. Cette liste indique les noms des variables supplémentaires,
+  qui peuvent être disponibles au cours du déroulement ou à la fin de
+  l'algorithme, si elles sont initialement demandées par l'utilisateur. Leur
+  disponibilité implique, potentiellement, des calculs ou du stockage coûteux.
+  La valeur par défaut est donc une liste vide, aucune de ces variables n'étant
+  calculée et stockée par défaut (sauf les variables inconditionnelles). Les
+  noms possibles pour les variables supplémentaires sont dans la liste suivante
+  (la description détaillée de chaque variable nommée est donnée dans la suite
+  de cette documentation par algorithme spécifique, dans la sous-partie
+  "*Informations et variables disponibles à la fin de l'algorithme*") : [
+  "Analysis",
+  "APosterioriCorrelations",
+  "APosterioriCovariance",
+  "APosterioriStandardDeviations",
+  "APosterioriVariances",
+  "BMA",
+  "CostFunctionJ",
+  "CostFunctionJb",
+  "CostFunctionJo",
+  "CurrentIterationNumber",
+  "CurrentState",
+  "EnsembleOfStates",
+  "EnsembleOfSimulations",
+  "Innovation",
+  "InternalCostFunctionJ",
+  "InternalCostFunctionJb",
+  "InternalCostFunctionJo",
+  "OMA",
+  "OMB",
+  "SimulatedObservationAtBackground",
+  "SimulatedObservationAtCurrentState",
+  "SimulatedObservationAtOptimum",
+  ].
+
+  Exemple :
+  ``{"StoreSupplementaryCalculations":["CurrentState", "Residu"]}``
+
+.. include:: snippets/SwarmTopology.rst
+
+.. include:: snippets/Variant_PSO.rst
+
+.. include:: snippets/VelocityClampingFactor.rst
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo04.rst
+
+.. include:: snippets/Analysis.rst
+
+.. include:: snippets/CostFunctionJ.rst
+
+.. include:: snippets/CostFunctionJb.rst
+
+.. include:: snippets/CostFunctionJo.rst
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo05.rst
+
+.. include:: snippets/Analysis.rst
+
+.. include:: snippets/APosterioriCorrelations.rst
+
+.. include:: snippets/APosterioriCovariance.rst
+
+.. include:: snippets/APosterioriStandardDeviations.rst
+
+.. include:: snippets/APosterioriVariances.rst
+
+.. include:: snippets/BMA.rst
+
+.. include:: snippets/CostFunctionJ.rst
+
+.. include:: snippets/CostFunctionJb.rst
+
+.. include:: snippets/CostFunctionJo.rst
+
+.. include:: snippets/CurrentIterationNumber.rst
+
+.. include:: snippets/CurrentState.rst
+
+.. include:: snippets/EnsembleOfStates.rst
+
+.. include:: snippets/EnsembleOfSimulations.rst
+
+.. include:: snippets/Innovation.rst
+
+.. include:: snippets/InternalCostFunctionJ.rst
+
+.. include:: snippets/InternalCostFunctionJb.rst
+
+.. include:: snippets/InternalCostFunctionJo.rst
+
+.. include:: snippets/OMA.rst
+
+.. include:: snippets/OMB.rst
+
+.. include:: snippets/SimulatedObservationAtBackground.rst
+
+.. include:: snippets/SimulatedObservationAtCurrentState.rst
+
+.. include:: snippets/SimulatedObservationAtOptimum.rst
+
+.. ------------------------------------ ..
+.. _section_ref_algorithm_ParticleSwarmOptimization_examples:
+
+.. include:: snippets/Header2Algo09.rst
+
+.. include:: scripts/simple_ParticleSwarmOptimization1.rst
+
+.. literalinclude:: scripts/simple_ParticleSwarmOptimization1.py
+
+.. include:: snippets/Header2Algo10.rst
+
+.. literalinclude:: scripts/simple_ParticleSwarmOptimization1.res
+    :language: none
+
+.. include:: snippets/Header2Algo11.rst
+
+.. _simple_ParticleSwarmOptimization1:
+.. image:: scripts/simple_ParticleSwarmOptimization1.png
+  :align: center
+  :width: 90%
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo06.rst
+
+- :ref:`section_ref_algorithm_DerivativeFreeOptimization`
+- :ref:`section_ref_algorithm_DifferentialEvolution`
+- :ref:`section_ref_algorithm_SimulatedAnnealing`
+- :ref:`section_ref_algorithm_TabuSearch`
+
+.. ------------------------------------ ..
+.. include:: snippets/Header2Algo07.rst
+
+- [Wang09]_
+- [WikipediaPSO]_
+- [ZambranoBigiarini13]_

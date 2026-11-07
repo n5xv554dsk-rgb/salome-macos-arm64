@@ -1,0 +1,10 @@
+<document>
+  <section name="resources">
+    <parameter name="HYBRIDPlugin" value="${HYBRIDPLUGIN_ROOT_DIR}/share/salome/resources/hybridplugin"/>
+  </section>
+  <section name="smesh_help" >
+    <parameter name="User's Guide/Mesh module/MG-Hybrid plugin/User's Guide" value="${HYBRIDPLUGIN_ROOT_DIR}/share/doc/salome/gui/HYBRIDPLUGIN/index.html;;http://docs.salome-platform.org/latest/gui/HYBRIDPLUGIN/index.html"/>
+    <parameter name="User's Guide/Mesh module/MG-Hybrid plugin/Reference"    value="${MESHGEMS_ROOT_DIR}/Docs/mg-hybrid_api_manual.pdf"/>
+    <parameter name="User's Guide/Mesh module/MG-Hybrid plugin/Manual"       value="${MESHGEMS_ROOT_DIR}/Docs/mg-hybrid_user_manual.pdf"/>
+  </section>
+</document>

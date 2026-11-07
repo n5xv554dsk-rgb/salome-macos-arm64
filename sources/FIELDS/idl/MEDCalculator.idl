@@ -1,0 +1,73 @@
+// Copyright (C) 2011-2026  CEA, EDF, OPEN CASCADE
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+// Authors : Guillaume Boulant (EDF) - 01/06/2011
+
+#ifndef _MED_CALCULATOR_IDL_
+#define _MED_CALCULATOR_IDL_
+
+#include "SALOME_GenericObj.idl"
+#include "MEDDataManager.idl"
+
+module MEDCALC
+{
+
+  /*!
+   * This constants may be used for the value of an argument of a
+   * function of the interface to specify that the function must
+   * consider a default value.
+   */
+  typedef long medcalcNumber;
+  const medcalcNumber NBCOMP_DEFAULT=-1;
+
+  interface MEDCalculator: SALOME_CMOD::GenericObj
+  {
+    /*! Addition of the fields f1 and f2 ( f1+f2) */
+    FieldHandler add(in FieldHandler f1, in FieldHandler f2)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Substraction of the fields f1 and f2 (f1-f2) */
+    FieldHandler sub(in FieldHandler f1, in FieldHandler f2)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Multiplication of the fields f1 by f2 (f1*f2) */
+    FieldHandler mul(in FieldHandler f1, in FieldHandler f2)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Division of the fields f1 by f2 (f1/f2) */
+    FieldHandler div(in FieldHandler f1, in FieldHandler f2)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Power of the field f (f^power) */
+    FieldHandler pow(in FieldHandler f, in long power)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Linear transformation of the field f (factor*f+offset) */
+    FieldHandler lin(in FieldHandler f, in double factor, in double offset)
+      raises (SALOME_CMOD::SALOME_Exception);
+    /*! Duplication of the field f */
+    FieldHandler dup(in FieldHandler f)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    /*! Creation of a field whose values are initialized with the specified double */
+    /* FieldHandler ini(in double value) raises (SALOME_CMOD::SALOME_Exception); */
+
+    /*! Transformation of the field f using a custom function */
+    FieldHandler fct(in FieldHandler f, in string function, in medcalcNumber nbResComponents)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+  };
+};
+
+#endif // _MED_CALCULATOR_IDL_

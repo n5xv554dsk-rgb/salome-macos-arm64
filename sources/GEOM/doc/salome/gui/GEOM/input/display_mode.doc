@@ -1,0 +1,56 @@
+/*!
+
+\page display_mode_page Display Mode
+
+\n This option is relevant for viewing 3D objects. Wireframe mode means
+that you can see only edges of the object, while its shells remain
+transparent. Shading mode means that the shells are filled with color.
+
+\n To change the display mode right-click on this geometrical object
+in the viewer and from the pop-up menu select <b>Display mode -->
+Wireframe</b> or <b>Shading</b>.
+
+\n <b>TUI Command:</b> <em>gg.setDisplayMode(ID, Short)</em>
+
+\image html disp_mode1sn.png
+<center><em>Wireframe</em></center>
+
+\image html /disp_mode2sn.png
+<center><em>Shading</em></center>
+
+\n It is possible to show the direction of edges of the selected
+shape. For this, choose in the context menu of the shape
+<b>Display mode -> Show Edge Direction</b>, or apply this
+functionality for all objects in the current view via the main menu
+<b> View -> Display Mode -> Show/Hide Edge Direction.</b>
+
+\image html vectors_mode.png
+<center><em>Vectors Mode (Show Edge Direction)</em></center>
+
+\n <b>TUI Command:</b> <em>gg.setVectorsMode(ID, Bool)</em>
+
+\n It is possible to show the vertices of the selected
+shape. For this, choose in the context menu of the shape
+<b>Display mode -> Show Vertices</b>, or apply this
+functionality for all objects in the current view via the main menu
+<b> View -> Display Mode -> Show/Hide Vertices.</b>
+
+\image html vertices_mode.png
+<center><em>Vertices Mode (Show Vertices)</em></center>
+
+\n <b>TUI Command:</b> <em>gg.setVerticesMode(ID, Bool)</em>
+
+\n To show the name of the selected shape, choose in its context menu
+<b>Display mode -> Show Name</b>, or apply this
+functionality for all objects in the current view via the main menu option
+<b> View -> Display Mode -> Show/Hide Name.</b>
+
+\image html name_mode.png
+<center><em>Name Mode (Show Name)</em></center>
+
+\n <b>TUI Command:</b> <em>gg.setNameMode(ID, Bool)</em>
+
+Our <b>TUI Scripts</b> provide you with useful examples of 
+\ref tui_change_disp_mode "Changing Display Parameters".
+
+*/

@@ -1,0 +1,15 @@
+Per_elem undefined scalar values for the EnSight Gold geometry example
+part
+         1
+tria3 undef
+-1.00000e+02
+ 2.00000e+00
+-1.00000e+02
+hexa8
+ 4.00000e+00
+part
+         3
+block undef
+-1.23450e-10
+-1.23450e-10
+ 6.00000e+00

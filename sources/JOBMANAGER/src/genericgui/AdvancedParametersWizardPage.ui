@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdvancedParametersWizardPage</class>
+ <widget class="QWizardPage" name="AdvancedParametersWizardPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>589</width>
+    <height>441</height>
+   </rect>
+  </property>
+  <property name="title">
+   <string>Advanced Parameters</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Workload Characterization Key (wckey):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="line_wckey"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Extra parameters</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>&lt;html&gt;
+&lt;head&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+.code{font-family: monospace}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;The following text will be added &amp;quot;as is&amp;quot; in the job submission file. It can be used to specify parameters that are not available through the JobManager interface or to define environment variables for the job.&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&quot;code&quot;&gt;#MSUB -@ jonathan.xxx@cea.fr:begin,end&lt;br/&gt;
+export OMPI_MCA_orte_process_binding=none&lt;br/&gt;
+...&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="text_extra_params">
+        <property name="font">
+         <font>
+          <family>Monospace</family>
+         </font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

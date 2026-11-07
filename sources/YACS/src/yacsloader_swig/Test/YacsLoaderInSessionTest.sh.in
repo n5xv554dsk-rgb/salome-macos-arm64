@@ -1,0 +1,102 @@
+#!/bin/bash
+# Copyright (C) 2006-2026  CEA, EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+# --- script to execute in SALOME environment (use runSession)
+
+# --- launch CORBA server echoSrv for tests (reuse the yacsloader/Test one)
+
+../../yacsloader/Test/echoSrv &
+pidecho=$!
+echo $pidecho > "/tmp/YACSTEST_PidEcho"
+
+python3 @CMAKE_SOURCE_DIR@/src/yacsloader/Test/waitContainers.py
+
+# --- launch unit tests
+
+export ROOT_SAMPLES=@CMAKE_SOURCE_DIR@/src/yacsloader/samples
+export TESTCOMPONENT_ROOT_DIR=@CMAKE_BINARY_DIR@/src/runtime/Test
+
+export PYTHONPATH=@CMAKE_BINARY_DIR@/src/yacsloader_swig:$PYTHONPATH
+export PYTHONPATH=@CMAKE_BINARY_DIR@/src/runtime_swig:$PYTHONPATH
+export PYTHONPATH=@CMAKE_BINARY_DIR@/src/engine_swig:$PYTHONPATH
+export PYTHONPATH=@CMAKE_CURRENT_SOURCE_DIR@:$PYTHONPATH
+export PYTHONPATH=@CMAKE_SOURCE_DIR@/src/yacsloader/Test:$PYTHONPATH
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testExec.py
+ret0=$?
+if [ $ret0 -gt 0 ]; then
+  echo "exec status testExec : " $ret0
+  exit $ret0
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testResume.py
+ret1=$?
+if [ $ret1 -gt 0 ]; then
+  echo "exec status testResume : " $ret1
+  exit $ret1
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testLoader.py
+ret2=$?
+if [ $ret2 -gt 0 ]; then
+  echo "exec status testLoader : " $ret2
+  exit $ret2
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testEdit.py
+ret3=$?
+if [ $ret3 -gt 0 ]; then
+  echo "exec status testEdit : " $ret3
+  exit $ret3
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testSave.py
+ret4=$?
+if [ $ret4 -gt 0 ]; then
+  echo "exec status testSave : " $ret4
+  exit $ret4
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testRefcount.py
+ret5=$?
+if [ $ret5 -gt 0 ]; then
+  echo "exec status testRefcount : " $ret5
+  exit $ret5
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testSaveLoadRun.py
+ret6=$?
+if [ $ret6 -gt 0 ]; then
+  echo "exec status testSaveLoadRun : " $ret6
+  exit $ret6
+fi
+
+python3  @CMAKE_CURRENT_SOURCE_DIR@/testProgress.py
+ret7=$?
+if [ $ret7 -gt 0 ]; then
+  echo "exec status testProgress : " $ret7
+  exit $ret7
+fi
+
+let ret=$ret0+$ret1+$ret2+$ret3+$ret4+$ret5+$ret6+$ret7
+
+# --- return unit tests status
+
+exit $ret

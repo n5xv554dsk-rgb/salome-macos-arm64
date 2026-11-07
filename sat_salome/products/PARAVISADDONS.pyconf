@@ -1,0 +1,71 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+default :
+{
+    name : 'PARAVISADDONS'
+    build_source : 'cmake'
+    cmake_options : '-DCMAKE_INSTALL_LIBDIR=lib'
+    get_source : "git"
+    git_info :
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/paravisaddons_common.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "paravisaddons_common.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/paravisaddons_common.git"
+      }
+    }
+    environ :
+    {
+        env_script : $name + ".py"
+    }
+    depend :
+    [
+        'KERNEL'
+        'GUI'
+        'MEDCOUPLING'
+        'PARAVIS'
+        'FIELDS'
+        'GEOM'
+        'SMESH'
+        'Python'
+        'qt'
+        'boost'
+        'hdf5'
+        'medfile'
+        'ParaView'
+        'CAS'
+        'omniORB'
+        'docutils'
+        'libxml2'
+        'six'
+        'pytz'
+    ]
+    opt_depend : ['openmpi']
+    build_depend :
+    [
+        'cmake'
+        'swig'
+        'cppunit'
+    ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties :
+    {
+        incremental : 'yes'
+        is_SALOME_product: "yes"
+    }
+}
+
+default_win :
+{
+    # bos #46196 - make the build directory as short as possible since
+    # build will fail if build type is RelWithDebInfo.
+    cmake_options : ''
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + "PVA"
+    depend :
+    [
+        'PARAVIS'
+    ]
+}

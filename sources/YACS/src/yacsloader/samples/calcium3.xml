@@ -1,0 +1,109 @@
+<!--
+  Copyright (C) 2006-2026  CEA/DEN, EDF R&D
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+-->
+<proc>
+
+    <!-- types -->
+    <objref name="CALCIUM_integer"/>
+    <objref name="CALCIUM_real"/>
+    <!-- inline -->
+    <inline name="node0" >
+      <script>
+        <code>n=20</code>
+      </script>
+      <outport name="n" type="int"/>
+    </inline>
+
+    <bloc name="a">
+      <service name="node1" >
+        <component>DSCCODC</component>
+        <method>prun</method>
+        <inport name="niter" type="int"/>
+        <instream name="ETP_EN" type="CALCIUM_integer"/>
+        <outstream name="STP_EN" type="CALCIUM_integer"/>
+      </service>
+      <service name="node2" >
+        <component>DSCCODD</component>
+        <method>prun</method>
+        <inport name="niter" type="int"/>
+        <instream name="ETP_EN" type="CALCIUM_integer"/>
+        <outstream name="STP_EN" type="CALCIUM_integer"/>
+      </service>
+      <stream>
+        <fromnode>node2</fromnode> <fromport>STP_EN</fromport>
+        <tonode>node1</tonode> <toport>ETP_EN</toport>
+      </stream>
+      <stream>
+        <fromnode>node1</fromnode> <fromport>STP_EN</fromport>
+        <tonode>node2</tonode> <toport>ETP_EN</toport>
+      </stream>
+    </bloc>
+
+    <bloc name="b">
+      <service name="node3" >
+        <node>a.node1</node>
+        <method>trun</method>
+        <inport name="niter" type="int"/>
+        <instream name="ETP_RE" type="CALCIUM_real"/>
+        <outstream name="STP_RE" type="CALCIUM_real"/>
+      </service>
+      <service name="node4" >
+        <node>a.node2</node>
+        <method>trun</method>
+        <inport name="niter" type="int"/>
+        <instream name="ETP_RE" type="CALCIUM_real"/>
+        <outstream name="STP_RE" type="CALCIUM_real"/>
+      </service>
+      <stream>
+        <fromnode>node4</fromnode> <fromport>STP_RE</fromport>
+        <tonode>node3</tonode> <toport>ETP_RE</toport>
+      </stream>
+      <stream>
+        <fromnode>node3</fromnode> <fromport>STP_RE</fromport>
+        <tonode>node4</tonode> <toport>ETP_RE</toport>
+      </stream>
+    </bloc>
+
+    <!--control -->
+    <control> <fromnode>node0</fromnode> <tonode>a</tonode> </control>
+    <control> <fromnode>a</fromnode> <tonode>b</tonode> </control>
+
+    <!--datalinks -->
+    <datalink> 
+      <fromnode>node0</fromnode><fromport>n</fromport>
+      <tonode>a.node1</tonode> <toport>niter</toport> 
+    </datalink>
+    <datalink> 
+      <fromnode>node0</fromnode><fromport>n</fromport>
+      <tonode>a.node2</tonode> <toport>niter</toport> 
+    </datalink>
+    <datalink> 
+      <fromnode>node0</fromnode><fromport>n</fromport>
+      <tonode>b.node3</tonode> <toport>niter</toport> 
+    </datalink>
+    <datalink> 
+      <fromnode>node0</fromnode><fromport>n</fromport>
+      <tonode>b.node4</tonode> <toport>niter</toport> 
+    </datalink>
+    <!--parameters -->
+
+    <!--stream -->
+
+</proc>

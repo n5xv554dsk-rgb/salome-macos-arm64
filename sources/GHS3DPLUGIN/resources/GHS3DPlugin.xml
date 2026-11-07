@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<meshers>
+
+<meshers-group name      ="GHS3D"
+               resources ="GHS3DPlugin"
+               idl-module="GHS3DPlugin"
+               server-lib="GHS3DEngine"
+               gui-lib   ="GHS3DPluginGUI">
+  <hypotheses>
+    <hypothesis type    ="MG-Tetra Parameters"
+		label-id="MG-Tetra Parameters"
+		icon-id ="mesh_hypo_ghs3d.png"
+		dim     ="3">
+      <python-wrap>
+        <accumulative-methods>
+          SetEnforcedVertex,
+          SetEnforcedVertexNamed,
+          SetEnforcedVertexWithGroup,
+          SetEnforcedVertexNamedWithGroup,
+          SetEnforcedVertexGeom,
+          SetEnforcedVertexGeomWithGroup,
+          RemoveEnforcedVertex,
+          RemoveEnforcedVertexGeom,
+          SetEnforcedMeshWithGroup,
+          SetEnforcedMeshSize,
+          SetEnforcedMeshSizeWithGroup
+        </accumulative-methods>
+      </python-wrap>
+    </hypothesis>
+
+    <hypothesis type    ="MG-Tetra Optimization Parameters"
+                label-id="MG-Tetra Optimization Parameters"
+                icon-id ="mesh_hypo_ghs3d.png"
+                dim     ="3">
+    </hypothesis>
+
+  </hypotheses>
+
+  <algorithms>
+    <algorithm type     ="MG-Tetra"
+               label-id ="MG-Tetra"
+               icon-id  ="mesh_tree_hypo_ghs3d.png"
+               group-id ="1"
+               priority ="30"
+               input    ="TRIA,QUAD"
+               output   ="TETRA,PYRAMID"
+	       need-geom="false"
+               opt-hypos="MG-Tetra Parameters,ViscousLayers"
+               dim      ="3">
+      <python-wrap>
+        <algo>MG-Tetra=Tetrahedron(algo=smeshBuilder.MG_Tetra)</algo>
+        <hypo>MG-Tetra Parameters=Parameters()</hypo>
+        <hypo>ViscousLayers=ViscousLayers(SetTotalThickness(),SetNumberLayers(),SetStretchFactor(),SetFaces(1),SetFaces(2),SetMethod(),SetGroupName())</hypo>
+      </python-wrap>
+    </algorithm>
+
+    <algorithm type     ="MG-Tetra Optimization"
+               label-id ="MG-Tetra Optimization"
+               icon-id  ="mesh_tree_hypo_ghs3d.png"
+               group-id ="2"
+               input    ="TETRA"
+               output   ="TETRA"
+               need-geom="never"
+               opt-hypos="MG-Tetra Optimization Parameters"
+               dim      ="3">
+      <python-wrap>
+        <algo>MG-Tetra Optimization=Tetrahedron(algo=smeshBuilder.MG_Tetra_Optimization)</algo>
+        <hypo>MG-Tetra Optimization Parameters=Parameters()</hypo>
+      </python-wrap>
+    </algorithm>
+
+  </algorithms>
+</meshers-group>
+
+</meshers>

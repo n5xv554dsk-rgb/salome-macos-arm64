@@ -1,0 +1,7 @@
+
+if (CDMATH_WITH_PYTHON AND CDMATH_WITH_POSTPRO)
+  ADD_TEST(Test_Boys_Surface ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/BoysSurfaceVTK.py)
+endif ()
+
+INSTALL(FILES BoysSurfaceVTK.py ${MEDCOUPLING_LIBRARIES}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages/VTKReader.py DESTINATION share/examples/BoysSurface)
+

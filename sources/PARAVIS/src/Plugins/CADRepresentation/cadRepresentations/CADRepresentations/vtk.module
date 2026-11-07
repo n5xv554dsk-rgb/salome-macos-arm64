@@ -1,0 +1,8 @@
+NAME
+  CADRepresentations
+DEPENDS
+  ParaView::RemotingViews
+  VTK::RenderingOpenGL2
+  VTK::CommonDataModel
+PRIVATE_DEPENDS
+  VTK::CommonCore

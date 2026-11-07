@@ -1,0 +1,85 @@
+# -*- coding: utf-8 -*-
+
+DEBUT();
+
+BOX=LIRE_MAILLAGE(FORMAT='MED',);
+
+BETON=DEFI_MATERIAU(THER=_F(LAMBDA=8000.,
+                            RHO_CP=2.400E+6,),);
+
+MOTH=AFFE_MODELE(MAILLAGE=BOX,
+                 AFFE=_F(TOUT='OUI',
+                         PHENOMENE='THERMIQUE',
+                         MODELISATION='3D',),);
+
+#BOX=MODI_MAILLAGE( reuse=BOX,
+#                  MAILLAGE=BOX,
+#                  ORIE_PEAU_3D=_F(GROUP_MA=('CL_1','CL_2','XMIN','XMAX','YMIN','YMAX','ZMIN','ZMAX',),)
+#                )
+
+CHMAT=AFFE_MATERIAU(MAILLAGE=BOX,
+                    AFFE=_F(TOUT='OUI',
+                            MATER=BETON,),);
+
+CHTH=AFFE_CHAR_THER(MODELE=MOTH,
+                    TEMP_IMPO=(_F(GROUP_MA='CL_1',
+                                  TEMP=50.0,),
+                               _F(GROUP_MA='CL_2',
+                                  TEMP=5.0,),),
+                    FLUX_REP=(_F(GROUP_MA='XMIN',
+                                 FLUN=0.0,),
+                              _F(GROUP_MA='XMAX',
+                                 FLUN=0.0,),
+                              _F(GROUP_MA='YMIN',
+                                 FLUN=0.0,),
+                              _F(GROUP_MA='YMAX',
+                                 FLUN=0.0,),
+                              _F(GROUP_MA='ZMIN',
+                                 FLUN=0.0,),
+                              _F(GROUP_MA='ZMAX',
+                                 FLUN=0.0,),),);
+
+RESU=THER_LINEAIRE(MODELE=MOTH,
+                   CHAM_MATER=CHMAT,
+                   EXCIT=_F(CHARGE=CHTH,),);
+
+IMPR_RESU(FORMAT='MED',
+          RESU=_F(RESULTAT=RESU,
+                  NOM_CHAM='TEMP',
+                  NOM_CHAM_MED='TEMPERATURE',),);
+
+# Extraction de la temperature sur un noeud predefini
+
+TA=POST_RELEVE_T(ACTION=_F(OPERATION='EXTRACTION',
+                           INTITULE='V_TEST',
+                           RESULTAT=RESU,
+                           NOM_CHAM='TEMP',
+                           NUME_ORDRE=0,
+                           GROUP_NO='A',
+                           NOM_CMP='TEMP',),);
+
+#
+
+IMPR_TABLE(TABLE=TA,
+           NOM_PARA=('INTITULE','TEMP',),);
+
+# Calcul de l'indicateur d'erreur
+
+RESU=CALC_ERREUR(reuse =RESU,
+                 RESULTAT=RESU,
+                 OPTION='ERTH_ELEM',);
+
+
+IMPR_RESU(FORMAT='MED',
+          RESU=_F(RESULTAT=RESU,
+                  NUME_ORDRE=0,
+                  NOM_CHAM='ERTH_ELEM',
+                  NOM_CMP='ERTABS',
+                  NOM_CHAM_MED='ERREUR',),);
+
+
+FIN();
+
+#
+
+#CHECKSUM:5021673eed6e81bf9074892cd639b2ad  -:FIN CHECKSUM

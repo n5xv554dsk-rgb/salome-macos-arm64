@@ -1,0 +1,58 @@
+<source>
+  <toolbox id="creation_method">
+    <box id="simple"
+     title="Simple"
+     icon="icons/Features/bool_fuse_simple.png">
+      <multi_selector id="main_objects"
+        label="Objects"
+        icon=""
+        tooltip="Select objects"
+        shape_types="vertices edges wires faces shells solids compsolids compounds"
+        use_choice="false"
+        concealment="true">
+        <validator id="FeaturesPlugin_ValidatorBooleanFuseSelection"/>
+      </multi_selector>
+    </box>
+    <box id="advanced"
+     title="advanced"
+     icon="icons/Features/bool_fuse_advanced.png">
+      <multi_selector id="main_objects"
+        label="Main objects"
+        icon=""
+        tooltip="Select objects"
+        shape_types="vertices edges wires faces shells solids compsolids compounds"
+        use_choice="false"
+        concealment="true">
+        <validator id="PartSet_DifferentObjects"/>
+        <validator id="FeaturesPlugin_ValidatorBooleanFuseSelection"/>
+      </multi_selector>
+      <multi_selector id="tool_objects"
+        label="Tool objects"
+        icon=""
+        tooltip="Select tools"
+        shape_types="vertices edges wires faces shells solids compsolids compounds"
+        use_choice="false"
+        concealment="true" >
+        <validator id="PartSet_DifferentObjects"/>
+        <validator id="FeaturesPlugin_ValidatorBooleanFuseSelection"/>
+      </multi_selector>
+    </box>
+  </toolbox>
+  <optionalbox id="use_fuzzy">
+    <doublevalue id="fuzzy_param"
+                  label="Fuzzy parameter"
+                  tooltip="Additional tolerance to eliminate tiny result."
+                  min="1.e-7"
+                  max="10"
+                  step="1.e-5"
+                  default="1.e-5">
+      <validator id="GeomValidators_Positive"/>
+    </doublevalue>
+  </optionalbox>
+  <boolvalue id="remove_intersection_edges"
+           label="Remove intersection edges"
+           tooltip="Remove intersection edges if they laying on the same surface"
+           default="false"/>
+  <validator id="FeaturesPlugin_ValidatorBooleanFuseArguments"
+             parameters="main_objects,tool_objects"/>
+</source>

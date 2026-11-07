@@ -1,0 +1,284 @@
+/*!
+
+\page ghs3d_hypo_page MG-Tetra Parameters hypothesis
+
+\anchor ghs3d_top
+MG-Tetra Parameters hypothesis works only with <b>MG-Tetra</b> 
+algorithm. This algorithm is a commercial software.
+
+To get a license, visit http://www.meshgems.com/meshgems-products.html
+
+\tableofcontents
+
+\section ghs3d_general_parameters General parameters
+
+\image html ghs3d_parameters_basic.png
+
+- <b>Name</b> - allows to define the name of the hypothesis (MG-Tetra
+Parameters by default).
+
+- <b>Algorithm Selection</b> - allows to select the version of MG-Tetra algorithm to be used.
+
+- <b>Optimization level</b> - allows choosing the required
+optimization level (higher level of optimization provides better mesh,
+but can be time-consuming):
+
+  - none
+
+  - light
+
+  - medium (standard)
+
+  - standard+ (not available whem MG-Tetra HPC is selected)
+
+  - strong
+
+- <b>Minimal size</b> - sets the minimum edge size in the generated mesh.
+
+- <b>Maximal size</b> - sets the maximum edge size in the generated mesh.
+
+- <b>Maximal number of threads</b> - define the maximal number of threads to be used by the meshing algorithm. 
+                                      On selection of this box the Pthread mode is activated when MG-Tetra is selected and 
+                                      Parallel mode is activated if the MG-Tetra HPC algorithm is selected.
+
+- <b>Pthread mode</b> - define the parallel strategy used by the mesher when MG-Tetra is selected.
+  - none
+  - aggresive - is faster than the sequential mode, but the quality of the resulting mesh may altered compared to the sequential mode.
+  - safe - is slower than the sequential mode, but the quality of the mesh can only improve;
+
+- <b>Paralle strategy (HPC)</b> - define the parallel strategy used by the mesher when MG-Tetra HPC is selected.
+  - none
+  - reproducible_given_max_number_of_threads
+  - reproducible
+  - aggressive
+
+
+- <b>Volumic gradation</b> - Defines the volumic ratio between 2 consecutive elements.
+WARNING: Changing the default value of this parameter may dramatically
+decrease the quality of the resulting mesh.
+
+- <b>Use volume proximity</b> - activates consideration of distance between opposite surfaces.
+
+    - <b>Number of layers</b> - asks for at least given number of layers of tets between opposite surfaces.
+
+- <b>Mesh holes</b> - if checked, the algorithm will 
+create mesh in the holes inside a solid shape, else only the outermost
+shape will be meshed. Volumic elements created within holes are bound
+to the solid.
+
+- <b>Make groups of domains</b> - if checked, the algorithm will
+create groups of just generated elements corresponding to each mesh
+domain.<br>
+
+\ref ghs3d_top "Back to top"
+
+\section ghs3d_advanced_parameters Advanced parameters
+
+\image html ghs3d_parameters_advanced.png
+
+\subsection advanced_meshing_options Advanced meshing options for MG-Tetra algorithm
+
+Advanced page tab expose mostly useful advanced options. Initially,
+default values of the options are displayed and they are not
+modifiable. If an option is activated using a check-box, its value
+becomes modifiable.
+
+<b>Add option</b> button adds a line to the table where you can type
+an option and its value as text. A check box in the first column
+activates/deactivates the option of the current row. A deactivated
+option will be erased upon pressing \a Ok.
+
+- <b>Gradation on skin</b> - This option set or not the gradation
+  value on the initial size of the skin vertices.
+
+     - <b>no</b> the gradation is not applied on the skin vertices.
+       In this case the initial size of a vertex is the average edges 
+       lenght which belong the vertex.
+
+     - <b>yes</b> the gradation is applied on the skin vertices. In
+       this case the initial size of a vertex is the average edges
+       lenght which belong the vertex multiplied by the gradation.
+
+
+- <b>Boundary regeneration</b> - defines the boundary regeneration mode.
+  MeshGems-Tetra uses alternative strategies for boundary regeneration.
+
+     - <b>standard</b> means that the standard boundary regeneration algorithm is used.
+
+     - <b>safe</b> means that various methods are tried as long as
+        the regeneration phase fails (including the alternate boundary
+        recovery mode), can be time consuming and can fail in very
+        difficult cases.
+
+     - <b>recovery</b> means that the alternate boundary recovery
+       version is activated. Check <b>Using MeshGems-Tetra with the
+       boundary recovery module</b> chapter of MG-Tetra User Manual.
+
+- <b>Force maximum edge size</b> - This option can be used to force
+  the desired maximum edge size in the generated mesh given by
+  the <b>Max Size</b> parameter. The default value is no, meaning that
+  the maximum edge length can be greater than the given value of
+  the <b>Max Size</b> parameter.
+
+- <b>Force quadratic mesh</b> - This option permits to write or not an
+  output mesh file in case of negative Jacobians when generating a
+  quadratic mesh. Refer to section 4.6.3 for more details. 
+
+     - <b>no</b> means that no output is written (this is the default);
+ 
+     - <b>yes</b> means that an output is written even in case of negative Jacobians.
+
+- <b>Respect surface mesh</b> - This option forbids or not the
+  correction of input triangles and enforced edges mid-nodes to make
+  the element Jacobian strictly positive when generating a quadratic
+  mesh.
+
+     - <b>yes</b> means that the input triangles and edges mid-nodes
+       are unchanged, the correction of nodes is only applied in the volume.
+
+     - <b>no</b> means that the input triangles and edges mid-nodes
+       can be moved. The correction of nodes is applied in the volume
+       and the mid-nodes correction can be applied on the input
+       triangles and edges mid-nodes. The corrected surface mid-nodes
+       are approximated on the surface first, or put on the linear
+       edges; The corrected edges mid-nodes can be put on the linear
+       edges.
+
+- <b>Max number of errors</b> - the error messages will be printed up
+  to a given maximum number of errors. At least 1 error is printed and
+  at most 100 errors are printed to prevent infinite loops.
+
+- <b>No central point</b> - <b>yes</b> prevents adding an internal point at the
+   centre of gravity of the bounding box that MeshGems-Tetra uses by
+   default in order to speed up and to simplify the meshing
+   process. This option can be particularly useful to:
+
+      -  generate a volume mesh without internal points at all;
+
+      - in some rare cases, help the boundary regeneration phase when
+        it failed with the standard options (for example when one
+        dimension of the domain is large compared to the other two with
+        a ratio of 20 or more). Use this option when the boundary
+        regeneration failed with the standard parameters and before
+        using the recovery version.
+
+- <b>Optimise worst elements</b> - Applies an optimization processing
+  to improve the worst quality elements whenever possible. 
+
+- <b>Rectify jacobian</b> - This option activates correction of some
+  nodes so as to make the Jacobian of element strictly positive when
+  generating a quadratic mesh.
+
+- <b>Sliver angle</b> - This options can be used to specify to
+  MeshGems-Tetra what is considered as a sliver and what is not. The
+  user has the possibility to specify an angle (in degrees), which
+  caracterizes a sliver : any tetrahedron which has at least an angle
+  below this value will be considered as a sliver.
+
+- <b>Target quality</b> - Sets the desired maximum target of worst
+  quality acceptable for the volume mesh used during optimisation
+  phase. When defined, an optimization processing is applied to
+  improve the quality until the given target is reached whenever
+  possible. By default, this option is not activated which means that
+  only the standard optimisations are performed (the quality target is
+  the target quality computed by the program).
+
+\subsection advanced_meshing_options_HPC Advanced meshing options for MG-Tetra and MG-Tetra HPC algorithms
+
+This option is common to both algorithms. When MG-Tetra HPC algorithm is selected on the General Parameters view, all advanced options
+are disabled except the follow ones:
+
+- <b>Remove overconstrained tetrahedra</b> - This option can be used
+  to only split the tetrahadra which have at least two facets that
+  belong to the surface mesh. It will not split the overconstrained
+  edges in the mesh. The overconstrained tetrahedra are splitting,
+  whenever possible, which ensures that no tetrahedron has no more
+  than one boundary facet.
+
+  - <b>no</b> means that no correction is applied;
+
+  - <b>yes</b> means that the correction is applied after mesh generation;
+
+  - <b>only</b> means only correction is applied to an existing mesh.
+
+\subsection memory_settings Memory settings (disable when MG-Tetra HPC is selected)
+
+- <b>Maximum memory size</b> - launches MG-Tetra software with
+work space limited to the specified amount of RAM, in Mbytes. If this option is
+checked off, the software will be launched with 7O% of the total RAM space.
+
+- <b>Initial memory size</b> - starts MG-Tetra software with
+the specified amount of work space, in Mbytes. If this option is checked off, the
+software will be started with 100 Megabytes of working space.
+
+\subsection log Logs and debug
+
+- <b>Working directory</b> - allows defining the folder for input and output
+files of MG-Tetra software, which are the files starting with "GHS3D_" prefix.
+
+- <b>Verbose level</b> - to choose verbosity level in the range from
+0 to 10.
+
+  - 0, no standard output,
+
+  - 2, prints the data, quality statistics of the skin and final
+  meshes and indicates when the final mesh is being saved. In addition
+  the software gives indication regarding the CPU time.
+
+  - 10, same as 2 plus the main steps in the computation, quality
+  statistics histogram of the skin mesh, quality statistics histogram
+  together with the characteristics of the final mesh.
+  
+- <b>Print log in a file</b> - if this option is checked on the log is printed in a 
+file placed in the working directory, otherwise it is printed on the standard output.
+
+- <b>Remove log on success</b> - if this option is checked on the log file is kept only
+if an error occurs during the computation. This option is only available if <b>Print log in a file</b>
+is enabled (there must be a log file to delete it) and <b>Keep all working files</b> is disabled 
+(in this case the log file is always kept). 
+
+- <b>Keep all working files</b> - allows checking input and output files
+of MG-Tetra software, while usually these files are removed after the
+launch of the mesher. The log file (if any) is also kept if this option is checked.
+
+\ref ghs3d_top "Back to top"
+
+\section ghs3d_enforced_vertices Enforced vertices
+
+\image html ghs3d_enforced_vertices.png
+
+MG-Tetra algorithm can locally make the mesh finer. It is possible to
+define enforced vertices in the volume where the mesh will be detailed.
+A node will be created at the enforced vertex coordinates.
+
+An enforced vertex is defined by:
+- A vertex
+  - from GEOM (Vertex, Compound) - only available on meshes with no
+  geometry attached
+  - or from (x,y,z) Cartesian coordinates
+- A constant physical size. If this size is zero, then the mesh size is
+not affected.
+- If a group name is given, the created node will be added to the
+group. If the group does not exist, it is created.
+
+\ref ghs3d_top "Back to top"
+
+\section ghs3d_enforced_meshes Enforced Meshes
+
+\image html ghs3d_enforced_meshes.png
+
+MG-Tetra algorithm can be forced by other meshes, sub-meshes or
+groups. The constraint elements should be contained
+entirely into the solid mesh.
+- The constraint element types are:
+  - NODE
+  - EDGE
+  - FACE
+- If a group name is given, the enforced elements will be added to
+the group. If the group does not exist, it is created.
+
+<br><b>See Also</b> a sample TUI Script of the \ref tui_ghs3d "creation of a MG-Tetra hypothesis", including enforced vertices and meshes.
+
+\ref ghs3d_top "Back to top"
+
+*/

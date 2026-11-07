@@ -1,0 +1,15 @@
+#
+# New case file format for:  ami
+#
+ 
+FORMAT
+type:			ensight
+  
+GEOMETRY
+model:			ami6.geo
+      
+VARIABLE
+
+scalar per node:        pressure	ami6.scl
+vector per node:        velocity	ami6.vct
+

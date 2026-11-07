@@ -1,0 +1,1516 @@
+<plugin>
+  <workbench id="Sketch">
+    <group id="Linear geometry">
+      <feature
+        id="Sketch"
+        nested="SketchPoint SketchIntersectionPoint SketchLine
+                SketchCircle SketchMacroCircle SketchArc SketchMacroArc
+                SketchEllipse SketchMacroEllipse SketchEllipticArc SketchMacroEllipticArc
+                SketchBSpline SketchMacroBSpline SketchMacroBSplinePeriodic SketchBSplinePeriodic
+                SketchRectangle
+                SketchProjection
+                SketchCurveFitting
+                SketchConstraintLength SketchConstraintRadius SketchConstraintDistance SketchConstraintDistanceHorizontal SketchConstraintDistanceVertical
+                SketchConstraintParallel SketchConstraintPerpendicular
+                SketchConstraintRigid SketchConstraintHorizontal SketchConstraintVertical
+                SketchConstraintEqual SketchConstraintTangent
+                SketchFillet SketchSplit SketchTrim
+                SketchConstraintCoincidence SketchConstraintCoincidenceInternal
+                SketchConstraintMirror SketchConstraintAngle
+                SketchMultiRotation SketchMultiTranslation
+                SketchOffset
+                SketchConstraintCollinear SketchConstraintMiddle"
+        when_nested="accept abort"
+        title="Sketch"
+        tooltip="Create sketch"
+        icon="icons/Sketch/sketch.png"
+        helpfile="SketchPlugin.html">
+        <sketch-start-label id="External" geometrical_selection="true" title="Select a plane on which to create a sketch" tooltip="Select a plane on which to create a sketch">
+          <validator id="GeomValidators_Face" parameters="plane"/>
+        </sketch-start-label>
+        <undo_label id="SolverError" isHTML="true" />
+        <validator id="SketchPlugin_SolverErrorValidator"/>
+      </feature>
+
+      <!-- SketchPoint -->
+      <feature id="SketchPoint" title="Point" tooltip="Create point" icon="icons/Sketch/point.png"
+                helpfile="pointFeature.html">
+        <sketch-2dpoint_selector id="PointCoordinates" accept_expressions="0" title="Point" tooltip="Point coordinates"
+                                 enable_value="enable_by_preferences"/>
+        <boolvalue id="Auxiliary" label="Auxiliary" default="false" tooltip="Construction element" obligatory="0" change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchLine -->
+      <feature id="SketchLine" title="Line" tooltip="Create line" icon="icons/Sketch/line.png"
+               helpfile="lineFeature.html">
+        <sketch-2dpoint_selector id="StartPoint" accept_expressions="0" title="Start point" tooltip="Start point coordinates"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="EndPoint" accept_expressions="0" title="End point" tooltip="End point coordinates"
+                                 enable_value="enable_by_preferences"/>
+        <labelvalue id="LineLength" accept_expressions="0" label="Length" default="computed" icon="icons/Sketch/distance_value.png"
+                     tooltip="Line length" obligatory="0" enable_value="false"/>
+        <boolvalue id="Auxiliary" label="Auxiliary" default="false" tooltip="Construction element" obligatory="0" change_visual_attributes="true"/>
+        <validator id="GeomValidators_Different" parameters="StartPoint,EndPoint"/>
+      </feature>
+    </group>
+    <group id="Conical geometry">
+      <!-- SketchCircle is a hidden feature. It is created inside SketchMacroCircle. -->
+      <feature id="SketchCircle"
+               title="Circle"
+               tooltip="Create circle"
+               icon="icons/Sketch/circle.png"
+               internal="1">
+        <sketch-2dpoint_selector id="circle_center"
+                                 title="Center"
+                                 tooltip="Center coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <labelvalue id="circle_radius"
+                    icon="icons/Sketch/radius.png"
+                    label="Radius"
+                    tooltip="Set radius"
+                    default="computed"
+                    accept_expressions="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="add_construction_point" label="Add construction point" tooltip="Create visible construction point" default="false" obligatory="0" change_visual_attributes="true"/>
+        <boolvalue id="Auxiliary" label="Auxiliary" default="false" tooltip="Construction element" obligatory="0" change_visual_attributes="true"/>
+      </feature>
+      <!-- SketchMacroCircle -->
+      <feature id="SketchMacroCircle"
+               icon="icons/Sketch/circle.png"
+               title="Circle"
+               tooltip="Create circle"
+               helpfile="circleFeature.html">
+        <toolbox id="circle_type" modified_in_edit="edit_circle_type">
+          <box id="circle_type_by_center_and_passed_points"
+               icon="icons/Sketch/circle_pt_rad_32x32.png"
+               title="Center and passed points">
+            <sketch-2dpoint_selector id="center_point"
+                                     reference_attribute="center_point_ref"
+                                     title="Center point"
+                                     tooltip="Center point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="passed_point"
+                                     reference_attribute="passed_point_ref"
+                                     title="Passed point"
+                                     tooltip="Passed point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_CirclePassedPointValidator"/>
+            </sketch-2dpoint_selector>
+            <validator id="GeomValidators_Different" parameters="center_point_ref,passed_point_ref"/>
+          </box>
+          <box id="circle_type_by_three_points"
+               icon="icons/Sketch/circle_3pt_32x32.png"
+               title="Three points">
+            <sketch-2dpoint_selector id="first_point"
+                                     reference_attribute="first_point_ref"
+                                     title="First point"
+                                     tooltip="First point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="second_point"
+                                     reference_attribute="second_point_ref"
+                                     title="Second point"
+                                     tooltip="Second point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_DifferentReference" parameters="first_point_ref,second_point_ref"/>
+            </sketch-2dpoint_selector>
+            <sketch-2dpoint_selector id="third_point"
+                                     reference_attribute="third_point_ref"
+                                     title="Third point"
+                                     tooltip="Third point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_DifferentReference" parameters="first_point_ref,second_point_ref,third_point_ref"/>
+              <validator id="SketchPlugin_ThirdPointValidator" parameters="third_point_ref"/>
+            </sketch-2dpoint_selector>
+          </box>
+        </toolbox>
+        <labelvalue id="circle_radius"
+                    icon="icons/Sketch/radius.png"
+                    label="Radius"
+                    tooltip="Set radius"
+                    default="computed"
+                    accept_expressions="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="add_construction_point"
+                   label="Add construction point"
+                   tooltip="Create visible construction point"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+        <boolvalue id="Auxiliary"
+                   tooltip="Construction element"
+                   label="Auxiliary"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchArc -->
+      <feature id="SketchArc"
+               icon="icons/Sketch/arc.png"
+               title="Arc"
+               tooltip="Create arc"
+               internal="1">
+        <sketch-2dpoint_selector id="center_point"
+                                 title="Center"
+                                 tooltip="Center of a circle"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="start_point"
+                                 title="Start point"
+                                 tooltip="Start point"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="end_point"
+                                 title="End point"
+                                 tooltip="End point"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <validator id="GeomValidators_Different" parameters="center_point,start_point,end_point"/>
+        <labelvalue id="radius"
+                    icon="icons/Sketch/radius.png"
+                    label="Radius"
+                    tooltip="Set radius"
+                    accept_expressions="0"
+                    min="0"
+                    default="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="angle"
+                    icon="icons/Sketch/angle.png"
+                    label="Angle"
+                    tooltip="Set angle"
+                    default="0"
+                    use_reset="false"
+                    obligatory="0"
+                    enable_value="enable_by_preferences"/>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   tooltip="Construction element"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchMacroArc -->
+      <feature
+        id="SketchMacroArc"
+        title="Arc"
+        tooltip="Create arc"
+        icon="icons/Sketch/arc.png"
+        helpfile="arcFeature.html">
+        <toolbox id="arc_type" modified_in_edit="edit_arc_type">
+          <box id="by_center_and_points"
+               icon="icons/Sketch/arc_base_32x32.png"
+               title="Center and two points">
+            <sketch-2dpoint_selector id="center_point"
+                                     reference_attribute="center_point_ref"
+                                     title="Center point"
+                                     tooltip="Center of a circle"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences" />
+            <sketch-2dpoint_selector id="start_point_1"
+                                     reference_attribute="start_point_ref"
+                                     title="Start point"
+                                     tooltip="Start point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="end_point_1"
+                                     reference_attribute="end_point_ref"
+                                     title="End point"
+                                     tooltip="End point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_ArcEndPointValidator" parameters="end_point_ref"/>
+              <validator id="SketchPlugin_ArcEndPointIntersectionValidator" parameters="end_point_ref"/>
+            </sketch-2dpoint_selector>
+            <validator id="GeomValidators_Different" parameters="center_point,start_point_1,end_point_1"/>
+          </box>
+          <box id="by_three_points"
+               icon="icons/Sketch/arc_3pt_32x32.png"
+               title="Three points on arc">
+            <sketch-2dpoint_selector id="start_point_2"
+                                     reference_attribute="start_point_ref"
+                                     title="Start point"
+                                     tooltip="Start point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="end_point_2"
+                                     reference_attribute="end_point_ref"
+                                     title="End point"
+                                     tooltip="End point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="GeomValidators_Different" parameters="start_point_2,end_point_2"/>
+              <validator id="SketchPlugin_DifferentPointReference" parameters="start_point_ref,end_point_ref"/>
+            </sketch-2dpoint_selector>
+            <sketch-2dpoint_selector id="passed_point"
+                                     reference_attribute="passed_point_ref"
+                                     title="Passed point"
+                                     tooltip="Passed point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_DifferentReference" parameters="start_point_ref,end_point_ref,passed_point_ref"/>
+              <validator id="SketchPlugin_ThirdPointValidator" parameters="passed_point_ref"/>
+            </sketch-2dpoint_selector>
+            <validator id="GeomValidators_Different" parameters="start_point_2,end_point_2,passed_point"/>
+          </box>
+          <box id="by_tangent_edge"
+               icon="icons/Sketch/arc_tang_32x32.png"
+               title="Tangent with edge">
+            <sketch_shape_selector id="tangent_point"
+                                   label="Tangent point"
+                                   tooltip="Select point on line"
+                                   shape_types="vertex">
+              <validator id="SketchPlugin_ArcTangentPoint"/>
+            </sketch_shape_selector>
+            <sketch-2dpoint_selector id="end_point_3"
+                                     reference_attribute="end_point_ref"
+                                     title="End point"
+                                     tooltip="End point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_ArcEndPointValidator" parameters="end_point_ref"/>
+            </sketch-2dpoint_selector>
+          </box>
+          <box id="by_transversal_line"
+               icon="icons/Sketch/arc_perp_32x32.png"
+               title="Perpendicular to line">
+            <sketch_shape_selector id="transversal_point"
+                                   label="Point on the perpendicular line"
+                                   tooltip="Select point on line"
+                                   shape_types="vertex">
+              <validator id="SketchPlugin_ArcTransversalPoint"/>
+            </sketch_shape_selector>
+            <sketch-2dpoint_selector id="end_point_4"
+                                     reference_attribute="end_point_ref"
+                                     title="End point"
+                                     tooltip="End point"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences">
+              <validator id="SketchPlugin_ArcEndPointValidator" parameters="end_point_ref"/>
+            </sketch-2dpoint_selector>
+          </box>
+        </toolbox>
+        <labelvalue id="radius"
+                    icon="icons/Sketch/radius.png"
+                    label="Radius"
+                    tooltip="Set radius"
+                    accept_expressions="0"
+                    min="0"
+                    default="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="angle"
+                    icon="icons/Sketch/angle.png"
+                    label="Angle"
+                    tooltip="Set angle"
+                    default="0"
+                    use_reset="false"
+                    obligatory="0"
+                    enable_value="enable_by_preferences"/>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   tooltip="Construction element"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!--  SketchFillet  -->
+      <feature id="SketchFillet"
+               title="Fillet"
+               tooltip="Create constraint defining fillet between two connected segments"
+               icon="icons/Sketch/fillet.png"
+               helpfile="filletFeature.html">
+        <sketch_shape_selector id="fillet_point"
+                               label="Point"
+                               tooltip="Select point for fillet (should be shared by two entities only)"
+                               shape_types="vertex">
+          <validator id="SketchPlugin_FilletVertexValidator"/>
+        </sketch_shape_selector>
+        <!--<validator id="PartSet_FilletSelection"/>-->
+      </feature>
+
+      <!-- SketchEllipse is a hidden feature. It is created inside SketchMacroEllipse. -->
+      <feature id="SketchEllipse"
+               title="Ellipse"
+               tooltip="Create ellipse"
+               icon="icons/Sketch/ellipse.png"
+               internal="1">
+        <sketch-2dpoint_selector id="ellipse_center"
+                                 title="Center"
+                                 tooltip="Center coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_first_focus"
+                                 title="First focus"
+                                 tooltip="Focus coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_second_focus"
+                                 title="Second focus"
+                                 tooltip="Focus coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_major_axis_start_point"
+                                 title="Major axis start"
+                                 tooltip="Coordinates of point on negative direction of major axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_major_axis_end_point"
+                                 title="Major axis end"
+                                 tooltip="Coordinates of point on positive direction of major axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_minor_axis_start_point"
+                                 title="Minor axis start"
+                                 tooltip="Coordinates of point on negative direction of minor axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_minor_axis_end_point"
+                                 title="Minor axis end"
+                                 tooltip="Coordinates of point on positive direction of minor axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <labelvalue id="ellipse_major_radius"
+                    icon="icons/Sketch/radius_major.png"
+                    label="Major radius"
+                    tooltip="Set major radius"
+                    default="computed"
+                    accept_expressions="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="ellipse_minor_radius"
+                    icon="icons/Sketch/radius_minor.png"
+                    label="Minor radius"
+                    tooltip="Set minor radius"
+                    default="computed"
+                    accept_expressions="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="Auxiliary" label="Auxiliary" default="false" tooltip="Construction element" obligatory="0" change_visual_attributes="true"/>
+      </feature>
+      <!-- SketchMacroEllipse -->
+      <feature id="SketchMacroEllipse"
+               icon="icons/Sketch/ellipse.png"
+               title="Ellipse"
+               tooltip="Create ellipse"
+               helpfile="ellipseFeature.html">
+        <toolbox id="ellipse_type" modified_in_edit="edit_ellipse_type">
+          <box id="by_center_axis_point"
+               icon="icons/Sketch/ellipse_cent_rad_32x32.png"
+               title="Center, major semi-axis and passing point">
+            <sketch-2dpoint_selector id="first_point"
+                                     reference_attribute="first_point_ref"
+                                     title="Center point"
+                                     tooltip="Center point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="second_point"
+                                     reference_attribute="second_point_ref"
+                                     title="Major axis point"
+                                     tooltip="Major axis point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="passed_point"
+                                     reference_attribute="passed_point_ref"
+                                     title="Passed point"
+                                     tooltip="Passed point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <validator id="GeomValidators_Different" parameters="first_point,second_point,passed_point"/>
+            <validator id="SketchPlugin_DifferentPointReference" parameters="first_point_ref,second_point_ref"/>
+          </box>
+          <box id="by_major_axis_and_point"
+               icon="icons/Sketch/ellipse_axes_32x32.png"
+               title="Major axis and passing point">
+            <sketch-2dpoint_selector id="first_point_1"
+                                     reference_attribute="first_point_ref_1"
+                                     title="Major axis start point"
+                                     tooltip="Major axis start point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="second_point_1"
+                                     reference_attribute="second_point_ref_1"
+                                     title="Major axis end point"
+                                     tooltip="Major axis end point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <sketch-2dpoint_selector id="passed_point_1"
+                                     reference_attribute="passed_point_ref_1"
+                                     title="Passed point"
+                                     tooltip="Passed point coordinates"
+                                     accept_expressions="0"
+                                     enable_value="enable_by_preferences"/>
+            <validator id="GeomValidators_Different" parameters="first_point_1,second_point_1,passed_point_1"/>
+            <validator id="SketchPlugin_DifferentPointReference" parameters="first_point_ref_1,second_point_ref_1"/>
+          </box>
+        </toolbox>
+        <labelvalue id="major_radius"
+                    icon="icons/Sketch/radius_major.png"
+                    label="Major radius"
+                    tooltip="Set major radius"
+                    default="computed"
+                    accept_expressions="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="minor_radius"
+                    icon="icons/Sketch/radius_minor.png"
+                    label="Minor radius"
+                    tooltip="Set minor radius"
+                    default="computed"
+                    accept_expressions="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="Auxiliary"
+                   tooltip="Construction element"
+                   label="Auxiliary"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchEllipticArc is a hidden feature. It is created inside SketchMacroEllipse. -->
+      <feature id="SketchEllipticArc"
+               title="Elliptic arc"
+               tooltip="Create elliptic arc"
+               icon="icons/Sketch/elliptic_arc.png"
+               internal="1">
+        <sketch-2dpoint_selector id="ellipse_center"
+                                 title="Center"
+                                 tooltip="Center coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_first_focus"
+                                 title="First focus"
+                                 tooltip="Focus coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_second_focus"
+                                 title="Second focus"
+                                 tooltip="Focus coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_major_axis_start_point"
+                                 title="Major axis start"
+                                 tooltip="Coordinates of point on negative direction of major axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_major_axis_end_point"
+                                 title="Major axis end"
+                                 tooltip="Coordinates of point on positive direction of major axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_minor_axis_start_point"
+                                 title="Minor axis start"
+                                 tooltip="Coordinates of point on negative direction of minor axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="ellipse_minor_axis_end_point"
+                                 title="Minor axis end"
+                                 tooltip="Coordinates of point on positive direction of minor axis"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="start_point"
+                                 title="Start point"
+                                 tooltip="Arc start point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="end_point"
+                                 title="End point"
+                                 tooltip="Arc end point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <labelvalue id="ellipse_major_radius"
+                    icon="icons/Sketch/radius_major.png"
+                    label="Major radius"
+                    tooltip="Set major radius"
+                    default="computed"
+                    accept_expressions="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="ellipse_minor_radius"
+                    icon="icons/Sketch/radius_minor.png"
+                    label="Minor radius"
+                    tooltip="Set minor radius"
+                    default="computed"
+                    accept_expressions="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="Auxiliary" label="Auxiliary" default="false" tooltip="Construction element" obligatory="0" change_visual_attributes="true"/>
+      </feature>
+      <!-- SketchMacroEllipticArc -->
+      <feature id="SketchMacroEllipticArc"
+               icon="icons/Sketch/elliptic_arc.png"
+               title="Elliptic arc"
+               tooltip="Create elliptic arc"
+               helpfile="ellipseFeature.html">
+        <sketch-2dpoint_selector id="center"
+                                 reference_attribute="center_ref"
+                                 title="Center point"
+                                 tooltip="Center point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="major_axis_point"
+                                 reference_attribute="major_axis_point_ref"
+                                 title="Major axis point"
+                                 tooltip="Major axis point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="start_point"
+                                 reference_attribute="start_point_ref"
+                                 title="Start point"
+                                 tooltip="Arc start point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <sketch-2dpoint_selector id="end_point"
+                                 reference_attribute="end_point_ref"
+                                 title="End point"
+                                 tooltip="Arc end point coordinates"
+                                 accept_expressions="0"
+                                 enable_value="enable_by_preferences"/>
+        <labelvalue id="major_radius"
+                    icon="icons/Sketch/radius_major.png"
+                    label="Major radius"
+                    tooltip="Set major radius"
+                    default="computed"
+                    accept_expressions="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <labelvalue id="minor_radius"
+                    icon="icons/Sketch/radius_minor.png"
+                    label="Minor radius"
+                    tooltip="Set minor radius"
+                    default="computed"
+                    accept_expressions="0"
+                    obligatory="0"
+                    enable_value="enable_by_preferences">
+        </labelvalue>
+        <boolvalue id="Auxiliary"
+                   tooltip="Construction element"
+                   label="Auxiliary"
+                   default="false"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+        <validator id="GeomValidators_Different" parameters="center,major_axis_point"/>
+        <validator id="SketchPlugin_DifferentPointReference" parameters="center_ref,major_axis_point_ref"/>
+        <validator id="GeomValidators_Different" parameters="start_point,end_point"/>
+        <validator id="SketchPlugin_DifferentPointReference" parameters="start_point_ref,end_point_ref"/>
+      </feature>
+    </group>
+
+    <group id="Parametric curves">
+      <!-- SketchBSpline is a hidden feature. It is created inside SketchMacroBSpline. -->
+      <feature id="SketchBSpline"
+               title="B-spline"
+               tooltip="Create B-spline curve"
+               icon="icons/Sketch/bspline.png"
+               helpfile="bsplineFeature.html"
+               internal="1">
+        <bspline-panel id="poles"
+                       weights="weights"
+                       title="Poles and weights"
+                       tooltip="B-spline poles and weights"
+                       enable_value="enable_by_preferences">
+          <validator id="SketchPlugin_BSplineValidator"/>
+        </bspline-panel>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   default="false"
+                   tooltip="Construction element"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchBSplinePeriodic is a hidden feature. It is created inside SketchMacroBSplinePeriodic. -->
+      <feature id="SketchBSplinePeriodic"
+               title="Periodic B-spline"
+               tooltip="Create periodic B-spline curve"
+               icon="icons/Sketch/bspline_p.png"
+               helpfile="bsplineFeature.html"
+               internal="1">
+        <bspline-panel id="poles"
+                       weights="weights"
+                       title="Poles and weights"
+                       tooltip="B-spline poles and weights"
+                       enable_value="enable_by_preferences">
+          <validator id="SketchPlugin_BSplineValidator"/>
+        </bspline-panel>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   default="false"
+                   tooltip="Construction element"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchMacroBSpline -->
+      <feature id="SketchMacroBSpline"
+               title="B-spline"
+               tooltip="Create B-spline curve"
+               icon="icons/Sketch/bspline.png"
+               helpfile="bsplineFeature.html">
+        <sketch-bspline_selector id="poles"
+                                 weights="weights"
+                                 reference_attribute="poles_ref"
+                                 title="Poles"
+                                 tooltip="B-spline poles"
+                                 enable_value="enable_by_preferences">
+          <validator id="SketchPlugin_BSplineValidator"/>
+        </sketch-bspline_selector>
+        <boolvalue id="need_control_poly"
+                   label="Create control polygon"
+                   default="true"
+                   tooltip="Specify if the control polygon should be created"/>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   default="false"
+                   tooltip="Construction element"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- SketchMacroBSplinePeriodic -->
+      <feature id="SketchMacroBSplinePeriodic"
+               title="Periodic B-spline"
+               tooltip="Create periodic B-spline curve"
+               icon="icons/Sketch/bspline_p.png"
+               helpfile="bsplineFeature.html">
+        <sketch-bspline_selector id="poles"
+                                 weights="weights"
+                                 reference_attribute="poles_ref"
+                                 title="Poles"
+                                 tooltip="B-spline poles"
+                                 enable_value="enable_by_preferences">
+          <validator id="SketchPlugin_BSplineValidator"/>
+        </sketch-bspline_selector>
+        <boolvalue id="need_control_poly"
+                   label="Create control polygon"
+                   default="true"
+                   tooltip="Specify if the control polygon should be created"/>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   default="false"
+                   tooltip="Construction element"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+      </feature>
+
+      <!-- Curve fitting -->
+      <feature id="SketchCurveFitting"
+               title="Curve fitting"
+               tooltip="Create curve passing through the points"
+               icon="icons/Sketch/curvefitting.png"
+               helpfile="curveFittingFeature.html">
+        <sketch_multi_selector id="points"
+                               label="Points"
+                               tooltip="Select points for curve fitting"
+                               shape_types="Vertices"
+                               use_external="true"
+                               greed="true">
+        </sketch_multi_selector>
+        <switch id="type">
+          <case id="interpolation_type" title="Interpolation"/>
+          <case id="approximation_type" title="Approximation">
+            <doublevalue id="precision"
+                         label="Precision"
+                         tooltip="Maximal distance from selected points to the curve"
+                         default="0.001"
+                         min="1.e-7"
+                         use_reset="false">
+              <validator id="GeomValidators_Positive" parameters="0"/>
+            </doublevalue>
+          </case>
+        </switch>
+        <boolvalue id="need_control_poly"
+                   label="Create control polygon"
+                   default="true"
+                   tooltip="Specify if the control polygon should be created"/>
+        <optionalbox id="periodic"
+                     title="Periodic"
+                     tooltip="Make curve periodic"
+                     default="false"
+                     has_frame="false"
+                     enable_on_check="false"
+                     show_title="true">
+          <boolvalue id="closed"
+                     label="Closed"
+                     default="false"
+                     tooltip="Make curve closed, but not periodic"
+                     obligatory="1"/>
+        </optionalbox>
+        <boolvalue id="Auxiliary"
+                   label="Auxiliary"
+                   default="false"
+                   tooltip="Construction element"
+                   obligatory="0"
+                   change_visual_attributes="true"/>
+        <validator id="SketchPlugin_CurveFittingValidator"/>
+        <action id="reorder_points"
+                label="Reorder points"
+                tooltip="Sort selected points to minimize the distance heighbors"/>
+      </feature>
+    </group>
+
+    <group id="Segmentation">
+      <!--  SketchSplit  -->
+      <feature id="SketchSplit" title="Split"
+               tooltip="Cut selected segment arc or circle on existing coincident points"
+               icon="icons/Sketch/split.png"
+               helpfile="splitFeature.html">
+        <sketch_feature_point_selector
+            id="SelectedObject"
+            selection_attributes="SelectedObject SelectedPoint PreviewObject PreviewPoint"
+            label="Segment"
+            tooltip="Select segment for split"
+            shape_types="edge"
+            use_external="false">
+          <validator id="SketchPlugin_SplitValidator"/>
+        </sketch_feature_point_selector>
+        <validator id="PartSet_SplitSelection"/>
+      </feature>
+      <!--  SketchTrim  -->
+      <feature id="SketchTrim" title="Trim"
+               tooltip="Trim selected segment arc or circle on intersection points nearest to the graphic selection"
+               icon="icons/Sketch/trim.png"
+               helpfile="trimFeature.html">
+        <sketch_feature_point_selector
+            id="SelectedObject"
+            selection_attributes="SelectedObject SelectedPoint PreviewObject PreviewPoint"
+            label="Segment"
+            tooltip="Select segment for trim"
+            shape_types="edge"
+            use_external="false">
+          <validator id="SketchPlugin_TrimValidator"/>
+        </sketch_feature_point_selector>
+        <validator id="PartSet_SplitSelection"/>
+      </feature>
+    </group>
+
+    <group id="Projection">
+      <!-- Projected feature -->
+      <feature
+        id="SketchProjection"
+        title="Projection"
+        tooltip="Project feature onto sketch plane"
+        icon="icons/Sketch/projection.png"
+        helpfile="projectionFeature.html">
+        <sketch_shape_selector
+              id="ExternalFeature"
+              label="Object"
+              tooltip="Select external edge or vertex."
+              shape_types="edge vertex"
+              use_external="true"
+              can_create_external="false"
+              use_sketch_plane="false">
+          <validator id="SketchPlugin_ProjectionValidator"/>
+        </sketch_shape_selector>
+        <radiobox id="keep_reference"
+                  align_subs="vertical">
+          <radio id="true"
+                 title="Keep reference to the original shape"
+                 tooltip="The reference to the original curve is stored. So it can be changed later.">
+            <boolvalue id="IncludeToResult"
+                       label="Include into the sketch result"
+                       default="true"
+                       tooltip="Include projected feature into the sketch result"
+                       change_visual_attributes="true"/>
+          </radio>
+          <radio id="false"
+                 title="Break connection with the original shape"
+                 tooltip="A sketch entity will be created without connection to the selected shape.">
+            <boolvalue id="make_fixed"
+                       label="Make projected curve fixed"
+                       default="true"
+                       tooltip="Assign the Fixed constraint to the result of projection"/>
+          </radio>
+        </radiobox>
+        <validator id="PartSet_ProjectionSelection"/>
+      </feature>
+
+      <!-- Intersection Point -->
+      <feature
+        id="SketchIntersectionPoint"
+        title="Intersection"
+        tooltip="Intersect edge with sketch plane"
+        icon="icons/Sketch/intersection.png"
+        helpfile="intersectionFeature.html">
+        <sketch_shape_selector
+              id="ExternalFeature"
+              label="Object"
+              tooltip="Select external edge."
+              shape_types="edge"
+              use_external="true"
+              can_create_external="false"
+              use_sketch_plane="false">
+          <validator id="SketchPlugin_IntersectionValidator"/>
+        </sketch_shape_selector>
+        <boolvalue id="IncludeToResult" label="Include into the sketch result" default="true" tooltip="Include projected feature into the sketch result"
+                   change_visual_attributes="true"/>
+        <validator id="PartSet_IntersectionSelection"/>
+      </feature>
+    </group>
+
+    <group id="Replication">
+      <!--  SketchConstraintMirror  -->
+      <feature
+        id="SketchConstraintMirror"
+        title="Mirror copy" icon="icons/Sketch/mirror.png"
+        tooltip="Create constraint, mirroring group of objects"
+        helpfile="mirrorFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="Mirror line" tooltip="Select mirror line" shape_types="edge">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityC,ConstraintEntityB"/>
+        </sketch_shape_selector>
+        <sketch_multi_selector id="ConstraintMirrorList"
+            label="Segments"
+            tooltip="Select list of objects to be mirrored"
+            shape_types="Edges"
+            use_external="true"
+            greed ="true">
+          <validator id="SketchPlugin_MirrorAttr" />
+        </sketch_multi_selector>
+        <validator id="PartSet_MultyTranslationSelection" />
+      </feature>
+
+      <!--  SketchMultiTranslation  -->
+      <feature
+        id="SketchMultiTranslation"
+        title="Linear copy" icon="icons/Sketch/translate.png"
+        tooltip="Copy objects and move"
+        helpfile="translationFeature.html">
+        <sketch_multi_selector id="MultiTranslationList"
+            label="Segments"
+            tooltip="Select list of objects to be translated"
+            shape_types="Edges"
+            use_external="true"
+            greed ="true">
+          <validator id="SketchPlugin_CopyValidator" />
+        </sketch_multi_selector>
+        <toolbox id="ValueType">
+          <box id="SingleValue" title="Single value" icon="icons/Sketch/translate_32x32.png">
+            <groupbox title="Direction">
+              <sketch_shape_selector
+                    id="MultiTranslationStartPoint"
+                    label="Start point"
+                    tooltip="Start point of translation"
+                    shape_types="vertex">
+                <validator id="PartSet_DifferentObjects"/>
+                <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+                <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityB,ConstraintEntityA"/>
+              </sketch_shape_selector>
+              <sketch_shape_selector
+                    id="MultiTranslationEndPoint"
+                    label="End point"
+                    tooltip="Final point of translation"
+                    shape_types="vertex">
+                <validator id="PartSet_DifferentObjects"/>
+                <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+                <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityB,ConstraintEntityA"/>
+              </sketch_shape_selector>
+            </groupbox>
+          </box>
+          <box id="FullValue" title="Full value" icon="icons/Sketch/translate_full_32x32.png">
+            <groupbox title="Direction">
+              <sketch_shape_selector
+                    id="MultiTranslationStartPoint"
+                    label="Start point"
+                    tooltip="Start point of translation"
+                    shape_types="vertex">
+                <validator id="PartSet_DifferentObjects"/>
+                <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+                <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityB,ConstraintEntityA"/>
+              </sketch_shape_selector>
+              <sketch_shape_selector
+                    id="MultiTranslationEndPoint"
+                    label="End point"
+                    tooltip="Final point of translation"
+                    shape_types="vertex">
+                <validator id="PartSet_DifferentObjects"/>
+                <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+                <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityB,ConstraintEntityA"/>
+              </sketch_shape_selector>
+            </groupbox>
+          </box>
+        </toolbox>
+        <integervalue id="MultiTranslationObjects"
+            label="Total number of objects"
+            tooltip="Total number of objects"
+            default="2" min="2" use_reset="false">
+          <validator id="GeomValidators_Positive" parameters="1"/>
+        </integervalue>
+        <validator id="PartSet_MultyTranslationSelection" />
+      </feature>
+
+      <!--  SketchMultiRotation  -->
+      <feature
+        id="SketchMultiRotation"
+        title="Angular copy" icon="icons/Sketch/rotate.png"
+        tooltip="Copy objects and rotate"
+        helpfile="rotationFeature.html">
+        <sketch_multi_selector id="MultiRotationList"
+            label="Segments"
+            tooltip="Select list of objects to be rotated"
+            shape_types="Edges"
+            use_external="true"
+            greed ="true">
+          <validator id="SketchPlugin_CopyValidator" />
+        </sketch_multi_selector>
+        <sketch_shape_selector
+              id="MultiRotationCenter"
+              label="Center of rotation"
+              tooltip="Center of rotation"
+              shape_types="vertex">
+          <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+          <validator id="SketchPlugin_ReplicationReference" parameters="ConstraintEntityB,ConstraintEntityA"/>
+        </sketch_shape_selector>
+        <toolbox id="AngleType">
+          <box id="FullAngle" title="Full angle" icon="icons/Sketch/angle_up_full_32x32.png">
+            <doublevalue id="MultiRotationAngle"
+                         label="Angle"
+                         icon="icons/Sketch/angle.png"
+                         tooltip="Rotation angle"
+                         default="360" min="0" max="360"
+                         use_reset="false">
+              <validator id="SketchPlugin_MultiRotationAngleValidator" />
+            </doublevalue>
+            <boolvalue id="MultiRotationReversed"
+                       label="Reversed"
+                       tooltip="Reverse angular copy"
+                       default="false"
+                       obligatory="0"/>
+          </box>
+          <box id="SingleAngle" title="Single angle" icon="icons/Sketch/angle_up_32x32.png">
+            <doublevalue id="MultiRotationAngle"
+                         label="Angle"
+                         icon="icons/Sketch/angle.png"
+                         tooltip="Rotation angle"
+                         default="90" min="0" max="360"
+                         use_reset="false">
+              <validator id="SketchPlugin_MultiRotationAngleValidator" />
+            </doublevalue>
+            <boolvalue id="MultiRotationReversed"
+                       label="Reversed"
+                       tooltip="Reverse angular copy"
+                       default="false"
+                       obligatory="0"/>
+          </box>
+        </toolbox>
+        <integervalue id="MultiRotationObjects"
+            label="Total number of objects"
+            tooltip="Total number of objects"
+            default="4" min="2" use_reset="false">
+          <validator id="GeomValidators_Positive" parameters="1"/>
+        </integervalue>
+        <validator id="PartSet_MultyTranslationSelection" />
+      </feature>
+
+      <!-- Offset curve -->
+      <feature id="SketchOffset"
+               title="Offset"
+               tooltip="Offset a curve to a distance"
+               icon="icons/Sketch/offset.png"
+               helpfile="offsetFeature.html">
+        <toolbox id="offset_joint">
+           <box id="KeepDistance"
+               icon="icons/Sketch/offset_keep_distance_32x32.png"
+               title="Keep distance"/>
+           <box id="Arcs"
+               icon="icons/Sketch/offset_arcs_32x32.png"
+               title="Arcs"/>
+           <box id="Lines"
+               icon="icons/Sketch/offset_lines_32x32.png"
+               title="Lines"/>
+        </toolbox>
+        <sketch_multi_selector id="segments"
+                               label="Edges"
+                               tooltip="Select edges to offset"
+                               shape_types="Edges"
+                               use_external="true"
+                               greed="true">
+          <validator id="SketchPlugin_CopyValidator" />
+        </sketch_multi_selector>
+        <doublevalue id="offset_value"
+                     label="Offset value"
+                     tooltip="Offset value"
+                     default="1" min="0.000001"
+                     use_reset="false">
+          <validator id="GeomValidators_Positive" parameters="1e-07"/>
+        </doublevalue>
+        <boolvalue id="reversed"
+                   label="Reversed"
+                   tooltip="Reverse the offset"
+                   default="false"
+                   obligatory="0"/>
+        <boolvalue id="approx"
+                   label="Approx by segments and arcs"
+                   tooltip="Approx by segments and arcs"
+                   default="false"
+                   obligatory="0"/>
+        <action id="add_wire"
+                label="Select wire"
+                tooltip="Add the list of segments composing a wire with the selected items through the coincidence by boundary points"/>
+      </feature>
+    </group>
+
+    <group id="Dimensional constraints">
+      <!--  SketchConstraintDistance  -->
+      <feature
+        id="SketchConstraintDistance"
+        title="Distance"
+        tooltip="Set fixed distance from a point to an object"
+        icon="icons/Sketch/distance.png"
+        helpfile="distanceFeature.html">
+        <label title="Select objects for distance definition. Following objects can be accepted: point, line or arc end point, center of circle or arc."/>
+        <sketch_shape_selector
+              id="ConstraintEntityA"
+              label="First object"
+              tooltip="Select point, line end point, line, center of circle or arc."
+              shape_types="edge vertex">
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex,line"/>
+        </sketch_shape_selector>
+        <sketch_shape_selector
+          id="ConstraintEntityB"
+          label="Second object"
+          tooltip="Select point, line end point, line, center of circle or arc."
+          shape_types="edge vertex">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_DistanceAttr" parameters="ConstraintEntityA"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex,line"/>
+        </sketch_shape_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt"  default="computed" internal="1" obligatory="0"/>
+
+        <doublevalue_editor label="Value" tooltip="Distance" id="ConstraintValue" default="computed" min="0">
+          <validator id="GeomValidators_Positive" parameters="-1.e-10"/>
+        </doublevalue_editor>
+
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+
+        <boolvalue id="SignedDistance" label="Keep orientation" default="true" tooltip="Keep distance orientation" obligatory="0"/>
+        <validator id="PartSet_DistanceSelection"/>
+      </feature>
+
+      <!--  SketchConstraintDistanceHorizontal  -->
+      <feature
+        id="SketchConstraintDistanceHorizontal"
+        title="Horizontal Distance"
+        tooltip="Set horizontal distance between two points"
+        icon="icons/Sketch/distance_h.png"
+        helpfile="horizontalDistFeature.html">
+        <label title="Select points for distance definition."/>
+        <sketch_shape_selector
+              id="ConstraintEntityA"
+              label="First point"
+              tooltip="Select point."
+              shape_types="vertex">
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+        </sketch_shape_selector>
+        <sketch_shape_selector
+          id="ConstraintEntityB"
+          label="Second point"
+          tooltip="Select point."
+          shape_types="vertex">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+        </sketch_shape_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt"  default="computed" internal="1" obligatory="0"/>
+
+        <doublevalue_editor label="Value" tooltip="Distance" id="DistanceValue" default="computed" min="0">
+          <validator id="GeomValidators_Positive" parameters="-1.e-10"/>
+        </doublevalue_editor>
+
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+
+        <validator id="PartSet_DistanceSelection"/>
+      </feature>
+
+      <!--  SketchConstraintDistanceVertical  -->
+      <feature
+        id="SketchConstraintDistanceVertical"
+        title="Vertical Distance"
+        tooltip="Set vertical distance between two points"
+        icon="icons/Sketch/distance_v.png"
+        helpfile="verticalDistFeature.html">
+        <label title="Select points for distance definition."/>
+        <sketch_shape_selector
+              id="ConstraintEntityA"
+              label="First point"
+              tooltip="Select point."
+              shape_types="vertex">
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+        </sketch_shape_selector>
+        <sketch_shape_selector
+          id="ConstraintEntityB"
+          label="Second point"
+          tooltip="Select point."
+          shape_types="vertex">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+        </sketch_shape_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt"  default="computed" internal="1" obligatory="0"/>
+
+        <doublevalue_editor label="Value" tooltip="Distance" id="DistanceValue" default="computed" min="0">
+          <validator id="GeomValidators_Positive" parameters="-1.e-10"/>
+        </doublevalue_editor>
+
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+
+        <validator id="PartSet_DistanceSelection"/>
+      </feature>
+
+      <!--  SketchConstraintLength  -->
+      <feature id="SketchConstraintLength" title="Length" tooltip="Set fixed length of a line segment" icon="icons/Sketch/length.png"
+               helpfile="lengthFeature.html">
+        <label title="Select a line on which to calculate length" tooltip="Select a line on which to calculate length"/>
+        <shape_selector id="ConstraintEntityA" label="Line" tooltip="Select a line" shape_types="edge" >
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="SketchPlugin_SketchFeatureValidator"/>
+        </shape_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt" default="computed" internal="1" obligatory="0"/>
+        <doublevalue_editor label="Value" tooltip="Length" id="ConstraintValue" default="computed">
+          <validator id="GeomValidators_Positive"/>
+        </doublevalue_editor>
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+        <validator id="PartSet_LengthSelection"/>
+      </feature>
+
+      <!--  SketchConstraintAngle  -->
+      <feature id="SketchConstraintAngle" title="Angle" tooltip="Set fixed angle between two line segments" icon="icons/Sketch/angle_constr.png"
+               helpfile="angleFeature.html">
+        <sketch_feature_point_selector
+            id="ConstraintEntityA"
+            selection_attributes="ConstraintEntityA SelectedPointA"
+            label="Line 1"
+            tooltip="Select a line"
+            shape_types="edge"
+            use_external="true">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+        </sketch_feature_point_selector>
+        <sketch_feature_point_selector
+            id="ConstraintEntityB"
+            selection_attributes="ConstraintEntityB SelectedPointB"
+            label="Line 2"
+            tooltip="Select a line"
+            shape_types="edge"
+            use_external="true">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+        </sketch_feature_point_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt"  default="computed" internal="1" obligatory="0"/>
+        <doublevalue_editor label="Value" tooltip="Angle" id="AngleValue" default="computed" min="0" max="360" />
+        <validator id="PartSet_AngleSelection"/>
+        <module_choice id="AngleType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Angle type"
+          tooltip="Type of angle"
+          string_list="Direct Supplementary Additional"
+          icons_list="icons/Sketch/angle_direct.png icons/Sketch/angle_complementary.png icons/Sketch/angle_backward.png"
+          default="0"
+          />
+
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+
+      </feature>
+
+      <!--  SketchConstraintRadius  -->
+      <feature id="SketchConstraintRadius" title="Radius" tooltip="Set fixed radius of a circle or an arc" icon="icons/Sketch/radius_constr.png"
+               helpfile="radiusFeature.html">
+        <label title="Select a circle or an arc on which to calculate radius" tooltip="Select a circle or an arc on which to calculate radius"/>
+        <shape_selector id="ConstraintEntityA" label="Circle or Arc" tooltip="Select a circle or an arc"
+            shape_types="edge">
+          <validator id="GeomValidators_ShapeType" parameters="circle"/>
+        </shape_selector>
+        <sketch-2dpoint_flyout_selector id="ConstraintFlyoutValuePnt"  default="computed" internal="1" obligatory="0"/>
+        <doublevalue_editor label="Value" tooltip="Radius" id="ConstraintValue" default="computed">
+          <validator id="GeomValidators_Positive"/>
+        </doublevalue_editor>
+
+        <module_choice id="LocationType"
+          widget_type="radiobuttons"
+          buttons_dir="horizontal"
+          label="Text location"
+          tooltip="Relative location of the text"
+          string_list="Left Automatic Right"
+          icons_list="icons/Sketch/location_left.png icons/Sketch/location_automatic.png icons/Sketch/location_right.png"
+          default="1"
+          />
+
+        <validator id="PartSet_RadiusSelection"/>
+      </feature>
+
+    </group>
+
+    <group id="Geometrical constraints">
+
+      <!--  SketchConstraintHorizontal  -->
+      <feature id="SketchConstraintHorizontal" title="Horizontal" tooltip="Create constraint defining horizontal line" icon="icons/Sketch/horisontal.png"
+               helpfile="horizontalFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="Line" tooltip="Select a line" shape_types="edge" use_external="false">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="SketchPlugin_HasNoConstraint" parameters="SketchConstraintHorizontal,SketchConstraintVertical"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_HVDirSelection"/>
+      </feature>
+
+      <!--  SketchConstraintVertical  -->
+      <feature id="SketchConstraintVertical" title="Vertical" tooltip="Create constraint defining vertical line" icon="icons/Sketch/vertical.png"
+               helpfile="verticalFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="Line" tooltip="Select a line" shape_types="edge" use_external="false">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="SketchPlugin_HasNoConstraint" parameters="SketchConstraintHorizontal,SketchConstraintVertical"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_HVDirSelection"/>
+      </feature>
+
+      <!--  SketchConstraintRigid  -->
+      <feature id="SketchConstraintRigid" title="Fixed" tooltip="Fix an object" icon="icons/Sketch/fixed.png"
+               helpfile="rigidFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA" label="Object"
+                        tooltip="Select point, curve or its boundary point."
+                        shape_types="edge vertex">
+          <validator id="GeomValidators_ShapeType" parameters="vertex,edge"/>
+          <validator id="SketchPlugin_NotFixed"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_RigidSelection"/>
+      </feature>
+
+      <!--  SketchConstraintParallel  -->
+      <feature id="SketchConstraintParallel" title="Parallel" tooltip="Create constraint defining two parallel lines"
+               icon="icons/Sketch/parallel.png" helpfile="parallelFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="First line" tooltip="Select a line" shape_types="edge">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+        </sketch_shape_selector>
+
+        <sketch_shape_selector id="ConstraintEntityB" label="Second line" tooltip="Select a line"
+            shape_types="edge">
+            <validator id="GeomValidators_ShapeType" parameters="line"/>
+            <validator id="PartSet_DifferentObjects"/>
+            <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_ParallelSelection"/>
+      </feature>
+
+      <!--  SketchConstraintPerpendicular  -->
+      <feature id="SketchConstraintPerpendicular" title="Perpendicular"
+               tooltip="Create constraint defining two orthogonal objects"
+               icon="icons/Sketch/perpendicular.png"
+               helpfile="perpendicularFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="First object" tooltip="Select line or arc"
+            shape_types="edge">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+          <validator id="SketchPlugin_PerpendicularAttr" parameters="ConstraintEntityB"/>
+          <validator id="GeomValidators_ShapeType" parameters="edge"/>
+        </sketch_shape_selector>
+
+        <sketch_shape_selector id="ConstraintEntityB"
+            label="Second object" tooltip="Select line or arc"
+            shape_types="edge">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="SketchPlugin_PerpendicularAttr" parameters="ConstraintEntityA"/>
+          <validator id="GeomValidators_ShapeType" parameters="edge"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_PerpendicularSelection"/>
+      </feature>
+
+      <!--  SketchConstraintTangent  -->
+      <feature id="SketchConstraintTangent" title="Tangent" tooltip="Create constraint defining tangency of two segments with common coincident point" icon="icons/Sketch/tangent.png"
+               helpfile="tangentFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="First object" tooltip="Select line or arc" shape_types="edge">
+          <validator id="SketchPlugin_TangentAttr" parameters="ConstraintEntityB"/>
+          <validator id="PartSet_DifferentObjects"/>
+        </sketch_shape_selector>
+
+        <sketch_shape_selector id="ConstraintEntityB"
+            label="Second object" tooltip="Select line or arc" shape_types="edge">
+          <validator id="SketchPlugin_TangentAttr" parameters="ConstraintEntityA"/>
+          <validator id="PartSet_DifferentObjects"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_TangentSelection"/>
+      </feature>
+
+      <!--  SketchConstraintCoincidence  -->
+      <feature id="SketchConstraintCoincidence" title="Coincident" tooltip="Create constraint for the coincidence of two points or point on line or circle" icon="icons/Sketch/coincedence.png"
+               helpfile="coincedenceFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA" label="First object" tooltip="Select a first object" shape_types="vertex edge">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+        </sketch_shape_selector>
+        <sketch_shape_selector id="ConstraintEntityB" label="Second object" tooltip="Select a second object" shape_types="vertex edge">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="SketchPlugin_CoincidenceAttr" parameters="ConstraintEntityA"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_CoincidentSelection"/>
+      </feature>
+      <!--  SketchConstraintCoincidenceInternal  -->
+      <feature id="SketchConstraintCoincidenceInternal" title="Internal Coincidence" tooltip="Internal coincidence" icon="icons/Sketch/coincedence.png"
+               helpfile="coincedenceFeature.html" internal="1">
+        <sketch_shape_selector id="ConstraintEntityA" label="First object" tooltip="Select a first object" shape_types="vertex">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+        </sketch_shape_selector>
+        <sketch_shape_selector id="ConstraintEntityB" label="Second object" tooltip="Select a second object" shape_types="vertex">
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+          <validator id="SketchPlugin_CoincidenceAttr" parameters="ConstraintEntityA"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_CoincidentSelection"/>
+      </feature>
+
+      <!--  SketchConstraintMiddle  -->
+      <feature id="SketchConstraintMiddle" title="Middle point" tooltip="Create constraint for setting middle point on a line"
+               icon="icons/Sketch/middlepoint.png"
+               helpfile="middleFeature.html">
+        <toolbox id="middle_type">
+          <box id="middle_type_by_line_and_point"
+               icon="icons/Sketch/middlepoint.png"
+               title="Line and point">
+            <sketch_shape_selector id="ConstraintEntityA"
+                            label="First object"
+                            tooltip="Select a first object"
+                            shape_types="vertex edge"
+                            use_external="true">
+              <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+              <validator id="SketchPlugin_MiddlePointAttr" parameters="ConstraintEntityB"/>
+            </sketch_shape_selector>
+            <sketch_shape_selector id="ConstraintEntityB"
+                  label="Second object"
+                  tooltip="Select a second object"
+                  shape_types="vertex edge"
+                  use_external="true">
+              <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+              <validator id="SketchPlugin_MiddlePointAttr" parameters="ConstraintEntityA"/>
+            </sketch_shape_selector>
+          </box>
+          <box id="middle_type_by_line"
+               icon="icons/Sketch/middlepoint_obj.png"
+               title="Line">
+            <sketch_shape_selector id="ConstraintEntityA"
+             label="Object"
+             tooltip="Select a first object"
+             shape_types="edge"
+             use_external="true">
+            </sketch_shape_selector>
+          </box>
+        </toolbox>
+        <validator id="PartSet_MiddlePointSelection"/>
+      </feature>
+
+      <!--  SketchConstraintEqual  -->
+      <feature id="SketchConstraintEqual" title="Equal"
+        tooltip="Create constraint defining equal lengths of two lines or line and arc or equal radiuses of two arcs or two circles or arc and circle"
+        icon="icons/Sketch/equal.png"
+               helpfile="equalFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="First object" tooltip="Select edge" shape_types="edge">
+          <validator id="SketchPlugin_EqualAttr" parameters="ConstraintEntityB"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityB"/>
+        </sketch_shape_selector>
+
+        <sketch_shape_selector id="ConstraintEntityB"
+            label="Second object" tooltip="Select edge" shape_types="edge">
+          <validator id="SketchPlugin_EqualAttr" parameters="ConstraintEntityA"/>
+          <validator id="PartSet_DifferentObjects"/>
+          <validator id="SketchPlugin_ExternalValidator" parameters="ConstraintEntityA"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_EqualSelection"/>
+      </feature>
+
+      <!--  SketchConstraintCollinear  -->
+      <feature id="SketchConstraintCollinear" title="Collinear" tooltip="Create constraint defining collinearity of two lines"
+               icon="icons/Sketch/collinear.png"
+               helpfile="collinearFeature.html">
+        <sketch_shape_selector id="ConstraintEntityA"
+            label="First line" tooltip="Select a line" shape_types="edge">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="PartSet_DifferentObjects"/>
+        </sketch_shape_selector>
+
+        <sketch_shape_selector id="ConstraintEntityB"
+            label="Second line" tooltip="Select a line" shape_types="edge">
+          <validator id="GeomValidators_ShapeType" parameters="line"/>
+          <validator id="PartSet_DifferentObjects"/>
+        </sketch_shape_selector>
+        <validator id="PartSet_CollinearSelection"/>
+      </feature>
+    </group>
+  </workbench>
+</plugin>

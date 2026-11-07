@@ -1,0 +1,30 @@
+/*!
+
+\page union_faces_operation_page Union Faces
+
+This operation unites on a given shape all faces sharing the same surface. 
+
+To <b>Union Faces</b> in the <b>Main Menu</b> select <b>Repair - > Union Faces</b>.
+
+\image html union_faces.png
+
+In this dialog: 
+- Click on the "Arrow" button and select in the Object Browser or in the viewer one or more \b Shapes (compounds or single solids).
+- If necessary, activate \ref restore_presentation_parameters_page "Advanced Transformation Options".
+- Click \b Apply or <b>Apply and Close</b> button.
+
+This operation can be also launched using a <b>TUI Command:</b> <em>geompy.UnionFaces(theShape)</em>,
+where <em>theShape</em> is a compound or a single solid.
+
+<b>Example:</b>
+
+\image html union_faces1.png
+<center><em>Shape with not united faces</em></center>
+
+\image html union_faces2.png
+<center><em>Improved shape</em></center>
+
+Our <b>TUI Scripts</b> provide you with useful examples of the
+\ref swig_UnionFaces "Union Faces" functionality usage.
+
+*/

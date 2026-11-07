@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="VTKPlugin"
+               server-lib="VTKPluginEngine"
+               gui-lib="VTKPluginGUI">
+    <actions>
+      <action label="Export_VTK"
+              menu="FILE/EXPORT:10/EXPORTVTK"
+              status-bar="EXPORTVTK">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

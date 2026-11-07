@@ -1,0 +1,746 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+// ---
+// File    : BLSURFPlugin_Algorithm.idl
+// Authors : Francis KLOSS (OCC) & Patrick LAUG (INRIA) & Lioka RAZAFINDRAZAKA (CEA)
+//           Size maps developement: Nicolas GEIMER (OCC) & Gilles DAVID (EURIWARE)
+// ---
+//
+#ifndef _SMESH_BLSURFALGORITHM_IDL_
+#define _SMESH_BLSURFALGORITHM_IDL_
+
+#include "GEOM_Gen.idl"
+#include "SALOME_Exception.idl"
+#include "SMESH_Hypothesis.idl"
+#include "SMESH_Mesh.idl"
+
+/*!
+ * BLSURFPlugin: interfaces to BLSURF related hypotheses and algorithms
+ */
+module BLSURFPlugin
+{
+  typedef sequence<string> string_array;
+
+  // Enforced 1D Mesh
+  struct MG_EnforcedMesh1D
+  {
+    SMESH::SMESH_IDSource mesh;      // mesh, group or sub-mesh
+    string                groupName; // optional name of a group to add mesh edges to
+  };
+  typedef sequence< MG_EnforcedMesh1D > EnforcedMeshesList;
+
+  // Enforced vertex name
+  typedef string TEnfName;
+  // Entry
+  typedef string TEntry;
+  typedef sequence<TEntry> TEntryList;
+  // Group name
+  typedef string TEnfGroupName;
+
+  // Coordinates of enforced vertex
+  typedef sequence<double,3> TEnfVertexCoords;
+  // List of coords
+  typedef sequence<TEnfVertexCoords> TEnfVertexCoordsList;
+
+  // Enforced vertex
+  struct TEnfVertex {
+    TEnfName name;
+    TEntry geomEntry;
+    TEnfVertexCoords coords;
+    TEnfGroupName grpName;
+    TEntryList faceEntries;
+  };
+  // List of enforced vertices
+  typedef sequence<TEnfVertex> TEnfVertexList;
+
+  // Map Face Entry / List of enforced vertices
+  struct TFaceEntryEnfVertexListMapElement {
+    TEntry faceEntry;
+    TEnfVertexList enfVertexList;
+  };
+  typedef sequence<TFaceEntryEnfVertexListMapElement> TFaceEntryEnfVertexListMap;
+  
+  // Map Face Entry / List of coords
+  struct TFaceEntryCoordsListMapElement {
+    TEntry faceEntry;
+    TEnfVertexCoordsList coordsList;
+  };
+  typedef sequence<TFaceEntryCoordsListMapElement> TFaceEntryCoordsListMap;
+  
+  // Map Face Entry / List of enf vertex entries
+  struct TFaceEntryEnfVertexEntryListMapElement {
+    TEntry faceEntry;
+    TEntryList enfVertexEntryList;
+  };
+  typedef sequence<TFaceEntryEnfVertexEntryListMapElement> TFaceEntryEnfVertexEntryListMap;
+  
+  // Map Coords / Enforced vertex
+  struct TCoordsEnfVertexElement {
+    TEnfVertexCoords coords;
+    TEnfVertex enfVertex;
+  };
+  typedef sequence<TCoordsEnfVertexElement> TCoordsEnfVertexMap;
+  
+  // Map Enf Vertex Entry / Enforced vertex
+  struct TEnfVertexEntryEnfVertexElement {
+    TEntry enfVertexEntry;
+    TEnfVertex enfVertex;
+  };
+  typedef sequence<TEnfVertexEntryEnfVertexElement> TEnfVertexEntryEnfVertexMap;
+
+  // List of Face Entry with internal enforced vertices activated
+  typedef sequence<TEntry> TFaceEntryInternalVerticesList;
+
+  // Attractors
+  struct TAttractorParams {
+    string faceEntry;
+    string attEntry;
+    double startSize;
+    double endSize;
+    double infDist;
+    double constDist;
+  };
+  typedef sequence<TAttractorParams> TAttParamsMap;
+  
+  // Periodicity
+  struct TPreCadPeriodicity {
+    TEntry shape1Entry;
+    TEntry shape2Entry;
+    TEntryList theSourceVerticesEntries;
+    TEntryList theTargetVerticesEntries;
+  };
+  
+  typedef sequence<TPreCadPeriodicity> TPeriodicityList;
+
+  // Hyper-patches
+  typedef sequence< long               > THyperPatch;
+  typedef sequence< THyperPatch        > THyperPatchList;
+  typedef sequence< string             > THyperPatchEntries;
+  typedef sequence< THyperPatchEntries > THyperPatchEntriesList;
+  typedef sequence< GEOM::ListOfGO     > THyperPatchShapesList;
+  
+  /*!
+   * BLSURFPlugin_BLSURF: interface of BLSURF algorithm
+   */
+  interface BLSURFPlugin_BLSURF : SMESH::SMESH_2D_Algo
+  {
+  };
+
+  /*!
+   * BLSURFPlugin_Hypothesis: interface of "BLSURF parameters" hypothesis
+   */
+  interface BLSURFPlugin_Hypothesis : SMESH::SMESH_Hypothesis
+  {
+
+    /*!
+     * Get version of MeshGems suite.
+     * The version is a string in form <major>.<minor>-<patch>. Example: "2.9-6".
+     */
+    string GetMeshGemsVersion();
+
+    /*!
+     *Set a way to define size of mesh elements to generate
+     * 0 - size is defined automatically
+     * 1 - size is set by SetPhySize() method
+     * 2 - size is set by SetPhySize() method. A sizemap is defined.
+     */
+    void SetPhysicalMesh(in long isCustom);
+    long GetPhysicalMesh();
+
+    /*!
+     *Set a way to define maximum angular deflection of mesh from CAD model
+     * 0 - deflection is defined automatically
+     * 1 - deflection is set by SetAngleMesh() method
+     * 2 - deflection is set by SetAngleMesh() method. A sizemap is defined (TODO).
+     */
+    void SetGeometricMesh(in long isCustom);
+    long GetGeometricMesh();
+
+    /*!
+     *Set size of mesh elements to generate
+     */
+    void SetPhySize(in double size);
+    void SetPhySizeRel(in double size);
+    double GetPhySize();
+    boolean IsPhySizeRel();
+
+    /*!
+     *Set lower boundary of mesh element size
+     */
+    void SetMinSize(in double theMinSize);
+    void SetMinSizeRel(in double theMinSize);
+    double GetMinSize();
+    boolean IsMinSizeRel();
+
+    /*!
+     *Set upper boundary of mesh element size
+     */
+    void SetMaxSize(in double theMaxSize);
+    void SetMaxSizeRel(in double theMaxSize);
+    double GetMaxSize();
+    boolean IsMaxSizeRel();
+
+    /*!
+     *Set maximal allowed ratio between the lengths of two adjacent edges
+     */
+    void SetUseGradation(in boolean toUse);
+    boolean GetUseGradation();
+    void SetGradation(in double ratio);
+    double GetGradation();
+
+    /*!
+     *Set maximal allowed ratio between the lengths of two adjacent edges in 3D mesh
+     */
+    void SetUseVolumeGradation(in boolean toUse);
+    boolean GetUseVolumeGradation();
+    void SetVolumeGradation(in double ratio);
+    double GetVolumeGradation();
+
+    /*!
+     *Set to create quadrilateral elements or not
+     */
+    void SetQuadAllowed(in boolean allowed);
+    void SetElementType(in long elementType);
+    long GetElementType();
+
+    /*!
+     *Set angular deflection (in degrees) of a mesh face and edge from CAD surface
+     */
+    void SetAngleMesh(in double angle);
+    double GetAngleMesh();
+
+    /*!
+     *Set the maximum desired distance between a triangle and its supporting CAD surface
+     */
+    void SetChordalError(in double distance);
+    double GetChordalError();
+
+    /*!
+     * Determines whether the generated mesh will be isotropic or anisotropic
+     */
+    void SetAnisotropic(in boolean anisotropic);
+    boolean GetAnisotropic();
+
+    /*!
+     * Defines the maximum anisotropic ratio of the metric governing the anisotropic process.
+     * The default value of 0 means that the metric (and thus the generated elements) 
+     * can be arbitrarily stretched.
+     */
+    void SetAnisotropicRatio(in double ratio);
+    double GetAnisotropicRatio();
+
+    /*!
+     * This patch-independent correction option can be activated to remove the tiny
+     * (nano) edges from the generated mesh, without taking into account the tags 
+     * (attributes) specifications.
+     */
+    void SetRemoveTinyEdges(in boolean remove);
+    boolean GetRemoveTinyEdges();
+
+    /*!
+     * Defines the minimal length under which an edge is considered to be a tiny one
+     */
+    void SetTinyEdgeLength(in double length);
+    double GetTinyEdgeLength();
+
+    /*!
+     *  This patch-independent correction option can be activated to remove the tiny
+     * edges (defined by the option tiny edge optimisation length) from the generated
+     * mesh when it improves the local mesh quality, without taking into account the
+     * tags (attributes) specifications.
+     */
+    void SetOptimiseTinyEdges(in boolean toOptimise);
+    boolean GetOptimiseTinyEdges();
+
+    /*!
+     * Defines the minimal length under which an edge is considered to be a tiny one
+     * to be optimised out by the optimise tiny edges option
+     */
+    void SetTinyEdgeOptimisationLength(in double length);
+    double GetTinyEdgeOptimisationLength();
+
+    /*!
+     * Activate correction of all surface intersections
+     */
+    void SetCorrectSurfaceIntersection(in boolean toCorrect);
+    boolean GetCorrectSurfaceIntersection();
+
+    /*!
+     * Defines the time the user is ready to spend in the intersection prevention process.
+     * For example, maxCost = 3 means that MeshGems-CADSurf will not spend more time
+     * in the intersection removal process than 3 times the time required to mesh
+     * without processing the intersections.
+     */
+    void SetCorrectSurfaceIntersectionMaxCost(in double maxCost);
+    double GetCorrectSurfaceIntersectionMaxCost();
+
+    /*!
+     * This patch independent correction option can be activated to remove the bad
+     * elements (often called slivers) from the generated mesh, without taking into account
+     * the tags (attributes) specification.
+     */
+    void SetBadElementRemoval(in boolean remove);
+    boolean GetBadElementRemoval();
+
+    /*!
+     * This parameter defines the aspect ratio triggering the "bad element"
+     * classification for the force bad surface element removal option.
+     */
+    void SetBadElementAspectRatio(in double ratio);
+    double GetBadElementAspectRatio();
+
+    /*!
+     * If this option is activated, MeshGems-CADSurf will optimize the mesh in order to
+     * get better shaped elements, during a process which respects the patch independent options.
+     * This optimisation cannot be fully performed when correct_surface_intersections = 1.
+     */
+    void SetOptimizeMesh(in boolean optimize);
+    boolean GetOptimizeMesh();
+
+    /*!
+     * Determines the order of mesh elements to be generated (linear or quadratic)
+     */
+    void SetQuadraticMesh(in boolean quadratic);
+    boolean GetQuadraticMesh();
+
+    /*!
+     *Set topology usage way defining how mesh conformity is assured
+     * value=0 - mesh conformity is assured by conformity of a shape
+     * value=1,2 - mesh conformity is assured by pre-processing a CAD model (OBSOLETE)
+     * value=3 - mesh conformity is assured by pre-processing a CAD model with Pre-CAD
+     */
+    void SetTopology(in long way);
+    long GetTopology();
+
+    
+    /*!
+     *  Activate/deactivate surface proximity computation
+     */
+    void SetSurfaceProximity( in boolean toUse );
+    boolean GetSurfaceProximity();
+
+    /*!
+     * Set number of surface element layers to be generated due to surface proximity
+     */
+    void SetNbSurfaceProximityLayers( in short nbLayers );
+    short GetNbSurfaceProximityLayers();
+
+    /*!
+     * Set coefficient by which size of element refined due to surface proximity is increased
+     */
+    void SetSurfaceProximityRatio( in double ratio );
+    double GetSurfaceProximityRatio();
+
+    /*!
+     *  Activate/deactivate volume proximity computation
+     */
+    void SetVolumeProximity( in boolean toUse );
+    boolean GetVolumeProximity();
+
+    /*!
+     * Set number of surface element layers to be generated due to volume proximity
+     */
+    void SetNbVolumeProximityLayers( in short nbLayers );
+    short GetNbVolumeProximityLayers();
+
+    /*!
+     * Set coefficient by which size of element refined due to volume proximity is increased
+     */
+    void SetVolumeProximityRatio( in double ratio );
+    double GetVolumeProximityRatio();
+
+    /*!
+     * Set verbosity level in the range 0 to 10.
+     */
+    void SetVerbosity(in short theVal) raises (SALOME_CMOD::SALOME_Exception);
+    short GetVerbosity();
+
+    /*!
+     * Set/Get enforced 1D meshes
+     */
+    void SetEnforcedMeshes( in EnforcedMeshesList enforcedMeshes );
+    EnforcedMeshesList GetEnforcedMeshes();
+
+    /*!
+     * Set enforce_cad_edge_sizes parameter
+     *
+     * Relaxes the given sizemap constraint around CAD edges to allow a better
+     * element quality and a better geometric approximation. It is only useful in 
+     * combination with the gradation option.
+     */
+    void SetEnforceCadEdgesSize( in boolean toEnforce );
+    boolean GetEnforceCadEdgesSize();
+
+    /*!
+     * Set jacobian_rectification_respect_geometry parameter
+     *
+     * While making the mesh quadratic, allows to lose the CAD-mesh associativity in order
+     * to correct elements with nagative Jacobian
+     */
+    void SetJacobianRectificationRespectGeometry( in boolean allowRectification );
+    boolean GetJacobianRectificationRespectGeometry();
+    
+    /*!
+     * Set rectify_jacobian parameter
+     *
+     * While making the mesh quadratic, allow to fix nagative Jacobian surface elements
+     */
+    void SetJacobianRectification( in boolean allowRectification );
+    boolean GetJacobianRectification();
+
+    /*!
+     * Set use_deprecated_patch_mesher parameter (compatibility with older versions of Meshgems)
+     *
+     * the use_deprecated_patch_mesher parameter allows to keep the same behaviour than
+     * in salome < 8.3 (meshgems 2.1.11 instead of meshgems >= 2.4.5)
+     */
+    void SetUseDeprecatedPatchMesher( in boolean useDeprecatedPatchMesher );
+    boolean GetUseDeprecatedPatchMesher();
+
+    /*!
+     * Set max_number_of_points_per_patch parameter
+     * 
+     * This parameter controls the maximum amount of points MeshGems-CADSurf is allowed
+     * to generate on a single CAD patch. For an automatic gestion of the memory, one
+     * can set this parameter to 0
+     */
+    void SetMaxNumberOfPointsPerPatch( in long nb ) raises (SALOME_CMOD::SALOME_Exception);
+    long GetMaxNumberOfPointsPerPatch();
+
+
+    /*!
+     * Set max_number_of_threads parameter
+     *
+     * Set the maximum of threads to use for multithreading mesh computation.
+     */
+    void SetMaxNumberOfThreads( in long nb ) raises (SALOME_CMOD::SALOME_Exception);
+    long GetMaxNumberOfThreads();
+
+    /*!
+     * Set respect_geometry parameter
+     *
+     *  This patch independent option can be deactivated to allow MeshGems-CADSurf
+     * to lower the geometry accuracy in its patch independent process.
+     */
+    void SetRespectGeometry( in boolean toRespect );
+    boolean GetRespectGeometry();
+
+    /*!
+     * Set tiny_edges_avoid_surface_intersections parameter
+     *
+     * This option defines the priority between the tiny feature
+     * suppression and the surface intersection prevention. 
+     */
+    void SetTinyEdgesAvoidSurfaceIntersections( in boolean toAvoidIntersection );
+    boolean GetTinyEdgesAvoidSurfaceIntersections();
+
+    /*!
+     * Set closed_geometry parameter parameter
+     *
+     *  Describes whether the geometry is expected to be closed or not. 
+     * When activated, this option helps MeshGems-PreCAD to treat the dirtiest geometries.
+     */
+    void SetClosedGeometry( in boolean isClosed );
+    boolean GetClosedGeometry();
+
+    /*!
+     * Set debug parameter
+     *
+     * Make MeshGems-CADSurf will be very verbose and will output some intermediate
+     * files in the working directory. This option is mainly meant for Distene support issues.
+     */
+    void SetDebug( in boolean isDebug );
+    boolean GetDebug();
+
+    /*!
+     * Set periodic_tolerance parameter
+     * 
+     *  This parameter defines the maximum size difference between two periodic edges
+     * and also the maximum distance error between two periodic entities.
+     */
+    void SetPeriodicTolerance( in double tol ) raises (SALOME_CMOD::SALOME_Exception);
+    double GetPeriodicTolerance() raises (SALOME_CMOD::SALOME_Exception);
+
+    /*!
+     * Set required_entities parameter
+     *
+     * The required entities control the correction operations. 
+     * Accepted values for this parameter are :
+     * - "respect" : MeshGems-CADSurf is not allowed to alter any required entity, 
+     *             even for correction purposes,
+     * - "ignore" : MeshGems-CADSurf will ignore the required entities in its processing,
+     * - "clear" : MeshGems-CADSurf will clear any required status for the entities. 
+     *           There will not be any entity marked as required in the generated mesh.
+     */
+    void SetRequiredEntities( in string howToTreat ) raises (SALOME_CMOD::SALOME_Exception);
+    string GetRequiredEntities();
+
+    /*!
+     * Set sewing_tolerance parameter
+     *
+     * This parameter is the tolerance of the assembly.
+     */
+    void SetSewingTolerance( in double tol ) raises (SALOME_CMOD::SALOME_Exception);
+    double GetSewingTolerance() raises (SALOME_CMOD::SALOME_Exception);
+
+    /*!
+     * Set tags parameter
+     *
+     *  The tag (attribute) system controls the optimisation process. 
+     *  Accepted values for this parameter are :
+     * - "respect"  : the CAD tags will be preserved and unaltered by the optimisation operations,
+     * - "ignore" : the CAD tags will be ignored by the optimisation operations 
+     *              but they will still be present in the output mesh,
+     * - "clear" : MeshGems-CADSurf will clear any tag on any entity and optimise accordingly. 
+     *             There will not be any tag in the generated mesh.
+     */
+    void SetTags( in string howToTreat ) raises (SALOME_CMOD::SALOME_Exception);
+    string GetTags();
+
+    /*!
+     * Set hyper-patches
+     */
+    void SetHyperPatches(in THyperPatchList hpl);
+    THyperPatchList GetHyperPatches( in GEOM::GEOM_Object mainShape );
+    void SetHyperPatchShapes(in THyperPatchShapesList hpsl);
+    THyperPatchEntriesList GetHyperPatchShapes();
+    void SetHyperPatchEntries(in THyperPatchEntriesList hpel);
+
+    /*!
+     * To merges edges.
+     */
+    void SetPreCADMergeEdges(in boolean toMergeEdges);
+    boolean GetPreCADMergeEdges();
+
+    /*!
+     * To remove duplicate CAD faces.
+     */
+    void SetPreCADRemoveDuplicateCADFaces(in boolean toRemoveDuplicateCADFaces);
+    boolean GetPreCADRemoveDuplicateCADFaces();
+
+    /*!
+     * To process 3D topology.
+     */
+    void SetPreCADProcess3DTopology(in boolean toProcess);
+    boolean GetPreCADProcess3DTopology();
+
+
+    /*!
+     * To compute topology from scratch
+     */
+    void SetPreCADDiscardInput(in boolean toDiscardInput);
+    boolean GetPreCADDiscardInput();
+
+    /*!
+     *Set advanced option value
+     */
+    void SetOptionValue(in string optionName,
+                        in string optionValue) raises (SALOME_CMOD::SALOME_Exception);
+    void SetPreCADOptionValue(in string optionName,
+                        in string optionValue) raises (SALOME_CMOD::SALOME_Exception);
+    string GetOptionValue(in string optionName) raises (SALOME_CMOD::SALOME_Exception);
+    string GetPreCADOptionValue(in string optionName) raises (SALOME_CMOD::SALOME_Exception);
+    /*!
+     * Unsets advanced option
+     */
+    void UnsetOption(in string optionName);
+    void UnsetPreCADOption(in string optionName);
+
+    /*!
+     * Adds custom advanced option and its value
+     */
+    void SetAdvancedOption(in string optionsAndValues) // in a form "option_1 v1 option_2 v2'"
+      raises (SALOME_CMOD::SALOME_Exception);
+    void AddOption(in string optionName, in string optionValue);
+    void AddPreCADOption(in string optionName, in string optionValue);
+    string GetOption(in string optionName);
+    string GetPreCADOption(in string optionName);
+
+    /*!
+     * Return array of strings each of which is option name concatenated
+     * with option value devided by semicolon - "option_name:option_value:option_type".
+     * Option value is empty if an option is not set.
+     * option_type: 1 if user-define, 0 if default
+     * Note: the method is mostly for interaction with GUI.
+     */
+    string_array GetOptionValues();
+    string_array GetPreCADOptionValues();
+    string_array GetAdvancedOptionValues();
+
+    /*!
+     * Set option values each in the form "option_name[:option_value][:option_type]".
+     * Note: the method is mostly for interaction with GUI.
+     */
+    void SetOptionValues(in string_array options) raises (SALOME_CMOD::SALOME_Exception);
+    void SetPreCADOptionValues(in string_array options) raises (SALOME_CMOD::SALOME_Exception);
+    void SetAdvancedOptionValues(in string_array options);
+
+    /*!
+     * SizeMap
+     */
+    void SetSizeMapEntries(in string_array sizeMaps) raises (SALOME_CMOD::SALOME_Exception);
+    void ClearSizeMaps();
+
+    void UnsetEntry(in string entry);
+
+    /*!
+     * Set/unset a SizeMap on geom object
+     */
+    void         SetSizeMap(in GEOM::GEOM_Object GeomObj, in string sizeMap) raises (SALOME_CMOD::SALOME_Exception);
+    void         SetConstantSizeMap(in GEOM::GEOM_Object GeomObj, in double sizeMap);
+    void         UnsetSizeMap(in GEOM::GEOM_Object GeomObj);
+    
+    /*!
+     * Set a SizeMap on geom object given by entry
+     */
+    void         SetSizeMapEntry(in string entry, in string sizeMap) raises (SALOME_CMOD::SALOME_Exception);
+    void         SetConstantSizeMapEntry(in string entry, in GEOM::shape_type shapeType, in double sizeMap) raises (SALOME_CMOD::SALOME_Exception);
+    string       GetSizeMapEntry(in string entry) raises (SALOME_CMOD::SALOME_Exception);
+    string_array GetSizeMapEntries();
+
+    /*!
+     * Set/unset an attractor on geom object
+     */
+    void         SetAttractor(in GEOM::GEOM_Object GeomObj, in string attractor);
+    void         UnsetAttractor(in GEOM::GEOM_Object GeomObj);
+    
+    /*!
+     * Set an attractor on geom object given by entry
+     */
+    void         SetAttractorEntry(in string entry, in string attractor) raises (SALOME_CMOD::SALOME_Exception);
+    string       GetAttractorEntry(in string entry) raises (SALOME_CMOD::SALOME_Exception);
+    string_array GetAttractorEntries();
+
+    /*!
+     * Set/unset an attractor given as geom object on another geom object
+     */
+    void         SetAttractorGeom(in GEOM::GEOM_Object GeomObj, in GEOM::GEOM_Object AttractorShape, in double StartSize, in double EndSize, in double ActionRadius, in double ConstantRadius);
+    void         UnsetAttractorGeom(in GEOM::GEOM_Object GeomObj, in GEOM::GEOM_Object AttractorShape);
+    void         UnsetAttractorEntry(in string entry, in string attractor);
+
+    /*!
+     * Set an attractor given by entry on a geom object given by entry
+     */
+    void         SetClassAttractorEntry(in string entry, in string att_entry, in double StartSize, in double EndSize, in double ActionRadius, in double ConstantRadius ) raises (SALOME_CMOD::SALOME_Exception);
+    BLSURFPlugin::TAttParamsMap GetAttractorParams();
+
+/*
+    void         SetCustomSizeMapEntry(in string entry, in string sizeMap);
+    string       GetCustomSizeMapEntry(in string entry);
+    void         SetCustomSizeMap(in GEOM::GEOM_Object GeomObj, in string sizeMap);
+    void         UnsetCustomSizeMap(in GEOM::GEOM_Object GeomObj);
+    string_array GetCustomSizeMapEntries();
+*/
+    ///////////////////////
+    // ENFORCED VERTEXES //
+    ///////////////////////
+    
+    TFaceEntryEnfVertexListMap      GetAllEnforcedVerticesByFace();
+    TEnfVertexList                  GetAllEnforcedVertices();
+    
+    TFaceEntryCoordsListMap         GetAllCoordsByFace();
+    TCoordsEnfVertexMap             GetAllEnforcedVerticesByCoords();
+    
+    TFaceEntryEnfVertexEntryListMap GetAllEnfVertexEntriesByFace();
+    TEnfVertexEntryEnfVertexMap     GetAllEnforcedVerticesByEnfVertexEntry();
+    
+    void                            ClearAllEnforcedVertices();
+    
+   /*!
+    * Set/get/unset an enforced vertex on geom face
+    */
+    // OBSOLETE
+    boolean SetEnforcedVertex(in GEOM::GEOM_Object theFace, in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamed(in GEOM::GEOM_Object theFace, in double x, in double y, in double z, in TEnfName theVertexName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeom(in GEOM::GEOM_Object theFace, in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexWithGroup(in GEOM::GEOM_Object theFace, in double x, in double y, in double z, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamedWithGroup(in GEOM::GEOM_Object theFace, in double x, in double y, in double z, in TEnfName theVertexName, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeomWithGroup(in GEOM::GEOM_Object theFace, in GEOM::GEOM_Object theVertex, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+
+    TEnfVertexList GetEnforcedVertices(in GEOM::GEOM_Object theFace) raises (SALOME_CMOD::SALOME_Exception);
+    boolean UnsetEnforcedVertex(in GEOM::GEOM_Object theFace, in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean UnsetEnforcedVertexGeom(in GEOM::GEOM_Object theFace, in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean UnsetEnforcedVertices(in GEOM::GEOM_Object theFace) raises (SALOME_CMOD::SALOME_Exception);
+    
+    // NEW - no face
+    boolean AddEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean AddEnforcedVertexNamed(in double x, in double y, in double z, in TEnfName theVertexName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean AddEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean AddEnforcedVertexWithGroup(in double x, in double y, in double z, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean AddEnforcedVertexNamedWithGroup(in double x, in double y, in double z, in TEnfName theVertexName, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean AddEnforcedVertexGeomWithGroup(in GEOM::GEOM_Object theVertex, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+
+    boolean RemoveEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertices() raises (SALOME_CMOD::SALOME_Exception);
+
+    /*!
+     * Set/get/unset an enforced vertex on geom face given by entry
+     */
+    boolean SetEnforcedVertexEntry(in TEntry theFaceEntry, in double x, in double y, in double z,
+                                   in TEnfName theVertexName, in TEntry theVertexEntry, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+
+    TEnfVertexList GetEnforcedVerticesEntry(in TEntry theFaceEntry) raises (SALOME_CMOD::SALOME_Exception);
+    boolean UnsetEnforcedVertexEntry(in TEntry theFaceEntry, in double x, in double y, in double z, in TEntry theVertexEntry) raises (SALOME_CMOD::SALOME_Exception);
+//    boolean UnsetEnforcedVertexEntryGeom(in TEntry theFaceEntry, in TEntry theVertexEntry) raises (SALOME_CMOD::SALOME_Exception);
+    boolean UnsetEnforcedVerticesEntry(in TEntry theFaceEntry) raises (SALOME_CMOD::SALOME_Exception);
+
+    /*!
+     * To get/set internal vertices as enforced vertices
+     */
+    void          SetInternalEnforcedVertexAllFaces(in boolean toEnforceInternalVertices);
+    boolean       GetInternalEnforcedVertexAllFaces();
+    void          SetInternalEnforcedVertexAllFacesGroup(in TEnfGroupName groupName);
+    TEnfGroupName GetInternalEnforcedVertexAllFacesGroup();
+
+//  Enable internal enforced vertices on specific face if requested by user
+//    void          SetInternalEnforcedVertex(in GEOM::GEOM_Object theFace,in boolean toEnforceInternalVertices) raises (SALOME_CMOD::SALOME_Exception);
+//    void          SetInternalEnforcedVertexWithGroup(in GEOM::GEOM_Object theFace, in boolean toEnforceInternalVertices, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+//    void          SetInternalEnforcedVertexEntry(in TEntry theFaceEntry, in boolean toEnforceInternalVertices, in TEnfGroupName groupName) raises (SALOME_CMOD::SALOME_Exception);
+//    boolean       GetInternalEnforcedVertex(in GEOM::GEOM_Object theFace) raises (SALOME_CMOD::SALOME_Exception);
+//    boolean       GetInternalEnforcedVertexEntry(in TEntry theFaceEntry) raises (SALOME_CMOD::SALOME_Exception);
+//    TFaceEntryInternalVerticesList GetAllInternalEnforcedVerticesFaces();
+    ///////////////////////
+    
+
+    ///////////////////////
+    // PERIODICITY       //
+    ///////////////////////
+
+    void ClearPreCadPeriodicityVectors();
+    void AddPreCadFacesPeriodicity(in GEOM::GEOM_Object theFace1, in GEOM::GEOM_Object theFace2) raises (SALOME_CMOD::SALOME_Exception);
+    void AddPreCadFacesPeriodicityWithVertices(in GEOM::GEOM_Object theFace1, in GEOM::GEOM_Object theFace2, in GEOM::ListOfGO theSourceVertices, in GEOM::ListOfGO theTargetVertices) raises (SALOME_CMOD::SALOME_Exception);
+    void AddPreCadFacesPeriodicityEntry(in TEntry theFace1, in TEntry theFace2, in TEntryList theSourceVertices, in TEntryList theTargetVertices)  raises (SALOME_CMOD::SALOME_Exception);
+    void AddPreCadEdgesPeriodicity(in GEOM::GEOM_Object theEdge1, in GEOM::GEOM_Object theEdge2) raises (SALOME_CMOD::SALOME_Exception);
+    void AddPreCadEdgesPeriodicityWithVertices(in GEOM::GEOM_Object theEdge1, in GEOM::GEOM_Object theEdge2, in GEOM::ListOfGO theSourceVertices, in GEOM::ListOfGO theTargetVertices) raises (SALOME_CMOD::SALOME_Exception);
+    void AddPreCadEdgesPeriodicityEntry(in TEntry theEdge1, in TEntry theEdge2, in TEntryList theSourceVertices, in TEntryList theTargetVertices)  raises (SALOME_CMOD::SALOME_Exception);
+    TPeriodicityList GetPreCadFacesPeriodicityVector();
+    TPeriodicityList GetPreCadEdgesPeriodicityVector();
+    ///////////////////////
+
+    /*!
+     *Set the file for export resulting mesh in GMF format
+     */
+    void SetGMFFile(in string theFileName);
+    string GetGMFFile();
+  };
+};
+
+#endif

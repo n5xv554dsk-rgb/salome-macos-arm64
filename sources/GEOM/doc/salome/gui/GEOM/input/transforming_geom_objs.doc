@@ -1,0 +1,40 @@
+/*!
+
+\page transform_geom_obj_page Transforming geometrical objects
+
+The objects created in Salome can be processed with Transformation
+operations, which can be classified into:   
+
+<ul>
+<li>\subpage using_boolean_operations_page  "Boolean operations", which allow combining objects
+with boolean logical operators.</li>
+<li>\subpage transformation_operations_page "Transformation operations", 
+which modify shape or location of the selected object.</li>
+
+<li>\subpage features_page "Features", 
+which allow adding or removing matter from an object.</li>
+
+<li>Operations with \subpage blocks_operations_page "Blocks".</li>
+
+<li>\subpage partition_page "Partition" operation, which creates a compound
+by intersection of several shapes with a tool object or a plane.</li>
+<li>\subpage archimede_page "Archimede" operation, which creates a
+plane corresponding to the modelled waterline of the object plunged
+into water.</li>
+<li>\subpage shapesonshape_page "Get shapes on shape" operation, a
+special case of \b Explode operation. </li>
+<li>\subpage shared_shapes_page "Get shared shapes" operation, a
+special case of \b Explode operation. </li>
+<li>\subpage transfer_data_page "Transfer Data" operation, which copies
+non-topological data from one shape to another. </li>
+<li>\subpage extract_and_rebuild_page "Extract and Rebuild" operation, which
+extracts sub-shapes from the main shape. </li>
+
+
+<li>\subpage restore_presentation_parameters_page "Restore presentation parameters". 
+This cross-operation functionality allows the resulting shape to
+inherit colors and sub-shapes from its parent shapes.</li>
+</ul>
+
+
+*/

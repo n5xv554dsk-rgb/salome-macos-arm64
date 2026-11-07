@@ -1,0 +1,19 @@
+/*!
+
+\page appendix Appendix
+
+Some useful complementary resources:
+
+- \subpage porting
+- \subpage porting_icoco
+- \subpage glossary
+- \subpage med-file
+- \subpage install
+- \subpage references
+
+Implementation details:
+
+- \subpage interpkernel
+- \ref MPIAccess-det
+
+*/

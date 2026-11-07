@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='us-ascii' ?>
+<!-- XML component catalog -->
+<begin-catalog>
+    <!-- Path prefix information -->
+    <path-prefix-list></path-prefix-list>
+    <!-- Component list -->
+    <component-list>
+        <component>
+            <!-- Component identification -->
+            <component-name>PYCALCULATOR</component-name>
+            <component-username>PyCalculator</component-username>
+            <component-type>OTHER</component-type>
+            <component-author>LD</component-author>
+            <component-version>@SALOMEPYCALCULATOR_VERSION@</component-version>
+            <component-comment>Test component (Arithmetic operations with MED_Field)</component-comment>
+            <component-icone></component-icone>
+            <constraint>hostname = localhost</constraint>
+            <component-impltype>0</component-impltype>
+	    <!-- Component interfaces -->
+            <component-interface-list>
+                <component-interface-name>PYCALCULATOR_Gen</component-interface-name>
+                <component-interface-comment>No comment</component-interface-comment>
+                <!-- Service list -->
+		<component-service-list>
+		    <component-service>
+                        <!-- service-identification -->
+                        <service-name>Clone</service-name>
+                        <service-author>LD</service-author>
+                        <service-version>1.0</service-version>
+                        <service-comment>Clone field</service-comment>
+                        <service-by-default>1</service-by-default>
+                        <!-- service-connexion -->
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>field</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>a field of double</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+                        <outParameter-list>
+                            <outParameter>
+                                <outParameter-name>result</outParameter-name>
+                                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                                <outParameter-comment>result</outParameter-comment>
+                            </outParameter>
+                        </outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                    <component-service>
+                        <!-- service-identification -->
+                        <service-name>Add</service-name>
+                        <service-author>LD</service-author>
+                        <service-version>1.0</service-version>
+                        <service-comment>Addition of 2 fields of double</service-comment>
+                        <service-by-default>1</service-by-default>
+                        <!-- service-connexion -->
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>field1</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>first field of double</inParameter-comment>
+                            </inParameter>
+                            <inParameter>
+                                <inParameter-name>field2</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>second field of double</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+                        <outParameter-list>
+                            <outParameter>
+                                <outParameter-name>result</outParameter-name>
+                                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                                <outParameter-comment>result</outParameter-comment>
+                            </outParameter>
+                        </outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                    <component-service>
+                        <!-- service-identification -->
+                        <service-name>Mul</service-name>
+                        <service-author>LD</service-author>
+                        <service-version>1.0</service-version>
+                        <service-comment>Multiplication of 2 fields of double</service-comment>
+                        <service-by-default>0</service-by-default>
+                        <!-- service-connexion -->
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>field1</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>first field of double</inParameter-comment>
+                            </inParameter>
+                            <inParameter>
+                                <inParameter-name>field2</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>second field of double</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+                        <outParameter-list>
+                            <outParameter>
+                                <outParameter-name>result</outParameter-name>
+                                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                                <outParameter-comment>result</outParameter-comment>
+                            </outParameter>
+                        </outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                    <component-service>
+                        <!-- service-identification -->
+                        <service-name>AddConstant</service-name>
+                        <service-author>LD</service-author>
+                        <service-version>1.0</service-version>
+                        <service-comment>Add a constant to a field of doubles</service-comment>
+                        <service-by-default>0</service-by-default>
+                        <!-- service-connexion -->
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>field</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>allows to build the support</inParameter-comment>
+                            </inParameter>
+                            <inParameter>
+                                <inParameter-name>val</inParameter-name>
+                                <inParameter-type>double</inParameter-type>
+                                <inParameter-comment>a constant</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+                        <outParameter-list>
+                            <outParameter>
+                                <outParameter-name>result</outParameter-name>
+                                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                                <outParameter-comment>result</outParameter-comment>
+                            </outParameter>
+                        </outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                    <component-service>
+                        <!-- service-identification -->
+                        <service-name>MulConstant</service-name>
+                        <service-author>LD</service-author>
+                        <service-version>1.0</service-version>
+                        <service-comment>multiply a field to a constant</service-comment>
+                        <service-by-default>0</service-by-default>
+                        <!-- service-connexion -->
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>field</inParameter-name>
+                                <inParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                                <inParameter-comment>a field of double</inParameter-comment>
+                            </inParameter>
+                            <inParameter>
+                                <inParameter-name>val</inParameter-name>
+                                <inParameter-type>double</inParameter-type>
+                                <inParameter-comment>a constant</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+			<outParameter-list>
+                            <outParameter>
+                                <outParameter-name>result</outParameter-name>
+                                <outParameter-type>SALOME_MED/MEDCouplingFieldDoubleCorbaInterface</outParameter-type>
+                                <outParameter-comment>result</outParameter-comment>
+                            </outParameter>
+                        </outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                </component-service-list>
+            </component-interface-list>
+        </component>
+    </component-list>
+</begin-catalog>

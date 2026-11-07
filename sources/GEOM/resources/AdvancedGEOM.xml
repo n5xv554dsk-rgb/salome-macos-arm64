@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="AdvancedGEOM"
+               server-lib="AdvancedEngine"
+               gui-lib="AdvancedGUI">
+    <actions>
+      <action label="TShape_Basic"
+              icon="pipetshape.png"
+              menu="NEW_ENTITY/PRIMITIVES/PIPETSHAPE"
+              tooltip="PRIMITIVES/PIPETSHAPE"
+              status-bar="PIPETSHAPE">
+      </action>
+      <action label="DividedDisk"
+              icon="divided_disk.png"
+              menu="NEW_ENTITY/BLOCKS/DIVIDEDDISK"
+              tooltip="BLOCKS/DIVIDEDDISK"
+              status-bar="DIVIDEDDISK">
+      </action>
+      <action label="DividedCylinder"
+              icon="dividedcylinder.png"
+              menu="NEW_ENTITY/BLOCKS/DIVIDEDCYLINDER"
+              tooltip="BLOCKS/DIVIDEDCYLINDER"
+              status-bar="DIVIDEDCYLINDER">
+      </action>
+      <action label="SmoothingSurface"
+              icon="smoothingsurface.png"
+              menu="NEW_ENTITY/ADVANCED/SMOOTHINGSURFACE"
+              tooltip="ADVANCED/SMOOTHINGSURFACE"
+              status-bar="SMOOTHINGSURFACE">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

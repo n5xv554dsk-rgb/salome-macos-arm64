@@ -1,0 +1,45 @@
+/*!
+
+\page using_measurement_tools_page Object properties
+
+\n The key property of an object is its \subpage geometrical_obj_prop_page "Geometrical Type"
+  
+\n There are also various <b> Measurement tools </b> for getting data about created or imported geometrical objects :
+
+<ul>
+<li>\subpage point_coordinates_page "Point coordinates"</li>
+<li>\subpage basic_prop_page "Basic properties"</li>
+<li>\subpage center_mass_page "Center of mass"</li>
+<li>\subpage inertia_page "Inertia"</li>
+<li>\subpage normal_page "Normal to a Face"</li>
+<li>\subpage bounding_box_page "Bounding box"</li>
+<li>\subpage min_distance_page "Min. distance"</li>
+<li>\subpage angle_page "Angle"</li>
+<li>\subpage tolerance_page "Tolerance"</li>
+<li>\subpage managing_dimensions_page "Dimensions"</li>
+<li>\subpage annotation_page "Annotations"</li>
+<li>\subpage whatis_page "WhatIs"</li>
+<li>\subpage inspect_object_operation_page "Inspect Object"</li>
+<li>\subpage shape_statistics_operation_page "Shape Statistics"</li>
+<li>\subpage shape_proximity_page "Shapes Proximity"</li>
+</ul>
+
+\n To check their integrity:
+
+<ul>
+<li>\subpage boundaries_page "Check Free Boundaries"</li>
+<li>\subpage free_faces_page "Check Free Faces"</li>
+<li>\subpage check_shape_page "Check Shape"</li>
+<li>\subpage check_conformity_page "Check Conformity"</li>
+<li>\subpage check_bop_page "Extract BOP Failures"</li>
+<li>\subpage check_compound_of_blocks_page "Check compound of blocks"</li>
+<li>\subpage get_non_blocks_page "Get non blocks"</li>
+<li>\subpage check_self_intersections_page "Detect Self-intersections"</li>
+<li>\subpage fast_intersection_page "Fast intersection"</li>
+</ul>
+
+\n Our <b>TUI Scripts</b> show how to use
+\ref tui_measurement_tools_page "Measurement Tools" with <b>TUI
+commands</b>.
+
+*/

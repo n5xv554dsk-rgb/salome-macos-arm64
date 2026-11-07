@@ -1,0 +1,92 @@
+default :
+{
+    name : "mcut"
+    build_source : "cmake"
+    cmake_options : "-DCMAKE_INSTALL_LIBDIR:STRING=lib"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        github : "https://github.com/cutdigital/mcut.git"
+      }
+    }
+    patches : []
+    system_info :
+    {
+        rpm : []
+        rpm_dev : []
+        apt : []
+        apt_dev : []
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["SMESH",
+              "mmg",
+              "Python",
+              "numpy",
+              "eigen"
+             ]
+    build_depend : ["cmake", "cppunit"]
+    opt_depend : [
+                  "cgal",
+                  "cork",
+                  "libigl"
+                 ]
+
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "no"
+    }
+}
+
+version_b5b0ec6:
+{
+  build_source: "script"
+  compil_script: "mcut" + $VARS.scriptExtension
+  patches : [
+             'mcut-b5b0ec6-p01_cgsboolean.patch',
+             'mcut-b5b0ec6-p02_cgsboolean.patch',
+             'mcut-b5b0ec6-p04_mio-tag.patch',
+             'mcut-b5b0ec6-p05_utest-tag.patch'
+            ]
+}
+
+version_b5b0ec6_FD44:
+{
+  build_source: "script"
+  compil_script: "mcut" + $VARS.scriptExtension
+  patches : ['mcut-b5b0ec6-FD44.patch']
+}
+
+version_b5b0ec6_UB26_04:
+{
+  build_source: "script"
+  compil_script: "mcut" + $VARS.scriptExtension
+  patches : [
+             'mcut-b5b0ec6-p01_cgsboolean.patch',
+             'mcut-b5b0ec6-p02_cgsboolean.patch',
+             'mcut-b5b0ec6-p03_stdint.patch',
+             'mcut-b5b0ec6-p04_mio-tag.patch',
+             'mcut-b5b0ec6-p05_utest-tag.patch'
+            ]
+}
+
+version_b5b0ec6_FD42:
+{
+  build_source: "script"
+  compil_script: "mcut" + $VARS.scriptExtension
+  patches : [
+             'mcut-b5b0ec6-p01_cgsboolean.patch',
+             'mcut-b5b0ec6-p02_cgsboolean.patch',
+             'mcut-b5b0ec6-p03_stdint.patch',
+             'mcut-b5b0ec6-p04_mio-tag.patch',
+             'mcut-b5b0ec6-p05_utest-tag.patch'
+            ]
+}

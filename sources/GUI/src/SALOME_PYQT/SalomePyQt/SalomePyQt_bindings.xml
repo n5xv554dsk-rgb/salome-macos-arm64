@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+/****************************************************************************
+**
+** Copyright (C) 2007-2023  CEA, EDF, OPEN CASCADE
+**
+** Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+** CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+**
+** This library is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Lesser General Public
+** License as published by the Free Software Foundation; either
+** version 2.1 of the License, or (at your option) any later version.
+**
+** This library is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public
+** License along with this library; if not, write to the Free Software
+** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+**
+** See http:**www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+**
+** File   : SalomePyQt_bindings.h
+** Author : Konstantin LEONTEV
+**
+**
+****************************************************************************/
+-->
+
+<typesystem package="SalomePyQt">
+
+  <primitive-type name="bool"/>
+
+  <load-typesystem name="typesystem_core.xml" generate="no"/>
+  <load-typesystem name="typesystem_gui.xml" generate="no"/>
+  <load-typesystem name="typesystem_widgets.xml" generate="no"/>
+  <object-type name="QCborStringResultByteArray"/>
+  <object-type name="QCborStringResultString"/>
+
+  <!-- The attribute identified-by-value helps to specify anonymous enums using the name
+       of one of their values, which is unique for the anonymous enum scope. -->
+  <enum-type identified-by-value="WT_ObjectBrowser"/>
+  <enum-type identified-by-value="PT_Auto"/>
+  <enum-type name="MenuName"/>
+  <enum-type name="Action"/>
+  <enum-type name="VisibilityState"/>
+  <!-- add static method usePySide -->
+  <add-function signature="usePySide()" return-type="bool" static="yes">
+    <inject-code class="target" position="beginning">
+      <![CDATA[
+	       return PyBool_FromLong(1);
+      ]]>
+    </inject-code>
+  </add-function>
+  <object-type name="SALOME_Selection" generate="yes"/>
+  <!-- The optional attribute generate-functions="..." was introduced only in PySide6,
+       so we don't have a choice here, but generate all the methods by default except explicitly rejected ones. -->
+  <object-type name="SalomePyQt">
+
+    <!-- By default the ownership of an object created in Python is tied
+         to the Python name pointing to it. In order for the underlying
+         C++ object not to get deleted when the Python name goes out of
+         scope, we have to transfer ownership to C++.
+    -->
+    <modify-function signature="getMainFrame()">
+      <modify-argument index="0">
+        <define-ownership owner="c++"/>
+      </modify-argument>
+    </modify-function>
+
+    <!-- Fix for enum argument. Generator exports PT_Auto argument as SalomePyQt::PT_Auto
+         that leads to ‘PT_Auto’ is not a member of ‘SalomePyQt’ compilation error.
+    -->
+    <!-- <modify-function signature="addPreference"> -->
+    <modify-function signature="addPreference(QString,int,int,QString,QString)">
+      <modify-argument index="3">
+        <!-- Replacement below doesn't work because it generates default value as SalomePyQt::PT_Auto anyway. -->
+        <!-- <replace-default-expression with="PT_Auto"/> -->
+        <replace-default-expression with="0"/>
+      </modify-argument>
+    </modify-function>
+
+    <!-- Prevents error: expected primary-expression before ‘,’ token in line:
+         pyResult = Shiboken::Conversions::copyToPython(, &cppResult);
+    -->
+    <modify-function signature="getActivePythonModule()">
+      <modify-argument index="return">
+        <conversion-rule class="target">
+          %PYARG_0 = %0;
+        </conversion-rule>
+      </modify-argument>
+    </modify-function>
+    <modify-function signature="boolSetting(QString,QString,bool)">
+      <modify-argument index="3">
+        <replace-default-expression with="false"/>
+      </modify-argument>
+    </modify-function>
+    <modify-function signature="stringSetting(QString,QString,QString,bool)">
+      <modify-argument index="3">
+        <replace-default-expression with="QString()"/>
+      </modify-argument>
+    </modify-function>
+  </object-type>
+
+  <!--
+      Add Plot2d_Curve
+  -->
+  <load-typesystem name="SalomePyQt_Plot2d_bindings.xml" generate="yes"/>
+
+</typesystem>

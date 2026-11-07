@@ -1,0 +1,50 @@
+/*!
+
+\page sewing_operation_page Sewing
+
+\b Sewing operation allows uniting several faces (possibly contained
+in a shell, solid or compound) into one shell. Geometrically
+coincident (within a specified tolerance) edges (or parts of edges) of
+different faces are replaced by one edge thus producing a shell of
+faces with shared boundaries.<p> 
+This operation is similar to <b>New Entity - > Build - > Shell</b>
+operation, the difference is that with \b Sewing you can specify the
+tolerance and get a non-manifold result. <p>
+The possibility to create a non-manifold shell can be used e.g. to create a
+shell forming several closed domains and then to create several solids
+with shared boundaries from this shell.
+
+\note Geometrically coincident faces (or parts of faces) will not be
+replaced by one face during \b Sewing.
+
+To produce a \b Sewing operation in the <b>Main Menu</b> select <b>Repair - > Sewing</b>.
+
+The \b Result will be a \b GEOM_Object (shell). 
+
+\image html repair6.png
+
+In this dialog: 
+- Click on the "Arrow" button and select in the Object Browser or in the viewer one or more \b Shapes (faces or shells) to be sewn.
+- Activate <b>Allow Non Manifold </b> check-box to produce non-manifold sewing, if required.
+- Define precision for sewing in \b Tolerance field.
+- Activate <b> Detect Free boundaries</b> button to display the number of free boundaries in the shape:
+\image html neo-detect2.png 
+- Click \b Apply or <b>Apply and Close</b> button.
+
+This operation can be also launched using a <b>TUI Command:</b>
+
+<em>geompy.MakeSewing(ListOfShape, Precision, AllowNonManifold=False),</em>
+
+where \em ListOfShape is a list of faces or shells to be sewn, \em Precision is a
+precision for sewing, \em AllowNonManifold is a flag that allows non-manifold sewing.
+
+<b>Example:</b>
+
+\image html image112.png "The initial faces"
+
+\image html image113.png "The sewn faces"
+
+Our <b>TUI Scripts</b> provide you with useful examples of the use of
+\ref tui_sewing "Repairing Operations".
+
+*/

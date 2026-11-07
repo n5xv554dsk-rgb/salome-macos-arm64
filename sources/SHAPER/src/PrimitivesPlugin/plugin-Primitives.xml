@@ -1,0 +1,40 @@
+<plugin>
+  <workbench id="Primitives" document="Part">
+    <group id="Primitives">
+      <feature id="Box" title="Box" tooltip="Create a box" icon="icons/Primitives/box.png"
+               helpfile="boxFeature.html">
+        <source path="box_widget.xml"/>
+      </feature>
+    </group>
+    <group id="Primitives">
+      <feature id="Cylinder" title="Cylinder" tooltip="Create a cylinder" icon="icons/Primitives/cylinder.png"
+               helpfile="cylinderFeature.html">
+        <source path="cylinder_widget.xml"/>
+      </feature>
+    </group>
+    <group id="Primitives">
+      <feature id="Sphere" title="Sphere" tooltip="Create a sphere" icon="icons/Primitives/sphere.png"
+               helpfile="sphereFeature.html">
+        <source path="sphere_widget.xml"/>
+      </feature>
+    </group>
+    <group id="Primitives">
+      <feature id="Torus" title="Torus" tooltip="Create a torus" icon="icons/Primitives/torus.png"
+               helpfile="torusFeature.html">
+        <source path="torus_widget.xml"/>
+      </feature>
+    </group>
+    <group id="Primitives">
+      <feature id="Cone" title="Cone" tooltip="Create a cone" icon="icons/Primitives/cone.png"
+               helpfile="coneFeature.html">
+        <source path="cone_widget.xml"/>
+      </feature>
+    </group>
+    <group id="Primitives">
+      <feature id="Tube" title="Tube" tooltip="Create a tube" icon="icons/Primitives/tube.png"
+               helpfile="tubeFeature.html">
+        <source path="tube_widget.xml"/>
+      </feature>
+    </group>
+  </workbench>
+</plugin>

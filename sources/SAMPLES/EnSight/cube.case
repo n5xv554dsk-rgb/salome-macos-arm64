@@ -1,0 +1,15 @@
+#
+# New case file format for:  cube
+#
+ 
+FORMAT
+type:			ensight
+  
+GEOMETRY
+model:			cube.geo
+	   
+VARIABLE
+
+scalar per node:	temperature	cube.temp
+vector per node:	velocity	cube.velo
+

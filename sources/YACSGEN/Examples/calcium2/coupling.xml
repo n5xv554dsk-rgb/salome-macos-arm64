@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="proc">
+   <property name="DefaultStudyID" value="1"/>
+   <objref name="CALCIUM_complex" id="IDL:Ports/Calcium_Ports/Calcium_Complex_Port:1.0"/>
+   <objref name="CALCIUM_double" id="IDL:Ports/Calcium_Ports/Calcium_Double_Port:1.0"/>
+   <objref name="CALCIUM_integer" id="IDL:Ports/Calcium_Ports/Calcium_Integer_Port:1.0"/>
+   <objref name="CALCIUM_logical" id="IDL:Ports/Calcium_Ports/Calcium_Logical_Port:1.0"/>
+   <objref name="CALCIUM_long" id="IDL:Ports/Calcium_Ports/Calcium_Long_Port:1.0"/>
+   <objref name="CALCIUM_real" id="IDL:Ports/Calcium_Ports/Calcium_Real_Port:1.0"/>
+   <objref name="CALCIUM_string" id="IDL:Ports/Calcium_Ports/Calcium_String_Port:1.0"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <type name="double" kind="double"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <sequence name="intvec" content="int"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="stringvec" content="string"/>
+   <container name="A">
+   </container>
+   <container name="B">
+   </container>
+   <container name="C">
+   </container>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="clau5ckk"/>
+   </container>
+   <service name="node1">
+      <component>compo1</component>
+      <load container="A"/>
+      <method>s1</method>
+      <inport name="a" type="double"/>
+      <inport name="b" type="double"/>
+      <instream name="aa" type="CALCIUM_double"/>
+      <instream name="ab" type="CALCIUM_string"/>
+      <instream name="ac" type="CALCIUM_integer"/>
+      <instream name="ad" type="CALCIUM_complex"/>
+      <instream name="ae" type="CALCIUM_real"/>
+      <instream name="af" type="CALCIUM_logical"/>
+      <instream name="ag" type="CALCIUM_long"/>
+      <instream name="ah" type="CALCIUM_integer"/>
+      <instream name="ai" type="CALCIUM_integer"/>
+      <outport name="c" type="double"/>
+      <outstream name="ba" type="CALCIUM_double"/>
+      <outstream name="bb" type="CALCIUM_string"/>
+      <outstream name="bc" type="CALCIUM_integer"/>
+      <outstream name="bd" type="CALCIUM_complex"/>
+      <outstream name="be" type="CALCIUM_real"/>
+      <outstream name="bf" type="CALCIUM_logical"/>
+      <outstream name="bg" type="CALCIUM_long"/>
+      <outstream name="bh" type="CALCIUM_integer"/>
+      <outstream name="bi" type="CALCIUM_integer"/>
+   </service>
+   <service name="node2">
+      <component>compo2</component>
+      <load container="B"/>
+      <method>s1</method>
+      <inport name="a" type="double"/>
+      <inport name="b" type="double"/>
+      <instream name="aa" type="CALCIUM_double"/>
+      <instream name="ab" type="CALCIUM_string"/>
+      <instream name="ac" type="CALCIUM_integer"/>
+      <instream name="ad" type="CALCIUM_complex"/>
+      <instream name="ae" type="CALCIUM_real"/>
+      <instream name="af" type="CALCIUM_logical"/>
+      <instream name="ag" type="CALCIUM_long"/>
+      <instream name="ah" type="CALCIUM_integer"/>
+      <instream name="ai" type="CALCIUM_integer"/>
+      <outport name="c" type="double"/>
+      <outport name="d" type="double"/>
+      <outstream name="ba" type="CALCIUM_double"/>
+      <outstream name="bb" type="CALCIUM_string"/>
+      <outstream name="bc" type="CALCIUM_integer"/>
+      <outstream name="bd" type="CALCIUM_complex"/>
+      <outstream name="be" type="CALCIUM_real"/>
+      <outstream name="bf" type="CALCIUM_logical"/>
+      <outstream name="bg" type="CALCIUM_long"/>
+      <outstream name="bh" type="CALCIUM_integer"/>
+      <outstream name="bi" type="CALCIUM_integer"/>
+   </service>
+   <service name="node3">
+      <component>fcode1</component>
+      <load container="C"/>
+      <method>serv1</method>
+      <inport name="a" type="double"/>
+      <inport name="b" type="double"/>
+      <instream name="aa" type="CALCIUM_double"/>
+      <instream name="ab" type="CALCIUM_string"/>
+      <instream name="ac" type="CALCIUM_integer"/>
+      <instream name="ad" type="CALCIUM_complex"/>
+      <instream name="ae" type="CALCIUM_real"/>
+      <instream name="af" type="CALCIUM_logical"/>
+      <instream name="ag" type="CALCIUM_long"/>
+      <instream name="ah" type="CALCIUM_integer"/>
+      <instream name="ai" type="CALCIUM_integer"/>
+      <outport name="c" type="double"/>
+      <outstream name="ba" type="CALCIUM_double"/>
+      <outstream name="bb" type="CALCIUM_string"/>
+      <outstream name="bc" type="CALCIUM_integer"/>
+      <outstream name="bd" type="CALCIUM_complex"/>
+      <outstream name="be" type="CALCIUM_real"/>
+      <outstream name="bf" type="CALCIUM_logical"/>
+      <outstream name="bg" type="CALCIUM_long"/>
+      <outstream name="bh" type="CALCIUM_integer"/>
+      <outstream name="bi" type="CALCIUM_integer"/>
+   </service>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>ba</fromport>
+      <tonode>node2</tonode> <toport>aa</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bb</fromport>
+      <tonode>node2</tonode> <toport>ab</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bc</fromport>
+      <tonode>node2</tonode> <toport>ac</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bd</fromport>
+      <tonode>node2</tonode> <toport>ad</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>be</fromport>
+      <tonode>node2</tonode> <toport>ae</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bf</fromport>
+      <tonode>node2</tonode> <toport>af</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bg</fromport>
+      <tonode>node2</tonode> <toport>ag</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bh</fromport>
+      <tonode>node2</tonode> <toport>ah</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bi</fromport>
+      <tonode>node2</tonode> <toport>ai</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>ba</fromport>
+      <tonode>node3</tonode> <toport>aa</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bb</fromport>
+      <tonode>node3</tonode> <toport>ab</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bc</fromport>
+      <tonode>node3</tonode> <toport>ac</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bd</fromport>
+      <tonode>node3</tonode> <toport>ad</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>be</fromport>
+      <tonode>node3</tonode> <toport>ae</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bf</fromport>
+      <tonode>node3</tonode> <toport>af</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bg</fromport>
+      <tonode>node3</tonode> <toport>ag</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bh</fromport>
+      <tonode>node3</tonode> <toport>ah</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bi</fromport>
+      <tonode>node3</tonode> <toport>ai</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>ba</fromport>
+      <tonode>node1</tonode> <toport>aa</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bb</fromport>
+      <tonode>node1</tonode> <toport>ab</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bc</fromport>
+      <tonode>node1</tonode> <toport>ac</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bd</fromport>
+      <tonode>node1</tonode> <toport>ad</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>be</fromport>
+      <tonode>node1</tonode> <toport>ae</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bf</fromport>
+      <tonode>node1</tonode> <toport>af</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bg</fromport>
+      <tonode>node1</tonode> <toport>ag</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bh</fromport>
+      <tonode>node1</tonode> <toport>ah</toport>
+   </stream>
+   <stream>
+      <fromnode>node3</fromnode> <fromport>bi</fromport>
+      <tonode>node1</tonode> <toport>ai</toport>
+   </stream>
+   <parameter>
+      <tonode>node1</tonode><toport>a</toport>
+      <value><double>23</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node1</tonode><toport>b</toport>
+      <value><double>53</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node2</tonode><toport>a</toport>
+      <value><double>63</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node2</tonode><toport>b</toport>
+      <value><double>73</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node3</tonode><toport>a</toport>
+      <value><double>63</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node3</tonode><toport>b</toport>
+      <value><double>73</double></value>
+   </parameter>
+   <presentation name="node1" x="1.75" y="33.25" width="158" height="333" expanded="1" expx="1.75" expy="33.25" expWidth="158" expHeight="333" shownState="0"/>
+   <presentation name="node2" x="195.75" y="166.25" width="158" height="333" expanded="1" expx="195.75" expy="166.25" expWidth="158" expHeight="333" shownState="0"/>
+   <presentation name="node3" x="389.75" y="33.25" width="158" height="333" expanded="1" expx="389.75" expy="33.25" expWidth="158" expHeight="333" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="551.75" height="503.25" expanded="1" expx="0" expy="0" expWidth="551.75" expHeight="503.25" shownState="0"/>
+</proc>

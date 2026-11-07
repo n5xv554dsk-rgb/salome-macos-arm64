@@ -1,0 +1,205 @@
+<document>
+  <section name="launch">
+    <!-- SALOME launching parameters -->
+    <parameter name="modules"    value="GEOM,SMESH,HEXABLOCK,MED,YACS,PARAVIS,SHAPER"/>
+  </section>
+  <section name="SHAPER">
+    <!-- Major module parameters -->
+    <parameter name="name" value="Shaper"/>
+    <parameter name="icon" value="shaper.png"/>
+    <parameter name="version" value="@SHAPER_VERSION@"/>
+    <parameter name="documentation" value="shaper_help"/>
+  </section>
+  <section name="shaper_help" >
+    <parameter name="Developer's Guide/Shaper module/Developer's Guide" value="%SHAPER_ROOT_DIR%/share/doc/salome/tui/SHAPER/index.html;;http://docs.salome-platform.org/latest/tui/SHAPER/index.html"/>
+    <parameter name="User's Guide/Shaper module/User's Guide" value="%SHAPER_ROOT_DIR%/share/doc/salome/gui/SHAPER/index.html;;http://docs.salome-platform.org/latest/gui/SHAPER/index.html"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="SHAPER" value="%SHAPER_ROOT_DIR%/share/salome/resources/shaper"/>
+    <parameter name="SHAPERGUI" value="%SHAPER_ROOT_DIR%/share/salome/resources/shaper"/>
+    <parameter name="ModuleBase" value="%SHAPER_ROOT_DIR%/share/salome/resources/shaper"/>
+    <parameter name="PartSet" value="%SHAPER_ROOT_DIR%/share/salome/resources/shaper"/>
+    <parameter name="XGUI" value="%SHAPER_ROOT_DIR%/share/salome/resources/shaper"/>
+  </section>
+  <section name="General">
+    <!-- Common settings of part's activation and visualization -->
+    <parameter name="part_activation_study" value="0"/>
+    <parameter name="part_visualization_study" value="0"/>
+    <parameter name="part_visualization_script" value="1"/>
+    <parameter name="create_init_part" value="true"/>
+    <parameter name="use_auto_backup" value="false"/>
+    <parameter name="backup_interval" value="5"/>
+    <parameter name="backup_folder" value=""/>
+    <parameter name="auto_backup_storage" value="0"/>
+  </section>
+  <section name="Sketch">
+    <!-- Sketch preferences -->
+    <parameter name="allow_change_constraint" value="true"/>
+    <parameter name="notify_change_constraint" value="true"/>
+    <parameter name="operation_cursor" value="1"/>
+  </section>
+  <section name="Viewer" >
+    <!-- Viewer preferences -->
+    <parameter name="face-selection" value="true" />
+    <parameter name="edge-selection" value="true" />
+    <parameter name="vertex-selection" value="true" />
+    <parameter name="point-selection-sensitivity" value="12" />
+    <parameter name="edge-selection-sensitivity" value="2" />
+    <parameter name="highlighting-3d" value="false" />
+    <parameter name="highlighting-2d" value="true" />
+    <parameter name="scalar_bar_x_position" value="0.03" />
+    <parameter name="scalar_bar_y_position" value="0.35" />
+    <parameter name="scalar_bar_width" value="0.2" />
+    <parameter name="scalar_bar_height" value="0.5" />
+    <parameter name="scalar_bar_text_height" value="14" />
+    <parameter name="scalar_bar_nb_intervals" value="20" />
+    <parameter name="scalar_bar_text_color" value="#000000" />
+    <parameter name="shaper_default_transparency" value="0"/>
+    <parameter name="group_names_display" value="true" />
+    <parameter name="group_names_font" value="Times-bold" />
+    <parameter name="group_names_size" value="12" />
+    <parameter name="group_names_color" value="#000000" />
+  </section>
+  <section name="windows_geometry">
+    <parameter name="SHAPER" value="@ByteArray[#00 #00 #00 #FF #00 #00 #00 #00 #FD #00 #00 #00 #03 #00 #00 #00 #00 #00 #00 #01 #00 #00 #00 #02 #53 #FC #02 #00 #00 #00 #03 #FB #00 #00 #00 #22 #00 #6F #00 #62 #00 #6A #00 #65 #00 #63 #00 #74 #00 #42 #00 #72 #00 #6F #00 #77 #00 #73 #00 #65 #00 #72 #00 #44 #00 #6F #00 #63 #00 #6B #00 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #10 #00 #00 #00 #10 #FB #00 #00 #00 #1C #00 #4F #00 #62 #00 #6A #00 #65 #00 #63 #00 #74 #00 #20 #00 #62 #00 #72 #00 #6F #00 #77 #00 #73 #00 #65 #00 #72 #01 #00 #00 #00 #87 #00 #00 #02 #53 #00 #00 #00 #56 #00 #FF #FF #FF #FB #00 #00 #00 #26 #00 #70 #00 #72 #00 #6F #00 #70 #00 #65 #00 #72 #00 #74 #00 #79 #00 #5F #00 #70 #00 #61 #00 #6E #00 #65 #00 #6C #00 #5F #00 #64 #00 #6F #00 #63 #00 #6B #00 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #51 #00 #FF #FF #FF #00 #00 #00 #01 #00 #00 #01 #05 #00 #00 #02 #53 #FC #02 #00 #00 #00 #03 #FB #00 #00 #00 #1A #00 #69 #00 #6E #00 #66 #00 #6F #00 #50 #00 #61 #00 #6E #00 #65 #00 #6C #00 #44 #00 #6F #00 #63 #00 #6B #01 #00 #00 #00 #87 #00 #00 #02 #53 #00 #00 #00 #5D #00 #FF #FF #FF #FB #00 #00 #00 #14 #00 #48 #00 #69 #00 #64 #00 #65 #00 #20 #00 #46 #00 #61 #00 #63 #00 #65 #00 #73 #00 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #61 #00 #FF #FF #FF #FB #00 #00 #00 #2A #00 #69 #00 #6E #00 #73 #00 #70 #00 #65 #00 #63 #00 #74 #00 #69 #00 #6F #00 #6E #00 #5F #00 #70 #00 #61 #00 #6E #00 #65 #00 #6C #00 #5F #00 #64 #00 #6F #00 #63 #00 #6B #00 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #A4 #00 #FF #FF #FF #00 #00 #00 #03 #00 #00 #07 #6C #00 #00 #00 #A6 #FC #01 #00 #00 #00 #01 #FB #00 #00 #00 #22 #00 #70 #00 #79 #00 #74 #00 #68 #00 #6F #00 #6E #00 #43 #00 #6F #00 #6E #00 #73 #00 #6F #00 #6C #00 #65 #00 #44 #00 #6F #00 #63 #00 #6B #01 #00 #00 #00 #00 #00 #00 #07 #6C #00 #00 #00 #34 #00 #FF #FF #FF #00 #00 #05 #5F #00 #00 #02 #53 #00 #00 #00 #04 #00 #00 #00 #04 #00 #00 #00 #08 #00 #00 #00 #08 #FC #00 #00 #00 #04 #00 #00 #00 #02 #00 #00 #00 #05 #00 #00 #00 #1C #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #53 #00 #74 #00 #61 #00 #6E #00 #64 #00 #61 #00 #72 #00 #64 #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #1A #00 #53 #00 #61 #00 #6C #00 #6F #00 #6D #00 #65 #00 #4D #00 #6F #00 #64 #00 #75 #00 #6C #00 #65 #00 #73 #01 #00 #00 #00 #A3 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #0E #00 #50 #00 #6C #00 #75 #00 #67 #00 #69 #00 #6E #00 #73 #00 #00 #00 #00 #22 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #08 #00 #50 #00 #61 #00 #72 #00 #74 #01 #00 #00 #02 #CF #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #0C #00 #53 #00 #6B #00 #65 #00 #74 #00 #63 #00 #68 #01 #00 #00 #04 #1E #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #02 #00 #00 #00 #03 #00 #00 #00 #18 #00 #43 #00 #6F #00 #6E #00 #73 #00 #74 #00 #72 #00 #75 #00 #63 #00 #74 #00 #69 #00 #6F #00 #6E #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #0A #00 #42 #00 #75 #00 #69 #00 #6C #00 #64 #01 #00 #00 #00 #59 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #14 #00 #50 #00 #72 #00 #69 #00 #6D #00 #69 #00 #74 #00 #69 #00 #76 #00 #65 #00 #73 #01 #00 #00 #01 #A4 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #02 #00 #00 #00 #01 #00 #00 #00 #10 #00 #46 #00 #65 #00 #61 #00 #74 #00 #75 #00 #72 #00 #65 #00 #73 #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #02 #00 #00 #00 #02 #00 #00 #00 #14 #00 #49 #00 #6E #00 #73 #00 #70 #00 #65 #00 #63 #00 #74 #00 #69 #00 #6F #00 #6E #01 #00 #00 #00 #00 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #00 #0C #00 #4D #00 #61 #00 #63 #00 #72 #00 #6F #00 #73 #01 #00 #00 #00 #B3 #FF #FF #FF #FF #00 #00 #00 #00 #00 #00 #00 #00]"/>
+  </section>
+  <section name="windows_geometry_version">
+    <parameter name="SHAPER" value="9.9.0"/>
+  </section>
+  <section name="action_assets">
+    <parameter name="%SHAPER_ROOT_DIR%/share/salome/resources/shaper/action_assets.json" value=""/>
+  </section>
+  <section name="actionID_mutations">
+    <parameter name="%SHAPER_ROOT_DIR%/share/salome/resources/shaper/action_id_mutations.json" value=""/>
+  </section>
+  <section name="shortcuts_vA1.0:SHAPER">
+    <parameter name="Build/Compound" value=""/>
+    <parameter name="Build/CompSolid" value=""/>
+    <parameter name="Build/Edge" value=""/>
+    <parameter name="Build/Face" value=""/>
+    <parameter name="Build/Filling" value=""/>
+    <parameter name="Build/Interpolation" value=""/>
+    <parameter name="Build/Polyline" value=""/>
+    <parameter name="Build/Shell" value=""/>
+    <parameter name="Build/Solid" value=""/>
+    <parameter name="Build/SubShapes" value=""/>
+    <parameter name="Build/Vertex" value=""/>
+    <parameter name="Build/Wire" value=""/>
+    <parameter name="Construction/Axis" value="Ctrl+1"/>
+    <parameter name="Construction/Plane" value=""/>
+    <parameter name="Construction/Point" value="Ctrl+8"/>
+    <parameter name="Features/Chamfer" value=""/>
+    <parameter name="Features/Common" value="Ctrl+7"/>
+    <parameter name="Features/Copy" value=""/>
+    <parameter name="Features/Cut" value=""/>
+    <parameter name="Features/Defeaturing" value=""/>
+    <parameter name="Features/ExportToGEOM" value=""/>
+    <parameter name="Features/Extrusion" value=""/>
+    <parameter name="Features/ExtrusionCut" value=""/>
+    <parameter name="Features/ExtrusionFuse" value=""/>
+    <parameter name="Features/Field" value=""/>
+    <parameter name="Features/Fillet1D" value=""/>
+    <parameter name="Features/Fillet" value=""/>
+    <parameter name="Features/Fuse" value="Ctrl+\"/>
+    <parameter name="Features/FusionFaces" value=""/>
+    <parameter name="Features/GlueFaces" value=""/>
+    <parameter name="Features/Group" value=""/>
+    <parameter name="Features/GroupAddition" value=""/>
+    <parameter name="Features/GroupIntersection" value=""/>
+    <parameter name="Features/GroupShape" value=""/>
+    <parameter name="Features/GroupSubstraction" value=""/>
+    <parameter name="Features/ImportResult" value=""/>
+    <parameter name="Features/Intersection" value=""/>
+    <parameter name="Features/LimitTolerance" value=""/>
+    <parameter name="Features/Loft" value=""/>
+    <parameter name="Features/Offset3d" value=""/>
+    <parameter name="Features/Partition" value=""/>
+    <parameter name="Features/Pipe" value=""/>
+    <parameter name="Features/Recover" value=""/>
+    <parameter name="Features/RemoveExtraEdges" value=""/>
+    <parameter name="Features/Remove_SubShapes" value=""/>
+    <parameter name="Features/Revolution" value=""/>
+    <parameter name="Features/RevolutionCut" value=""/>
+    <parameter name="Features/RevolutionFuse" value=""/>
+    <parameter name="Features/Scale" value=""/>
+    <parameter name="Features/Sewing" value=""/>
+    <parameter name="Features/SketchCopy" value=""/>
+    <parameter name="Features/Smash" value=""/>
+    <parameter name="Features/Split" value=""/>
+    <parameter name="Features/Thickness" value=""/>
+    <parameter name="File/Export/Part" value=""/>
+    <parameter name="File/Export/PartSet" value=""/>
+    <parameter name="File/Export/Shape" value=""/>
+    <parameter name="File/Import/Image" value=""/>
+    <parameter name="File/Import/Part" value=""/>
+    <parameter name="File/Import/PartSet" value=""/>
+    <parameter name="File/Import/Shape" value=""/>
+    <parameter name="Inspection/BoundingBoxMacro" value=""/>
+    <parameter name="Inspection/GeometryCalculation" value=""/>
+    <parameter name="Inspection/Measurement" value=""/>
+    <parameter name="Inspection/NormalMacro" value=""/>
+    <parameter name="Inspection/PointCoordinates" value=""/>
+    <parameter name="Inspection/Shared_faces_macro" value=""/>
+    <parameter name="Macros/compoundVertices" value=""/>
+    <parameter name="Macros/importParameters" value=""/>
+    <parameter name="Macros/midSurface" value=""/>
+    <parameter name="Macros/pipeNetwork" value=""/>
+    <parameter name="Macros/SketchDrawer" value=""/>
+    <parameter name="Part/AngularCopy" value=""/>
+    <parameter name="Part/Dump" value=""/>
+    <parameter name="Part/Duplicate" value=""/>
+    <parameter name="Part/LinearCopy" value=""/>
+    <parameter name="Part/Parameter" value=""/>
+    <parameter name="Part/ParametersMgr" value=""/>
+    <parameter name="Part/AddParameter" value="Ctrl+A"/>
+    <parameter name="Part/Part" value=""/>
+    <parameter name="Part/Placement" value=""/>
+    <parameter name="Part/Remove" value=""/>
+    <parameter name="Part/Rotation" value=""/>
+    <parameter name="Part/Symmetry" value=""/>
+    <parameter name="Part/Translation" value=""/>
+    <parameter name="Primitives/Box" value=""/>
+    <parameter name="Primitives/Cone" value=""/>
+    <parameter name="Primitives/Cylinder" value=""/>
+    <parameter name="Primitives/Sphere" value=""/>
+    <parameter name="Primitives/Torus" value=""/>
+    <parameter name="Primitives/Tube" value=""/>
+    <parameter name="Sketch" value="Ctrl+4"/>
+    <parameter name="Sketch/SketchConstraintAngle" value="Ctrl+Shift+A"/>
+    <parameter name="Sketch/SketchConstraintCoincidence" value="Ctrl+Shift+J"/>
+    <parameter name="Sketch/SketchConstraintCollinear" value="Ctrl+Shift+&quot;"/>
+    <parameter name="Sketch/SketchConstraintDistance" value="Ctrl+Shift+D"/>
+    <parameter name="Sketch/SketchConstraintDistanceHorizontal" value="Ctrl+Shift+Left"/>
+    <parameter name="Sketch/SketchConstraintDistanceVertical" value="Ctrl+Shift+Down"/>
+    <parameter name="Sketch/SketchConstraintEqual" value="Ctrl+Shift+@"/>
+    <parameter name="Sketch/SketchConstraintHorizontal" value="Ctrl+Shift+Right"/>
+    <parameter name="Sketch/SketchConstraintLength" value="Ctrl+Shift+L"/>
+    <parameter name="Sketch/SketchConstraintMiddle" value="Ctrl+Shift+M"/>
+    <parameter name="Sketch/SketchConstraintMirror" value="Ctrl+Shift+%"/>
+    <parameter name="Sketch/SketchConstraintParallel" value="Ctrl+Shift+!"/>
+    <parameter name="Sketch/SketchConstraintPerpendicular" value="Ctrl+Shift+^"/>
+    <parameter name="Sketch/SketchConstraintRadius" value="Ctrl+Shift+R"/>
+    <parameter name="Sketch/SketchConstraintRigid" value="Ctrl+Shift+>"/>
+    <parameter name="Sketch/SketchConstraintTangent" value="Ctrl+Shift+T"/>
+    <parameter name="Sketch/SketchConstraintVertical" value="Ctrl+Shift+Up"/>
+    <parameter name="Sketch/SketchCurveFitting" value="Ctrl+Shift+:"/>
+    <parameter name="Sketch/SketchFillet" value="Ctrl+Shift+F"/>
+    <parameter name="Sketch/SketchIntersectionPoint" value="Ctrl+Shift+X"/>
+    <parameter name="Sketch/SketchLine" value="Ctrl+Shift+_"/>
+    <parameter name="Sketch/SketchMacroArc" value="Ctrl+Shift+C"/>
+    <parameter name="Sketch/SketchMacroBSpline" value="Ctrl+Shift+B"/>
+    <parameter name="Sketch/SketchMacroBSplinePeriodic" value=""/>
+    <parameter name="Sketch/SketchMacroCircle" value="Ctrl+Shift+O"/>
+    <parameter name="Sketch/SketchMacroEllipse" value="Ctrl+Shift+E"/>
+    <parameter name="Sketch/SketchMacroEllipticArc" value=""/>
+    <parameter name="Sketch/SketchMultiRotation" value=""/>
+    <parameter name="Sketch/SketchMultiTranslation" value=""/>
+    <parameter name="Sketch/SketchOffset" value=""/>
+    <parameter name="Sketch/SketchPoint" value="Ctrl+Shift+*"/>
+    <parameter name="Sketch/SketchProjection" value="Ctrl+Shift+P"/>
+    <parameter name="Sketch/SketchRectangle" value="Ctrl+Shift+#"/>
+    <parameter name="Sketch/SketchSplit" value=""/>
+    <parameter name="Sketch/SketchTrim" value=""/>
+  </section>
+</document>

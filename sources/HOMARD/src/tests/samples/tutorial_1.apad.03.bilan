@@ -1,0 +1,78 @@
+
+
+ANALYSE DU MAILLAGE
+===================
+
+     Maillage apres adaptation                         
+     MAILL                                                                           
+     Date de creation : jeudi 3 avril 2014 a 13 h 24 mn 23 s            
+     Dimension : 3
+     Degre : 2
+     C'est un maillage obtenu apres      3 adaptations.
+     Le niveau minimum actif est :     3
+     Le niveau maximum actif est :     3
+
+         Direction    |       Unite       |  Minimum   |  Maximum
+     ---------------------------------------------------------------
+     X                | INCONNUE          |  0.0000    |  1.0000    
+     Y                | INCONNUE          |  0.0000    |  1.0000    
+     Z                | INCONNUE          |  0.0000    |  1.0000    
+
+
+   NOMBRE D'ENTITES DU CALCUL
+   ==========================
+
+
+     ************************************************************
+     *                      Noeuds                              *
+     ************************************************************
+     * Nombre total                                *       4913 *
+     * . dont sommets d'aretes                     *        729 *
+     * . dont milieux d'aretes                     *       4184 *
+     ************************************************************
+
+     ************************************************************
+     *                      Mailles-Points                      *
+     ************************************************************
+     * Nombre total                                *          2 *
+     ************************************************************
+
+     ************************************************************
+     *                      Segments                            *
+     ************************************************************
+     * Nombre total                                *          8 *
+     * . dont aretes isolees                       *          0 *
+     * . dont aretes de bord de regions 2D         *          0 *
+     * . dont aretes internes aux faces/volumes    *          8 *
+     ************************************************************
+
+     ************************************************************
+     *                      Triangles                           *
+     ************************************************************
+     * Nombre total                                *        768 *
+     * . dont triangles de regions 2D              *          0 *
+     * . dont triangles de bord                    *        768 *
+     * . dont triangles internes aux volumes       *          0 *
+     ************************************************************
+     * . du niveau   0                             *          0 *
+     * . du niveau   0.5                           *          0 *
+     * . du niveau   1                             *          0 *
+     * . du niveau   1.5                           *          0 *
+     * . du niveau   2                             *          0 *
+     * . du niveau   2.5                           *          0 *
+     * . du niveau   3                             *        768 *
+     ************************************************************
+
+     ************************************************************
+     *                      Tetraedres                          *
+     ************************************************************
+     * Nombre total                                *       3072 *
+     ************************************************************
+     * . du niveau   0                             *          0 *
+     * . du niveau   0.5                           *          0 *
+     * . du niveau   1                             *          0 *
+     * . du niveau   1.5                           *          0 *
+     * . du niveau   2                             *          0 *
+     * . du niveau   2.5                           *          0 *
+     * . du niveau   3                             *       3072 *
+     ************************************************************

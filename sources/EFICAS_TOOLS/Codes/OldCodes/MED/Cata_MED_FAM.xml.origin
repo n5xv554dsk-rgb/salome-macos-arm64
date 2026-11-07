@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cata xmlns="http://chercheurs.edf.com/logiciels/efficas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://chercheurs.edf.com/logiciels/efficas file:///Z:/home_fayolle/MED_SVN/PASCALE/XSD/Model%20Efficas%20(1.1)%20%20v5.xsd">
+<commandes>
+<PROC xmlns:efficas="http://chercheurs.edf.com/logiciels/efficas" efficas:nom="FAS">
+  <efficas:FACT efficas:nom="FAMILY_MESH_NAME_REF" efficas:statut="o" efficas:min_occurs="1" efficas:max_occurs="-1">
+		<SIMP efficas:nom="NAME" efficas:statut="o"><typeAttendu>TXM</typeAttendu></SIMP>
+		<efficas:FACT efficas:nom="ELEM" efficas:statut="f"  efficas:min_occurs="1" efficas:max_occurs="-1">
+<!--		     <efficas:regles>
+		        --><!-- Ajouter des contraintes de vérification de la présence ATT et GRO --><!--
+				<efficas:PRESENT_PRESENT>ATT GRO</efficas:PRESENT_PRESENT>
+		     </efficas:regles>-->
+			<efficas:SIMP efficas:nom="NUM" efficas:statut="o" efficas:max_occurs="1"><typeAttendu>TXM</typeAttendu></efficas:SIMP>
+			<efficas:SIMP efficas:nom="NAME" efficas:statut="o" efficas:max_occurs="1"><typeAttendu>TXM</typeAttendu></efficas:SIMP>
+			<efficas:FACT efficas:nom="ATT" efficas:statut="f"  efficas:max_occurs="1">
+				<SIMP efficas:nom="NBR" efficas:statut="o" efficas:max_occurs="1"><typeAttendu>I</typeAttendu></SIMP>
+				<SIMP efficas:nom="DES" efficas:statut="o" efficas:max_occurs="-1"><typeAttendu>TXM</typeAttendu></SIMP>
+				<SIMP efficas:nom="IDE" efficas:statut="o" efficas:max_occurs="-1"><typeAttendu>I</typeAttendu></SIMP>
+				<SIMP efficas:nom="VAL" efficas:statut="o" efficas:max_occurs="-1"><typeAttendu>I</typeAttendu></SIMP>
+			</efficas:FACT>
+			<efficas:FACT efficas:nom="GRO" efficas:statut="f" efficas:max_occurs="1">
+				<SIMP efficas:nom="NBR" efficas:statut="o" efficas:max_occurs="1"><typeAttendu>I</typeAttendu></SIMP>
+   			    <SIMP efficas:nom="NOM" efficas:statut="o" efficas:max_occurs="-1"><typeAttendu>TXM</typeAttendu></SIMP>
+			</efficas:FACT>
+		</efficas:FACT>
+	</efficas:FACT>
+</PROC>
+</commandes>
+</cata>

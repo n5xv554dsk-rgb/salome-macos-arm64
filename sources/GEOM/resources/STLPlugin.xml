@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="STLPlugin"
+               server-lib="STLPluginEngine"
+               gui-lib="STLPluginGUI">
+    <actions>
+      <action label="Import_STL"
+              menu="FILE/IMPORT:10/IMPORTSTL"
+              status-bar="IMPORTSTL">
+      </action>
+      <action label="Export_STL"
+              menu="FILE/EXPORT:10/EXPORTSTL"
+              status-bar="EXPORTSTL">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

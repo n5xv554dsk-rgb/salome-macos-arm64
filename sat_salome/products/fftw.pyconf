@@ -1,0 +1,64 @@
+default :
+{
+    name : "fftw"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    system_info :
+    {
+        rpm : ["fftw"]
+        rpm_dev : ["fftw-devel"] #,
+        apt : ["libfftw3-bin"]
+        apt_dev : ["libfftw3-dev"] #,
+    }
+    archive_info:
+    {
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python', 'cmake']
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+default_MPI: 
+{
+    system_info :
+    {
+        rpm : []
+        rpm_dev : ["fftw-openmpi-devel"] #,
+        apt : []
+        apt_dev : ["libfftw3-mpi-dev"] #,
+    }
+}
+
+default_win :
+{
+   properties:
+   {
+     incremental : "yes"
+     single_install_dir : "yes"
+   }
+}
+
+version_3_3_10 :
+{
+  depend : ['Python', 'cmake']
+  opt_depend: ['openmpi']
+  compil_script: "fftw-3.3.10.sh"
+}
+
+version_3_3_9 :
+{}
+
+version_3_3_9_win :
+{
+   compil_script: "fftw-3.3.9.bat"
+}

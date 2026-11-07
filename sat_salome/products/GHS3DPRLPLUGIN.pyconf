@@ -1,0 +1,45 @@
+default :
+{
+    name : "GHS3DPRLPLUGIN"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/ghs3dprlplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "ghs3dprlplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/ghs3dprlplugin.git"
+      }
+    }
+    environ :
+    {
+        _SMESH_MeshersList : "GHS3DPRLPlugin"
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "ghs3dprlplugin"
+    }
+    depend : [
+             "KERNEL",
+             "MEDCOUPLING",
+             "GEOM",
+             "SMESH",
+             "Python",
+             "qt",
+             "boost",
+             "CAS",
+             "omniORB",
+             "hdf5",
+             "medfile",
+             "libxml2",
+             "docutils",
+             "ParaView"
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}

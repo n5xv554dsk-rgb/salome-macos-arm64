@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<pqevents>
+  <pqevent object="1STD_TabDesktop0/1QMenuBar0" command="activate" arguments="Fic&amp;hier" />
+  <pqevent object="1QMenu0" command="activate" arguments="LAB_LOCK_TEST" />
+  <pqevent object="1STD_TabDesktop0/DatasourceToolbar/1QToolButton0" command="activate" arguments="" />
+  <pqevent object="Qt-subapplication-app" command="FilesOpen" arguments="/tmp/test_scalarmap.med" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0" command="expand" arguments="0.0" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0" command="expand" arguments="0.0.0.0" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0" command="expand" arguments="0.0.0.0.0.0" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0/qt_scrollarea_vcontainer/1QScrollBar0" command="mouseWheel" arguments="-120,0,0,88,5" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0/qt_scrollarea_vcontainer/1QScrollBar0" command="mouseWheel" arguments="-120,0,0,88,5" />
+  <pqevent object="1STD_TabDesktop0/objectBrowserDock/objectBrowser/1QtxTreeView0" command="setCurrent" arguments="0.0.0.0.0.0.0.0" />
+  <pqevent object="1STD_TabDesktop0/PresentationToolbar/1QToolButton0" command="activate" arguments="" />
+  <pqevent object="1STD_TabDesktop0/1QMenuBar0" command="activate" arguments="Fic&amp;hier" />
+  <pqevent object="1QMenu0" command="activate" arguments="LAB_SNAP_TEST" />
+  <pqevent object="1STD_TabDesktop0/SaveSnapshotDialog/ok" command="activate" arguments="" />
+  <pqevent object="1STD_TabDesktop0/FileSaveScreenshotDialog" command="key" arguments="16777248" />
+  <pqevent object="1STD_TabDesktop0/FileSaveScreenshotDialog/mainSplitter/widget/FileName" command="set_string" arguments="/tmp/test_scalarmap.png" />
+  <pqevent object="1STD_TabDesktop0/FileSaveScreenshotDialog/mainSplitter/widget/OK" command="activate" arguments="" />
+</pqevents>

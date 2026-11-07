@@ -1,0 +1,104 @@
+/*!
+
+\page create_curve_page Curve
+
+To create a \b Curve in the <b>Main Menu</b> select <b>New Entity - >
+Basic - > Curve</b>
+
+There are three <b>Curve Construction</b> menu choices corresponding to three
+possible types of curves: Polyline, Besier or B-spline (Interpolated).
+The curve is defined by a list of \b Points through which it passes.
+
+
+\n There are two ways to define these <b>Points</b>:
+<ul>
+<li> <b>By Selection</b> manual picking of the points in the Object Browser or 3D Viewer.
+<li> <b>Analytical</b> parametric definition of the points through
+python expressions.
+</ul>
+
+\n The \b Result of each operation will be a GEOM_Object (edge).
+
+<b>Polyline</b>
+
+\image html polyline.png
+
+Polyline or polygonal chain is a connected series of line segments. It
+can be defined by the following parameters:
+
+\image html curve2.png
+
+<ul>
+<li><b>Points</b> at least 2 points which will serve as nodes on the curve.</li>
+<li><b>Build a closed wire</b> checkbox allows creating the curve as
+closed wire.</li>
+</ul>
+
+\n <b>TUI Command:</b> <em>geompy.MakePolyline(ListOfShapes,isClosed)</em>
+
+<b>Bezier</b>
+
+\image html bezier.png
+
+Bezier curve is a curve completely contained in a convex hull of its
+control points. It can be defined by the following parameters:
+
+
+\image html curve3.png
+
+<ul>
+<li><b>Points</b> at least 2 points used to approximate the curve.</li>
+<li><b>Build a closed edge</b> checkbox allows creating the curve as
+closed edge.</li>
+</ul>
+
+\n <b>TUI Command:</b> <em>geompy.MakeBezier(ListOfShapes,isClosed)</em>
+
+<b>B-spline</b>
+
+\image html interpol.png
+
+B-spline is a union of curve segments defined at each node span. It
+can be defined by the following parameters:
+
+\image html curve4.png
+
+<ul>
+<li><b>Points</b> at least 2 points which will serve as nodes on the curve.</li>
+<li><b>Build a closed edge</b> checkbox allows creating the curve as
+closed edge.</li>
+<li> If <b>Reorder vertices taking into account distances</b> is
+checked, the interpolation algorithm does not follow the order of
+vertices but searches for the closest vertex.</li>
+<li><b>Tangents</b> are two vectors, defining the direction at the ends of the
+curve. It is necessary to set both vectors or none. This option is available only
+if both above check boxes are not checked.
+</li>
+</ul>
+
+\n <b>TUI Command:</b>
+<br><em>geompy.MakeInterpol(ListOfShapes,isClosed,doReordering)</em>
+<br><em>geompy.MakeInterpolWithTangents(ListOfShapes,Vector1,Vector2)</em>
+
+<b>Analytical Definition</b>
+
+The input parameters for analytical definition are common for all
+types of curves. 
+
+\image html curve1.png
+
+<ul>
+<li><b>X(t)equation, Y(t)equation, Z(t)equation</b> are python
+expressions for X, Y and Z coordinates of the basic points of the curve.</li>
+<li><b>Min t, Max t</b> are minimum and maximum values of the parameter \b t.</li>
+<li><b>Step</b> is the number of steps of the parameter \b t.</li>
+</ul> 
+
+\n <b>TUI Command:</b> <em>geompy.MakeCurveParametric(XExpr, YExpt, ZExpt, tMin, tMax, nbSteps, curveType, True)</em>
+
+\n<b>Advanced options</b> \ref preview_anchor "Preview"
+
+Our <b>TUI Scripts</b> provide you with useful examples of creation of 
+\ref tui_creation_curve "Basic Geometric Objects".
+
+*/

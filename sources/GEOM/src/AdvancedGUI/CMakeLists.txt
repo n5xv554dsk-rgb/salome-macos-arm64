@@ -1,0 +1,120 @@
+# Copyright (C) 2012-2026  CEA, EDF, OPEN CASCADE
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+INCLUDE(UseQtExt)
+
+# --- options ---
+
+# additional include directories
+INCLUDE_DIRECTORIES(
+  ${PTHREAD_INCLUDE_DIR}
+  ${OMNIORB_INCLUDE_DIR}
+  ${OpenCASCADE_INCLUDE_DIR}
+  ${CommonGeomLib_INCLUDE_DIRS}
+  ${KERNEL_INCLUDE_DIRS}
+  ${GUI_INCLUDE_DIRS}
+  ${PROJECT_BINARY_DIR}/idl
+  ${PROJECT_BINARY_DIR}
+  ${PROJECT_SOURCE_DIR}/src/OBJECT
+  ${PROJECT_SOURCE_DIR}/src/GEOMClient
+  ${PROJECT_SOURCE_DIR}/src/GEOMImpl
+  ${PROJECT_SOURCE_DIR}/src/GEOMGUI
+  ${PROJECT_SOURCE_DIR}/src/GEOMBase
+  ${PROJECT_SOURCE_DIR}/src/GEOM
+  ${PROJECT_SOURCE_DIR}/src/DlgRef
+  ${PROJECT_SOURCE_DIR}/src/AdvancedEngine
+  ${PROJECT_SOURCE_DIR}/src/GEOM_I
+  ${PROJECT_BINARY_DIR}/src/DlgRef
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}
+  )
+
+# additional preprocessor / compiler flags
+ADD_DEFINITIONS(
+  ${OpenCASCADE_DEFINITIONS}
+  ${OMNIORB_DEFINITIONS}
+  ${QT_DEFINITIONS}
+  )
+
+# libraries to link to
+SET(_link_LIBRARIES
+  GEOMBase
+  SalomeIDLAdvancedGEOM
+  )
+
+# --- resources ---
+
+# resource files / to be processed by uic
+SET(_uic_files
+  )
+
+# resource files / to be processed by lrelease
+SET(AdvancedGUI_RESOURCES
+  AdvancedGEOM_images.ts
+  AdvancedGEOM_msg_en.ts
+  AdvancedGEOM_msg_fr.ts
+  AdvancedGEOM_msg_ja.ts
+  )
+
+# --- headers ---
+
+SET(AdvancedGUI_HEADERS
+  AdvancedGUI.h
+  AdvancedGUI_PipeTShapeDlg.h
+  AdvancedGUI_DividedDiskDlg.h
+  AdvancedGUI_DividedCylinderDlg.h
+  AdvancedGUI_SmoothingSurfaceDlg.h
+##@@ insert new functions before this line @@ do not remove this line @@ do not remove this line @@ do not remove this line @@##
+  )
+
+# header files / to be processed by moc
+SET(_moc_HEADERS
+  AdvancedGUI_PipeTShapeDlg.h
+  AdvancedGUI_DividedDiskDlg.h
+  AdvancedGUI_DividedCylinderDlg.h
+  AdvancedGUI_SmoothingSurfaceDlg.h
+  ##@@ insert new functions before this line @@ do not remove this line @@ do not remove this line @@ do not remove this line @@##
+  )
+
+# header files / uic wrappings
+QT_WRAP_UIC(_uic_HEADERS ${_uic_files})
+
+# --- sources ---
+
+# sources / moc wrappings
+QT_WRAP_MOC(_moc_SOURCES ${_moc_HEADERS})
+
+SET(AdvancedGUI_SOURCES
+  AdvancedGUI.cxx
+  AdvancedGUI_PipeTShapeDlg.cxx
+  AdvancedGUI_DividedDiskDlg.cxx
+  AdvancedGUI_DividedCylinderDlg.cxx
+  AdvancedGUI_SmoothingSurfaceDlg.cxx
+##@@ insert new functions before this line @@ do not remove this line @@ do not remove this line @@ do not remove this line @@##
+  ${_moc_SOURCES}
+  ${_uic_files}
+  )
+
+# --- rules ---
+
+ADD_LIBRARY(AdvancedGUI ${AdvancedGUI_SOURCES})
+TARGET_LINK_LIBRARIES(AdvancedGUI ${_link_LIBRARIES})
+INSTALL(TARGETS AdvancedGUI EXPORT ${PROJECT_NAME}TargetGroup DESTINATION ${SALOME_INSTALL_LIBS})
+
+QT_INSTALL_TS_RESOURCES("${AdvancedGUI_RESOURCES}" "${SALOME_GEOM_INSTALL_RES_DATA}")

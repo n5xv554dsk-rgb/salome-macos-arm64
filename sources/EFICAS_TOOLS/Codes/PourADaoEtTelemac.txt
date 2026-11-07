@@ -1,0 +1,4 @@
+chgt de label_user
+label_integrateur
+chgt de editeur.ini 
+translatorFIchier devient translatorFile

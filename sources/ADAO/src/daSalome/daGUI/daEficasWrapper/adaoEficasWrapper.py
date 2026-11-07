@@ -1,0 +1,223 @@
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2008-2026 EDF R&D
+#
+# This file is part of SALOME ADAO module
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+import sys
+import os
+
+import eficasSalome               # Import from EFICAS_SRC
+try:
+    from InterfaceQT4 import qtEficas  # Import from EficasTools
+    print("  Import compatible with EFICAS until 9.14 included for: adaoEficasWrapper")
+except Exception as e:
+    from InterfaceGUI.QT5 import qt_eficas  # Import from EficasTools
+from PyQt5.QtGui  import *        # Import from PyQT
+from PyQt5.QtCore import *        # Import from PyQT
+
+from daUtils.adaoEficasEvent import *
+from daUtils.adaoLogger import *
+
+#
+# ============================================
+# Specialization of the EficasWrapper for ADAO
+# ============================================
+#
+class AdaoEficasWrapper(eficasSalome.MyEficas):
+
+    def __init__(self, parent):
+        # Configuration de l'installation
+        # Permet à EFICAS de faire ses import correctement
+        my_path = os.path.dirname(os.path.abspath(__file__))
+        ADAO_INSTALL_DIR = my_path + "/../daEficas"
+        sys.path.insert(0,ADAO_INSTALL_DIR)
+
+        self.__parent = parent
+
+    def init_gui(self):
+
+      from salome.kernel import salome
+      salome.salome_init()
+
+      try:
+        eficasSalome.MyEficas.__init__(self, None, code="ADAO", module="ADAO")
+        self.viewmanager.myQtab.currentChanged.connect(self.tabChanged)
+        # self.menubar.hide()
+        # self.toolBar.hide()
+        # self.frameEntete.close()
+        # self.closeEntete()
+      except Exception as e:
+        eficasSalome.MyEficas.__init__(self, self.__parent, code="ADAO", module="ADAO")
+        self.editorManager.myQtab.currentChanged.connect(self.tabChanged)
+        self.viewmanager = self.editorManager  # JPA : EFICAS 9.14/15 Uniquement temporaire !!!
+        print("EFICAS 9.14 : les deux init en try/except risquent de poser problème en cas d'except. A supprimer.")
+
+    def addJdcInSalome(self, jdcPath):
+      debug("addJdcInSalome is called " + str(jdcPath))
+      # On gere nous meme l'etude
+
+#######
+#
+# Gestion des évènements provenant des widgets QT d'Eficas
+#
+#######
+
+    def tabChanged(self, index):
+      debug("tabChanged " + str(index))
+      # This signal is also emit when a new case is created/added
+      # On regarde que le dictionnaire contient l'index
+      if index in self.viewmanager.dictEditors.keys():
+        self.notifyObserver(EficasEvent.EVENT_TYPES.TABCHANGED, callbackId=self.viewmanager.dictEditors[index])
+
+#######
+#
+# Méthodes gérant les boutons dans SALOME
+#
+#######
+
+# Rq: Utilisation de la méthode str() pour passer d'un Qstring à un string
+
+    def adaofileNew(self, adao_case):
+
+      try:
+        qtEficas.Appli.fileNew(self)
+      except Exception as e:
+        qt_eficas.QtEficasAppli.fileNew(self)
+      index = self.viewmanager.myQtab.currentIndex()
+      adao_case.name          = str(self.viewmanager.myQtab.tabText(index))
+      adao_case.setEditor(self.viewmanager.dictEditors[index])
+      self.notifyObserver(EficasEvent.EVENT_TYPES.NEW, callbackId=adao_case)
+
+    def adaoFileSave(self, adao_case):
+
+      try:
+        ok = qtEficas.Appli.fileSave(self)
+      except Exception as e:
+        ok = qt_eficas.QtEficasAppli.fileSave(self)
+      if ok:
+        index = self.viewmanager.myQtab.currentIndex()
+        adao_case.name          = str(self.viewmanager.myQtab.tabText(index))
+        try:
+          adao_case.filename      = str(self.viewmanager.dictEditors[index].fichier)
+        except Exception as e:
+          adao_case.filename      = str(self.editorManager.dictEditors[index].dataSetFile)
+        adao_case.setEditor(self.viewmanager.dictEditors[index])
+        self.notifyObserver(EficasEvent.EVENT_TYPES.SAVE, callbackId=adao_case)
+
+    def adaoFileSaveAs(self, adao_case):
+
+      try:
+        ok = qtEficas.Appli.fileSaveAs(self)
+      except Exception as e:
+        ok = qt_eficas.QtEficasAppli.fileSaveAs(self)
+      if ok:
+        index = self.viewmanager.myQtab.currentIndex()
+        adao_case.name          = str(self.viewmanager.myQtab.tabText(index))
+        try:
+          adao_case.filename      = str(self.viewmanager.dictEditors[index].fichier)
+        except Exception as e:
+          adao_case.filename      = str(self.editorManager.dictEditors[index].dataSetFile)
+        adao_case.setEditor(self.viewmanager.dictEditors[index])
+        self.notifyObserver(EficasEvent.EVENT_TYPES.SAVE, callbackId=adao_case)
+
+    def adaoFileOpen(self, adao_case):
+
+      tab_number = self.viewmanager.myQtab.count()
+      try:
+        ok = self.viewmanager.handleOpen()
+      except Exception as e:
+        ok = self.editorManager.openFile()
+      if ok:
+        # On regarde si c'est un nouveau editeur
+        if self.viewmanager.myQtab.count() > tab_number:
+          index = self.viewmanager.myQtab.currentIndex()
+          adao_case.name          = str(self.viewmanager.myQtab.tabText(index))
+          try:
+            adao_case.filename      = str(self.viewmanager.dictEditors[index].fichier)
+          except Exception as e:
+            adao_case.filename      = str(self.editorManager.dictEditors[index].dataSetFile)
+          adao_case.setEditor(self.viewmanager.dictEditors[index])
+          self.notifyObserver(EficasEvent.EVENT_TYPES.OPEN, callbackId=adao_case)
+
+    def adaoFileClose(self, adao_case):
+
+        index = self.viewmanager.myQtab.currentIndex()
+        close_editor = self.viewmanager.dictEditors[index]
+        try:
+          res = self.viewmanager.handleClose()
+        except Exception as e:
+          res = self.editorManager.fileClose()
+        if res != 2: # l utilsateur a annule
+          # JPA : supprimer 'fichier' pour EFICAS > 9.14
+          if (hasattr(close_editor, 'fichier') and close_editor.fichier is None) or \
+             (hasattr(close_editor, 'dataSetFile') and close_editor.dataSetFile is None):
+            # Cas fichier vide
+            self.notifyObserver(EficasEvent.EVENT_TYPES.CLOSE, callbackId=close_editor)
+          else:
+            # Cas fichier existant
+            self.notifyObserver(EficasEvent.EVENT_TYPES.CLOSE, callbackId=close_editor)
+
+#######
+#
+# Méthodes auxiliares de gestion du GUI Eficas pour synchronisation
+# avec la partie GUI de SALOME
+#
+#######
+
+    def selectCase(self, editor):
+      rtn = False
+      for indexEditor in self.viewmanager.dictEditors.keys():
+        if editor is self.viewmanager.dictEditors[indexEditor]:
+          self.viewmanager.myQtab.setCurrentIndex(indexEditor)
+          rtn = True
+          break
+      return rtn
+
+    def getCurrentEditor(self):
+      index = self.viewmanager.myQtab.currentIndex()
+      editor = None
+      if index >= 0:
+        editor = self.viewmanager.dictEditors[index]
+      return editor
+
+
+
+
+#######
+#
+# Méthodes secondaires permettant de gérer les observeurs du
+# GUI d'Eficas
+#
+#######
+
+    def addObserver(self, observer):
+        """
+        In fact, only one observer may be defined for the moment.
+        """
+        try:
+            observer.processEficasEvent
+        except:
+            raise DevelException("the argument should implement the function processEficasEvent")
+        self.__observer = observer
+
+    def notifyObserver(self, eventType, callbackId=None):
+      eficasEvent = EficasEvent(eventType, callbackId)
+      self.__observer.processEficasEvent(self, eficasEvent)

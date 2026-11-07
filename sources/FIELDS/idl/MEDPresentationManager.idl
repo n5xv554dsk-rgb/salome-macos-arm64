@@ -1,0 +1,293 @@
+// Copyright (C) 2005-2026  CEA, EDF, OPEN CASCADE
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#ifndef __MED_PRESENTATION_MANAGER_IDL_
+#define __MED_PRESENTATION_MANAGER_IDL_
+
+#include "SALOME_GenericObj.idl"
+#include "MEDDataManager.idl"
+
+module MEDCALC
+{
+  /* Enumerations and constants */
+
+  enum ViewModeType {
+    VIEW_MODE_OVERLAP,
+    VIEW_MODE_REPLACE,
+    VIEW_MODE_NEW_LAYOUT,
+    VIEW_MODE_SPLIT_VIEW
+  };
+
+  enum ColorMapType {
+    COLOR_MAP_BLUE_TO_RED_RAINBOW,
+    COLOR_MAP_COOL_TO_WARM
+  };
+
+  enum ScalarBarRangeType {
+    SCALAR_BAR_ALL_TIMESTEPS,
+    SCALAR_BAR_CURRENT_TIMESTEP,
+    SCALAR_BAR_CUSTOM_RANGE
+  };
+
+  enum MeshModeType {
+    MESH_MODE_WIREFRAME,
+    MESH_MODE_SURFACE_EDGES,
+    MESH_MODE_SURFACE
+  };
+
+  enum PresentationVisibility {
+    PRESENTATION_INVISIBLE, 
+    PRESENTATION_VISIBLE,
+    PRESENTATION_NOT_IN_VIEW
+  };
+
+  enum IntegrationDirType {
+    INTEGRATION_DIR_BOTH,
+    INTEGRATION_DIR_FORWARD,
+    INTEGRATION_DIR_BACKWARD
+  };
+
+  typedef sequence<double> DoubleArray;
+  
+
+//  struct ScalarBarRange {
+//    // (valMin,valMax) defines the scalar bar range from:
+//    //      (-1,timestep): the field values at the chosen timestep
+//    //      (-1,-1):      the field values across all timesteps
+//    //      (-2,-2):      the field values at current timestep
+//    //      (start,end):  a user-input range of values
+//    long valMin;
+//    long valMax;
+//  };
+
+  const string DISPLAY_EUCLIDEAN_NORM = "";  // Void string to avoid clash with a real component name -- never used actually?
+
+  enum SliceOrientationType {
+    SLICE_NORMAL_TO_X,
+    SLICE_NORMAL_TO_Y,
+    SLICE_NORMAL_TO_Z,
+    SLICE_NORMAL_TO_XY,
+    SLICE_NORMAL_TO_XZ,
+    SLICE_NORMAL_TO_YZ,
+    SLICE_NORMAL_TO_XYZ
+  };
+
+  /* Default values */
+
+  const ViewModeType VIEW_MODE_DEFAULT = VIEW_MODE_REPLACE;
+  const ColorMapType COLOR_MAP_DEFAULT = COLOR_MAP_BLUE_TO_RED_RAINBOW;
+  const ScalarBarRangeType SCALAR_BAR_RANGE_DEFAULT = SCALAR_BAR_ALL_TIMESTEPS;
+  const MeshModeType MESH_MODE_DEFAULT = MESH_MODE_WIREFRAME;
+//  const long SCALAR_BAR_RANGE_VAL_MIN_DEFAULT = -1;
+//  const long SCALAR_BAR_RANGE_VAL_MAX_DEFAULT = -1;
+  const string DISPLAY_DEFAULT = DISPLAY_EUCLIDEAN_NORM;
+  const SliceOrientationType SLICE_ORIENTATION_DEFAULT = SLICE_NORMAL_TO_X;
+  const IntegrationDirType INTEGRATION_DIR_DEFAULT = INTEGRATION_DIR_BOTH;
+
+  const long NB_CONTOURS_DEFAULT = 10;
+  const long NB_SLICES_DEFAULT = 1;
+
+  const long NB_CONTOURS_MAX = 50;
+  const long NB_SLICES_MAX = 20;
+
+  /* Structs */
+
+  // Just showing the mesh 
+  struct MeshViewParameters {
+    long meshHandlerId;
+    MeshModeType mode;
+    boolean visibility;
+  };
+
+  // A simple scalar map
+  struct ScalarMapParameters {
+    long fieldHandlerId;
+    string displayedComponent; // DISPLAY_EUCLIDEAN_NORM or any component name
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange;
+  };
+
+  // A contour is an isoline in 2D and an isosurface in 3D
+  struct ContourParameters {   // Contour are only for scalar fields
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange; 
+    long nbContours;
+    string contourComponent;
+  };
+
+  struct VectorFieldParameters {
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange;
+    double scaleFactor;
+    boolean customScaleFactor;
+  };
+
+  struct SlicesParameters {
+    long fieldHandlerId;
+    string displayedComponent; // DISPLAY_EUCLIDEAN_NORM or any component name
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange;
+    SliceOrientationType orientation;
+    long nbSlices;
+  };
+
+
+  struct DeflectionShapeParameters {
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange;
+  };
+
+  struct PointSpriteParameters {
+    long fieldHandlerId;
+    string displayedComponent; // DISPLAY_EUCLIDEAN_NORM or any component name
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange;
+  };
+
+  // sphinx doc: begin of plot3d params
+  struct Plot3DParameters {
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange; 
+    DoubleArray planeNormal;
+    double planePos;
+  };
+  // sphinx doc: end of plot3d params
+
+  struct StreamLinesParameters {
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange; 
+    IntegrationDirType integrDir;
+  };
+
+  struct CutSegmentParameters {
+    long fieldHandlerId;
+    ScalarBarRangeType scalarBarRange;
+    ColorMapType colorMap;
+    boolean visibility;
+    boolean scalarBarVisibility;
+    DoubleArray scalarBarRangeArray;
+    boolean hideDataOutsideCustomRange; 
+    DoubleArray point1;
+    DoubleArray point2;
+  };
+
+  typedef sequence<long> PresentationsList;
+
+  /* Functions */
+
+  interface MEDPresentationManager : SALOME_CMOD::GenericObj
+  {
+    long makeMeshView(in MeshViewParameters params, in ViewModeType viewMode)   raises (SALOME_CMOD::SALOME_Exception);
+    long makeScalarMap(in ScalarMapParameters params, in ViewModeType viewMode) raises (SALOME_CMOD::SALOME_Exception);
+    long makeContour(in ContourParameters params, in ViewModeType viewMode)     raises (SALOME_CMOD::SALOME_Exception);
+    long makeVectorField(in VectorFieldParameters params, in ViewModeType viewMode)  raises (SALOME_CMOD::SALOME_Exception);
+    long makeSlices(in SlicesParameters params, in ViewModeType viewMode)            raises (SALOME_CMOD::SALOME_Exception);
+    long makeDeflectionShape(in DeflectionShapeParameters params, in ViewModeType viewMode) raises (SALOME_CMOD::SALOME_Exception);
+    long makePointSprite(in PointSpriteParameters params, in ViewModeType viewMode)  raises (SALOME_CMOD::SALOME_Exception);
+    long makePlot3D(in Plot3DParameters params, in ViewModeType viewMode)       raises (SALOME_CMOD::SALOME_Exception);
+    long makeStreamLines(in StreamLinesParameters params, in ViewModeType viewMode)       raises (SALOME_CMOD::SALOME_Exception);
+    long makeCutSegment(in CutSegmentParameters params, in ViewModeType viewMode)       raises (SALOME_CMOD::SALOME_Exception);
+
+    void setPresentationStringProperty(in long presId, in string propName, in string propValue);
+    string getPresentationStringProperty(in long presId, in string propName);
+    void setPresentationIntProperty(in long presId, in string propName, in long propValue);
+    long getPresentationIntProperty(in long presId, in string propName);  
+    void setPresentationDoubleProperty(in long presId, in string propName, in double propValue);
+    double getPresentationDoubleProperty(in long presId, in string propName);
+
+
+    MeshViewParameters  getMeshViewParameters(in long presId);
+    ScalarMapParameters getScalarMapParameters(in long presId);
+    ContourParameters   getContourParameters(in long presId);
+    SlicesParameters     getSlicesParameters(in long presId);
+    VectorFieldParameters     getVectorFieldParameters(in long presId);
+    PointSpriteParameters     getPointSpriteParameters(in long presId);
+    Plot3DParameters          getPlot3DParameters(in long presId);
+    DeflectionShapeParameters     getDeflectionShapeParameters(in long presId);
+    StreamLinesParameters     getStreamLinesParameters(in long presId);
+    CutSegmentParameters     getCutSegmentParameters(in long presId);
+
+    void updateMeshView(in long presId, in MeshViewParameters params)   raises (SALOME_CMOD::SALOME_Exception);
+    void updateScalarMap(in long presId, in ScalarMapParameters params) raises (SALOME_CMOD::SALOME_Exception);
+    void updateContour(in long presId, in ContourParameters params)     raises (SALOME_CMOD::SALOME_Exception);
+    void updateVectorField(in long presId, in VectorFieldParameters params) raises (SALOME_CMOD::SALOME_Exception);
+    void updateSlices(in long presId, in SlicesParameters params)       raises (SALOME_CMOD::SALOME_Exception);
+    void updateDeflectionShape(in long presId, in DeflectionShapeParameters params) raises (SALOME_CMOD::SALOME_Exception);
+    void updatePointSprite(in long presId, in PointSpriteParameters params)         raises (SALOME_CMOD::SALOME_Exception);
+    void updatePlot3D(in long presId, in Plot3DParameters params)         raises (SALOME_CMOD::SALOME_Exception);
+    void updateStreamLines(in long presId, in StreamLinesParameters params)         raises (SALOME_CMOD::SALOME_Exception);
+    void updateCutSegment(in long presId, in CutSegmentParameters params)         raises (SALOME_CMOD::SALOME_Exception);
+
+    boolean removePresentation(in long presId)   raises (SALOME_CMOD::SALOME_Exception);
+
+    // Helper function to keep GUI sync
+    boolean activateView(in long presentationId) raises (SALOME_CMOD::SALOME_Exception);
+
+    // Low level ParaVis dump
+    string getParavisDump(in long presId) raises (SALOME_CMOD::SALOME_Exception);
+
+//    ViewModeType getPresentationViewMode(in long presId);
+    
+    PresentationsList getAllPresentations();
+
+//  Visibility State in the active ParaView viewer
+    PresentationVisibility stateInActiveView(in long presId);
+
+    void cleanUp()   raises (SALOME_CMOD::SALOME_Exception);
+  };
+};
+
+#endif

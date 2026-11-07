@@ -1,0 +1,116 @@
+/*!
+
+\page tui_test_all_page GEOM_TestAll.py
+
+\anchor swig_All
+<br><h2>GEOM_TestAll.py</h2>
+
+\dontinclude GEOM_TestAll.py
+\skipline def TestAll
+
+\until vxyz
+
+\anchor swig_MakeMarker
+\until cs3
+
+\until MakePlaneLCS
+
+\anchor swig_MakeArc
+\until MakeArcOfEllipse
+
+\anchor swig_MakeCircle
+\until Circle2
+
+\until MakeVertexOnCurveByLength
+
+\anchor swig_MakeVertexOnLinesIntersection
+\until p_on_l1l2
+
+\anchor swig_MakeTangentOnCurve
+\until tan_on_arc
+
+\anchor swig_MakeTangentPlaneOnFace
+\until tan_on_face
+
+\until MakeCompound
+
+\anchor swig_MakeVertexOnSurface
+\until p_on_face
+
+\anchor swig_MakeVertexOnSurfaceByCoord
+\until p_on_face2
+
+\anchor swig_MakeVertexInsideFace
+\until p_on_face3
+
+\until S = geompy.MakeRotation
+
+\anchor swig_MakeLineTwoFaces
+\until Line3
+
+\anchor swig_all_advanced
+\until Thicken
+
+\anchor swig_MakeCopy
+\until MakeCopy
+
+\anchor swig_all_trsf
+\until RotatPnt
+
+\anchor swig_scale
+\until Scale4
+
+\anchor swig_all_trsf_more
+\until MakeProjectionOnCylinder
+
+\anchor swig_ChangeOrientation
+\until ChangeOrientation
+
+\anchor swig_ExtendFaceEdge
+\until ExtendFace
+
+\anchor swig_SurfaceFromFace
+\until MakeSurfaceFromFace
+
+\anchor swig_ExtractShapes
+\until prism_edges
+
+\until IDlist_f
+
+\anchor swig_FilletChamfer
+\until End of Local operations
+
+\anchor swig_all_patterns
+\until MultiRot2Ds
+
+\anchor swig_all_measure
+\until "CheckShape(Prism) = "
+
+\anchor swig_all_partition
+\until Partition1
+
+\anchor swig_all_addtostudy
+\until id_Partition1
+
+\anchor swig_all_addtostudyInFather
+\until id_SubFace
+
+\anchor swig_SubShapeName
+\until nameS
+
+\anchor swig_all_decompose
+\until geompy.RestoreSubShapes(Partition1)
+
+\anchor swig_GetSubShapeEdgeSorted
+\until geompy.GetSubShapeEdgeSorted(Sketcher3d_2, p3, "OrderedEdges")
+
+\anchor swig_GetSubShapesWithTolerance
+\until geompy.GetSubShapesWithTolerance(Box, GEOM.FACE, GEOM.CC_LE, 1.e-7, "le")
+
+\anchor swig_MakeExtraction
+\until geompy.MakeExtraction(Box, [16], "Ext_no_vertex")
+
+\anchor swig_CurvatureOnFace
+\until print("DONE")
+
+*/

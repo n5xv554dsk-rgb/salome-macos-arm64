@@ -1,0 +1,76 @@
+// Copyright (C) 2007-2026  CEA, EDF, OPEN CASCADE
+//
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+//  File   : DataStreamComponent.idl
+//  Author : Jean Rahuel
+//
+#ifndef _DATASTREAMCOMPONENT_IDL
+#define _DATASTREAMCOMPONENT_IDL
+
+#include "SALOME_Component.idl"
+
+module DataStreamComponent {
+
+  interface DataStream ;
+
+  interface DataStreamFactory : Engines::EngineComponent {
+
+    // DataStreamPorts Setxy istream(INTEGER, in, T), ostream(INTEGER, out, T)
+    void Setxy( in long x , in long y ) ;
+
+    void Getxy( out long x , out long y ) ;
+
+     // DataStreamPorts Add istream(INTEGER, in, I), ostream(INTEGER, out, I), OStream(INTEGER, out, I )
+    void Add( in long x , in long y , out long z ) ;
+
+     // DataStreamPorts Sub istream(INTEGER, in, I), Istream(INTEGER, in, I)
+    void Sub( in long x , in long y , out long z ) ;
+
+    void Mul( in long x , in long y , out long z ) ;
+
+    // DataStreamPorts Div ostream(INTEGER, out, I)
+    void Div( in long x , in long y , out long z ) ;
+
+    DataStream NewDataStream() ;
+
+  };
+
+  interface DataStream : Engines::EngineComponent {
+
+    // DataStreamPorts StreamSetxy istream(INTEGER, in, T), ostream(INTEGER, out, T)
+    void StreamSetxy( in long x , in long y ) ;
+
+    void StreamGetxy( out long x , out long y ) ;
+
+     // DataStreamPorts StreamAdd istream(INTEGER, in, I), ostream(INTEGER, out, I), OStream(INTEGER, out, I )
+    void StreamAdd( in long x , in long y , out long z ) ;
+     // DataStreamPorts StreamSub istream(INTEGER, in, I), Istream(INTEGER, in, I)
+    void StreamSub( in long x , in long y , out long z ) ;
+    void StreamMul( in long x , in long y , out long z ) ;
+    // DataStreamPorts StreamDiv ostream(INTEGER, out, I)
+    void StreamDiv( in long x , in long y , out long z ) ;
+
+  };
+
+} ;
+
+#endif

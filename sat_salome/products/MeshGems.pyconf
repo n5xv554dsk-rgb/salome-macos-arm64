@@ -1,0 +1,156 @@
+default :
+{
+    name : "MeshGems"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : []
+    opt_depend : ['openmpi']
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      is_distene : "yes"
+      licence : "dlim8.var.py"
+      incremental : "yes"
+    }
+}
+
+
+default_win :
+{
+   archive_info : {archive_name : "MeshGems-" + $APPLICATION.products.MeshGems + "_windows.tar.gz"}
+    properties :
+    {
+      is_distene : "yes"
+      licence : "dlim8.var.py"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+version_2024_1 :
+{
+    archive_info : {archive_name : "MeshGems-2024.1.tar.gz"}
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+    }
+}
+
+version_2024_1_win :
+{
+    archive_info : {archive_name : "MeshGems-2024.1.0.0_windows.tar.gz"}
+    compil_script :  "MeshGems-2024-1.bat"
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+version_2_15_1 :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+    }
+}
+
+version_2_15_1_win :
+{
+    compil_script :  "MeshGems-2.15.bat"
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+version_2_14_4 :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+    }
+}
+
+version_2_14_4_win :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+
+version_2_14_1 :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+    }
+}
+
+version_2_14_1_win :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+
+version_2_13_1 :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+    }
+}
+
+version_2_13_1_win :
+{
+    properties :
+    {
+      is_distene : "no"
+      licence : "libSalomeMeshGemsKeyGenerator"
+      incremental : "yes"
+      single_install_dir : "yes" # aimed to solve sat #18914
+    }
+}
+
+version_2_9_6 :
+{
+}
+
+version_2_9_6_win :
+{
+   archive_info : {archive_name : "MeshGems_V2.9.6_windows.tar.gz"}
+}

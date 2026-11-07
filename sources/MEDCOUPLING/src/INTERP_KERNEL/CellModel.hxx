@@ -1,0 +1,141 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#pragma once
+
+#include "INTERPKERNELDefines.hxx"
+
+#include "NormalizedUnstructuredMesh.hxx"
+#include "MCIdType.hxx"
+
+#include <map>
+#include <vector>
+
+constexpr int MEDCOUPLING2VTKTYPETRADUCER_LGTH = INTERP_KERNEL::NORM_MAXTYPE + 1;
+
+constexpr unsigned char MEDCOUPLING2VTKTYPETRADUCER_NONE = 255;
+
+INTERPKERNEL_EXPORT extern unsigned char MEDCOUPLING2VTKTYPETRADUCER[MEDCOUPLING2VTKTYPETRADUCER_LGTH];
+
+namespace INTERP_KERNEL
+{
+class DiameterCalculator;
+class OrientationInverter;
+
+/*!
+ * This class describes all static elements (different from polygons and polyhedron) 3D, 2D and 1D.
+ */
+class CellModel
+{
+   public:
+    static const unsigned MAX_NB_OF_SONS = 8;
+    static const unsigned MAX_NB_OF_NODES_PER_ELEM = 30;
+    static const unsigned MAX_NB_OF_LITTLE_SONS = 18;
+
+   private:
+    CellModel(NormalizedCellType type);
+    static void BuildUniqueInstance(std::map<NormalizedCellType, CellModel> &map);
+
+   public:
+    INTERPKERNEL_EXPORT static const CellModel &GetCellModel(NormalizedCellType type);
+    INTERPKERNEL_EXPORT static const std::map<NormalizedCellType, CellModel> &GetMapOfUniqueInstance();
+    NormalizedCellType getEnum() const { return _type; }
+    INTERPKERNEL_EXPORT const char *getRepr() const;
+    bool isExtruded() const { return _is_extruded; }
+    bool isDynamic() const { return _dyn; }
+    bool isQuadratic() const { return _quadratic; }
+    unsigned getDimension() const { return _dim; }
+    INTERPKERNEL_EXPORT bool isCompatibleWith(NormalizedCellType type) const;
+    INTERPKERNEL_EXPORT bool isSimplyQuadratic() const;
+    bool isSimplex() const { return _is_simplex; }
+    //! sonId is in C format.
+    const unsigned *getNodesConstituentTheSon(unsigned sonId) const { return _sons_con[sonId]; }
+    const unsigned *getNodesConstituentTheLittleSon(unsigned littleSonId) const
+    {
+        return _little_sons_con[littleSonId];
+    }
+    INTERPKERNEL_EXPORT bool getOrientationStatus(mcIdType lgth, const mcIdType *conn1, const mcIdType *conn2) const;
+    unsigned getNumberOfNodes() const { return _nb_of_pts; }
+    unsigned getNumberOfSons() const { return _nb_of_sons; }
+    unsigned getNumberOfLittleSons() const { return _nb_of_little_sons; }
+    INTERPKERNEL_EXPORT unsigned getNumberOfEdges() const;
+    INTERPKERNEL_EXPORT unsigned getNumberOfSons2(const mcIdType *conn, mcIdType lgth) const;
+    INTERPKERNEL_EXPORT unsigned getNumberOfEdgesIn3D(const mcIdType *conn, mcIdType lgth) const;
+    INTERPKERNEL_EXPORT unsigned getNumberOfMicroEdges() const;
+    unsigned getNumberOfNodesConstituentTheSon(unsigned sonId) const { return _nb_of_sons_con[sonId]; }
+    INTERPKERNEL_EXPORT unsigned getNumberOfNodesConstituentTheSon2(
+        unsigned sonId, const mcIdType *nodalConn, mcIdType lgth
+    ) const;
+    NormalizedCellType getExtrudedType() const { return _extruded_type; }
+    INTERPKERNEL_EXPORT NormalizedCellType getCorrespondingPolyType() const;
+    NormalizedCellType getReverseExtrudedType() const { return _reverse_extruded_type; }
+    NormalizedCellType getLinearType() const { return _linear_type; }
+    NormalizedCellType getQuadraticType() const { return _quadratic_type; }
+    NormalizedCellType getQuadraticType2() const { return _quadratic_type2; }
+    NormalizedCellType getSonType(unsigned sonId) const { return _sons_type[sonId]; }
+    INTERPKERNEL_EXPORT void buildExtruded(
+        const mcIdType *nodalConn, mcIdType offset, mcIdType *nodalConnExtruded
+    ) const;
+    INTERPKERNEL_EXPORT NormalizedCellType getSonType2(unsigned sonId) const;
+    INTERPKERNEL_EXPORT unsigned fillSonCellNodalConnectivity(
+        int sonId, const mcIdType *nodalConn, mcIdType *sonNodalConn
+    ) const;
+    INTERPKERNEL_EXPORT unsigned fillSonCellNodalConnectivity2(
+        int sonId, const mcIdType *nodalConn, mcIdType lgth, mcIdType *sonNodalConn, NormalizedCellType &typeOfSon
+    ) const;
+    INTERPKERNEL_EXPORT unsigned fillSonCellNodalConnectivity4(
+        int sonId, const mcIdType *nodalConn, mcIdType lgth, mcIdType *sonNodalConn, NormalizedCellType &typeOfSon
+    ) const;
+    INTERPKERNEL_EXPORT std::vector<mcIdType> computeAllEdgesForPolyhedron(
+        const mcIdType *nodalConnBg, const mcIdType *nodalConnEnd
+    ) const;
+    INTERPKERNEL_EXPORT unsigned fillSonEdgesNodalConnectivity3D(
+        int sonId, const mcIdType *nodalConn, mcIdType lgth, mcIdType *sonNodalConn, NormalizedCellType &typeOfSon
+    ) const;
+    INTERPKERNEL_EXPORT unsigned fillMicroEdgeNodalConnectivity(
+        int sonId, const mcIdType *nodalConn, mcIdType *sonNodalConn, NormalizedCellType &typeOfSon
+    ) const;
+    INTERPKERNEL_EXPORT void changeOrientationOf2D(mcIdType *nodalConn, unsigned int sz) const;
+    INTERPKERNEL_EXPORT void changeOrientationOf1D(mcIdType *nodalConn, unsigned int sz) const;
+    INTERPKERNEL_EXPORT DiameterCalculator *buildInstanceOfDiameterCalulator(int spaceDim) const;
+    INTERPKERNEL_EXPORT OrientationInverter *buildOrientationInverter() const;
+
+   private:
+    bool _dyn;
+    bool _quadratic;
+    bool _is_simplex;
+    bool _is_extruded;
+    unsigned _dim;
+    unsigned _nb_of_pts;
+    unsigned _nb_of_sons;
+    unsigned _nb_of_little_sons;
+    NormalizedCellType _type;
+    NormalizedCellType _extruded_type;
+    NormalizedCellType _reverse_extruded_type;
+    NormalizedCellType _linear_type;
+    NormalizedCellType _quadratic_type;
+    NormalizedCellType _quadratic_type2;
+    unsigned _sons_con[MAX_NB_OF_SONS][MAX_NB_OF_NODES_PER_ELEM];
+    unsigned _little_sons_con[MAX_NB_OF_LITTLE_SONS][3];
+    unsigned _nb_of_sons_con[MAX_NB_OF_SONS];
+    unsigned _extrude_con[MAX_NB_OF_NODES_PER_ELEM];
+    NormalizedCellType _sons_type[MAX_NB_OF_SONS];
+    static const char *CELL_TYPES_REPR[];
+};
+}  // namespace INTERP_KERNEL

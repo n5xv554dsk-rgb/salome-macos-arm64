@@ -1,0 +1,45 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+//  File   : HYBRIDPLUGIN_version.h
+//  Author : Vadim SANDLER
+//  Module : SALOME
+//
+#if !defined(__HYBRIDPLUGIN_VERSION_H__)
+#define __HYBRIDPLUGIN_VERSION_H__
+
+/*!
+  Specify version of SALOME HYBRIDPLUGIN module, as follows
+
+  HYBRIDPLUGIN_VERSION_MAJOR       : (integer) number identifying major version
+  HYBRIDPLUGIN_VERSION_MINOR       : (integer) number identifying minor version
+  HYBRIDPLUGIN_VERSION_MAINTENANCE : (integer) number identifying maintenance version
+  HYBRIDPLUGIN_VERSION_STR         : (string)  complete version number "major.minor.maintenance"
+  HYBRIDPLUGIN_VERSION             : (hex)     complete version number (major << 16) + (minor << 8) + maintenance
+  HYBRIDPLUGIN_DEVELOPMENT         : (integer) indicates development version when set to 1
+*/
+
+#define HYBRIDPLUGIN_VERSION_MAJOR       @SALOMEHYBRIDPLUGIN_MAJOR_VERSION@
+#define HYBRIDPLUGIN_VERSION_MINOR       @SALOMEHYBRIDPLUGIN_MINOR_VERSION@
+#define HYBRIDPLUGIN_VERSION_MAINTENANCE @SALOMEHYBRIDPLUGIN_PATCH_VERSION@
+#define HYBRIDPLUGIN_VERSION_STR         "@SALOMEHYBRIDPLUGIN_VERSION@"
+#define HYBRIDPLUGIN_VERSION             @SALOMEHYBRIDPLUGIN_XVERSION@
+#define HYBRIDPLUGIN_DEVELOPMENT         @SALOMEHYBRIDPLUGIN_VERSION_DEV@
+
+#endif // __HYBRIDPLUGIN_VERSION_H__

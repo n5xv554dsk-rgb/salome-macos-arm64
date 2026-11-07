@@ -1,0 +1,12 @@
+<document>
+  <section name="CALCULATOR">
+    <!-- Major module parameters -->
+    <parameter name="name" value="Calculator"/>
+    <parameter name="version" value="@SALOMECALCULATOR_VERSION@"/>
+    <parameter name="gui" value="no"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="CALCULATOR" value="%CALCULATOR_ROOT_DIR%/share/salome/resources/calculator"/>
+  </section>
+</document>

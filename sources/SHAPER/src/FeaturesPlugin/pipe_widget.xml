@@ -1,0 +1,40 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Base objects:"
+                  tooltip="Select a base objects"
+                  shape_types="vertices edges wires faces shells compsolids"
+                  use_choice="false"
+                  concealment="true">
+    <validator id="FeaturesPlugin_ValidatorBaseForGeneration" parameters="vertex,edge,wire,face,shell,compound"/>
+  </multi_selector>
+  <shape_selector id="path_object"
+                  label="Path object:"
+                  tooltip="Select an edge or wire for path"
+                  shape_types="edge wire"
+                  concealment="true">
+    <validator id="FeaturesPlugin_ValidatorPipePath"/>
+  </shape_selector>
+  <toolbox id="creation_method">
+    <box id="simple" title="Simple pipe by objects and path" icon="icons/Features/pipe_simple_32x32.png"/>
+    <box id="binormal" title="Pipe by objects, path and Bi-Normal" icon="icons/Features/pipe_binormal_32x32.png">
+      <shape_selector id="binormal"
+                      label="Bi-Normal:"
+                      tooltip="Select an edge for Bi-Normal"
+                      shape_types="edge"
+                      concealment="true">
+        <validator id="GeomValidators_ShapeType" parameters="line"/>
+      </shape_selector>
+    </box>
+    <box id="locations" title="Pipe by objects, path and locations" icon="icons/Features/pipe_locations_32x32.png">
+      <multi_selector id="locations_objects"
+                      label="Locations:"
+                      tooltip="Select one or more vertices to specify the locations"
+                      shape_types="vertex"
+                      concealment="true">
+        <validator id="FeaturesPlugin_ValidatorPipeLocations"/>
+      </multi_selector>
+    </box>
+  </toolbox>
+  <validator id="FeaturesPlugin_ValidatorPipeLocationsNumber"/>
+  <validator id="FeaturesPlugin_ValidatorBaseForGenerationSketchOrSketchObjects" parameters="base_objects"/>
+</source>

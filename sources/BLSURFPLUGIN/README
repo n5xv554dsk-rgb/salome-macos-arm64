@@ -1,0 +1,137 @@
+*******************************
+About SALOME MG-CADSurf plug-in
+*******************************
+
+SALOME MG-CADSurf plug-in adds DISTENE MG-CADSurf (former BLSURF) meshing algorithm
+to the SALOME Mesh module.
+
+MG-CADSurf meshing algorithm is destined for generation of 2D meshes basing
+on the 2D geometric entities (faces).
+
+For more information please visit the SALOME platform web site:
+
+  <https://www.salome-platform.org/>
+
+=======
+License
+=======
+
+SALOME platform is distributed under the GNU Lesser General Public License.
+See COPYING file for more details.
+
+============
+Installation
+============
+
+--------------
+Pre-requisites
+--------------
+
+SALOME platform relies on a set of third-party softwares; some of them are needed
+at build time only, while other ones are needed in runtime also.
+
+For more information about the pre-requisites please visit SALOME platform web
+site:
+
+* Check Release Notes and Software Requirements of the latest SALOME release at
+
+  <https://github.com/SalomePlatform/.github/wiki/SAT/>
+
+Note: SALOME MG-CADSurf plug-in needs SALOME KERNEL, SALOME GUI, SALOME Geometry
+and SALOME Mesh as pre-requisites.
+
+------------------
+Basic Installation
+------------------
+
+The build procedure of the SALOME platform is implemented with CMake.
+In order to build the plug-in you have to do the following actions: 
+
+1. Set up environment for pre-requisites (see "Pre-requisites" section above).
+
+2. Create a build directory:
+
+   % mkdir BLSURFPLUGIN_BUILD
+
+3. Configure the build procedure:
+
+   % cd BLSURFPLUGIN_BUILD
+   % cmake -DCMAKE_BUILD_TYPE=<mode> -DCMAKE_INSTALL_PREFIX=<installation_directory> <path_to_src_dir>
+
+   where
+   - <mode> is either Release or Debug (default: Release);
+   - <installation_directory> is a destination folder to install SALOME MG-CADSurf
+     plug-in (default: /usr); 
+   - <path_to_src_dir> is a path to the SALOME MG-CADSurf plug-in sources directory.
+
+   Note: by default (if CMAKE_INSTALL_PREFIX option is not given), SALOME MG-CADSurf
+   plug-in will be configured for installation to the /usr directory that requires
+   root permissions to complete the installation.
+
+4. Build and install:
+
+   % make
+   % make install
+
+   This will install SALOME MG-CADSurf plug-in to the <installation_directory>
+   specified to cmake command on the previous step.
+
+-------------------
+Custom installation
+-------------------
+
+SALOME MG-CADSurf plug-in supports a set of advanced configuration options;
+for more details learn CMakeLists.txt file in the root source directory.
+
+You can also use other options of cmake command to customize your installation.
+Learn more about available options by typing
+
+   % cmake --help
+
+=====
+Usage
+=====
+
+* Start SALOME.
+
+* Create new study.
+
+* Activate Geometry module and create simple geometry object.
+
+* Activate Mesh module.
+
+* Invoke menu "Mesh/Create Mesh".
+
+* Select previously created geometry object by clicking it with the
+  mouse in the Object Browser.
+
+* In the "Create mesh" dialog box:
+  - activate "2D" page;
+  - In the "Algorithm" combo box select "MG-CADSurf";
+  - Click on the button at the right of the "Hypothesis" combo box and
+    select "MG-CADSurf parameters" item in the drop-down menu.
+
+* In the "Hypothesis Construction" dialog box set parameters of MG-CADSurf
+  meshing algorithm and click "OK" button
+
+* In the "Create mesh" dialog box Click "Apply & Close" button to
+  define mesh and close the dialog box
+
+* In the Object Browser select "Mesh_1" object, invoke context popup
+menu for it by clicking right mouse button and select "Compute" item
+
+The resulting mesh created with MG-CADSurf plugin will be shown in the 3D
+viewer.
+
+=============
+Documentation
+=============
+
+The directory doc contains additional documentation file of SALOME MG-CADSurf
+plug-in.
+
+===============
+Troubleshooting
+===============
+
+Please, send a mail to webmaster.salome@opencascade.com.

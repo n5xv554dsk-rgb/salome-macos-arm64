@@ -1,0 +1,186 @@
+#!/usr/bin/env python3
+# Copyright (C) 2006-2026  CEA, EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+debut="""
+<proc>
+    <!-- types -->
+    <!-- inline -->
+
+<inline name="node_0_0" >
+<script><code>
+c=a+b
+print(c)
+</code></script>
+<inport name="a" type="int"/>
+<inport name="b" type="int"/>
+<outport name="c" type="int"/>
+</inline>
+
+
+"""
+        
+
+def triangle(n):
+    """generate a YACS graph for computation of the Pascal triangle
+
+    parameter: rank of the triangle.
+    Use integers, so rank is limited to 31 (2**31)
+    The last node gives the sum of rank n (=2**n) and also a direct calculation of 2**n.
+    """
+    
+    print(debut)
+    
+    print("""
+<inline name="collect" >
+<script><code>""")
+    print("tot = 0")
+    print("for i in range (" + str(n+1) + "):")
+    print("    v='a' + str(i)")
+    print("    tot+=eval(v)")
+    print("result=tot")
+    print("print result")
+    print("reference=2**" + str(n))
+    print("print reference")
+    print("</code></script>")
+    for i in range (n+1):
+        inport='<inport name="a' + str(i) + '" type="int"/>'
+        print(inport)
+        pass
+    print('<outport name="result" type="int"/>')
+    print('<outport name="reference" type="int"/>')
+    print("</inline>")
+    print()
+    
+    for i in range (1,n+1):
+        for j in range (i+1):
+            node="node_" + str(i)   +"_" + str(j)
+            nodetxt='<node name="'+node+'" type="node_0_0"></node>'
+            print(nodetxt)
+            pass
+        pass
+
+    print("""
+
+    <!-- service -->
+    <!-- control -->
+
+    """)
+    
+    for i in range (n):
+        for j in range (i+1):
+            fromnode="node_" + str(i)   +"_" + str(j)
+            tonode1="node_" + str(i+1)   +"_" + str(j)
+            tonode2="node_" + str(i+1)   +"_" + str(j+1)
+            control1='<control> <fromnode>'+fromnode+'</fromnode> <tonode>'+tonode1+'</tonode> </control>'
+            control2='<control> <fromnode>'+fromnode+'</fromnode> <tonode>'+tonode2+'</tonode> </control>'
+            print(control1)
+            print(control2)
+            pass
+        pass
+
+    print("""
+
+    <!-- datalinks -->
+
+    """)
+    
+    for i in range (n):
+        for j in range (i+1):
+            fromnode="node_" + str(i)   +"_" + str(j)
+            tonode1="node_" + str(i+1)   +"_" + str(j)
+            tonode2="node_" + str(i+1)   +"_" + str(j+1)
+            datafrom='<fromnode>' + fromnode + '</fromnode> <fromport>c</fromport>'
+            datato1 ='<tonode>'   + tonode1  + '</tonode> <toport>b</toport>'
+            datato2 ='<tonode>'   + tonode2  + '</tonode> <toport>a</toport>'
+            print('<datalink>')
+            print('   ' + datafrom)
+            print('   ' + datato1)
+            print('</datalink>')
+            print('<datalink>')
+            print('   ' + datafrom)
+            print('   ' + datato2)
+            print('</datalink>')
+            pass
+        pass
+
+    for i in range (n+1):
+        fromnode="node_" + str(n)   +"_" + str(i)
+        datafrom='<fromnode>' + fromnode + '</fromnode> <fromport>c</fromport>'
+        toport='a' + str(i)
+        datato  ='<tonode>collect</tonode> <toport>' + toport + '</toport>'
+        print('<datalink>')
+        print('   ' + datafrom)
+        print('   ' + datato)
+        print('</datalink>')
+    
+    print("""
+
+    <!--parameters -->
+
+    """)
+
+    print("""
+    <parameter>
+        <tonode>node_0_0</tonode> <toport>a</toport>
+        <value><int>0</int></value>
+    </parameter>
+    <parameter>
+        <tonode>node_0_0</tonode> <toport>b</toport>
+        <value><int>1</int></value>
+    </parameter>
+    """)
+
+    for i in range (1,n+1):
+        node1="node_" + str(i)   +"_" + str(0)
+        node2="node_" + str(i)   +"_" + str(i)
+        tonode1 ='   <tonode>' + node1 + '</tonode> <toport>a</toport>'
+        tonode2 ='   <tonode>' + node2 + '</tonode> <toport>b</toport>'
+        print('<parameter>')
+        print(tonode1)
+        print('   <value><int>0</int></value>')
+        print('</parameter>')
+        
+        print('<parameter>')
+        print(tonode2)
+        print('   <value><int>0</int></value>')
+        print('</parameter>')
+
+    print("""
+
+</proc>
+    """)
+     
+if __name__ == "__main__":
+    import sys
+    usage ="""Usage: %s rank > file.xml
+    where rank is positive integer >2 and <32
+    """
+    try:
+        rank = int(sys.argv[1])
+        if rank <2:
+            raise ValueError("rank must be >1")
+        if rank >31:
+            raise ValueError("rank must be <32")
+    except (IndexError, ValueError):
+        print(usage%(sys.argv[0]))
+        sys.exit(1)
+        pass
+    triangle(rank)
+    pass

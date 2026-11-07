@@ -1,0 +1,239 @@
+default :
+{
+    name : "SOLVERLAB"
+    build_source : "script"
+    compil_script :  $name + ".sh"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/solverlab.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "solverlab.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/solverlab.git"
+      }
+    }
+    environ :
+    {
+       SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "solverlab"
+       env_script : $name + ".py"
+    }
+    depend : 
+    [   
+        'hdf5', 
+        'matplotlib', 
+        'medfile', 
+        'numpy', 
+        'ParaView', 
+        'petsc', 
+        'Python', 
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING'
+    ]
+    build_depend : ["cmake", "swig", "doxygen", "graphviz","cppunit"]
+    opt_depend : ['packagespy']
+    # mscgen
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    nb_proc : 1
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+    }
+    patches: []
+}
+
+default_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    opt_depend : ['mpi4py']
+}
+
+version_V10_0_0_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    opt_depend : ['mpi4py']
+}
+
+version_V9_16_0_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    patches: ["SOLVERLAB-V9_16_0-fix_mpi.patch"]
+    opt_depend : ['mpi4py']
+}
+
+
+version_V9_15_0_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    opt_depend : ['mpi4py']
+}
+
+version_V9_15_0_FD42:
+{
+    patches : ['SOLVERLAB_FD42.patch']
+}
+
+version_V9_15_0_FD40:
+{
+    patches : ['SOLVERLAB_FD40.patch']
+}
+
+version_V9_15_0_CO10:
+{
+    patches : ['SOLVERLAB_CO10.patch']
+}
+
+version_V9_15_0_DB13:
+{
+    patches : ['SOLVERLAB_FD42.patch']
+}
+
+version_V9_14_0_FD40 :
+{
+    patches : ['SOLVERLAB_FD40.patch']
+}
+
+version_V9_12_0_DB12 :
+{
+    patches : ['SOLVERLAB-V9_12_0-numpy-1.20.-np.float.patch']
+}
+
+version_V9_10_0 :
+{
+    properties:
+    {
+        is_SALOME_module : "yes"
+        incremental : "yes"
+        has_salome_gui : "yes"
+    }
+}
+
+version_V9_10_0_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    opt_depend : ['mpi4py']
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+        has_salome_gui : "yes"
+    }
+}
+
+version_V9_9_0 :
+{
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+        has_salome_gui : "yes"
+    }
+}
+
+version_V9_9_0_MPI :
+{
+    depend :
+    [
+        'hdf5',
+        'matplotlib',
+        'medfile',
+        'numpy',
+        'ParaView',
+        'petsc',
+        'Python',
+        'KERNEL',
+        'GUI',
+        'MEDCOUPLING',
+        'openmpi'
+    ]
+    opt_depend : ['mpi4py']
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+        has_salome_gui : "yes"
+    }
+}
+
+version_V9_8_0 :
+{
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+        has_salome_gui : "yes"
+    }
+}

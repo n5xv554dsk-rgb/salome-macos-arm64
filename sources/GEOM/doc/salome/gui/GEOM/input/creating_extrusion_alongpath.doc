@@ -1,0 +1,115 @@
+/*!
+
+\page create_extrusion_alongpath_page Pipe Construction
+
+To generate a \b Pipe in the <b>Main Menu</b> select <b>New Entity - > Generation  - > Extrusion along a path</b>
+
+\n Firstly, to create an extruded \b Pipe shape, you can define the <b>Base
+Object</b> (vertex, edge, planar wire, face or shell), which will be extruded
+and the <b>Path Object</b> (edge or wire) along which the <b>Base 
+Object</b> will be extruded.<br>
+It is possible to select in GUI several Base Objects to make several pipes (using Shift button).
+\n In this mode the default pipe generation algorithm is used. The pipe
+is created so that the <b>angle between the normal vector</b> to
+the base shape <b>and the tangent to the path</b> wire remains constant at any point of the
+given path.
+\n <b>Select unpublished edges</b> checkbox - if checked, allows to select an edge of any other shape as the path object. 
+\n <b>Generate groups</b> checkbox - if checked allows to create groups of
+sub-shapes. For more details on groups creation please refer to
+\ref create_groups_page "this description".
+\n The \b Result of the operation will be a GEOM_Object (edge, face, shell,
+solid or compsolid).
+
+\n <b>TUI Command:</b> <em>geompy.MakePipe(baseShape, pathShape,
+ IsGenerateGroups=False)</em>
+\n <b>Arguments:</b> Name + 1 shape (vertex, edge, planar wire, face or
+shell) serving as base object + 1 shape (edge or wire) for
+definition of the path + 1 boolean parameter (IsGenerateGroups).
+\n <b>Advanced options</b> \ref preview_anchor "Preview"
+
+\image html pipe.png
+
+<b>Example:</b>
+
+\image html pipe_wire_edgesn.png "Extrusion of a wire"
+
+\n Secondly, you can define the <b>Base
+Object</b> (edge, planar wire or face), which will be extruded, 
+the <b>Path Object</b> (edge or wire) along which the <b>Base 
+Object</b> will be extruded and the <b>BiNormal Vector</b> (edge or
+wire).
+
+\n In contrast to the default mode, in this mode the pipe is generated
+to preserve the constant <b>angle between the normal vector</b> to the base
+shape <b>and the BiNormal vector</b> given as the third argument.
+\n <b>Select unpublished edges</b> checkbox - if checked, allows to select an edge of any other shape as the path object. 
+\n <b>Generate groups</b> checkbox - if checked allows to create groups of
+sub-shapes. For more details on groups creation please refer to
+\ref create_groups_page "this description".
+\n The \b Result of the operation will be a GEOM_Object (edge, face, shell,
+solid or compsolid).
+
+\n <b>TUI Command:</b> <em>geompy.MakePipeBiNormalAlongVector(baseShape, pathShape, binormalShape,
+ IsGenerateGroups=False)</em>
+\n <b>Arguments:</b> Name + 1 shape (edge, planar wire or face) 
+serving as base object + 1 shape (edge or wire) for
+definition of the path + 1 shape (edge or wire) to set a fixed 
+BiNormal direction to perform the extrusion + 1 boolean parameter
+(IsGenerateGroups).
+
+\image html pipe2.png
+
+<b>Example:</b>
+
+\image html pipebinormalsn.png "Extrusion of a face with BiNormal parameter"
+
+\n Thirdly, it is possible to additionally select profiles of the pipe object to be built. For this, you can define the following parameters:
+- <b>Base Object</b> or a list of objects (edges, planar wires, faces or shells), which will be extruded;
+- <b>Locations</b> - a vertex or a list of vertices that specify the locations of extruded <b>Base Objects</b> on the resulting <b>Path Object</b>. The number of Base Objects should be equal to the number of <b>Locations</b>.
+- <b>Path Object</b> (edge or wire), along which the <b>Base Object</b> will be extruded.
+
+Additional controls:
+- If <b>With contact</b> is checked, the section is translated in contact with the spine.
+- If <b>With correction</b> is checked, the section is rotated to be orthogonal to the spine
+tangent in the corresponding point.
+- If <b>Step-by-step generation</b> is checked, the result is created
+step-by-step, i.e. it creates pipes between each pair of neighbor sections and
+fuses them into a single shape.
+
+\note If <b>Step-by-step generation</b> is checked, <b>With contact</b> and
+<b>With correction</b> controls are disabled as corrections of bases are
+not allowed in step-by-step mode.
+
+<b>Generate groups</b> checkbox - if checked allows to create groups of
+sub-shapes. For more details on groups creation please refer to
+\ref create_groups_page "this description".
+\n The \b Result of the operation will be a shell or a solid.
+
+\n <b>TUI Commands:</b>
+- <em>geompy.MakePipeWithDifferentSections(baseShape, locations, pathShape, withContact, withCorrection,
+ IsGenerateGroups=False)</em>
+\n <b>Arguments:</b> Name + list of shapes (edges, planar wires, faces or shells) serving as base object + 
+list of locations (vertices) on the path corresponding specified list of the shapes + 
+1 shape (edge or wire) for definition of the path + 
+3 Boolean parameters (withContact, withCorrection, IsGenerateGroups).
+- <em>geompy.MakePipeWithDifferentSectionsBySteps(baseShape, locations, pathShape,
+ IsGenerateGroups=False)</em>
+\n <b>Arguments:</b> Name + list of shapes (edges, planar wires, faces or shells) serving as base object +
+list of locations (vertices) on the path corresponding specified list of the shapes +
+1 shape (edge or wire) for definition of the path +
+Boolean parameter.
+
+\n <b>Advanced options</b> \ref preview_anchor "Preview"
+
+\image html pipe3.png
+
+<b>Example:</b>
+
+\image html pipe3_init.png "Base objects and Location vertices"
+
+\image html pipe3_res.png "Extrusion of the profile shapes along the path shape"
+
+Our <b>TUI Scripts</b> provide you with useful examples of creation of
+\ref tui_creation_pipe "Complex Geometric Objects".
+
+*/

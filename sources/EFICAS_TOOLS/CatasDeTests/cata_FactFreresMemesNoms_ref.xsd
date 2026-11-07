@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Essai"
+xmlns:Essai="http://chercheurs.edf.com/logiciels/Essai"
+targetNamespace="http://chercheurs.edf.com/logiciels/Essai"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="T_unSimpV2">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_NameV2">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_ScalarFluxModelV2">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="T_blocV21_blocV22">
+		<xs:sequence>
+			<xs:element name="leFactV21" type="Essai:T_leFactV21" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_leFactV21" >
+		<xs:sequence>
+			<xs:element name="ScalarV2" type="Essai:T_ScalarV2" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_ScalarV2" >
+		<xs:choice>
+		<xs:sequence>
+			<xs:element name="NameV2" type="Essai:T_NameV2" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ScalarFluxModelV2" type="Essai:T_ScalarFluxModelV2" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:sequence>
+			<xs:element name="ScalarV2" type="Essai:T_ScalarV2" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_leProcV2" >
+	 <xs:complexContent>
+	  <xs:extension base="T_step_Essai">
+		<xs:sequence>
+			<xs:element name="unSimpV2" type="Essai:T_unSimpV2" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Essai:T_blocV21_blocV22"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	  </xs:extension>
+	 </xs:complexContent>
+	</xs:complexType>
+	<xs:element name="leProcV2" type="Essai:T_leProcV2" substitutionGroup="step_Essai"/>
+	<xs:complexType name="T_step_Essai" abstract="true"/>
+	<xs:element name="step_Essai" type="Essai:T_step_Essai"/>
+	<xs:element name="Essai" type="Essai:T_Essai"/>
+		<xs:complexType name="T_Essai">
+		  <xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="step_Essai" minOccurs="0" maxOccurs="1"/>
+		  </xs:choice>
+		</xs:complexType>
+</xs:schema>

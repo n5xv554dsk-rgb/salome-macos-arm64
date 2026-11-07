@@ -1,0 +1,29 @@
+/*!
+
+\page create_compound_page Compound
+
+\n To create a \b Compound in the <b>Main Menu</b> select <b>New
+Entity - > Build - > Compound</b>.
+
+\n You can create a compound from a list of shapes.
+\n The \b Result will be a \b GEOM_Object (COMPOUND).
+
+\n <b>TUI Command:</b> <em>geompy.MakeCompound(ListOfShape)</em>
+\n <b>Arguments:</b> Name + List of shapes.
+\n <b>Advanced option:</b>
+   \ref restore_presentation_parameters_page "Set presentation parameters and sub-shapes from arguments".
+
+\image html neo-obj7.png
+
+\n <b>Example:</b>
+
+\image html compoundsn.png "Edges for creation of a compound"
+
+Our <b>TUI Scripts</b> provide you with useful examples of creation of 
+\ref tui_creation_compound "Advanced Geometric Objects".
+
+<b> More details: </b>
+
+Perhaps you ask yourself : \ref partition_explanation "What's the difference between partition, compounds and fuse operation ?"
+
+*/

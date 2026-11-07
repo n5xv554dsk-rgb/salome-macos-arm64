@@ -1,0 +1,58 @@
+default :
+{
+    name : "nlopt"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    system_info :
+    {
+       rpm     : ["NLopt","python3-NLopt"]
+       rpm_dev : ["NLopt-devel"]
+       apt     : ["libnlopt0","libnlopt-cxx0","python3-nlopt"]
+       apt_dev : ["libnlopt-dev","libnlopt-cxx-dev" ]
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python', 'numpy'] # numpy mandatory otherwise no python API is generated
+    build_depend : ["cmake", "swig"]
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "no"
+    }
+}
+
+default_win:
+{
+   properties :
+   {
+     incremental : "yes"
+     single_install_dir : "yes"
+   }
+}
+
+version_2_5_0:
+{
+    compil_script :  "nlopt-2.5.0" + $VARS.scriptExtension
+}
+
+version_2_6_0:
+{
+    compil_script :  "nlopt-2.6.0" + $VARS.scriptExtension
+}
+
+version_2_7_0:
+{
+    compil_script :  "nlopt-2.7.0" + $VARS.scriptExtension
+}
+
+version_2_7_1:
+{
+    compil_script :  "nlopt-2.7.1" + $VARS.scriptExtension
+}

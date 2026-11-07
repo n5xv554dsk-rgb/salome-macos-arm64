@@ -1,0 +1,52 @@
+default :
+{
+    name : "openblas"
+    build_source : "script"
+    compil_script : $name + $VARS.scriptExtension
+    get_source : "archive"
+    archive_info : {archive_name : "OpenBLAS-" + $APPLICATION.products.openblas + ".tar.gz"}
+    system_info :
+    {
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python']
+    build_depend : ["cmake"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "no"
+    }
+}
+
+default_win:
+{
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "yes"
+    }
+}
+
+version_0_3_29:
+{
+    build_source : "script"
+    compil_script : "openblas-0.3.29" + $VARS.scriptExtension
+}
+
+version_0_3_26:
+{
+    build_source : "script"
+    compil_script : "openblas-0.3.26" + $VARS.scriptExtension
+}
+
+version_0_3_23:
+{
+    build_source : "script"
+    compil_script : "openblas-0.3.23" + $VARS.scriptExtension
+}

@@ -1,0 +1,13 @@
+diff --git a/src/GMSHPlugin/GMSHPlugin_Mesher.cxx b/src/GMSHPlugin/GMSHPlugin_Mesher.cxx
+index 8ac85b5..847526e 100644
+--- a/src/GMSHPlugin/GMSHPlugin_Mesher.cxx
++++ b/src/GMSHPlugin/GMSHPlugin_Mesher.cxx
+@@ -60,7 +60,7 @@
+ 
+ #if GMSH_MAJOR_VERSION >=4
+ #include <GmshGlobal.h>
+-#include <Context.h>
++#include <gmsh/Context.h>
+ #endif
+ 
+ #if GMSH_MAJOR_VERSION >=4 && GMSH_MINOR_VERSION >=8

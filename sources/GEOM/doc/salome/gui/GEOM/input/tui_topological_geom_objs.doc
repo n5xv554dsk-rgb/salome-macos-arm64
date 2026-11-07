@@ -1,0 +1,33 @@
+/*!
+
+\page tui_topological_geom_objs_page Topological Objects
+
+\anchor tui_creation_edge
+<br><h2>Creation of an Edge</h2>
+\tui_script{topological_geom_objs_ex01.py}
+
+\anchor tui_creation_wire
+<br><h2>Creation of a Wire</h2>
+\tui_script{topological_geom_objs_ex02.py}
+
+\anchor tui_creation_face
+<br><h2>Creation of a Face</h2>
+\tui_script{topological_geom_objs_ex03.py}
+
+\anchor tui_creation_shell
+<br><h2>Creation of a Shell</h2>
+\tui_script{topological_geom_objs_ex04.py}
+
+\anchor tui_creation_solid
+<br><h2>Creation of a Solid</h2>
+\tui_script{topological_geom_objs_ex05.py}
+
+\anchor tui_creation_solid_from_faces
+<br><h2>Creation of a Solid from the set of connected faces</h2>
+\tui_script{topological_geom_objs_ex07.py}
+
+\anchor tui_creation_compound
+<br><h2>Creation of a Compound</h2>
+\tui_script{topological_geom_objs_ex06.py}
+
+*/

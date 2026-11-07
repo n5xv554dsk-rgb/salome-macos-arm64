@@ -1,0 +1,70 @@
+# - Config file for the @PROJECT_NAME@ package
+# It defines the following variables. 
+# Specific to the pacakge @PROJECT_NAME@ itself:
+#  @PROJECT_NAME_UC@_INCLUDE_DIRS - include directories 
+#  @PROJECT_NAME_UC@_LIBRARIES    - libraries to link against
+#  @PROJECT_NAME_UC@_ROOT_DIR_EXP - the root path of the installation providing this CMake file
+#
+# Other stuff specific to this package:
+#  1. Some flags:
+#   LIBBATCH_LOCAL_SUBMISSION - boolean indicating whether LibBatch was built with the 
+#   local submission support.
+#   LIBBATCH_PYTHON_WRAPPING  - boolean indicating whether the Python wrapping was built.
+#   LIBBATCH_PYTHONPATH       - (if above is True) path to the Python wrapping. 
+
+###############################################################
+# Copyright (C) 2007-2021  CEA/DEN, EDF R&D, OPEN CASCADE
+#
+# Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+# CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+### Initialisation performed by CONFIGURE_PACKAGE_CONFIG_FILE:
+@PACKAGE_INIT@
+
+### First the generic stuff for a standard module:
+SET(LIBBATCH_INCLUDE_DIRS "@PACKAGE_CONF_INCLUDE_DIRS@")
+
+# Load the dependencies for the libraries of @PROJECT_NAME@ 
+# (contains definitions for IMPORTED targets). This is only 
+# imported if we are not built as a subproject (in this case targets are already there)
+IF(NOT batch AND NOT @PROJECT_NAME@_BINARY_DIR)
+  INCLUDE("@PACKAGE_INSTALL_CMAKE_CONFIG_DIR@/@PROJECT_NAME@Targets.cmake")
+ENDIF()   
+
+# These are IMPORTED targets created by @PROJECT_NAME@Targets.cmake
+SET(LIBBATCH_LIBRARIES batch)
+
+# Package root dir:
+SET_AND_CHECK(LIBBATCH_ROOT_DIR_EXP "@PACKAGE_CMAKE_INSTALL_PREFIX@")
+
+#### Now the specificities
+
+# Options exported by the package:
+SET(LIBBATCH_LOCAL_SUBMISSION @LIBBATCH_LOCAL_SUBMISSION@)
+SET(LIBBATCH_PYTHON_WRAPPING @LIBBATCH_PYTHON_WRAPPING@)
+
+SET_AND_CHECK(PTHREAD_ROOT_DIR_EXP "@PACKAGE_PTHREAD_ROOT_DIR@")
+
+IF(LIBBATCH_PYTHON_WRAPPING)
+  SET_AND_CHECK(LIBBATCH_PYTHONPATH "@PACKAGE_LIBBATCH_PYTHONPATH@")
+  SET_AND_CHECK(PYTHON_ROOT_DIR_EXP "@PACKAGE_PYTHON_ROOT_DIR@")
+  SET_AND_CHECK(SWIG_ROOT_DIR_EXP "@PACKAGE_SWIG_ROOT_DIR@")
+ENDIF()
+

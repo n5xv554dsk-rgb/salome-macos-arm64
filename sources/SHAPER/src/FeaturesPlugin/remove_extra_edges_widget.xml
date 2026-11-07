@@ -1,0 +1,15 @@
+<source>
+  <shape_selector id="base_shape"
+                  label="Shape:"
+                  tooltip="Select a shape to modify."
+                  shape_types="objects"
+                  concealment="true"
+                  greed="true">
+    <validator id="GeomValidators_ShapeType" parameters="face,shell,solid,compsolid,compound"/>
+    <validator id="GeomValidators_BodyShapes" parameters="toplevel"/>
+  </shape_selector>
+  <boolvalue id="unite_faces"
+             label="Unite faces"
+             default="false"
+             tooltip="Merge faces that lie on a common surface"/>
+</source>

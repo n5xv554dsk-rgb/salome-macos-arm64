@@ -1,0 +1,203 @@
+default :
+{
+    name : "libigl"
+    build_source : "cmake"
+    cmake_options : "-DCMAKE_INSTALL_LIBDIR:STRING=lib"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        github : "https://github.com/libigl/libigl.git"
+      }
+    }
+    patches : []
+    system_info :
+    {
+        rpm : []
+        rpm_dev : []
+        apt : []
+        apt_dev : []
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["SMESH",
+              "mmg",
+              "Python",
+              "numpy"
+             ]
+    build_depend : ["cmake", "cppunit"]
+    opt_depend : ["cgal"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+      single_install_dir : "no"
+    }
+}
+
+version_v2_5_0:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: [
+    'libigl-v2.5.0-p01_609_Boolean.patch',
+    'libigl-v2.5.0-p02_FindCGAL.patch',
+    'libigl-v2.5.0-p03-FindBLAS.patch',
+    'libigl-v2.5.0-p04-FindEmbree.patch'
+  ]
+  depend : ["SMESH",
+            "mmg",
+            "Python",
+            "numpy",
+            "boost",
+            "libxml2",
+            "eigen",
+            "embree",
+            "cgal",
+            "lapack"
+           ]
+}
+
+version_v2_5_0_FD44:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: [
+    'libigl-v2.5.0-p01_609_Boolean.patch',
+    'libigl-v2.5.0-p02_FindCGAL.patch',
+    'libigl-v2.5.0-p03-FindBLAS.patch',
+    'libigl-v2.5.0-p04-FindEmbree.patch',
+    'libigl-v2.5.0-p05-FindBoost.patch',
+    'libigl-v2.5.0-p06-FindGMP.patch',
+    'libigl-v2.5.0-p07-FindMPFR.patch'
+  ]
+   depend : [
+     "SMESH",
+     "mmg",
+     "Python",
+     "numpy",
+     "boost",
+     "libxml2",
+     "eigen",
+     "embree",
+     "cgal",
+     "lapack"
+   ]
+}
+
+version_v2_5_0_UB26_04:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: [
+    'libigl-v2.5.0-p01_609_Boolean.patch',
+    'libigl-v2.5.0-p02_FindCGAL.patch',
+    'libigl-v2.5.0-p03-FindBLAS.patch',
+    'libigl-v2.5.0-p04-FindEmbree.patch',
+    'libigl-v2.5.0-p05-FindBoost.patch',
+    'libigl-v2.5.0-p06-FindGMP.patch',
+    'libigl-v2.5.0-p07-FindMPFR.patch'
+  ]
+   depend : [
+     "SMESH",
+     "mmg",
+     "Python",
+     "numpy",
+     "boost",
+     "libxml2",
+     "eigen",
+     "embree",
+     "cgal",
+     "lapack"
+   ]
+}
+
+version_v2_5_0_CO7:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: ['libigl-v2.5.0-p01_609_Boolean.patch', 'libigl-v2.5.0-p02_FindCGAL.patch', 'libigl-v2.5.0-p03-FindBLAS.patch', 'libigl-v2.5.0-p04-FindEmbree.patch']
+  depend : ["SMESH",
+            "mmg",
+            "Python",
+            "numpy",
+            "boost",
+            "libxml2",
+            "eigen",
+            "embree",
+            "cgal",
+            "openblas"
+           ]
+}
+
+version_v2_5_0_CO8:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: ['libigl-v2.5.0-p01_609_Boolean.patch', 'libigl-v2.5.0-p02_FindCGAL.patch', 'libigl-v2.5.0-p03-FindBLAS.patch', 'libigl-v2.5.0-p04-FindEmbree.patch']
+  depend : ["SMESH",
+            "mmg",
+            "Python",
+            "numpy",
+            "boost",
+            "libxml2",
+            "eigen",
+            "embree",
+            "cgal",
+            "openblas"
+           ]
+}
+
+version_v2_5_0_win:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: ['libigl-v2.5.0-p01_609_Boolean.patch']
+    depend : ["SMESH",
+              "mmg",
+              "Python",
+              "numpy",
+              "boost",
+              "libxml2",
+              "eigen"
+             ]
+}
+
+version_v2_5_0_CO9:
+{
+  get_source : "archive"
+  build_source :  "script"
+  compil_script : "libigl-v2.5.0" + $VARS.scriptExtension
+  patches: ['libigl-v2.5.0-p01_609_Boolean.patch', 'libigl-v2.5.0-p02_FindCGAL.patch', 'libigl-v2.5.0-p03-FindBLAS.patch', 'libigl-v2.5.0-p04-FindEmbree.patch']
+  depend : ["SMESH",
+            "mmg",
+            "Python",
+            "numpy",
+            "boost",
+            "libxml2",
+            "eigen",
+            "embree",
+            "cgal",
+            "openblas"
+           ]
+}
+
+version_v2_5_0_x86_64:
+{
+    build_source : "script"
+    compil_script: "libigl-v2.5.0-x86_64" + $VARS.scriptExtension
+    get_source : "archive"
+    archive_info : {archive_name : "libigl-" + $APPLICATION.products.libigl.tag + ".tar.gz"}
+    patches : []
+}

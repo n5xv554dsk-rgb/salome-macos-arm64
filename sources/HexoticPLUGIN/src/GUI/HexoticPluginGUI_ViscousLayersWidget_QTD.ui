@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HexoticPluginGUI_ViscousLayersWidget_QTD</class>
+ <widget class="QWidget" name="HexoticPluginGUI_ViscousLayersWidget_QTD">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>403</width>
+    <height>496</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>6</number>
+   </property>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Hexotic_FIRST_LAYER_SIZE</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="SalomeApp_DoubleSpinBox" name="myFirstLayerSize"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Hexotic_DIRECTION</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelFacesWithLayers">
+     <property name="text">
+      <string>Hexotic_FACES_WITH_LAYERS</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Hexotic_GROWTH</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="SalomeApp_IntSpinBox" name="myNbLayers"/>
+   </item>
+   <item row="3" column="2">
+    <widget class="QComboBox" name="myDirection">
+     <item>
+      <property name="text">
+       <string>Inward</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Outward</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="SalomeApp_DoubleSpinBox" name="myGrowth"/>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="labelImprintedFaces">
+     <property name="text">
+      <string>Hexotic_IMPRINTED_FACES</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_1">
+     <property name="text">
+      <string>Hexotic_NB_LAYERS</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>300</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="6" column="2">
+    <widget class="QWidget" name="myContainerImprintedFaces" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="QWidget" name="myContainerFacesWithLayers" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SalomeApp_DoubleSpinBox</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SalomeApp_DoubleSpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SalomeApp_IntSpinBox</class>
+   <extends>QLineEdit</extends>
+   <header location="global">SalomeApp_IntSpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>myFirstLayerSize</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

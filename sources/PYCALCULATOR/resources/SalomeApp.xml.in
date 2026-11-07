@@ -1,0 +1,12 @@
+<document>
+  <section name="PYCALCULATOR">
+    <!-- Major module parameters -->
+    <parameter name="name" value="PyCalculator"/>
+    <parameter name="version" value="@SALOMEPYCALCULATOR_VERSION@"/>
+    <parameter name="gui" value="no"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="PYCALCULATOR" value="%PYCALCULATOR_ROOT_DIR%/share/salome/resources/pycalculator"/>
+  </section>
+</document>

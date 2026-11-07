@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Test1"
+xmlns:Test1="http://chercheurs.edf.com/logiciels/Test1"
+targetNamespace="http://chercheurs.edf.com/logiciels/Test1"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="T_onMesh">
+		<xs:restriction base="Mesh_U">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="T_MyField" >
+	 <xs:complexContent>
+	  <xs:extension base="T_step_Test1">
+		<xs:sequence>
+			<xs:element name="onMesh" type="Test1:T_onMesh" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	  </xs:extension>
+	 </xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MyField" type="Test1:T_MyField" substitutionGroup="step_Test1"/>
+	<xs:complexType name="T_step_Test1" abstract="true"/>
+	<xs:element name="step_Test1" type="Test1:T_step_Test1"/>
+	<xs:element name="Test1" type="Test1:T_Test1"/>
+		<xs:complexType name="T_Test1">
+		  <xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="step_Test1" minOccurs="0" maxOccurs="1"/>
+		  </xs:choice>
+		</xs:complexType>
+</xs:schema>

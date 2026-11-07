@@ -1,0 +1,11 @@
+--- qt-everywhere-src-5.15.17_ref/qtscript/src/3rdparty/javascriptcore/JavaScriptCore/runtime/JSCell.cpp	2023-11-24 16:26:49.000000000 +0100
++++ qt-everywhere-src-5.15.17_dev/qtscript/src/3rdparty/javascriptcore/JavaScriptCore/runtime/JSCell.cpp	2025-10-18 16:24:05.202058553 +0200
+@@ -31,7 +31,7 @@
+ namespace JSC {
+ 
+ #if defined NAN && defined INFINITY
+-
++#define NAN        ((float)(INFINITY * 0.0F))
+ extern const double NaN = NAN;
+ extern const double Inf = INFINITY;
+ 

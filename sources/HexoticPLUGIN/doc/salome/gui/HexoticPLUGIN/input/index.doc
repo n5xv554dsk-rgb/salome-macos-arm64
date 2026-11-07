@@ -1,0 +1,23 @@
+/*!
+
+\mainpage Introduction to MG-Hexa plug-in
+
+\b MG-Hexa plug-in adds MG-Hexa (former Hexotic) meshing
+algorithm to the SALOME Mesh module.
+
+\b MG-Hexa meshing algorithm is destined for:
+- Meshing 3D geometric entities with hexahedra.
+- Generating 3D meshes from 2D meshes, working without geometrical objects.
+
+\note MG-Hexa plug-in uses DISTENE MG-Hexa commercial meshing
+software and requires a license at the run time (to work within the
+Mesh module).
+To obtain a license, visit http://www.meshgems.com/meshgems-products.html
+
+To manage parameters of the MG-Hexa mesher use \subpage hexotic_hypo_page.
+
+Also all MG-Hexa functionalities are accessible via
+\subpage hexoticplugin_python_interface_page "MG-Hexa Python interface".
+
+
+*/

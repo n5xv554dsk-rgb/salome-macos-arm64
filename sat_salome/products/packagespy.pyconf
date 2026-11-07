@@ -1,0 +1,26 @@
+default :
+{
+    name : "packagespy"
+    build_source : "script"
+    compil_script : $name + $VARS.scriptExtension
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    patches : [] 
+    depend : ["Python", "setuptools"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+version_74152cd :
+{
+    archive_info : {archive_name : "packagespy-74152cd.tar.gz"}
+    patches : ["packagespy-74152cd-verbosity-level.patch"]
+}

@@ -1,0 +1,240 @@
+// Copyright (C) 2019-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#ifndef __SHAPERSTUDY_GEN__
+#define __SHAPERSTUDY_GEN__
+
+#include "GEOM_Gen.idl"
+#include "SALOMEDS.idl"
+#include "SALOME_Exception.idl"
+
+module SHAPERSTUDY_ORB
+{
+
+interface SHAPER_Object : GEOM::GEOM_Object
+{
+  /*!
+  *  \brief Puts the shape to the object by BRep stream.
+  */
+  void SetShapeByStream(in string theStream);
+  /*!
+  *  \brief Sets the internal entry of the object, common for all objects in SHAPER-STUDY
+  */
+  void SetEntry( in string theInternalEntry );
+  /*!
+  *  \brief Sets SObject of this object (when it is published)
+  */
+  void SetSO( in SALOMEDS::SObject theInternalEntry );
+  /*!
+  *  \brief Returns SObject of this object
+  */
+  SALOMEDS::SObject GetSO();
+  /*!
+  *  \brief Returns true if shape is already dead
+  */
+  boolean IsDead();
+  /*!
+  *  \brief Makes the dead-copy of the shape and returns it
+  */
+  SHAPER_Object MakeDead();
+  /*!
+  *  \brief Returns the stream of the previous version of the shape stored here
+  */
+  SALOMEDS::TMPFile GetOldShapeStream();
+  /*!
+  *  \brief Sets internal type of operation created this object. For group it is 37, shape 1.
+  */
+  void SetType( in long theType );
+
+  /*!
+  *  \brief Sets the shape by the pointer to the TopoDS_Shape
+  */
+  void SetShapeByPointer(in long long theShape);
+};
+
+/*!
+ * A group extension of the SHAPER object:
+ * it contains the selection-type and selected sub-shapes indices.
+ */
+interface SHAPER_Group : SHAPER_Object
+{
+  /*!
+  *  \brief Sets what is returned in the GEOM_IGroupOperations::GetType
+  */
+  void SetSelectionType(in long theType);
+  /*!
+  *  \brief Returns the type of the selected sub-shapes
+  */
+  long GetSelectionType();
+  /*!
+  *  \brief Sets what is returned in the GEOM_IGroupOperations::GetObjects
+  */
+  void SetSelection(in GEOM::ListOfLong theSelection);
+  /*!
+  *  \brief Returns the selected sub-shapes indices
+  */
+  GEOM::ListOfLong GetSelection();
+  /*!
+  *  \brief Returns the old selected sub-shapes indices (to restore on break-link)
+  */
+  GEOM::ListOfLong GetSelectionOld();
+
+  /*!
+  *  \brief Sets value of a modification counter.
+  */
+  void SetTick( in long theValue );
+
+};
+
+interface Gen : GEOM::GEOM_Gen
+{
+  /*!
+   *  \brief Searches existing or creates a new SHAPERSTUDY_Object to interact with SHAPER
+   */
+  SHAPER_Object FindOrCreateShape(in string theInternalEntry);
+
+  /*!
+   *  \brief Set crossed pixmap to dead object
+   */
+  void SetDeadPixmapToDeadObject(in SHAPER_Object theDeadObject);
+
+  /*!
+  *  \brief Stores the variable names of the SHAPER dump to python
+  */
+  void StoreVariableName(in string theEntry, in string theVarName);
+};
+
+interface IShapesOperations : GEOM::GEOM_IShapesOperations
+{
+};
+
+interface IGroupOperations  : GEOM::GEOM_IGroupOperations
+{
+  /*!
+  *  \brief Searches existing group of theOwner shape by the entry. Returns NULL if can not find.
+  */
+  SHAPER_Group FindGroup(in SHAPER_Object theOwner, in string theEntry);
+};
+
+interface SHAPER_Field             : GEOM::GEOM_Field
+{
+  /*!
+  *  \brief Sets the type of values in the field
+  */
+  void SetValuesType(in short theType);
+  /*!
+  *  \brief Returns the type of values in the field
+  */
+  short GetValuesType();
+
+  /*!
+  *  \brief Sets the list of time step IDs in the field
+  */
+  void SetSteps(in GEOM::ListOfLong theSteps);
+
+  /*!
+  *  \brief Sets the names of components
+  */
+  void SetComponents( in GEOM::string_array theComponents );
+  /*!
+  *  \brief Erases all steps of this field
+  */
+  void ClearFieldSteps();
+
+  /*!
+  *  \brief Appends a step data to this field
+  */
+  void AddFieldStep( in long theStampID, in long theStepID, in GEOM::ListOfDouble theValues);
+
+
+  /*!
+  *  \brief Sets what is returned in the GEOM_IGroupOperations::GetType
+  */
+  void SetSelectionType(in long theType);
+  /*!
+  *  \brief Returns the type of the selected sub-shapes
+  */
+  long GetSelectionType();
+  /*!
+  *  \brief Sets what is returned in the GEOM_IGroupOperations::GetObjects
+  */
+  void SetSelection(in GEOM::ListOfLong theSelection);
+  /*!
+  *  \brief Returns the selected sub-shapes indices
+  */
+  GEOM::ListOfLong GetSelection();
+  /*!
+  *  \brief Returns the old selected sub-shapes indices (to restore on break-link)
+  */
+  GEOM::ListOfLong GetSelectionOld();
+
+  /*!
+  *  \brief Sets the internal entry of the object, common for all objects in SHAPER-STUDY
+  */
+  void SetEntry( in string theInternalEntry );
+  /*!
+  *  \brief Sets SObject of this object (when it is published)
+  */
+  void SetSO( in SALOMEDS::SObject theInternalEntry );
+  /*!
+  *  \brief Returns SObject of this object
+  */
+  SALOMEDS::SObject GetSO();
+  /*!
+  *  \brief Returns true if shape is already dead
+  */
+  boolean IsDead();
+  /*!
+  *  \brief Makes the dead-copy of the shape and returns it
+  */
+  SHAPER_Object MakeDead();
+
+};
+
+interface IFieldOperations  : GEOM::GEOM_IFieldOperations
+{
+  /*!
+  *  \brief Searches existing field of theOwner shape by the entry. Returns NULL if can not find.
+  */
+  SHAPER_Field FindField(in SHAPER_Object theOwner, in string theEntry);
+  /*!
+  *  \brief Creates a field of theMainShape.
+  */
+  SHAPER_Field CreateFieldByType(in GEOM::GEOM_Object theMainShape, in long theShapeType);
+};
+
+interface IMeasureOperations  : GEOM::GEOM_IMeasureOperations
+{
+};
+
+interface SHAPER_DoubleFieldStep   : GEOM::GEOM_DoubleFieldStep
+{
+};
+
+interface SHAPER_IntFieldStep      : GEOM::GEOM_IntFieldStep
+{
+};
+
+interface SHAPER_BoolFieldStep     : GEOM::GEOM_BoolFieldStep
+{
+};
+
+};
+
+#endif

@@ -1,0 +1,39 @@
+default :
+{
+    name : "COMPONENT"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/component.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "component.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "samples/component.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+              "KERNEL",
+              "MEDCOUPLING",
+              "Python",
+              "qt",
+              "qwt",
+              "CAS",
+              "hdf5",
+              "medfile",
+              "ParaView",
+              "omniORB",
+             ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+       incremental : "yes"
+       is_SALOME_module : "yes"
+       is_SALOME_product: "yes"
+    }
+}

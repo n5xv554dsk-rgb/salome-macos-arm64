@@ -1,0 +1,10 @@
+#
+# New case file format for:  x29
+#
+ 
+FORMAT
+type:		ensight
+  
+GEOMETRY
+model:		x29.geo
+

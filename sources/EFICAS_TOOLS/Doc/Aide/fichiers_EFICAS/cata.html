@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE> Personnaliser Eficas </TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGED" CONTENT="20131002;11512700">
+</HEAD>
+<BODY LANG="fr-FR" DIR="LTR">
+<P><BR><BR>
+</P>
+<P><SPAN STYLE="font-style: normal"><U><B>Les fichiers de
+configuration d'Eficas</B></U></SPAN></P>
+<P><SPAN STYLE="font-style: normal"><SPAN STYLE="text-decoration: none"><SPAN STYLE="font-weight: normal">Les
+fichiers sont dans placés dans $HOME/.config/Eficas/NomDuCode
+(ASTER, CARMEL3D...)</SPAN></SPAN></SPAN></P>
+<P>Dans le fichier editeur_salome.ini, l'utilisateur peut redéfinir
+les variables suivantes : :</P>
+<DL>
+	<DD><U>exec_acrobat</U></DD><DD>
+	Cette variable contient le chemin d 'accès au lecteur pdf. <BR>elle
+	contient par exemple exec_acrobat = '/usr/bin/evince'</DD><DD>
+	par défaut, Eficas utilise xdg-open pour ouvrir les fichiers selon
+	la configuration du sytème.</DD><DD>
+	<BR>
+	</DD><DD>
+	<U>savedir</U></DD><DD>
+	Cette variable contient la directory initiale pour l'ouverture de
+	fichiers. <BR>elle contient par exemple savedir =
+	'/local/noyret/Eficas_ASTER'</DD><DD>
+	<BR>
+	</DD><DD>
+	<U>catalogues</U></DD><DD>
+	Cette variable permet de surcharger la liste des catalogues
+	accessibles ou de changer le catalogue par défaut.<BR>Elle doit
+	avoir la forme d'une liste de tuples
+	(code,version,catalogue,formatOut avec éventuellement &quot;defaut)
+	<BR>Prenons l'exemple de Code_Aster&nbsp;:</DD><DD>
+	 <BR>catalogues=(</DD><DD>
+	('ASTER','STA9.8', '/local/noyret/Eficas/Aster/Cata/cataSTA9',
+	'python'), <BR>('ASTER','STA10.3',
+	'/local/noyret/Eficas/Aster/Cata/cataSTA10', 'python'),
+	<BR>('ASTER','STA11', '/local/noyret/Eficas/Aster/Cata/cataSTA11',
+	'python', 'defaut')</DD><DD>
+	)</DD><DD>
+	 <BR>Attention : il est possible certes d'ajouter un catalogue à la
+	liste mais il est nécessaire que la directory contienne l'ensemble 
+	</DD><DD>
+	des éléments constitutifs du catalogue ASTER : ops.py, macro, sd
+	.. Cette variable est surtout utile pour restreindre les choix</DD><DD>
+	ou changer le catalogue par défaut.</DD></DL>
+</BODY>
+</HTML>

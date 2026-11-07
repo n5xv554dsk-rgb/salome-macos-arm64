@@ -1,0 +1,146 @@
+default :
+{
+    name : "petsc"
+    build_source : "script"
+    compil_script :  $name + ".sh"
+    get_source : "archive"
+    system_info :
+    {
+        rpm : ['petsc']
+        rpm_dev : ['petsc-devel']
+        apt : []
+        apt_dev : []
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["hdf5"]
+    opt_depend : ["openmpi", "mpi4py", "fftw"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    patches : []
+    properties:
+    {
+      incremental : "yes"
+    }
+    post_script: "fix_permissions.sh"
+}
+
+version_3_24_3 :
+{
+    compil_script :  "petsc-3.24.3.sh"
+    depend : ["hdf5", "Python", "lapack","fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: []
+}
+
+version_3_22_3 :
+{
+    compil_script :  "petsc-3.22.3.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch',
+              'petsc-3.22.2-avoid_fake_MKL_detection.patch']
+}
+
+version_3_20_5 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack","fftw", "llvm", "metis", "medfile", "numpy", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+}
+
+version_3_20_5_CO7 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "openblas","fftw", "llvm", "medfile", "numpy", "mpi4py", "scotch" ]
+    opt_depend :["ParMetis", "metis"]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch', 'petsc-3.20.5-fix_pythonpath_for_mpi.patch']
+}
+
+version_3_20_5_CO8 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "openblas","fftw", "llvm", "medfile", "numpy", "mpi4py", "scotch" ]
+    opt_depend :["ParMetis", "metis"]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch', 'petsc-3.20.5-fix_pythonpath_for_mpi.patch']
+}
+
+version_3_20_5_CO9 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "openblas","fftw", "llvm", "medfile", "numpy", "mpi4py", "scotch" ]
+    opt_depend :["ParMetis", "metis"]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch', 'petsc-3.20.5-fix_pythonpath_for_mpi.patch']
+}
+
+version_3_20_5_CO10 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+    nb_proc: 4
+}
+
+version_3_20_5_FD40 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy","fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+    nb_proc: 4
+}
+
+version_3_20_5_FD38 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+    nb_proc: 4
+}
+
+version_3_20_5_DB10 :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "metis", "medfile", "mpi4py", "scotch" ]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+}
+
+version_3_20_5_MPI :
+{
+    compil_script :  "petsc-3.20.5.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "ParMetis", "medfile", "mpi4py", "scotch"]
+    patches: ['petsc-3.20.5-mpi4py.patch', 'petsc-3.20.5-limit-cython-version.patch']
+}
+
+version_3_19_4 :
+{
+    compil_script :  "petsc-3.19.4.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy", "fftw", "llvm", "metis", "medfile"]
+    patches: ['petsc-3.19.4-mpi4py.patch','petsc-3.19.4-libpath.patch']
+}
+
+version_3_17_0 :
+{
+    compil_script :  "petsc-3.17.0.sh"
+    depend : ["hdf5", "Python", "lapack", "numpy"]
+    patches: ['petsc-3.17-mpi4py.patch']
+}
+
+version_3_16_0 :
+{
+    compil_script :  "petsc-3.16.0.sh"
+    depend : ["hdf5", "Python", "numpy"]
+    patches: ['petsc-3.16-mpi4py.patch']
+}
+
+version_3_16_0_FD38 :
+{
+    compil_script :  "petsc-3.16.0.sh"
+    depend : ["hdf5", "Python", "numpy"]
+    patches: ['petsc-3.16-mpi4py.patch', 'petsc-3.16-fd38-makeflags.patch']
+}
+
+version_3_15_0 :
+{
+    compil_script :  "petsc-3.15.0.sh"
+}

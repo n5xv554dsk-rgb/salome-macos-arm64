@@ -1,0 +1,14 @@
+GRID UNSTructured 22
+CONNectivity HYBR 'test3.cnc'
+COORDINATE vertices X Y 'test3.xyz'
+LOCAte LIST: 2	4	6	7	12	1 5  ID=argile
+LOCAte LIST: 3	5	10	11	16	19	2 4 ID=craie
+LOCAte LIST: 1	8	13	15	17	18	20	22	 ID=granite
+LOCAte LIST: 9	14	21	 ID=basalte
+LOCATE LIST: 4 ID=truc
+LOCAte PAIR: (4,2)  (2,2)  (6,2)  (3,2)  (5,2)  (1,2)  ID=Face1
+LOCAte PAIR: (18,3)  (1,1)  ID=Face2
+LOCAte PAIR: (15,3)  (20,2)  (17,2)  (19,2)  (16,2)  (18,2)  ID=Face3
+LOCAte PAIR: (15,2)  (4,3)  ID=Face4
+LOCATE LIST 1 2 3 4 5 9 18 22 ID=TUTU
+LOCATE PAIR: (5,3) (8,2) (5,1) (2,2) (18,3) ID=FACET

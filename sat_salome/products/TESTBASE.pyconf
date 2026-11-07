@@ -1,0 +1,28 @@
+default :
+{
+    name : "TESTBASE"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/testbase.git"
+      }
+    }
+    environ :
+    {
+        NRT_ROOT_DIR : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    }
+    depend : ["KERNEL"]
+    opt_depend: ["openmpi"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        compilation : "no"
+        not_in_package : "yes"
+        is_opensource  : "no"
+        is_SALOME_product: "yes"
+    }
+}

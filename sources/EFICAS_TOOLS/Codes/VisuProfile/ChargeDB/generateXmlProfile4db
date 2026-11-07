@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Constitution de la liste de labels
+# sed n°1 récupère le résultat xquery entre parenthèses | sed n°2 enlève le caractère ' ' devant le séparateur ',' | sed n°3 supprime le caractère ',' final
+liste=`saxonb-xquery  -q:getlabels.xq  -s:$1 | sed -n 's/(\(.*\))/\1/pg' | sed 's/@,@ /@,@/g' | sed 's/\(.*\)@,@$/\1/' `
+
+echo "------------ labels ------------------"
+echo $liste
+echo "--------------------------------------"
+
+# Lancement de la transformation xslt
+saxonb-xslt -s:$1 -o:"$1.db" -xsl:MappingMapTocata_profile_DB_XSLT_modified.xslt label="$liste" cata_profile3="$1" 
+
+
+# Avec saxon-sa (commercial)
+#saxonb-xslt -s:$1 -o:"$1.db" -sa -xsd:"cata_profile_DB_XSLT.xsd;cata_profile.xsd" -xsl:MappingMapTocata_profile_DB_XSLT_modified.xslt label="$liste" cata_profile3="$1" 

@@ -1,0 +1,90 @@
+/*!
+
+\page hexoticplugin_python_interface_page Python Interface
+
+\note The former name of MG-Hexa mesher is \a Hexotic and names
+of the corresponding classes and modules still include \a "Hexotic".
+
+Python package HexoticPLUGINBuilder defines
+HexoticPLUGINBuilder.Hexotic_Algorithm class providing access
+to the MG-Hexa meshing algorithm and its parameters.
+
+You can get an instance of this class by calling
+smeshBuilder.Mesh.Hexahedron(algo=smeshBuilder.MG_Hexa) or 
+smeshBuilder.Mesh.Hexahedron(algo=smeshBuilder.Hexotic). This call
+creates an algorithm (if not yet exist), assigns it to the mesh and
+returns an instance of HexoticPLUGINBuilder.Hexotic_Algorithm to the caller.
+
+The class of algorithm has methods to set up meshing parameters.
+
+Below you can see examples of usage of this class for hexahedral mesh generation.
+
+\anchor tui_hexotic
+
+-# \ref tui_hexotic_basic
+-# \ref tui_hexotic_sd_mode
+  -# \ref tui_hexotic_sd_mode1
+  -# \ref tui_hexotic_sd_mode2
+  -# \ref tui_hexotic_sd_mode3
+  -# \ref tui_hexotic_sd_mode4
+
+\section tui_hexotic_basic Construction of Mesh using MG-Hexa algorithm
+
+<h2>Example of mesh generation with MG-Hexa algorithm:</h2>
+\tui_script{hexoticdemo.py}
+
+\image html hexotic_basic_subdivisions_4_8.png Left: MG-Hexa mesh without hypothesis, right: MG-Hexa mesh with an hypothesis defined by minl=4 and maxl=8
+
+<h2>Example of mesh generation with MG-Hexa algorithm and viscous layers parameters:</h2>
+\tui_script{hexoticdemo_vl.py}
+
+\image html hexotic_vl_example.png Left: MG-Hexa mesh without viscous layers parameters, right: MG-Hexa mesh with viscous layers parameters
+
+\subsection tui_local_size Local size
+
+\image html hexotic_local_size_example.png Example of use of a local size on the skin of a sphere
+
+
+\ref tui_hexotic "Back to top"
+
+\section tui_hexotic_sd_mode Effect of the sub-domain mode
+
+This example illustrates the sub-domain mode of MG-Hexa.
+
+\subsection tui_hexotic_sd_mode1 Sub-domain mode = 1
+
+<h2>Example of sub-domain mode 1 with MG-Hexa algorithm:</h2>
+\tui_script{hexoticsubdom1.py}
+
+\image html hexotic_sd_mode_1.png MG-Hexa mesh of a box cut by a holed sphere ( sd = 1 )
+
+\ref tui_hexotic "Back to top"
+
+\subsection tui_hexotic_sd_mode2 Sub-domain mode = 2
+
+<h2>Example of sub-domain mode 2 with MG-Hexa algorithm:</h2>
+\tui_script{hexoticsubdom2.py}
+
+\image html hexotic_sd_mode_2.png MG-Hexa mesh of a box cut by a holed sphere ( sd = 2 )
+
+\ref tui_hexotic "Back to top"
+
+\subsection tui_hexotic_sd_mode3 Sub-domain mode = 3
+
+<h2>Example of sub-domain mode 3 with MG-Hexa algorithm:</h2>
+\tui_script{hexoticsubdom3.py}
+
+\image html hexotic_sd_mode_3.png MG-Hexa mesh of a box cut by a holed sphere ( sd = 3 )
+
+\ref tui_hexotic "Back to top"
+
+\subsection tui_hexotic_sd_mode4 Sub-domain mode = 4
+
+<h2>Example of sub-domain mode 4 with MG-Hexa algorithm:</h2>
+\tui_script{hexoticsubdom4.py}
+
+\image html hexotic_sd_mode_4.png MG-Hexa mesh of a box cut by a plane ( On the left, sd = 3: the internal surface is ignored ; on the right sd = 4: all sub-domains are meshed )
+
+\ref tui_hexotic "Back to top"
+
+*/

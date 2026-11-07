@@ -1,0 +1,167 @@
+Installation Instructions
+*************************
+
+Specific part for YACS
+~~~~~~~~~~~~~~~~~~~~~~
+
+Prerequisites
+=============
+YACS needs:
+ - g++ 3.3.5 or more,
+ - CPPUNIT
+ - omniORB 4.05 or more,
+ - Python,
+ - SALOME 3.2.x KERNEL (for SALOME tests)
+
+**WARNINGS**:
+ -  with g++>= 4.1, problem with CORBA::Any and double, for omniORB <= 4.0.7
+    You need to take the latest omniORB cvs snapshot from http://omniorb.sourceforge.net/snapshots
+
+Build and check
+===============
+
+SALOME is required for directories runtime and yacsloader. For tests with make test,
+we suppose that all SALOME <modules>_ROOT_DIR are in a directory under a name
+<PATH_TO_ROOT_DIR>/<MODULE>_<VERSION>, for instance $HOME/SALOME/KERNEL_V3_2_3.
+We also suppose that there a script that sets prerequisites environment for SALOME
+under the name <PATH_TO_ROOT_DIR>/profile_<VERSION>.
+So, to define SALOME installation, just KERNEL_ROOT_DIR is required. Other path
+are deduced.
+
+build and install are done in separate directories, not in source directory.
+For instance, if the path to YACS sources is ${BASEREP}/YACS_SRC::
+
+  export KERNEL_ROOT_DIR=...
+
+  cd ${BASEREP}
+  rm -rf build install
+  mkdir build install
+
+  cd ${BASEREP}/build
+  cmake -DCMAKE_BUILD_TYPE=<Mode> -DCMAKE_INSTALL_PREFIX=${BASEREP}/install ../YACS_SRC
+  
+  Where <Mode> is build mode (Release or Debug)
+
+  make
+  make test
+
+  make install
+  
+
+Generic part
+~~~~~~~~~~~~
+
+Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002, 2004, 2005 Free
+Software Foundation, Inc.
+
+This file is free documentation; the Free Software Foundation gives
+unlimited permission to copy, distribute and modify it.
+
+Basic Installation
+==================
+
+These are generic installation instructions.
+
+The cmake command attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a `Makefile' in each directory of the package.
+
+It is necessary to define some mandatory options, For example, option 
+-DCMAKE_INSTALL_PREFIX sets a installation directory of project.
+CMake command can also use an optional parameters defined in current project 
+(For example, -DSALOME_BUILD_DOC specifies if a documentation is enable 
+for this project or no).
+
+The simplest way to compile this package is:
+
+  1. Before building YACS module, please ensure that SALOME environment is
+     set properly. Assume that SALOME environment is set in env_products.sh
+     script.
+     
+     source env_products.sh
+
+  2. Create a build directory of project
+  
+     mkdir YACS_BUILD
+     
+  3. go to the directory build directory
+  
+     cd YACS_BUILD
+
+  4. Invoke cmake command to configure YACS module of SALOME
+  
+    cmake -DCMAKE_BUILD_TYPE=<Mode> -DCMAKE_INSTALL_PREFIX=<YACS_module_installation_dir> ../YACS_SRC
+    
+    , where <Mode> is build mode (Release or Debug);
+    <YACS_module_installation_dir> is a destination folder to install YACS module of SALOME.
+    By default (if CMAKE_INSTALL_PREFIX option is not given), HELLO module will be 
+    configured for installation to the /usr directory that requires root permissions 
+    to complete the installation;
+    YACS_SRC is a directory containing the package's source code.
+  
+  5. Build the package
+  
+     make
+
+  6. Optionally, type `make test' to run any self-tests that come with the package.
+  
+     make test
+
+  7. Install the programs and any data files and documentation.
+  
+     make install
+
+  8. You can remove the program binaries and object files from the
+     source code directory by typing 
+     
+     make clean.  
+
+Compilers and Options
+=====================
+
+Some systems require unusual options for compilation or linking.  
+Run `cmake --help' for details on some of the pertinent environment variables.
+
+Compiling For Multiple Architectures
+====================================
+
+You can compile the package for more than one kind of computer at the
+same time, by placing the object files for each architecture in their
+own directory. `cd' to the directory where you want the object files 
+and executables to go and run the `cmake' command.  CMake automatically 
+checks for the source code in the current directory.
+
+Installation Names
+==================
+
+By default, `make install' will install the package's files in
+`/usr/local/bin', `/usr/local/man', etc.  You can specify an
+installation prefix other than `/usr/local' by giving `cmake' the
+option `-DCMAKE_INSTALL_PREFIX=<install_directory>'.
+
+In addition, if you use an unusual directory layout you can give
+options like `-DSALOME_INSTALL_BINS=DIR' to specify different values for particular
+kinds of files.  Run `ccmake ../<srcdir>' for a list of the directories
+you can set and what kinds of files go in them.
+
+`cmake' Invocation
+======================
+
+`cmake' command recognizes the following options to control how it operates.
+
+`--help'
+`-h'
+     Print a summary of the options to `cmake', and exit.
+
+`--version'
+`-V'
+     Print the version of CMake.
+
+`cmake' also accepts some other, not widely useful, options.  Run
+`cmake --help' for more details.
+
+You can also use command 'ccmake' which shows all options and parameters 
+for current project; and change their if you are need.
+For example, for YACS module of SALOME 
+   cd YACS_BUILD
+   ccmake ../YACS_SRC 

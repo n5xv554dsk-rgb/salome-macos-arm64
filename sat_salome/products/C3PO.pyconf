@@ -1,0 +1,44 @@
+default :
+{
+    name : "C3PO"
+    build_source : "script"
+    compil_script  : $name + $VARS.scriptExtension
+    get_source : "archive"
+    archive_info : {archive_name : "C3PO_public-" + $APPLICATION.products.C3PO + ".tar.gz"}
+    environ :
+    {
+      env_script : $name + ".py"
+    }
+    depend : [
+        "docutils",
+        "Sphinx",
+        "setuptools",
+        "scipy",
+        "Python",
+        "numpy",
+        "MEDCOUPLING",
+        "medfile"
+    ]
+    opt_depend: ["openmpi", "mpi4py", "pytest"]
+    build_depend : ["cmake", "swig", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+      incremental : "yes"
+     }
+    patches: []
+ }
+
+version_v2_3 :
+{
+    compil_script  : "C3PO-v2.3.sh"
+    opt_depend: ["openmpi", "mpi4py", "pytest"]
+    build_depend : ["cmake", "swig", "cppunit"]
+    patches: ['C3PO-v2.3-0001.patch', 'C3PO-v2.3-0002.patch']
+}
+
+version_v2_0 :
+{
+    patches: ['C3PO-v2.0.patch']
+}

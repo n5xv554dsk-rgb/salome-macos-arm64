@@ -1,0 +1,15 @@
+Per_elem partial scalar values for the EnSight Gold geometry example
+part
+         1
+tria3 partial
+         1
+         2
+ 2.00000e+00
+hexa8
+ 4.00000e+00
+part
+         3
+block partial
+         1
+         2
+ 6.00000e+00

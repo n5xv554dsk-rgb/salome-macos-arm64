@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<meshers>
+
+<meshers-group name="HEXABLOCK"
+               resources="HEXABLOCKPlugin"
+               idl-module="HEXABLOCKPlugin"
+               server-lib="HexaBlockPluginEngine"
+               gui-lib="HEXABLOCKPluginGUI">
+
+  <hypotheses>
+    <hypothesis type="HEXABLOCK_Parameters"
+		label-id="HEXABLOCK_Parameters"
+		icon-id="mesh_hypo_HEXABLOCK.png"
+		dim="3"/>
+  </hypotheses>
+
+  <algorithms>
+    <algorithm type="HEXABLOCK_3D"
+               label-id="Hexahedron (HEXABLOCK)"
+               icon-id="mesh_tree_hypo_HEXABLOCK.png"
+	       need-geom="false"
+               hypos="HEXABLOCK_Parameters"
+               output="HEXA"
+               dim="3"
+               context="PRIVATE"
+               support-submeshes="false"
+               />
+  </algorithms>
+</meshers-group>
+
+</meshers>

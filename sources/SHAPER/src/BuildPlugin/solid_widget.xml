@@ -1,0 +1,10 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Faces and shells:"
+                  tooltip="Select faces or shells."
+                  shape_types="faces shells"
+                  concealment="true">
+    <validator id="BuildPlugin_ValidatorBaseForBuild" parameters="face,shell"/>
+  </multi_selector>
+  <validator id="BuildPlugin_ValidatorBaseForSolids" parameters="base_objects,solid"/>
+</source>

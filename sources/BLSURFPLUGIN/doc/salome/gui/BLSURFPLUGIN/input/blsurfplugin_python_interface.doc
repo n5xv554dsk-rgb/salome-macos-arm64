@@ -1,0 +1,32 @@
+/*!
+
+\page blsurfplugin_python_interface_page Python Interface
+
+\note The former name of MG-CADSurf mesher is \a BLSURF and names
+of the corresponding classes and modules still include \a "BLSURF".
+
+Python package BLSURFPluginBuilder defines
+BLSURFPluginBuilder.BLSURF_Algorithm class providing access
+to the MG-CADSurf meshing algorithm and its parameters.
+
+You can get an instance of this class by calling
+smeshBuilder.Mesh.Triangle(algo=smeshBuilder.MG_CADSurf) or 
+smeshBuilder.Mesh.Triangle(algo=smeshBuilder.BLSURF). This call
+creates an algorithm (if not yet exist), assigns it to the mesh and
+returns an instance of BLSURFPluginBuilder.BLSURF_Algorithm to the caller.
+
+The class of algorithm has methods to set up meshing parameters.
+
+Below you can see examples of usage of this class for 2D mesh generation.
+
+\anchor tui_blsurf
+
+\anchor example_BLSURFPlugin
+<h2>Example of mesh generation with MG-CADSurf algorithm</h2>
+\tui_script{blsurfdemo.py}
+
+\anchor tui_blsurf_periodicity_preCAD
+<h2>Example of periodicity definition with preCAD</h2>
+\tui_script{periodicity_prepro.py}
+
+*/

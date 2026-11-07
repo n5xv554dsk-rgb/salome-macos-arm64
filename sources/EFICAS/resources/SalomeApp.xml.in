@@ -1,0 +1,17 @@
+<document>
+  <section name="EFICAS">
+    <!-- Major module parameters -->
+    <parameter name="name"    value="Eficas"/>
+    <parameter name="icon"    value="eficas.png"/>
+    <parameter name="library" value="SalomePyQtGUI"/>
+    <parameter name="documentation" value="eficas_help"/>
+    <parameter name="version" value="@SALOMEEFICAS_VERSION@"/>
+  </section>
+  <section name="resources">
+    <!-- Module resources -->
+    <parameter name="EFICAS" value="%EFICAS_ROOT_DIR%/share/salome/resources/eficas"/>
+  </section>
+  <section name="eficas_help">
+    <parameter name="User's Guide/%1 module/User's Guide" value="%EFICAS_ROOT_DIR%/share/doc/salome/gui/EFICAS/index.html"/>
+  </section>
+</document>

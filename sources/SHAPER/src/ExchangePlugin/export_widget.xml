@@ -1,0 +1,95 @@
+<source>
+  <switch id="ExportType">
+    <case id="Regular" title="BREP, STEP, IGES, glTF">
+      <export_file_selector id="file_path"
+                            type="save"
+                            title="Export file"
+                            path="">
+        <validator id="ExchangePlugin_ExportFormat"
+                   parameters="brep|brp:BREP,step|stp:STEP,iges|igs:IGES-5.1,iges|igs:IGES-5.3,gltf|glb:GLTF" />
+      </export_file_selector>
+      <multi_selector id="selection_list"
+                      tooltip="Select a set of objects"
+                      shape_types="Vertices Edges Faces Solids Compsolids Objects">
+        <validator id="GeomValidators_Finite"/>
+      </multi_selector>
+    </case>
+    <case id="XAO" title="XAO">
+      <export_file_selector id="xao_file_path"
+                            type="save"
+                            title="Export file"
+                            path="">
+        <validator id="ExchangePlugin_ExportFormat"
+                   parameters="xao:XAO" />
+      </export_file_selector>
+      <stringvalue id="xao_author"
+                   label="Author"
+                   placeholder="Please input the author"/>
+      <stringvalue id="xao_geometry_name"
+                   label="Geometry name"
+                   placeholder="Please input the geometry name"/>
+      <boolvalue id="xao_shape_file_separate"
+                 label="Export shape in a separate file"
+                 default="false"/>
+    </case>
+    <case id="XAOMem" title="XAOMem" internal="1">
+      <stringvalue id="xao_author"
+                   label="Author"
+                   placeholder="Please input the author">
+      </stringvalue>
+      <stringvalue id="xao_geometry_name"
+                   label="Geometry name"
+                   placeholder="Please input the geometry name">
+      </stringvalue>
+    </case>
+    <case id="STL" title="STL">
+      <export_file_selector id="stl_file_path"
+                            type="save"
+                            title="Export file"
+                            path="">
+        <validator id="ExchangePlugin_ExportFormat"
+                   parameters="stl:STL" />
+      </export_file_selector>
+      <shape_selector id="stl_object_selected"
+                          label="Object"
+                          tooltip="Object to export."
+                          shape_types="faces shells solids compsolids compounds">
+            <validator id="GeomValidators_Finite"/>
+      </shape_selector>
+      <groupbox title="Deflection">
+        <radiobox id="stl_deflection_type">
+          <radio id="stl_deflection_type_relative"
+              title="Relative"
+              tooltip="Calculate by size of shape">
+            <doublevalue id="stl_relative"
+              tooltip="Relative value."
+              min="1e-12"
+              step="0.001"
+              default="0.001">
+            </doublevalue>
+          </radio>
+          <radio id="stl_deflection_type_absolute"
+              title="Absolute"
+              tooltip="Value indicate by user">
+            <doublevalue id="stl_absolute"
+              tooltip="Absolute value."
+              min="1e-12"
+              step="0.1"
+              default="0.5">
+            </doublevalue>
+          </radio>
+        </radiobox>
+      </groupbox >
+      <groupbox title="File type">
+        <radiobox id="stl_file_type">
+          <radio id="stl_file_type_binary"
+              title="Binary">
+          </radio>
+          <radio id="stl_file_type_acii"
+              title="ASCII">
+          </radio>
+        </radiobox>
+      </groupbox >
+    </case>
+  </switch>
+</source>

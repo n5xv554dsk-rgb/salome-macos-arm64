@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//FR">
+<html>
+<head>
+
+<TITLE>
+Personnaliser Eficas
+</TITLE>
+</head>
+
+<body>
+
+<BR>
+sous la directory $HOME/.eficas_install, dans le fichier editeur_salome.ini, l'utilisateur peut redefinir  les variables suivantes :
+:<BR>
+<dd><u> exec_acrobat</u><dd> Cette variable contient le chemin d 'acces au lecteur pdf.
+<BR> elle contient par exemple exec_acrobat    = 'acroread'<BR>
+<dd><u> savedir</u><dd> Cette variable contient la directory initiale pour l ouverture de fichiers.
+<BR> elle contient par exemple savedir = '/local/noyret/Eficas_ASTER'<BR>
+<dd> <u>catalogue</u><dd>
+Cette variable permet de surcharger la liste des catalogues accessibles ou de changer le catalogue par defaut.<BR>
+C'est une liste de tuples (code,version,catalogue,formatOut avec éventuellement "defaut) 
+<BR> Pour Code_Aster, elle sera par exemple de la forme : <BR>
+catalogues=[('ASTER','STA9.8',  '/local/noyret/Eficas/Aster/Cata/cataSTA9', 'python'), <BR>
+            ('ASTER','STA10.3', '/local/noyret/Eficas/Aster/Cata/cataSTA10', 'python'), <BR>
+            ('ASTER','STA11',   '/local/noyret/Eficas/Aster/Cata/cataSTA11', 'python', 'defaut')]
+<BR> 
+Attention : il est possible certes d ajouter un catalogue a la liste mais il est necessaire que la directory contienne
+l'ensemble des elements constitutifs du catalogue ASTER : ops.py, macro, sd ...
+</body>

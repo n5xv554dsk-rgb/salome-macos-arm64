@@ -1,0 +1,11 @@
+/*!
+
+\page tui_building_by_blocks_page Building by Blocks
+
+<br><h2>Quadrangle Face</h2>
+\tui_script{building_by_blocks_ex01.py}
+
+<br><h2>Hexagonal Solid</h2>
+\tui_script{building_by_blocks_ex02.py}
+
+*/

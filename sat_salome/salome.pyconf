@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+project_path : $PWD
+
+# Where to search the archives of the products
+ARCHIVEPATH : "/home/salome-public/prerequis/archives:/nfs/home/salome-public/prerequis/archives:/mnt/prerequis/archives"
+ARCHIVEFTP : "ftp.cea.fr/pub/salome/prerequisites"
+# Where to search the pyconf of the applications
+APPLICATIONPATH : $project_path + "/applications/"
+# Where to search the pyconf of the products
+PRODUCTPATH : $project_path + "/products/"
+# Where to search the pyconf of the jobs of the project
+JOBPATH : $project_path + "/jobs/" 
+# Where to search for licences
+LICENCEPATH : "/home/salome-public/prerequis/LICENCE:/nfs/home/salome-public/prerequis/LICENCE:/export/home/salome/prerequis/install/LICENCE:/volatile/salome/prerequis/install/LICENCE:/soft/commun/SALOME/LICENSE:/mnt/prerequis/LICENCE"
+
+git_info : 
+{
+  git_server :
+  {
+      tuleap : {url : "https://codev-tuleap.cea.fr/plugins/git/", opensource_only: 'no' }
+      #github : {url : "git@github.com:SalomePlatform/",           opensource_only: 'yes'}
+      github : {url : "https://github.com/SalomePlatform/",       opensource_only: 'yes'}
+      gitpub : {url : "https://git.salome-platform.org/gitpub/",  opensource_only: 'yes'}
+  }
+  # these two keys are deprecated - they are kept for backward compatibility only and
+  # will be removed in a future SAT release.
+  default_git_server : "https://git.salome-platform.org/gitpub/"
+  default_git_server_dev : "https://codev-tuleap.cea.fr/plugins/git/salome/"
+}
+
+test_bases :
+[
+      {
+        name : 'SALOME'
+        get_sources : 'git'
+        info :
+        {
+          base : 'https://codev-tuleap.cea.fr/plugins/git/spns/CEATESTBASE.git'
+        }
+      }
+]

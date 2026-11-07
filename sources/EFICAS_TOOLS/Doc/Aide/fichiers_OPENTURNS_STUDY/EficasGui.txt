@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//FR">
+<html>
+<head>
+<TITLE> What is the EFICAS Graphical User Interface?  </TITLE>
+</head>
+
+<h2 align="center">
+ What is the EFICAS Graphical User Interface?
+</h2>
+<body>
+<BR>
+EFICAS is an open source software which proposes a graphical user interface to OpenTURNS. <BR>
+EFICAS enables to the User to lead an uncertainty study without having to learn the python statements.<BR>
+<BR>
+Eficas is structured in two parts : <BR>
+<ul>
+<li>1. Part 1 defines the calculus function (the wrapper definition);</li>
+<li>2. Part 2 defines the uncertainty study using a previously defined model.</li>
+</ul>
+note that Part 1 must be fulfilled before Part 2.<BR>
+<BR>
+<BR>
+It has been made with the following objectives : 
+<ul>
+<li>1. to ease the use of Open TURNS, avoiding to the User writing the python statements;</li>
+<li>2. to ease the learning of the python statements by generating the python script after the study has been graphically defined.</li>
+</ul>
+<BR>
+<BR>
+When used, the EFICAS GUI generates :<BR>
+</ul>
+<li>1. the file.comm which contains all the information declared in the EFICAS GUI. </li>
+<li>2. the file.py which is the  python script associated to the study and that can be launched through a python session.</li>
+</ul>
+
+</body>
+</html>
+

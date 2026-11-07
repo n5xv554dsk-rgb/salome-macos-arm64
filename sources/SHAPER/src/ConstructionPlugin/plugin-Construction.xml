@@ -1,0 +1,31 @@
+<plugin>
+  <workbench id="Construction">
+    <group id="Basic">
+      <feature
+        id="Point"
+        title="Point"
+        tooltip="Create point"
+        icon="icons/Construction/point.png"
+        apply_continue="true"
+        helpfile="pointFeature.html">
+        <source path="point_widget.xml" />
+      </feature>
+      <feature
+        id="Axis"
+        title="Axis"
+        tooltip="Create axis"
+        icon="icons/Construction/axis.png"
+        helpfile="axisFeature.html">
+        <source path="axis_widget.xml" />
+      </feature>
+      <feature
+        id="Plane"
+        title="Plane"
+        tooltip="Create plane"
+        icon="icons/Construction/plane.png"
+        helpfile="planeFeature.html">
+        <source path="plane_widget.xml" />
+      </feature>
+    </group>
+  </workbench>
+</plugin>

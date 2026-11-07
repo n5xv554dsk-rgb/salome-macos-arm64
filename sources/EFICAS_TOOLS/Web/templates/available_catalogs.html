@@ -1,0 +1,198 @@
+{% extends 'file_management.html' %}
+
+{% block available_catalogs %}
+
+<!-- Modal -->
+<div id="available_catalogs" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Catalog selection</h4>
+      </div>
+      
+      <div class="modal-body">
+        <!-- <p>Some text in the modal.</p> -->
+	
+	<!-- The file upload form used as target for the file upload widget -->
+	<!-- <form id="DatasetEdition" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data"> -->
+	<form id="DatasetEdition" enctype="multipart/form-data">
+          <!-- Redirect browsers with JavaScript disabled to the origin page -->
+          <noscript><input type="hidden" name="redirect" value="{ url_for('mdm.html') }"></noscript>
+	  <div class="form-group">
+	    <label for="sel1">Choose a catalog to work with</label>
+	    <select class="form-control" id="sel1" autofocus>
+	      <!-- <option>1</option> -->
+	      <!-- <option>2</option> -->
+	      <!-- <option>...</option> -->
+	    </select>
+	    <script>
+	      let $DatasetEdition=$('#DatasetEdition');
+	      $DatasetEdition.fileupload({url: 'upload'});
+	      // let a=$.ajax({
+	      //     url: $DatasetEdition.fileupload('option', 'url'),
+	      //     dataType: 'json',
+	      //     context: $('#DatasetEdition')[0]
+	      // }).done(function(result) { console.log(result.files)})
+	      // let into = a.responseJSON.files;
+	      // let selectInto = into.map((cV) => { return "<option>"+cV.name+"</option>" }).join('');
+	      // selectInto;
+	      // //$("#sel1").html(selectInto);
+	      // //$("#sel1").focus(()=>alert('SEL1 focused'));
+	      // let a=$.ajax({
+	      //     url: $DatasetEdition.fileupload('option', 'url'),
+	      //     dataType: 'json',
+	      //     context: $('#DatasetEdition')[0]
+	      // }).done( function(result) {
+	      // 	   console.log(result.files)
+	      // 	   let into = result.files;
+	      // 	   let selectInto = into.map((cV) => { return "<option>"+cV.name+"</option>" }).join('');
+	      // 	   $("#sel1").html(selectInto);	   
+	      // });
+	      // $("#sel1").focus(()=>alert('SEL1 focused'));
+	      let a=function(){
+		  $.ajax({
+		      url: $DatasetEdition.fileupload('option', 'url'),
+		      dataType: 'json',
+		      context: $('#DatasetEdition')[0]
+		  }).done( function(result) {
+         	      console.log(result.files)
+         	      let into = result.files;
+         	      let selectInto = into.map((cV) => { return "<option>"+cV.name+"</option>" }).join('');
+          	      $("#sel1").val(undefined);	   
+        	      $("#sel1").html(selectInto);	   
+		  });
+	      };
+	      $("#sel1").focus(a);
+
+	    </script>
+	  <!-- </div> -->
+
+	  <!-- <div class="form-group"> -->
+	    <label for="sel2">Choose a dataset to work with</label>
+	    <select class="form-control" id="sel2" autofocus>
+	      <!-- <option>1</option> -->
+	      <!-- <option>2</option> -->
+	      <!-- <option>...</option> -->
+	    </select>
+	    <script>
+	      let $DatasetEdition=$('#DatasetEdition');
+	      $DatasetEdition.fileupload({url: 'upload'});
+	      let a=function(){
+		  $.ajax({
+		      url: $DatasetEdition.fileupload('option', 'url'),
+		      dataType: 'json',
+		      context: $('#DatasetEdition')[0]
+		  }).done( function(result) {
+         	      console.log(result.files)
+         	      let into = result.files;
+         	      let selectInto = into.map((cV) => { return "<option>"+cV.name+"</option>" }).join('');
+          	      $("#sel2").val(undefined);	   
+        	      $("#sel2").html(selectInto);	   
+		  });
+	      };
+	      $("#sel2").focus(a);
+
+	    </script>
+	  </div>
+	  
+	</form>
+      </div>
+      
+      <div class="modal-footer">
+	<button type="button" class="btn btn-default" id="toto">Set</button>
+	<script>
+	  $("#toto").click( ()=>{sendNewDataset($("#sel1").val(),"")} );
+	</script>
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div> <!-- Modal content-->
+
+  </div> <!-- modal-dialog -->
+</div> <!-- file_management -->
+
+
+{% raw %}
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+{% endraw %}
+
+{% endblock available_catalogs %}
+

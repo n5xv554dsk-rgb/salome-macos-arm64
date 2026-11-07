@@ -1,0 +1,64 @@
+/*!
+
+\page create_extrusion_page Extrusion
+
+\b Extrusion is propagation of the selected base shape in a certain direction and by a certain distance. 
+\n The \b Result of the operation will be a GEOM_Object (edge, face, shell
+solid or compsolid).
+
+<b>Examples:</b>
+
+\image html prisms_basessn.png
+<center>Base Shape</center>
+
+\image html prismssn.png
+<center>Resulting Prisms</center>
+
+\n To generate an \b Extrusion on an object in the <b>Main Menu</b>
+select <b>New Entity - > Generation  - > Extrusion</b>
+
+\image html extrusion1.png
+
+The following parameters and options can be defined in this dialog
+
+<ul>
+<li><b>Result name</b> of the created resulting shape.</li>
+<li><b>Base</b> - the extruded object. It is possible to select in GUI several Base Shapes to make
+several extrusions (using Shift button).</li>
+<li>Direction and distance can be defined in three different ways selectable with the radio buttons on top of the dialog box :
+
+<ul> 
+<li> By the \b Vector and the \b Height of extrusion. 
+<b>TUI Command:</b> <em>geompy.MakePrismVecH(Base, Vector, Height, theScaleFactor = -1.0)</em>
+</li>
+
+<li> By the \b Start and <b>End Point</b> of the \b Vector (in this way
+you don't need to create it in advance).
+<b>TUI Command:</b> <em>geompy.MakePrism(Base, Point1, Point2, theScaleFactor = -1.0)</em>
+\image html extrusion2.png
+</li>
+
+<li> By \b DX, \b DY, and \b DZ coordinates of the Vector.
+<b>TUI Command:</b> <em>geompy.MakePrismDXDYDZ(Base, dx, dy, dz, theScaleFactor = -1.0)</em>
+\image html extrusion3.png
+</li>
+</ul>
+</li>
+
+<li> <b>Both Directions </b> checkbox allows extruding the base shape both forward and backward. With this option scaling is not possible.</li>
+<li> <b>Reverse</b> checkbox reverts the direction of the scaling vector. It is usable only if the direction and distance are set via a \b Vector and a \b Height. </li>
+<li><b>Scale the face opposite to the base</b> checkbox and <b>Scale Factor</b> field allow building the extrusion with scaled opposite base. Scaling is possible only for 1D and 2D bases.</li>
+<li><b>Add thickness</b> checkbox and \b Thickess field allow adding thickness
+to the created prism (only when extruding an edge or wire).
+By default the material is added on the outside of the generated pipe, but it is possible to <b>Thicken towards the inside</b> using the corresponding checkbox. 
+<b>TUI Command:</b> <em>geompy.Thicken(Shape, Thickness)</em>
+\image html prism_with_thickness.png
+</li>
+
+<li><b>Advanced options:</b> \ref preview_anchor "Preview" - displays the resulting shape in the viewer before \b Apply command.   </li>
+</ul>
+
+Our <b>TUI Scripts</b> provide you with useful examples of creation of
+\ref tui_creation_prism "Complex Geometric Objects".
+
+*/

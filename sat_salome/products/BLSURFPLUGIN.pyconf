@@ -1,0 +1,127 @@
+default :
+{
+    name : "BLSURFPLUGIN"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/blsurfplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "blsurfplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/blsurfplugin.git"
+      }
+    }
+    environ :
+    {
+        _SMESH_MeshersList : "BLSURFPlugin"
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "blsurfplugin"
+    }
+    depend : [
+             "KERNEL",
+             "GEOM", 
+             "SMESH",
+             "Python", 
+             "qt", 
+             "boost", 
+             "CAS", 
+             "hdf5", 
+             "omniORB", 
+             "docutils", 
+             "ParaView",
+             "MeshGems" 
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}
+
+version_V8_4_0 :
+{
+    name : "BLSURFPLUGIN"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/blsurfplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "blsurfplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/blsurfplugin.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+             "KERNEL",
+             "GEOM", 
+             "SMESH",
+             "Python", 
+             "qt", 
+             "boost", 
+             "CAS", 
+             "hdf5", 
+             "omniORB", 
+             "docutils", 
+             "ParaView", 
+             "MeshGems" 
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    patches : ["BLSURFPLUGIN_8_4_0.patch"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        has_unit_tests
+    }
+}
+
+version_V6_6_0 :
+{
+    name : "BLSURFPLUGIN"
+    build_source : "autotools"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/blsurfplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "blsurfplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/blsurfplugin.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+             "KERNEL",
+             "MED",
+             "GEOM", 
+             "SMESH",
+             "Python", 
+             "qt", 
+             "boost", 
+             "CAS", 
+             "hdf5", 
+             "omniORB", 
+             "docutils", 
+             "ParaView", 
+             "MeshGems" 
+              ]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        has_unit_tests
+    }
+} 

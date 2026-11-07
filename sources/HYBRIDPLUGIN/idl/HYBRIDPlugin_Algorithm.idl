@@ -1,0 +1,334 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+// ---
+// File   : HYBRIDPlugin_Algorithm.idl
+// Author : Christian VAN WAMBEKE (CEA)
+// ---
+//
+#ifndef _HYBRID_Algorithm_IDL_
+#define _HYBRID_Algorithm_IDL_
+
+#include "SALOME_Exception.idl"
+#include "SMESH_Hypothesis.idl"
+#include "SMESH_Mesh.idl"
+
+/*!
+ * HYBRIDPlugin: interfaces to HYBRID related hypotheses and algorithms
+ */
+module HYBRIDPlugin
+{
+  typedef sequence<string> string_array;
+
+  typedef sequence<double,3> TCoords;
+  struct HYBRIDEnforcedVertex {
+    string name;
+    string geomEntry;
+    boolean isCompound;
+    TCoords coords;
+    string groupName;
+    double size;
+  };
+  
+  typedef sequence<HYBRIDEnforcedVertex> HYBRIDEnforcedVertexList;
+
+  struct HYBRIDEnforcedMesh {
+    string name;
+    string entry;
+    SMESH::ElementType elementType;
+    string groupName;
+  };
+  
+  typedef sequence<HYBRIDEnforcedMesh> HYBRIDEnforcedMeshList;
+
+  /*!
+   * HYBRIDPlugin_HYBRID: interface of "Tetra-hexahedron (HYBRID)" algorithm
+   */
+  interface HYBRIDPlugin_HYBRID : SMESH::SMESH_3D_Algo
+  {
+    SMESH::SMESH_Mesh importGMFMesh(in string aGMFFileName);
+  };
+
+  /*!
+   * Parameters of "Tetra-hexahedron (HYBRID)" algorithm
+   */
+  interface HYBRIDPlugin_Hypothesis : SMESH::SMESH_Hypothesis
+  {
+    /*!
+     * Sizes of boundary layers are relative to the surface size. Default no
+     */
+    void SetHeightIsRelative( in boolean isRelative );
+    boolean GetHeightIsRelative();
+    /*!
+     * Maximum internal angles of boundary elements (in degree)
+     */
+    void SetBoundaryLayersMaxElemAngle( in double angle );
+    double GetBoundaryLayersMaxElemAngle();
+    /*!
+     * To mesh "holes" in a solid or not. Default is to mesh.
+     */
+    void SetToMeshHoles(in boolean toMesh);
+    boolean GetToMeshHoles();
+    /*!
+     * To call MG-Hybrid by library. Default is no (i.e. by executable)
+     */
+    void SetToUseLibrary(in boolean toUseLib);
+    boolean GetToUseLibrary();
+    /*!
+     * To mesh layers on all wrap Default is yes.
+     */
+    void SetLayersOnAllWrap(in boolean toMesh);
+    boolean GetLayersOnAllWrap();
+    /*!
+     * To mesh layers on given faces.
+     */
+    void SetFacesWithLayers(in SMESH::long_array faceIDs);
+    SMESH::long_array GetFacesWithLayers();
+    /*!
+     * To imprint layers on given faces.
+     */
+    void SetFacesWithImprinting(in SMESH::long_array faceIDs);
+    SMESH::long_array GetFacesWithImprinting();
+    /*!
+     * To snap layers on given faces.
+     */
+    void SetFacesWithSnapping(in SMESH::long_array faceIDs);
+    SMESH::long_array GetFacesWithSnapping();
+    /*!
+     * To make groups of volumes of different domains when mesh is generated from skin.
+     * Default is to make groups.
+     * This option works only (1) for the mesh w/o shape and (2) if GetToMeshHoles() == true
+     */
+    void SetToMakeGroupsOfDomains(in boolean toMakeGroups);
+    boolean GetToMakeGroupsOfDomains();
+    /*!
+     * Maximal size of memory to be used by the algorithm (in Megabytes).
+     * Negative value means not to use this option
+     */
+    void SetMaximumMemory(in double MB) raises (SALOME_CMOD::SALOME_Exception);
+    double GetMaximumMemory();
+    /*!
+     * Initial size of memory to be used by the algorithm (in Megabytes) in
+     * automatic memory adjustment mode. Default is zero.
+     * Negative value means not to use this option
+     */
+    void SetInitialMemory(in double MB) raises (SALOME_CMOD::SALOME_Exception);
+    double GetInitialMemory();
+    /*!
+     * Optimization level: 0-none, 1-light, 2-medium, 3-strong. Default is medium
+     */
+    void SetOptimizationLevel(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetOptimizationLevel();
+
+
+    /*!
+     * Collision mode: 0-decrease, 1-stop. Default is decrease
+     */
+    void SetCollisionMode(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetCollisionMode();
+    /*!
+     * BoundaryLayersGrowth: 0-Layer_Growth_Inward, 1-Layer_Growth_Outward. Default is Layer_Growth_Inward
+     */
+    void SetBoundaryLayersGrowth(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetBoundaryLayersGrowth();
+    /*!
+     * ElementGeneration: 0-Generation_Tetra_Dominant, 1-Generation_Hexa_Dominant, 2-Generation_Cartesian_Core. Default is Generation_Tetra_Dominant
+     */
+    void SetElementGeneration(in short level) raises (SALOME_CMOD::SALOME_Exception);
+    short GetElementGeneration();
+    
+    /*!
+     * To mesh adding extra normals at opening ridges and corners.
+     * Default is no.
+     */
+    void SetAddMultinormals(in boolean toAddMultinormals);
+    boolean GetAddMultinormals();
+    /*!
+     * To mesh smoothing normals at closed ridges and corners.
+     * Default is no.
+     */
+    void SetSmoothNormals(in boolean toSmoothNormals);
+    boolean GetSmoothNormals();
+    /*!
+     * To set height of the first layer.
+     */
+    void SetHeightFirstLayer(in double HFL) raises (SALOME_CMOD::SALOME_Exception);
+    double GetHeightFirstLayer();
+    /*!
+     * To set boundary layers coefficient of geometric progression.
+     * Default is 1.0
+     */
+    void SetBoundaryLayersProgression(in double BLP) raises (SALOME_CMOD::SALOME_Exception);
+    double GetBoundaryLayersProgression();
+    /*!
+     * To set core size.
+     * Default is 0.0
+     */
+    void SetCoreSize(in double CS) raises (SALOME_CMOD::SALOME_Exception);
+    double GetCoreSize();
+    /*!
+     * To set multinormals angle threshold at opening ridges.
+     * Default is 30.0
+     */
+    void SetMultinormalsAngle(in double MNA) raises (SALOME_CMOD::SALOME_Exception);
+    double GetMultinormalsAngle();
+    /*!
+     * To set number of boundary layers.
+     * Default is 1
+     */
+    void SetNbOfBoundaryLayers(in short NBL) raises (SALOME_CMOD::SALOME_Exception);
+    short GetNbOfBoundaryLayers();
+    
+ 
+
+    /*!
+     * Path to working directory
+     */
+    void SetWorkingDirectory(in string path) raises (SALOME_CMOD::SALOME_Exception);
+    string GetWorkingDirectory();
+    /*!
+     * To keep working files or remove them. Log file remains in case of errors anyway.
+     */
+    void SetKeepFiles(in boolean toKeep);
+    boolean GetKeepFiles();
+    /*!
+     * Verbose level [0-10]
+     *  0 - no standard output,
+     *  2 - prints the data, quality statistics of the skin and final meshes and
+     *     indicates when the final mesh is being saved. In addition the software
+     *     gives indication regarding the CPU time.
+     * 10 - same as 2 plus the main steps in the computation, quality statistics
+     *     histogram of the skin mesh, quality statistics histogram together with
+     *     the characteristics of the final mesh.
+     */
+    void SetVerboseLevel(in short level);
+    short GetVerboseLevel();
+    /*!
+     * To create new nodes
+     */
+    void SetToCreateNewNodes(in boolean toCreate);
+    boolean GetToCreateNewNodes();
+    /*!
+     * To use boundary recovery version which tries to create mesh on a very poor
+     * quality surface mesh
+     */
+    void SetToUseBoundaryRecoveryVersion(in boolean toUse);
+    boolean GetToUseBoundaryRecoveryVersion();
+    /*!
+     * Applies finite-element correction by replacing overconstrained elements where
+     * it is possible. The process is cutting first the overconstrained edges and
+     * second the overconstrained facets. This insure that no edges have two boundary
+     * vertices and that no facets have three boundary vertices.
+     */
+    void SetFEMCorrection(in boolean toUseFem);
+    boolean GetFEMCorrection();
+    /*!
+     * To removes initial central point.
+     */
+    void SetToRemoveCentralPoint(in boolean toRemove);
+    boolean GetToRemoveCentralPoint();
+    /*!
+     * Set advanced option value
+     */
+    void SetOptionValue(in string optionName,
+                        in string optionValue) raises (SALOME_CMOD::SALOME_Exception);
+    string GetOptionValue(in string optionName) raises (SALOME_CMOD::SALOME_Exception);
+    void UnsetOption(in string optionName);
+    /*!
+     * Adds custom advanced option and its value
+     */
+    void SetAdvancedOption(in string optionsAndValues) // in a form "option_1 v1 option_2 v2'"
+      raises (SALOME_CMOD::SALOME_Exception);
+    string GetAdvancedOption();
+    void AddOption(in string optionName, in string optionValue);
+    string GetOption(in string optionName);
+    void SetTextOption(in string option); // obsolete
+    string GetTextOption(); // obsolete
+    /*!
+     * Return array of strings each of which is option name concatenated
+     * with option value devided by semicolon - "option_name:option_value:option_type".
+     * Option value is empty if an option is not set.
+     * option_type: 1 if user-define, 0 if default
+     * Note: the method is mostly for interaction with GUI.
+     */
+    string_array GetOptionValues();
+    string_array GetAdvancedOptionValues();
+    /*!
+     * Set option values each in the form "option_name[:option_value][:option_type]".
+     * Note: the method is mostly for interaction with GUI.
+     */
+    void SetOptionValues(in string_array options) raises (SALOME_CMOD::SALOME_Exception);
+    void SetAdvancedOptionValues(in string_array options);
+
+    /*!
+     * To define the volumic gradation
+     */
+    void SetGradation(in double gradation);
+    double GetGradation();
+    /*!
+     * Print log in standard output
+     */
+    void SetStandardOutputLog(in boolean logInStandardOutput);
+    boolean GetStandardOutputLog();
+    /*!
+    * Remove log file on success
+    */
+    void SetRemoveLogOnSuccess(in boolean removeLogOnSuccess);
+    boolean GetRemoveLogOnSuccess();
+    /*!
+     * To set an enforced vertex
+     */
+    boolean SetEnforcedVertex(in double x, in double y, in double z, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamed(in double x, in double y, in double z, in double size, in string vertexName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexWithGroup(in double x, in double y, in double z, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexNamedWithGroup(in double x, in double y, in double z, in double size, in string vertexName, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeom(in GEOM::GEOM_Object theVertex, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedVertexGeomWithGroup(in GEOM::GEOM_Object theVertex, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    double GetEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    double GetEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertex(in double x, in double y, in double z) raises (SALOME_CMOD::SALOME_Exception);
+    boolean RemoveEnforcedVertexGeom(in GEOM::GEOM_Object theVertex) raises (SALOME_CMOD::SALOME_Exception);
+    HYBRIDEnforcedVertexList GetEnforcedVertices();
+    void ClearEnforcedVertices();
+   /*!
+    * Set/get/unset an enforced vertex (private method for GUI)
+    */
+    boolean p_SetEnforcedVertex(in double size, in double x, in double y, in double z,
+                                in string theVertexName, in string theVertexEntry, in string groupName,
+                                in boolean isCompound) raises (SALOME_CMOD::SALOME_Exception);
+    
+    boolean SetEnforcedMesh(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedMeshWithGroup(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    
+    /* OBSOLETE FUNCTIONS */
+    boolean SetEnforcedMeshSize(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in double size) raises (SALOME_CMOD::SALOME_Exception);
+    boolean SetEnforcedMeshSizeWithGroup(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in double size, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+    /* OBSOLETE FUNCTIONS */
+    
+    HYBRIDEnforcedMeshList GetEnforcedMeshes();
+    void ClearEnforcedMeshes();
+
+   /*!
+    * Set/get/unset an enforced vertex (private method for GUI)
+    */
+    boolean p_SetEnforcedMesh(in SMESH::SMESH_IDSource theSource, in SMESH::ElementType elementType, in string name, in string groupName) raises (SALOME_CMOD::SALOME_Exception);
+  };
+};
+
+#endif

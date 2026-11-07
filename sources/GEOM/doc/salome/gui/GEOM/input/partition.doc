@@ -1,0 +1,116 @@
+/*!
+
+\page partition_page Partition
+
+For a detailed description of the Partition operation please refer to <a href="SALOME_BOA_PA.pdf">this document</a>.
+It provides a general review of the Partition and Boolean operations algorithms, describes the usage methodology and highlights
+major limitations of these operations.
+
+Perhaps you also ask yourself : \ref partition_explanation "What's the difference between partition, compounds and fuse operation?"
+
+To produce a \b Partition in the <b>Main Menu</b> select <b>Operations -> Partition</b>
+
+This operation builds a compound by partitioning a set of input objects by a set of tool objects.
+
+The \b Result of the operation is a \b GEOM_Object.
+
+\image html partition1.png
+
+<b>Arguments:</b> Name + 2 lists of shapes (the shapes from the
+first list will be intersected with the shapes from the second list) +
+Resulting Type of shape.
+
+As far as the partition of two objects can produce any type of
+geometrical objects, <b>Resulting type</b> box allows choosing the
+preferable result, i.e. a solid, a shell, a list of faces, etc.
+
+The <b>Resulting type</b> has to be equal or lower than the type of the
+\em Objects. In other words, if the \em Objects don't contain any
+shape of this type, Partition fails.
+
+<b>Keep shapes of lower type</b> checkbox manages standalone shapes of
+type other than the \em Limit. If it is checked, lower dimension
+objects will be preserved, else they will be lost.
+
+For example, you partition a box (Solid) and a face (Face)
+without any tool (the box is split in two parts by the shape). If you
+choose the Resulting Type "Solid", you will
+obtain a compound of two solids, but if you also check <b>Keep shapes of lower
+type</b> checkbox, you will obtain a compound of two solids and one
+face (there will be a hole in the resulting face, where the original
+face intersects with the box, see the corresponding \ref partition_picture_3 "picture" below).
+
+<b>No sub-shapes intersection (Compounds only)</b> check box affects
+only input shapes of the Compound type.
+- If this option is switched off (default behavior) each input compound will be automatically
+exploded into sub-shapes and the partition between these shapes will be also computed.
+- If this option is switched on, the partition between sub-shapes will not be performed.
+In this case the Partition algorithm will work faster, but the result might differ from the 
+default behavior.
+
+<b>Detect Self-intersections</b> check box is used to check self-intersection of arguments.
+It is enabled only if <b>No sub-shapes intersection (Compounds only)</b> is checked.
+- If this option is switched off (by default), the partition algorithm is
+performed without self-intersection checks.
+- If this option is switched on, each input shape is checked for self-intersection.
+If self-intersection is detected, the operation is aborted.
+
+\note This algorithm does not find all types of self-intersections. It is tuned
+      to detect vertex/vertex, vertex/edge, edge/edge, vertex/face and edge/face
+      interferences. Face/face interference detection is switched off as it
+      is a time-consuming operation that gives an impact on performance. To find
+      all self-intersections please use \ref check_self_intersections_page
+      "Detect Self-intersection tool".
+
+<b>Use Fuzzy Parameter</b> check box is used to enable the usage of the fuzzy tolerance
+inside the partition algorithm. The fuzzy tolerance itself can be given in the Fuzzy
+Parameter input box.
+
+- Activate \ref restore_presentation_parameters_page "Advanced options" if required.
+
+\note Partition is a complex operation, so its result of it depends
+      on the quality of the initial shapes. Sometimes, if partition fails,
+      such healing operations as <b>Shape Processing</b>
+      and <b>Limit Tolerance</b> can help to attune source shapes to obtain correct result of the Partition.
+      See also \ref tui_limit_tolerance "TUI example" of shape healing.
+
+<b>TUI Command (with sub-shapes intersection):</b>
+
+<em>geompy.MakePartition(ListOfShapes, ListOfTools, ListOfKeepInside,
+ListOfRemoveInside, Limit, RemoveWebs, ListOfMaterials,
+KeepNonlimitShapes, fuzzyParam)</em>
+
+<b>TUI Command (without sub-shapes intersection):</b>
+
+<em>geompy.MakePartitionNonSelfIntersectedShape(ListOfShapes,
+ListOfTools, ListOfKeepInside, ListOfRemoveInside, Limit, RemoveWebs,
+ListOfMaterials, KeepNonlimitShapes, checkSelfInte, fuzzyParam)</em>
+
+Here,
+- \em ListOfShapes is a list of shapes to be intersected
+- \em ListOfTools is a list of shapes to intersect the shapes from
+\em ListOfShapes
+- \em Limit is a Type of resulting shapes
+- \em KeepNonlimitShapes is a flag that allows to preserve standalone
+shapes of low dimension (than \em Limit) in the result.
+- \em checkSelfInte is a flag that indicates if the arguments should
+be checked for self-intersection prior to the operation.
+- \em fuzzyParam is the used fuzzy tolerance inside the partition algorithm.
+This tolerance is ignored, if this parameter is omitted or not positive.
+- Other parameters are obsolete and kept only for compatibility with
+previous versions of SALOME.
+
+<b>Examples:</b>
+
+\anchor partition_picture_1
+\image html partitionsn1.png "Input data: box intersected by plane"
+
+\anchor partition_picture_2
+\image html partitionsn2.png "Result: box partitioned by plane"
+
+\anchor partition_picture_3
+\image html partitionsn3.png "Result: partitioned box and plane (both as \em Objects); resulting type is \em Solid; option 'Keep shapes of lower type' is on"
+
+Our <b>TUI Scripts</b> provide you with useful examples of \ref tui_partition "Basic Operations".
+
+*/

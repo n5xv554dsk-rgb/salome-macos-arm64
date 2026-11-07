@@ -1,0 +1,33 @@
+default :
+{
+    name : "HEXABLOCKPLUGIN"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/hexablockplugin.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "hexablockplugin.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "plugins/hexablockplugin.git"
+      }
+    }
+    environ :
+    {
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "hexablockplugin"
+    }
+    depend : [
+       "SMESH", 
+       "HEXABLOCK"
+              ]
+    build_depend : ["cmake"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+} 
+

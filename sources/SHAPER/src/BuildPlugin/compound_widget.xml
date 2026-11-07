@@ -1,0 +1,8 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Objects:"
+                  tooltip="Select any kind of objects."
+                  shape_types="vertices edges wires faces shells solids compsolids compounds"
+                  concealment="true">
+  </multi_selector>
+</source>

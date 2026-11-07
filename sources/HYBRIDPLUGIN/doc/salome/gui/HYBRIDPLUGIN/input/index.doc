@@ -1,0 +1,23 @@
+/*!
+
+\mainpage Introduction to HYBRIDPLUGIN
+
+\b HYBRIDPLUGIN plugin is designed for:
+- Meshing 3D geometric closed entities: volumes are split into tetrahedra, 
+pyramids, prisms and hexahedra elements.
+- Generating 3D meshes from 2D meshes of a wrap (triangles and quadrangles), 
+working with geometrical objects for setting and meshing layers.
+
+\note HYBRIDPLUGIN plugin used MeshGems-Hybrid commercial mesher and require a 
+license to be used within the Mesh module.
+
+To manage parameters of the HYBRIDPLUGIN use \subpage hybrid_hypo_page and \subpage additional_hypo_page
+
+Also all HYBRIDPLUGIN functionalities are accessible via
+\subpage hybridplugin_python_interface_page "HYBRIDPLUGIN Python interface".
+
+
+\image html hybrid_example_cylinder_all1.png "Example of a Hybrid 3D mesh with a layer (sky blue on all wrap, clipped for view)"
+
+
+*/

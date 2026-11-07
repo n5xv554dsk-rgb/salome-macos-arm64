@@ -1,0 +1,158 @@
+# Copyright (C) 2012-2026  CEA, EDF
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/
+# or email : webmaster.salome@opencascade.com
+#
+
+#
+# This root CMake Listfile is dedicated to the SALOME platform.
+#
+# cmake options are :
+#
+# cmake
+# -DSALOME_BUILD_TESTS=ON
+# -DPMML_USE_SWIG=ON
+# -DCMAKE_VERBOSE_MAKEFILE=OFF
+# -DSALOME_CMAKE_DEBUG=OFF
+# -DSALOME_BUILD_DOC:BOOL=FALSE
+# -G"NMake Makefiles JOM"
+# -DCMAKE_INSTALL_PREFIX=<chemin install>
+# <chemin sources>
+#
+
+# Common SALOME CMake macros
+# ==========================
+
+SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+SET(CONFIGURATION_ROOT_DIR $ENV{CONFIGURATION_ROOT_DIR} CACHE PATH
+    "Path to Salome CMake configuration files")
+IF(EXISTS ${CONFIGURATION_ROOT_DIR})
+    LIST(APPEND CMAKE_MODULE_PATH "${CONFIGURATION_ROOT_DIR}/cmake")
+    INCLUDE(SalomeMacros NO_POLICY_SCOPE)
+ELSE()
+    MESSAGE(FATAL_ERROR "We absolutely need the Salome CMake configuration \
+                            files, please define CONFIGURATION_ROOT_DIR")
+ENDIF()
+
+INCLUDE(SalomeSetupPlatform)
+
+# User options
+# ============
+
+OPTION(PMML_USE_SWIG "Enable Python interpreter" ON)
+OPTION(BUILD_DOC "Build PMML documentation (doxygen)" OFF)
+OPTION(BUILD_TESTS "Build PMML unit tests" ON)
+
+# Mandatory prerequisites
+# =======================
+
+FIND_PACKAGE(SalomeLibXml2 REQUIRED)
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_BINARY_DIR}/..
+    ${LIBXML2_INCLUDE_DIR}
+)
+
+# Optional prerequisites
+# ======================
+
+IF(PMML_USE_SWIG)
+	FIND_PACKAGE(SalomePythonInterp REQUIRED)
+	SALOME_LOG_OPTIONAL_PACKAGE(PythonInterp PMML_USE_SWIG)
+	FIND_PACKAGE(SalomePythonLibs REQUIRED)
+	SALOME_LOG_OPTIONAL_PACKAGE(PythonLibs PMML_USE_SWIG)
+    FIND_PACKAGE(SalomeNumPySciPy REQUIRED)
+    SALOME_LOG_OPTIONAL_PACKAGE(NumPySciPy PMML_USE_SWIG)
+	FIND_PACKAGE(SalomeSWIG REQUIRED)
+	SALOME_LOG_OPTIONAL_PACKAGE(SWIG PMML_USE_SWIG)
+ENDIF(PMML_USE_SWIG)
+
+IF(BUILD_TESTS)
+    ENABLE_TESTING()
+    FIND_PACKAGE(SalomeCppUnit)
+    SALOME_LOG_OPTIONAL_PACKAGE(CppUnit BUILD_TESTS)
+ENDIF(BUILD_TESTS)
+
+IF(BUILD_DOC)
+    FIND_PACKAGE(SalomeDoxygen)
+    SALOME_LOG_OPTIONAL_PACKAGE(Doxygen BUILD_DOC)
+ENDIF(BUILD_DOC)
+
+# Directories
+# ===========
+
+SET(PMML_INSTALL_BINS bin CACHE PATH "Install path: PMML binaries")
+SET(PMML_INSTALL_LIBS lib CACHE PATH "Install path: PMML libraries")
+SET(PMML_INSTALL_HEADERS include CACHE PATH "Install path: PMML headers")
+SET(PMML_INSTALL_CMAKE_LOCAL share CACHE PATH "Install path: local PMML CMake files")
+SET(PMML_INSTALL_TESTS ${PMML_INSTALL_BINS}/test CACHE PATH "Install path : PMML internal tests")
+
+IF(PMML_USE_SWIG)
+  SET(PMML_INSTALL_SCRIPT_PYTHON ${PMML_INSTALL_BINS} CACHE PATH "Install path : PMML Python scripts")
+  SET(_pydir lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+  SET(PMML_INSTALL_PYTHON ${_pydir} CACHE PATH "Install path: PMML Python stuff")
+  SET(PMML_INSTALL_PYTHON_SHARED ${PMML_INSTALL_PYTHON}/shared_modules CACHE PATH
+        "Install path: PMML Python shared modules")
+ENDIF(PMML_USE_SWIG)
+
+# Sources
+# ========
+
+IF(WIN32)
+  ADD_DEFINITIONS("-D_USE_MATH_DEFINES")
+ENDIF(WIN32)
+
+SET(pmml_SOURCES PMMLlib.cxx)
+
+ADD_LIBRARY(pmmlLib SHARED ${pmml_SOURCES})
+TARGET_LINK_LIBRARIES(pmmlLib  ${LIBXML2_LIBRARIES})
+INSTALL(TARGETS pmmlLib EXPORT ${PROJECT_NAME}TargetGroup DESTINATION ${PMML_INSTALL_LIBS})
+IF(WIN32)
+  ADD_LIBRARY(pmmlLib_static STATIC  ${pmml_SOURCES})
+  SET_TARGET_PROPERTIES(pmmlLib_static PROPERTIES OUTPUT_NAME pmmlLib)
+  TARGET_LINK_LIBRARIES(pmmlLib_static  ${LIBXML2_LIBRARIES})
+  INSTALL(TARGETS pmmlLib_static EXPORT ${PROJECT_NAME}TargetGroup DESTINATION ${PMML_INSTALL_LIBS})
+ENDIF(WIN32)
+FILE(GLOB pmml_HEADERS_HXX "${CMAKE_CURRENT_SOURCE_DIR}/*.hxx")
+FILE(GLOB pmml_HEADERS_TXX "${CMAKE_CURRENT_SOURCE_DIR}/*.txx")
+INSTALL(FILES ${pmml_HEADERS_HXX} ${pmml_HEADERS_TXX} DESTINATION ${PMML_INSTALL_HEADERS})
+
+IF(BUILD_TESTS)
+    SET(LOCAL_TEST_DIR ${PMML_INSTALL_TESTS})
+    INSTALL(FILES CTestTestfileInstall.cmake DESTINATION ${LOCAL_TEST_DIR} RENAME CTestTestfile.cmake)
+    ADD_SUBDIRECTORY(Test)
+ENDIF(BUILD_TESTS)
+
+IF(PMML_USE_SWIG)
+    ADD_SUBDIRECTORY(pmml_swig)
+ENDIF(PMML_USE_SWIG)
+
+IF(BUILD_DOC)
+    ADD_SUBDIRECTORY(doc)
+ENDIF(BUILD_DOC)
+
+# Configuration export
+# ====================
+
+#   - in the install tree:
+#       Get the relative path of the include directory so
+#       we can register it in the generated configuration files:
+SET(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/${INSTALL_INCLUDE_DIR}")
+
+# Install the export set for use with the install-tree
+INSTALL(EXPORT ${PROJECT_NAME}TargetGroup DESTINATION "${PMML_INSTALL_CMAKE_LOCAL}"
+            FILE ${PROJECT_NAME}Targets.cmake)

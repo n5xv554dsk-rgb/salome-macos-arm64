@@ -1,0 +1,33 @@
+<source>
+  <shape_selector id="base_shape"
+                  label="Shape:"
+                  tooltip="Select a shape to offset."
+                  shape_types="objects"
+                  concealment="true">
+    <validator id="GeomValidators_ShapeType" parameters="face,shell,solid"/>
+  </shape_selector>
+  <doublevalue id="offset_value"
+               label="Offset"
+               step="1.0"
+               default="1.0"
+               icon="icons/Features/dimension_v.png"
+               tooltip="Offset"/>
+  <toolbox id="creation_method">
+    <box id="offset_equal"
+         title="Offset"
+         icon="icons/Features/offset3D.png">
+      <boolvalue id="pipe_joint" label="Join by pipes" default="true" tooltip="Join by pipes"/>
+    </box>
+    <box id="offset_partial"
+         title="Partial offset"
+         icon="icons/Features/offset3D_partial.png">
+      <multi_selector id="faces_to_offset"
+                      label="Faces to offset:"
+                      tooltip="Select faces of the main shape."
+                      shape_types="faces"
+                      clear_in_neutral_point="false">
+        <validator id="FeaturesPlugin_ValidatorOffsetFacesSelection"/>
+      </multi_selector>
+    </box>
+  </toolbox>
+</source>

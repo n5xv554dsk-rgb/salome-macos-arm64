@@ -1,0 +1,99 @@
+# Copyright (C) 2012-2026  CEA, EDF, OPEN CASCADE
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+ADD_SUBDIRECTORY(appli)
+
+SALOME_CONFIGURE_FILE(VERSION.in VERSION INSTALL ${SALOME_INSTALL_BINS})
+SALOME_CONFIGURE_FILE(salomeContextUtils.py.in salomeContextUtils.py)
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/VERSION RENAME VERSION_KERNEL DESTINATION ${SALOME_INSTALL_BINS})
+
+# ===============================================================
+# Files to be installed
+# ===============================================================
+
+# These files are data, module or lib files
+#INSTALL(FILES config_appli.xml salome.launch DESTINATION ${SALOME_INSTALL_SCRIPT_DATA})
+
+# These files are executable scripts
+SET(SCRIPTS
+  addToKillList.py
+  runIDLparser
+  addToKillList.py
+  appli_gen.py
+  envSalome.py
+  killSalome.py
+  killSalomeWithPort.py
+  launchConfigureParser.py
+  nameserver.py
+  NSparam.py
+  orbmodule.py
+  ORBConfigFile.py
+  pythonpath_reduction.py
+  runConsole.py
+  runIDLparser
+  runSalomeNoServer.py
+  runSalome.py
+  runSalomeOld.py
+  runSalomeOnDemand.py
+  runSalomeNoServer.py
+  runSession.py
+  runConsole.py
+  runTests.py
+  ${CMAKE_CURRENT_BINARY_DIR}/salomeContextUtils.py
+  salomeContext.py
+  salome_utils.py
+  searchFreePort.py
+  setenv.py
+  showNS.py
+  waitContainers.py
+  waitNS.py
+  pythonpath_reduction.py
+  kernel_test.py
+  )
+  
+  SET(PACKAGES
+  ${CMAKE_CURRENT_BINARY_DIR}/salomeContextUtils.py
+  addToKillList_impl.py
+  killSalome_impl.py
+  killSalomeWithPort_impl.py
+  launchConfigureParser.py
+  nameserver.py
+  NSparam_impl.py
+  ORBConfigFile_impl.py
+  orbmodule.py
+  parseConfigFile.py
+  PortManager.py
+  runConsole_impl.py
+  runRemote.py
+  runSalomeCommon.py
+  runSalome_impl.py
+  runSalomeOld_impl.py
+  runSalomeOnDemand_impl.py
+  runSalomeNoServer_impl.py
+  runSession.py
+  runTests.py
+  salome_utils.py
+  salomeContext_impl.py
+  searchFreePort.py
+  setenv_impl.py
+)
+
+SALOME_INSTALL_SCRIPTS("${SCRIPTS}" ${SALOME_INSTALL_SCRIPT_SCRIPTS})
+SALOME_INSTALL_SCRIPTS("${PACKAGES}" ${SALOME_KERNEL_INSTALL_PYTHON} DEF_PERMS)

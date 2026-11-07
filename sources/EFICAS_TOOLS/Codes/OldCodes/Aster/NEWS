@@ -1,0 +1,53 @@
+Version 1.12 (6/2007):
+   Mise en synchronisation avec la version 9.1 de Code_Aster de mai 2007.
+
+Version 1.11 (12/2006):
+   Mise en synchronisation avec la version 8.4 de Code_Aster de decembre 2006.
+   Première version du Traducteur de V7 en V8
+
+Version 1.10 (6/2006):
+   Mise en synchronisation avec la version 8.3 de Code_Aster de juin 2006.
+
+Version 1.9 (12/2005):
+   Mise en synchronisation avec la version 8.2 de Code_Aster de decembre 2005.
+
+Version 1.8 (6/2005):
+   Mise en synchronisation avec la version 8.1 de Code_Aster de mai 2005.
+   Les includes et poursuites peuvent etre édités. Introduction de la notation
+   scientifique pour les flottants.
+
+Version 1.7 : (12/2004)
+   Mise en synchronisation avec la version STA7 de Code_Aster (7.4).
+   Les formules changent et deviennent des formules au sens python.
+   Disparition des PARAMETRE-EVAL
+   Les touches raccourcis (CtrlC par exple) sont activées et paramétrables dans prefs.py.
+
+Version 1.6 : (05/2004)
+   Mise en synchronisation avec la version STA7 de Code_Aster (7.2.26)
+   Evolution de la saisie des valeurs pour definir une fonction (EO2003-241) :
+    - Saisie des valeurs sous forme de tuple.
+    - Si une valeur est selectionnée, l'insertion se fera après cette valeur
+      et non en fin de liste
+
+Version 1.5 (10/2003):
+   Mise en synchronisation avec la version STA7 de Code_Aster d'octobre 2003 (7.2)
+   Introduction des validateurs de mots cles simples
+
+Version 1.4 (5/2003):
+   Mise en synchronisation avec la version STA7 de Code_Aster de mai 2003 (7.1)
+   Possibilité de donner un nom de fichier en argument lors de l'ouverture d'EFICAS (EO2003-060)
+   Correction d'une anomalie dans la fonctionnalité de commentarisation des commandes (AO2003-041)
+   Ajout du bouton de documentation dans le panneau FORMULE (AO2002-447)
+   Selection automatique du concept quand il n'en existe qu'un (EO2002-162)
+
+Version 1.3 (11/2002):
+   Mise en synchronisation avec la version STA6 de Code_Aster de septembre 2002
+   Ajout de la possibilité de visualiser les INCLUDE, INCLUDE_MATERIAU et POURSUITE (popup
+   sur click droit de la souris sur l'icone de la commande)
+   Possibilité d'afficher la liste des commandes par groupe (menu option->affichage commandes)
+   Reprise profonde du mécanisme de gestion des fichiers inclus (voir menus d'AIDE pour plus de détails)
+   Corrections diverses 
+
+Version 1.2 (5/2002):
+    Reconception de la version 1.1 : décomposition en packages Python
+    Mise en synchronisation avec la version STA6 de Code_Aster de fevrier 2002

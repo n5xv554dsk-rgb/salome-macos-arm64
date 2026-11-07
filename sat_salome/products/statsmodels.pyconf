@@ -1,0 +1,84 @@
+default :
+{
+    name : "statsmodels"
+    build_source : "script"
+    compil_script : "pip_install" + $VARS.scriptExtension
+    get_source : "archive"
+    system_info : 
+    {
+        rpm : ['python3-statsmodels']
+        rpm_dev : ['python3-statsmodels']
+        apt : ['python3-statsmodels']
+        apt_dev : ['python3-statsmodels']
+    }
+    environ :
+    {
+        env_script : $name + ".py"
+    }
+    depend : ["Python", "setuptools","PyFMI", "numpy", "scipy", "matplotlib", "packaging"]
+    opt_depend : ['pandas', 'patsy', 'Pillow']
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_14_1_no_pip:
+{
+   compil_script : "statsmodels-0.14.1" + $VARS.scriptExtension
+   properties:
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_0_10_2:
+{
+   properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_9_0:
+{
+   properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_8_0:
+{
+   properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_6_1:
+{
+   properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+version_0_6_1_no_pip:
+{
+   compil_script : "statsmodels-0.6.1" + $VARS.scriptExtension
+   properties:
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}

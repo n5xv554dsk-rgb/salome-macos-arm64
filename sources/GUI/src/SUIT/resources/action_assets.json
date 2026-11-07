@@ -1,0 +1,881 @@
+{
+    "": {
+        "children": {
+            "File": {
+                "isAction": false,
+                "langDependentAssets": {
+                    "en": {
+                        "name": "File"
+                    },
+                    "fr": {
+                        "name": "Fichier"
+                    },
+                    "ja": {
+                        "name": "ファイル"
+                    }
+                },
+                "children": {
+                    "New": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/new.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "New",
+                                "tooltip": "Create a new document"
+                            },
+                            "fr": {
+                                "name": "Nouveau",
+                                "tooltip": "Créer une nouvelle étude"
+                            },
+                            "ja": {
+                                "name": "新規作成",
+                                "tooltip": "新しいドキュメントを作成"
+                            }
+                        }
+                    },
+                    "Open": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/open.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Open...",
+                                "tooltip": "Open an existing document"
+                            },
+                            "fr": {
+                                "name": "Ouvrir...",
+                                "tooltip": "Ouvre une étude existant"
+                            },
+                            "ja": {
+                                "name": "開く...",
+                                "tooltip": "既存のドキュメントを開く"
+                            }
+                        }
+                    },
+                    "Close": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/close.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Close",
+                                "tooltip": "Closes the active document"
+                            },
+                            "fr": {
+                                "name": "Fermer",
+                                "tooltip": "Ferme le document actuel"
+                            },
+                            "ja": {
+                                "name": "閉じる",
+                                "tooltip": "現在のドキュメントを閉じる"
+                            }
+                        }
+                    },
+                    "Save": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/save.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Save",
+                                "tooltip": "Save the active document"
+                            },
+                            "fr": {
+                                "name": "Enregistrer",
+                                "tooltip": "Sauvegarder l'étude actuelle"
+                            },
+                            "ja": {
+                                "name": "保存",
+                                "tooltip": "現在のドキュメントを保存"
+                            }
+                        }
+                    },
+                    "SaveAs": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/save.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Save As...",
+                                "tooltip": "Saves the active document with a new name"
+                            },
+                            "fr": {
+                                "name": "Enregistrer sous...",
+                                "tooltip": "Sauvegarder le document actuel sous un nouveau nom"
+                            },
+                            "ja": {
+                                "name": "別名保存...",
+                                "tooltip": "現在のドキュメントを新しい名前で保存"
+                            }
+                        }
+                    },
+                    "Study_ScriptPy_DumpTo": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Dump Study...",
+                                "tooltip": "Dumps study to the python script"
+                            },
+                            "fr": {
+                                "name": "Générer le script de l'étude...",
+                                "tooltip": "Génère le script python de l'étude"
+                            },
+                            "ja": {
+                                "name": "スクリプトを保存",
+                                "tooltip": "Pythonスクリプトにスタディをダンプする"
+                            }
+                        }
+                    },
+                    "Study_ScriptPy_LoadFrom": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Load Script...",
+                                "tooltip": "Loads python script from file"
+                            },
+                            "fr": {
+                                "name": "Exécuter un script...",
+                                "tooltip": "Exécute un script Python à partir d'un fichier"
+                            },
+                            "ja": {
+                                "name": "スクリプトを読込み...",
+                                "tooltip": "ファイルからPythonスクリプトを読込み"
+                            }
+                        }
+                    },
+                    "Study_Connection_Connect": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Connect",
+                                "tooltip": "Connect active study"
+                            },
+                            "fr": {
+                                "name": "Connecter",
+                                "tooltip": "Connecter l'étude en cours"
+                            },
+                            "ja": {
+                                "name": "接続",
+                                "tooltip": "アクティブスタディの接続"
+                            }
+                        }
+                    },
+                    "Study_Connection_Disconnect": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Disconnect",
+                                "tooltip": "Disconnect the current study"
+                            },
+                            "fr": {
+                                "name": "Déconnecter",
+                                "tooltip": "Déconnecter l'étude en cours"
+                            },
+                            "ja": {
+                                "name": "切断",
+                                "tooltip": "カレントスタディの切断"
+                            }
+                        }
+                    },
+                    "Preferences": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Preferences...",
+                                "tooltip": "Allow to change the preferences"
+                            },
+                            "fr": {
+                                "name": "Préférences...",
+                                "tooltip": "Permettre de changer les préférences"
+                            },
+                            "ja": {
+                                "name": "環境設定...",
+                                "tooltip": "設定を変更することができます。"
+                            }
+                        }
+                    },
+                    "Exit": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Exit",
+                                "tooltip": "Exits the application"
+                            },
+                            "fr": {
+                                "name": "Quitter",
+                                "tooltip": "Quitte l'application"
+                            },
+                            "ja": {
+                                "name": "終了",
+                                "tooltip": "アプリケーションを終了"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "Edit": {
+                "isAction": false,
+                "langDependentAssets": {
+                    "en": {
+                        "name": "Edit"
+                    },
+                    "fr": {
+                        "name": "Edition"
+                    },
+                    "ja": {
+                        "name": "編集"
+                    }
+                },
+                "children": {
+                    "#Clipboard_Copy": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/copy.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Copy",
+                                "tooltip": "Copy the selection to the Clipboard"
+                            },
+                            "fr": {
+                                "name": "Copier",
+                                "tooltip": "Copier la sélection dans le presse-papiers"
+                            },
+                            "ja": {
+                                "name": "コピー",
+                                "tooltip": "選択範囲をクリップボードにコピー"
+                            }
+                        }
+                    },
+                    "#Clipboard_Paste": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/paste.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Paste",
+                                "tooltip": "Inserts the Clipboard content at the insertion point"
+                            },
+                            "fr": {
+                                "name": "Coller",
+                                "tooltip": "Insérer le contenu du presse-papiers au point d'insertion"
+                            },
+                            "ja": {
+                                "name": "貼り付け",
+                                "tooltip": "クリップボードの内容を挿入"
+                            }
+                        }
+                    },
+                    "#Object_Hide": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Hide",
+                                "tooltip": "Hide"
+                            },
+                            "fr": {
+                                "name": "Cacher",
+                                "tooltip": "Cacher"
+                            },
+                            "ja": {
+                                "name": "非表示",
+                                "tooltip": "非表示"
+                            }
+                        }
+                    },
+                    "#Object_Show": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Show",
+                                "tooltip": "Show"
+                            },
+                            "fr": {
+                                "name": "Afficher",
+                                "tooltip": "Afficher"
+                            },
+                            "ja": {
+                                "name": "表示",
+                                "tooltip": "表示"
+                            }
+                        }
+                    },
+                    "#Undo": {
+                        "iconPath": "%SHAPER_ROOT_DIR%/share/salome/resources/shaper/icons/XGUI/undo.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Undo",
+                                "tooltip": "Undo last command"
+                            },
+                            "fr": {
+                                "name": "Annuler",
+                                "tooltip": "Annuler la dernière commande"
+                            }
+                        }
+                    },
+                    "#Redo": {
+                        "iconPath": "%SHAPER_ROOT_DIR%/share/salome/resources/shaper/icons/XGUI/redo.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Redo",
+                                "tooltip": "Redo last command"
+                            },
+                            "fr": {
+                                "name": "Refaire",
+                                "tooltip": "Refaire la dernière commande"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "View": {
+                "isAction": false,
+                "langDependentAssets": {
+                    "en": {
+                        "name": "View"
+                    },
+                    "fr": {
+                        "name": "Affichage"
+                    },
+                    "ja": {
+                        "name": "ビュー"
+                    }
+                },
+                "children": {
+                    "ViewPoint": {
+                        "isAction": false,
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "View Point"
+                            },
+                            "fr": {
+                                "name": "Point de Vue"
+                            },
+                            "ja": {
+                                "name": "ビューポイント"
+                            }
+                        },
+                        "children": {
+                            "#Reset": {
+                                "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/reset.png",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Reset",
+                                        "tooltip": "Reset View Point"
+                                    },
+                                    "fr": {
+                                        "name": "Restaurer",
+                                        "tooltip": "Restaurer le point de vue"
+                                    },
+                                    "ja": {
+                                        "name": "復元",
+                                        "tooltip": "ビューのポイントを復元します。"
+                                    }
+                                }
+                            },
+                            "#RotateAnticlockwise": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Rotate counterclockwise",
+                                        "tooltip": "Rotate view counterclockwise"
+                                    },
+                                    "fr": {
+                                        "name": "Tourner la vue à gauche",
+                                        "tooltip": "Tourner la vue à gauche"
+                                    },
+                                    "ja": {
+                                        "name": "表示を左に",
+                                        "tooltip": "表示を左に"
+                                    }
+                                }
+                            },
+                            "#RotateClockwise": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Rotate clockwise",
+                                        "tooltip": "Rotate View Clockwise"
+                                    },
+                                    "fr": {
+                                        "name": "Tourner la vue à droite",
+                                        "tooltip": "Tourner la vue à droite"
+                                    },
+                                    "ja": {
+                                        "name": "右のビューを回転させる",
+                                        "tooltip": "右のビューを回転させる"
+                                    }
+                                }
+                            },
+                            "#SetDirOX+": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "+OX",
+                                        "tooltip": "+OX View"
+                                    },
+                                    "fr": {
+                                        "name": "+OX",
+                                        "tooltip": "Vue +OX"
+                                    },
+                                    "ja": {
+                                        "name": "+OX",
+                                        "tooltip": "+OX View"
+                                    }
+                                }
+                            },
+                            "#SetDirOX-": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "-OX",
+                                        "tooltip": "-OX View"
+                                    },
+                                    "fr": {
+                                        "name": "-OX",
+                                        "tooltip": "Vue -OX"
+                                    },
+                                    "ja": {
+                                        "name": "-OX",
+                                        "tooltip": "-OX View"
+                                    }
+                                }
+                            },
+                            "#SetDirOY+": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "+OY",
+                                        "tooltip": "+OY View"
+                                    },
+                                    "fr": {
+                                        "name": "+OY",
+                                        "tooltip": "Vue +OY"
+                                    },
+                                    "ja": {
+                                        "name": "+OY",
+                                        "tooltip": "+OY View"
+                                    }
+                                }
+                            },
+                            "#SetDirOY-": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "-OY",
+                                        "tooltip": "-OY View"
+                                    },
+                                    "fr": {
+                                        "name": "-OY",
+                                        "tooltip": "Vue -OY"
+                                    },
+                                    "ja": {
+                                        "name": "-OY",
+                                        "tooltip": "-OY View"
+                                    }
+                                }
+                            },
+                            "#SetDirOZ+": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "+OZ",
+                                        "tooltip": "+OZ View"
+                                    },
+                                    "fr": {
+                                        "name": "+OZ",
+                                        "tooltip": "Vue +OZ"
+                                    },
+                                    "ja": {
+                                        "name": "+OZ",
+                                        "tooltip": "+OZ View"
+                                    }
+                                }
+                            },
+                            "#SetDirOZ-": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "-OZ",
+                                        "tooltip": "-OZ View"
+                                    },
+                                    "fr": {
+                                        "name": "-OZ",
+                                        "tooltip": "Vue -OZ"
+                                    },
+                                    "ja": {
+                                        "name": "-OZ",
+                                        "tooltip": "-OZ View"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "StatusBar_Toggle": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Status Bar",
+                                "tooltip": "Toggles status bar view on/off"
+                            },
+                            "fr": {
+                                "name": "Barre de status",
+                                "tooltip": "Activer ou désactiver la barre de status"
+                            },
+                            "ja": {
+                                "name": "ステータス バー",
+                                "tooltip": "ステータスバーの有効/無効"
+                            }
+                        }
+                    },
+                    "FullScreen": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Full screen",
+                                "tooltip": "Switch to full screen mode"
+                            },
+                            "fr": {
+                                "name": "Plein écran",
+                                "tooltip": "Basculer en mode plein écran"
+                            },
+                            "ja": {
+                                "name": "全画面表示",
+                                "tooltip": "全画面表示モードに切り替え"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "Tools": {
+                "isAction": false,
+                "langDependentAssets": {
+                    "en": {
+                        "name": "Tools"
+                    },
+                    "fr": {
+                        "name": "Outils"
+                    },
+                    "ja": {
+                        "name": "ツール"
+                    }
+                },
+                "children": {
+                    "CatalogGenerator": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Catalog Generator",
+                                "tooltip": "Generates XML catalog of a component's interface"
+                            },
+                            "fr": {
+                                "name": "Genérateur de catalogue",
+                                "tooltip": "Génére un catalogue XML de l'interface du composant"
+                            },
+                            "ja": {
+                                "name": "カタログ ジェネレーター",
+                                "tooltip": "コンポーネントインターフェイスのXMLカタログを生成"
+                            }
+                        }
+                    },
+                    "FindAction": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Find action",
+                                "tooltip": "Opens action search dialog"
+                            },
+                            "fr": {
+                                "name": "Trouver une action",
+                                "tooltip": "Ouvre la boîte de dialogue de recherche d'action"
+                            },
+                            "ja": {
+                                "name": "検索アクション",
+                                "tooltip": "アクション検索ダイアログを開きます"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "Window": {
+                "isAction": false,
+                "langDependentAssets": {
+                    "en": {
+                        "name": "Window"
+                    },
+                    "fr": {
+                        "name": "Fenêtre"
+                    },
+                    "ja": {
+                        "name": "ウィンドウ"
+                    }
+                },
+                "children": {
+                    "New": {
+                        "isAction": false,
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "New Window"
+                            },
+                            "fr": {
+                                "name": "Nouvelle Fenêtre"
+                            },
+                            "ja": {
+                                "name": "新しいウィンドウ"
+                            }
+                        },
+                        "children": {
+                            "ForViewer0": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "GL 2D view",
+                                        "tooltip": "Create new GL 2D view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène GL ",
+                                        "tooltip": "Créer une nouvelle Scène GL "
+                                    },
+                                    "ja": {
+                                        "name": "GL 2D view",
+                                        "tooltip": "新しい GL 2D view を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer1": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Plot 2D view",
+                                        "tooltip": "Create new Plot 2D view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène Plot2d ",
+                                        "tooltip": "Créer une nouvelle Scène Plot2d "
+                                    },
+                                    "ja": {
+                                        "name": "Plot 2D View",
+                                        "tooltip": "新しい Plot 2D View を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer2": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "OCC 3D view",
+                                        "tooltip": "Create new OCC 3D view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène OCC",
+                                        "tooltip": "Créer une nouvelle Scène OCC"
+                                    },
+                                    "ja": {
+                                        "name": "OCC 3D　View",
+                                        "tooltip": "新しい OCC 3D　View を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer3": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "VTK 3D view",
+                                        "tooltip": "Create new VTK 3D view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène VTK",
+                                        "tooltip": "Créer une nouvelle Scène VTK"
+                                    },
+                                    "ja": {
+                                        "name": "VTK 3D View",
+                                        "tooltip": "新しい VTK 3D View を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer4": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "QxScene 2D view",
+                                        "tooltip": "Create new QxScene 2D view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène QxScene",
+                                        "tooltip": "Créer une nouvelle Scène QxScene"
+                                    },
+                                    "ja": {
+                                        "name": "シーン QxScene",
+                                        "tooltip": "新しい シーン QxScene を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer5": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Graphics view",
+                                        "tooltip": "Create new Graphics view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène Graphiques",
+                                        "tooltip": "Créer une nouvelle Scène Graphiques"
+                                    },
+                                    "ja": {
+                                        "name": "グラフィックの表示",
+                                        "tooltip": "新しい グラフィックの表示 を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer6": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "ParaView view",
+                                        "tooltip": "Create new ParaView view"
+                                    },
+                                    "fr": {
+                                        "name": "Scène ParaView",
+                                        "tooltip": "Créer une nouvelle Scène ParaView"
+                                    },
+                                    "ja": {
+                                        "name": "ParaView 表示 ",
+                                        "tooltip": "新しい ParaView 表示  を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer7": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "Python view",
+                                        "tooltip": "Create new Python view"
+                                    },
+                                    "fr": {
+                                        "name": "Vue Python",
+                                        "tooltip": "Créer une nouvelle Vue Python"
+                                    },
+                                    "ja": {
+                                        "name": "Python view",
+                                        "tooltip": "新しい Python view を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer8": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "ParaView3D view",
+                                        "tooltip": "Create new ParaView3D view"
+                                    },
+                                    "fr": {
+                                        "name": "ParaView3D view",
+                                        "tooltip": "Créer une nouvelle ParaView3D view"
+                                    },
+                                    "ja": {
+                                        "name": "ParaView3D view",
+                                        "tooltip": "新しい ParaView3D view を作成します。"
+                                    }
+                                }
+                            },
+                            "ForViewer9": {
+                                "iconPath": "",
+                                "langDependentAssets": {
+                                    "en": {
+                                        "name": "QtView view",
+                                        "tooltip": "Create new QtView view"
+                                    },
+                                    "fr": {
+                                        "name": "QtView view",
+                                        "tooltip": "Créer une nouvelle QtView view"
+                                    },
+                                    "ja": {
+                                        "name": "QtView view",
+                                        "tooltip": "新しい QtView view を作成します。"
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    "Close": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Close",
+                                "tooltip": "Close active window"
+                            },
+                            "fr": {
+                                "name": "Fermer",
+                                "tooltip": "Fermer la fenêtre active"
+                            },
+                            "ja": {
+                                "name": "閉じる",
+                                "tooltip": "アクティブ ウィンドウを閉じる"
+                            }
+                        }
+                    },
+                    "SplitH": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/htile.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Split Horizontally",
+                                "tooltip": "Splits the active window on two horizontal parts"
+                            },
+                            "fr": {
+                                "name": "Séparation horizontale",
+                                "tooltip": "Diviser la fenêtre actuelle en deux parties horizontales"
+                            },
+                            "ja": {
+                                "name": "水平分割",
+                                "tooltip": "現在のウィンドウを 2つに水平分割"
+                            }
+                        }
+                    },
+                    "SplitV": {
+                        "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/vtile.png",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Split Vertically",
+                                "tooltip": "Splits the active window on two vertical parts"
+                            },
+                            "fr": {
+                                "name": "Séparation verticale",
+                                "tooltip": "Diviser la fenêtre actuelle en deux parties verticales"
+                            },
+                            "ja": {
+                                "name": "垂直分割",
+                                "tooltip": "現在のウィンドウを２つに上下分割"
+                            }
+                        }
+                    },
+                    "Rename": {
+                        "iconPath": "",
+                        "langDependentAssets": {
+                            "en": {
+                                "name": "Rename",
+                                "tooltip": "Rename active window"
+                            },
+                            "fr": {
+                                "name": "Renommer",
+                                "tooltip": "Renommer la fenêtre active"
+                            },
+                            "ja": {
+                                "name": "名前変更",
+                                "tooltip": "アクティブなウィンドウの名前を変更"
+                            }
+                        }
+                    }
+                }
+            },
+
+            "AboutDialog": {
+                "iconPath": "${GUI_ROOT_DIR}/share/salome/resources/gui/about.png",
+                "langDependentAssets": {
+                    "en": {
+                        "name": "About...",
+                        "tooltip": "Shows 'About' dialog"
+                    },
+                    "fr": {
+                        "name": "A propos de...",
+                        "tooltip": "Montre la boîte de dialogue 'A propos'"
+                    },
+                    "ja": {
+                        "name": "バージョン情報...",
+                        "tooltip": "ソフト情報の表示"
+                    }
+                }
+            }
+        }
+    }
+}

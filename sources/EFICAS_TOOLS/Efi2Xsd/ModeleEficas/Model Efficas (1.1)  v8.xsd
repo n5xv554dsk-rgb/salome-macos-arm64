@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- édité avec XMLSpy v2018 sp1 (http://www.altova.com) par Fayolle (EDF R&D) -->
+<!-- edited with XMLSpy v2015 rel. 4 (http://www.altova.com) by USER1 (EDF-DSP) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns="http://chercheurs.edf.com/logiciels/efficas" xmlns:efficas="http://chercheurs.edf.com/logiciels/efficas" xmlns:altova="http://www.altova.com/xml-schema-extensions" targetNamespace="http://chercheurs.edf.com/logiciels/efficas" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0" vc:minVersion="1.1">
+	<xs:element name="doc" type="T_doc"/>
+	<xs:element name="cata" type="T_cata"/>
+	<xs:element name="regles" type="T_regles"/>
+	<xs:element name="typeCree" type="T_classeUtilisateur"/>
+	<xs:element name="valeurDef" type="T_typeAttendu"/>
+	<xs:element name="valeurSugg" type="T_typeAttendu"/>
+	<xs:element name="fonctionUtilisateur" type="T_fonctionUtilisateur"/>
+	<xs:element name="commandes" type="T_commandes">
+		<!-- La contrainte suivante fonctionne -->
+		<xs:unique name="Uniq_Command">
+			<xs:selector xpath="*"/>
+			<xs:field xpath="@efficas:nom"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="validators" type="T_validators"/>
+	<xs:element name="plageValeur" type="T_plageValeur"/>
+	<xs:element name="typeAttendu" type="T_name"/>
+	<xs:element name="classeUtilisateurName" type="T_classeUtilisateurName" abstract="true" substitutionGroup="typeAttendu"/>
+	<xs:element name="SIMP" type="T_SIMP"/>
+	<xs:element name="portee" type="T_portee" default="None"/>
+	<xs:element name="condition" type="T_fonctionUtilisateur"/>
+	<xs:element name="borneSup" type="T_typeAttendu"/>
+	<xs:element name="borneInf" type="T_typeAttendu"/>
+	<!--	<xs:element name="into" type="T_into"/>-->
+	<xs:element name="into" type="T_into"/>
+	<!--	<xs:element name="into_plus_fonction" type="T_into" abstract="true" substitutionGroup="into"/>-->
+	<xs:attribute name="nom" type="AT_nom"/>
+	<xs:attribute name="fr" type="xs:string"/>
+	<xs:attribute name="ang" type="xs:string"/>
+	<xs:attribute name="docu" type="AT_docu"/>
+	<xs:attribute name="valeurSugg" type="AT_valeurSugg"/>
+	<xs:attribute name="statut" type="AT_statut" default="o"/>
+	<xs:attribute name="maxOccurences" type="AT_maxOccurences"/>
+	<xs:attribute name="minOccurences" type="AT_minOccurences"/>
+	<xs:attribute name="subroutine" type="AT_subroutine" default="None"/>
+	<xs:complexType name="T_doc">
+		<xs:attribute ref="fr" use="optional"/>
+		<xs:attribute ref="ang"/>
+		<xs:attribute ref="docu"/>
+	</xs:complexType>
+	<xs:complexType name="T_cata">
+		<xs:sequence>
+			<xs:element ref="commandes" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_commandes">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="OPER"/>
+			<xs:element ref="PROC"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_plageValeur">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element ref="borneSup" minOccurs="0"/>
+				<xs:element ref="borneInf" minOccurs="0"/>
+			</xs:sequence>
+			<xs:element ref="into"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_accasCommon">
+		<xs:sequence>
+			<xs:element ref="regles" minOccurs="0"/>
+			<xs:element ref="doc" minOccurs="0"/>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="BLOC"/>
+				<xs:element ref="FACT"/>
+				<xs:element ref="SIMP"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute ref="nom" use="required"/>
+	</xs:complexType>
+	<xs:element name="OPER" type="T_OPER">
+		<!-- La contrainte fonctionne uniquement si l'on n'oublie pas le prefix dans l'expression du selector !  -->
+		<!-- aucun nom identique ne doit apparaître dans les sous élements d'un même niveau dans OPER ou PROC    -->
+		<xs:key name="Key_Name_In_Oper">
+			<xs:annotation>
+				<xs:documentation>SIMP devrait être selectionné que si .//SIMP[portee='Global']</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="./efficas:BLOC |./efficas:FACT|./efficas:SIMP"/>
+			<xs:field xpath="@efficas:nom"/>
+		</xs:key>
+		<xs:keyref name="Oper_Ref_A_Name_In_Exclus" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Exclus">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_A_Classer" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:A_CLASSER/efficas:p1 | ./efficas:regles/efficas:A_CLASSER/efficas:p2"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_A_Classer">
+			<xs:selector xpath="./efficas:regles/efficas:A_CLASSER/efficas:p1 | ./efficas:regles/efficas:A_CLASSER/efficas:p2"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Au_Moins_Un" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:AU_MOINS_UN"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Au_Moins_Un">
+			<xs:selector xpath="./efficas:regles/efficas:AU_MOINS_UN"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Au_Plus_Un" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:AU_PLUS_UN"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Au_Plus_Un">
+			<xs:selector xpath="./efficas:regles/efficas:AU_PLUS_UN"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Ensemble" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:ENSEMBLE"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Ensemble">
+			<xs:selector xpath="./efficas:regles/efficas:ENSEMBLE"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Present_Absent" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_ABSENT"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Present_Absent">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_ABSENT"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Present_Present" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_PRESENT"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Present_Present">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_PRESENT"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Oper_Ref_A_Name_In_Un_Parmi" refer="Key_Name_In_Oper">
+			<xs:selector xpath="./efficas:regles/efficas:UN_PARMI"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Oper_Uniq_Name_In_Un_Parmi">
+			<xs:selector xpath="./efficas:regles/efficas:UN_PARMI"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+	</xs:element>
+	<xs:complexType name="T_OPER">
+		<xs:complexContent>
+			<xs:extension base="T_accasCommon">
+				<xs:sequence>
+					<xs:element ref="typeCree"/>
+				</xs:sequence>
+				<xs:attribute ref="subroutine"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PROC" type="T_PROC">
+		<!-- La contrainte fonctionne pour toutes les PROC adjacentes et devrait être par PROC -->
+		<xs:key name="Key_Name_In_Proc">
+			<xs:annotation>
+				<xs:documentation>SIMP devrait être selectionné que si .//SIMP[portee='Global']</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="./efficas:BLOC | ./efficas:FACT| ./efficas:SIMP"/>
+			<xs:field xpath="@efficas:nom"/>
+		</xs:key>
+		<xs:keyref name="Proc_Ref_A_Name_In_Exclus" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Exclus">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_A_Classer" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:A_CLASSER/efficas:p1 | ./efficas:regles/efficas:A_CLASSER/efficas:p2"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_A_Classer">
+			<xs:selector xpath="./efficas:regles/efficas:A_CLASSER/efficas:p1 | ./efficas:regles/efficas:A_CLASSER/efficas:p2"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_Au_Moins_Un" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:AU_MOINS_UN"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Au_Moins_Un">
+			<xs:selector xpath="./efficas:regles/efficas:AU_MOINS_UN"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_Au_Plus_Un" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:AU_PLUS_UN"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Au_Plus_Un">
+			<xs:selector xpath="./efficas:regles/efficas:AU_PLUS_UN"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_Ensemble" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:ENSEMBLE"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Ensemble">
+			<xs:selector xpath="./efficas:regles/efficas:ENSEMBLE"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_Present_Absent" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_ABSENT"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Present_Absent">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_ABSENT"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Proc_Ref_A_Name_In_Present_Present" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_PRESENT"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Present_Present">
+			<xs:selector xpath="./efficas:regles/efficas:PRESENT_PRESENT"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+		<xs:keyref name="Ref_A_Name_In_Un_Parmi" refer="Key_Name_In_Proc">
+			<xs:selector xpath="./efficas:regles/efficas:UN_PARMI"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+		<xs:unique name="Proc_Uniq_Name_In_Un_Parmi">
+			<xs:selector xpath="./efficas:regles/efficas:UN_PARMI"/>
+			<xs:field xpath="."/>
+		</xs:unique>
+	</xs:element>
+	<xs:complexType name="T_PROC">
+		<xs:complexContent>
+			<xs:extension base="T_accasCommon">
+				<xs:attribute ref="subroutine"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="FACT" type="T_FACT">
+		<!-- La contrainte fonctionne uniquement si l'on n'oublie pas le prefix dans l'expression du selector !  -->
+		<!-- aucun nom identique ne doit apparaître dans les sous élements d'un même niveau de FACT              -->
+		<xs:key name="Key_Name_In_Fact">
+			<xs:annotation>
+				<xs:documentation>SIMP devrait être selectionné que si .//SIMP[portee='Global']</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="./efficas:BLOC |./efficas:FACT|./efficas:SIMP"/>
+			<xs:field xpath="@efficas:nom"/>
+		</xs:key>
+		<xs:keyref name="Ref_A_Name_In_Fact" refer="Key_Name_In_Fact">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+	</xs:element>
+	<!-- Définition par restriction -->
+	<!--	<xs:complexType name="T_FACT">
+		<xs:complexContent>
+			<xs:restriction base="T_accasCommon">
+				<xs:sequence>
+					<xs:element ref="regles" minOccurs="0"/>
+					<xs:element ref="doc" minOccurs="0"/>
+					<xs:choice maxOccurs="unbounded">
+						<xs:element ref="BLOC"/>
+						<xs:element ref="FACT"/>
+						<xs:element ref="SIMP"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>-->
+	<xs:complexType name="T_FACT">
+		<xs:complexContent>
+			<xs:extension base="T_accasCommon">
+				<xs:attribute ref="statut"/>
+				<xs:attribute ref="minOccurences" default="1"/>
+				<xs:attribute ref="maxOccurences" default="1">
+					<xs:annotation>
+						<xs:documentation>La valeur -1 equivaut à oo</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+			<!--				<xs:assert test=".[exists(@efficas:maxOccurences) and exists(@efficas:minOccurences) and @efficas:maxOccurences  gt @efficas:minOccurences]"/>
+-->
+			<!--<xs:assert test="if (.[exists(@efficas:maxOccurences)] and .[exists(@efficas:minOccurences)] ) then (@efficas:maxOccurences  gt @efficas:minOccurences) or @efficas:maxOccurences = -1 else true" altova:message="Erreur maxOccurences  > minOccurences "/>-->
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="T_fonctionUtilisateur">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:element name="BLOC" type="T_BLOC">
+		<xs:key name="Key_Name_In_Bloc">
+			<xs:annotation>
+				<xs:documentation>SIMP devrait être selectionné que si .//SIMP[portee='Global']</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="./efficas:BLOC |./efficas:FACT|./efficas:SIMP"/>
+			<xs:field xpath="@efficas:nom"/>
+		</xs:key>
+		<xs:keyref name="Ref_A_Name_In_Bloc" refer="Key_Name_In_Bloc">
+			<xs:selector xpath="./efficas:regles/efficas:EXCLUS"/>
+			<xs:field xpath="."/>
+		</xs:keyref>
+	</xs:element>
+	<xs:complexType name="T_BLOC">
+		<xs:complexContent>
+			<xs:extension base="T_accasCommon">
+				<xs:sequence>
+					<xs:element ref="condition"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="T_SIMP">
+		<xs:sequence>
+			<xs:element ref="doc" minOccurs="0"/>
+			<xs:element ref="portee" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>La portée pouurait devenir un attribut de SIMP. Une autre solution consisterait a créer un SIMPG pour distinguer les @nom uniques des SIMP a portée globale des autres.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="valeurDef" minOccurs="0"/>
+			<xs:element ref="valeurSugg" minOccurs="0"/>
+			<xs:element ref="plageValeur" minOccurs="0"/>
+			<xs:element ref="typeAttendu"/>
+			<xs:element ref="validators" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute ref="nom" use="required"/>
+		<xs:attribute ref="statut" default="o"/>
+		<xs:attribute ref="minOccurences" default="1"/>
+		<xs:attribute ref="maxOccurences" default="1">
+			<xs:annotation>
+				<xs:documentation>La valeur -1 equivaut à oo</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="AT_statut">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="f"/>
+			<xs:enumeration value="o"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--<xs:simpleType name="T_repetable">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="n"/>
+			<xs:enumeration value="o"/>
+		</xs:restriction>
+	</xs:simpleType>-->
+	<xs:simpleType name="T_portee">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Global"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AT_maxOccurences">
+		<xs:restriction base="xs:long">
+			<xs:minInclusive value="-1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AT_minOccurences">
+		<xs:restriction base="xs:long">
+			<xs:minExclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Comparable -->
+	<!--	<xs:simpleType name="AT_borne_sup">
+	<xs:atomic base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="AT_borne_inf">
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+-->
+	<xs:simpleType name="AT_docu">
+		<xs:annotation>
+			<xs:documentation>Référence une position dans un fichier maître contenant une liste de références à des pages de documentations</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="AT_valeurSugg">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- TODO: Exclure mots clés python|efficas -->
+	<xs:simpleType name="AT_nom">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Z]|[a-z]|_)([A-Z]|[a-z]|_|[0-9])*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_predicat1">
+		<xs:list itemType="AT_nom"/>
+		<!-- TODO: Supprimer la liste -->
+	</xs:simpleType>
+	<xs:complexType name="T_predicat2">
+		<xs:sequence>
+			<xs:element name="p1" type="T_predicat1" minOccurs="1"/>
+			<xs:element name="p2" type="AT_nom" minOccurs="1"/>
+		</xs:sequence>
+		<!-- TODO: Supprimer la séquence -->
+	</xs:complexType>
+	<xs:element name="A_CLASSER" type="T_predicat2"/>
+	<xs:element name="AU_MOINS_UN" type="T_predicat1"/>
+	<xs:element name="AU_PLUS_UN" type="T_predicat1"/>
+	<xs:element name="ENSEMBLE" type="T_predicat1"/>
+	<xs:element name="EXCLUS" type="T_predicat1"/>
+	<xs:element name="PRESENT_ABSENT" type="T_predicat1"/>
+	<xs:element name="PRESENT_PRESENT" type="T_predicat1"/>
+	<xs:element name="UN_PARMI" type="T_predicat1"/>
+	<xs:group name="predicat">
+		<xs:choice>
+			<xs:element ref="A_CLASSER"/>
+			<xs:element ref="AU_MOINS_UN"/>
+			<xs:element ref="AU_PLUS_UN"/>
+			<xs:element ref="ENSEMBLE"/>
+			<xs:element ref="EXCLUS"/>
+			<xs:element ref="PRESENT_ABSENT"/>
+			<xs:element ref="PRESENT_PRESENT"/>
+			<xs:element ref="UN_PARMI"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="T_regles">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:group ref="predicat"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!--	<xs:simpleType name="T_typeCree">
+		<xs:restriction base="T_classeUtilisateur"/>
+	</xs:simpleType>
+-->
+	<xs:simpleType name="AT_subroutine">
+		<xs:restriction base="AT_nom"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_validators">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NoRepeat"/>
+			<xs:enumeration value="OnlyStr"/>
+			<xs:enumeration value="VerifExiste"/>
+			<xs:enumeration value="VerifTypeTuple"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Bool">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_list_Bool">
+		<xs:list itemType="T_Bool"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_I">
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_list_I">
+		<xs:list itemType="T_I"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_R">
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_list_R">
+		<xs:list itemType="T_R"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_TXM">
+		<xs:restriction base="AT_nom"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_list_TXM">
+		<xs:list itemType="T_TXM"/>
+	</xs:simpleType>
+	<!--fonctionne mais ne permet pas de créer une liste de liste -->
+	<xs:simpleType name="T_C">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list itemType="xs:double"/>
+			</xs:simpleType>
+			<xs:minLength value="2"/>
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Ajouter une contrainte : taille pair -->
+	<!-- Il n'est pas possible de définir des listes de listes -->
+	<xs:simpleType name="T_list_C">
+		<xs:list itemType="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_nameBase">
+		<xs:restriction base="AT_nom"/>
+	</xs:simpleType>
+	<xs:simpleType name="T_simpleName">
+		<xs:restriction base="T_nameBase">
+			<xs:enumeration value="Fichier"/>
+			<xs:enumeration value="Repertoire"/>
+			<xs:enumeration value="TXM"/>
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="Bool"/>
+			<xs:enumeration value="grma"/>
+			<xs:enumeration value="grno"/>
+			<xs:enumeration value="SalomeEntry"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- On ne peut pas rendre abstrait un simpleType && 
+          Il n'est pas possible de dériver par restriction un simplecontent d'un type complex qui
+          lui peut être abstrait.
+    -->
+	<xs:simpleType name="T_classeUtilisateurTypeName">
+		<xs:restriction base="T_name">
+			<xs:enumeration value="T_classeUtilisateur"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="T_classeUtilisateurName">
+		<xs:simpleContent>
+			<xs:extension base="T_classeUtilisateurTypeName">
+				<xs:attribute ref="nom" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="T_name">
+		<xs:union memberTypes="T_simpleName">
+			<xs:simpleType>
+				<xs:restriction base="AT_nom">
+					<xs:enumeration value="T_matriceDouble"/>
+					<xs:enumeration value="T_matriceSymetriqueDouble"/>
+					<xs:enumeration value="T_tuple"/>
+					<xs:enumeration value="T_classeUtilisateur"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:complexType name="T_grma"/>
+	<xs:complexType name="T_grno"/>
+	<xs:complexType name="T_SalomeEntry"/>
+	<xs:complexType name="T_Fichier"/>
+	<!--	<xs:complexType name="T_Repertoire"/>-->
+	<xs:simpleType name="T_Repertoire">
+		<xs:list>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:whiteSpace value="preserve"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:list>
+	</xs:simpleType>
+	<xs:simpleType name="T_simple">
+		<xs:union memberTypes="T_I T_list_I T_R T_list_R T_C T_list_C T_TXM T_list_TXM T_Bool T_list_Bool T_Repertoire"/>
+	</xs:simpleType>
+	<!--	<xs:complexType name="T_TXM"/>-->
+	<!--	<xs:simpleType name="T_simple">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fichier"/>
+			<xs:enumeration value="Repertoire"/>
+			<xs:enumeration value="TXM"/>
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="R"/>
+			<xs:enumeration value="C"/>
+			<xs:enumeration value="Bool"/>
+			<xs:enumeration value="grma"/>
+			<xs:enumeration value="grno"/>
+			<xs:enumeration value="SalomeEntry"/>
+		</xs:restriction>
+	</xs:simpleType>
+-->
+	<xs:simpleType name="T_list_Double">
+		<xs:list itemType="xs:double"/>
+	</xs:simpleType>
+	<!-- Possibilité d'utiliser un type paramétré ? -->
+	<xs:complexType name="T_matriceDouble">
+		<xs:simpleContent>
+			<xs:extension base="T_list_Double">
+				<xs:attribute name="n" type="xs:integer" use="required"/>
+				<xs:attribute name="m" type="xs:integer" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- Faire l'exercice de dériver de T_matriceDouble -->
+	<xs:complexType name="T_matriceSymetriqueDouble">
+		<xs:simpleContent>
+			<xs:extension base="T_list_Double">
+				<xs:attribute name="n" type="xs:int" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- Une liste est aussi un type simple ! -->
+	<!--    <xs:simpleType name="T_list_anySimpleType">
+		<xs:list itemType="xs:anySimpleType"/>
+	</xs:simpleType>
+-->
+	<!-- Le fait de ne pas déclarer une liste risque d'être problématique pour le parsing : A voir-->
+	<xs:complexType name="T_tuple">
+		<xs:simpleContent>
+			<xs:extension base="xs:anySimpleType">
+				<xs:attribute name="n" type="xs:int" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="T_classeUtilisateur">
+		<xs:restriction base="AT_nom"/>
+	</xs:simpleType>
+	<xs:element name="typesimple" type="T_simple"/>
+	<xs:element name="matriceDouble" type="T_matriceDouble"/>
+	<xs:element name="matriceSymetriqueDouble" type="T_matriceSymetriqueDouble"/>
+	<xs:element name="tuple" type="T_tuple"/>
+	<xs:element name="classeUtilisateur" type="T_classeUtilisateur"/>
+	<!-- Essai -->
+	<!--	<xs:group name="T_Attendu_group1">
+		<xs:choice>
+			<xs:element ref="typesimple"/>
+			<xs:element ref="matriceDouble"/>
+			<xs:element ref="matriceSymetriqueDouble"/>
+			<xs:element ref="tuple"/>
+			<xs:element ref="classeUtilisateur"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="T_Attendu_group2">
+		<xs:choice>
+			<xs:element ref="typesimple"/>
+			<xs:element ref="matriceDouble"/>
+			<xs:element ref="matriceSymetriqueDouble"/>
+			<xs:element ref="tuple"/>
+			<xs:element ref="classeUtilisateur"/>
+			<xs:element ref="fonctionUtilisateur" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="T_typeAttendu">
+		<xs:group ref="T_Attendu_group1"/>
+	</xs:complexType>
+	-->
+	<!-- Faire plutot un groupe de substitution pour ne pas croiser les choix -->
+	<!--
+	<xs:complexType name="T_into">
+	  <xs:group ref="T_Attendu_group2"/>
+	</xs:complexType>
+	-->
+	<xs:complexType name="T_into">
+		<xs:choice>
+			<!--			<xs:element ref="typesimple" type="T_Base"/>-->
+			<xs:element ref="typesimple" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="matriceDouble" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="matriceSymetriqueDouble" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="tuple" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="classeUtilisateur" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="fonctionUtilisateur" minOccurs="0" maxOccurs="1"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_typeAttendu">
+		<xs:complexContent>
+			<xs:restriction base="T_into">
+				<xs:choice>
+					<xs:element ref="typesimple" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="matriceDouble" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="matriceSymetriqueDouble" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="tuple" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="classeUtilisateur" minOccurs="0" maxOccurs="1"/>
+				</xs:choice>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>
+<!-- Catalogue EFFICAS équivalent
+
+# coding: utf-8
+from Accas import *
+
+class carte   (ASSD) : pass
+class maille   (ASSD) : pass
+class carte_flux_r   (carte):pass
+
+class NOM_CHAM_INTO:
+    def __call__(self, *l_typ_cham, **kwargs):
+        return tuple(('A','B','C'))
+C_NOM_CHAM_INTO = NOM_CHAM_INTO()
+
+JdC = JDC_CATA(code='MAP',
+               execmodul=None,
+               regles=ENSEMBLE('E1','E2','E3')
+               )
+
+CREECARTE = OPER(nom="CREECARTE",op=None, sd_prod=carte, UNITE=SIMP(statut='f',typ='I',defaut=21),);
+
+CREECARTEFLUX = OPER(nom="CREECARTEFLUX",op=None, sd_prod=carte_flux_r,
+                   NOMFLUX=SIMP(statut='o',typ='TXM',defaut='monFlux'),
+                );
+
+CREEMAILLE = OPER(nom="CREEMAILLE",op=None, sd_prod=maille,
+                NOEUDS=SIMP(statut='o',typ='I',defaut=(1,2),min=2,max=2)
+              );
+
+E1=PROC(nom="E1",
+        op=None,
+        regles    = (EXCLUS('ETAT_INIT','RESULTAT',),),
+        ETAT_INIT = FACT(statut='f', max='**',
+                         GROUP_MA_1=SIMP(statut='o',typ='I',validators=NoRepeat(),max='**'),
+                         GROUP_NO_2=SIMP(statut='f',typ='I',validators=NoRepeat(),max='**'),
+                    ),
+
+        RESULTAT  = FACT(statut='f',
+                         DEPL=SIMP(statut='o', typ='R',  validators=NoRepeat()),
+                         VITE=SIMP(statut='f', typ='R',  validators=NoRepeat()),
+                         ACCE=SIMP(statut='f', typ='R',  validators=NoRepeat()),
+                    ), 
+        );
+
+E2=PROC(nom="E2", op=None,
+        regles   = (UN_PARMI('CONCEPT','CHAINE','TOUT' ),),
+        CONCEPT  = FACT(statut='f',max='**',
+                   NOM = SIMP(statut='o',typ=assd,validators=NoRepeat(),max='**'),
+                   ),
+        CHAINE   = SIMP(statut='f',typ='TXM'),
+        POSITION = SIMP(statut='f',typ='I',defaut=1),
+        TOUT     = SIMP(statut='f',typ='TXM',into=("OUI",) ),
+        );
+
+E3=PROC(nom="E3",op=None,
+        DEFORMATION = SIMP(statut='f',typ='TXM',defaut="PETIT",
+                           into=("PETIT","PETIT_REAC","GROT_GDEP","SIMO_MIEHE","GDEF_HYPO_ELAS","GDEF_LOG")),
+        b_blocIn    = BLOC(condition = "DEFORMATION in ('PETIT','PETIT_REAC','GROT_GDEP')",
+             ITER_INTE_PAS = SIMP(statut='f',typ='I',defaut= 0 ),
+             ALGO_INTE     = SIMP(statut='f',typ='TXM',into=("ANALYTIQUE", "SECANTE", "DEKKER", "NEWTON_1D","BRENT",),),
+             CARTE	   = SIMP(statut='f',typ=carte,),
+             b_carte       = BLOC(condition= "(AsType(CARTE) != carte_flux_r)",
+                             CONTRAINTE = SIMP(statut='f',typ='TXM',validators=NoRepeat(),max='**',
+                                          fr="Options pour le calcul de contraintes et efforts generalises",
+                                           into=C_NOM_CHAM_INTO(phenomene='CONTRAINTE',categorie='lin'),)
+                             ),
+                      ),  
+       );
+
+-->

@@ -1,0 +1,76 @@
+// Copyright (C) 2005-2026  CEA, EDF, OPEN CASCADE
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#ifndef __MED_GEN_IDL_
+#define __MED_GEN_IDL_
+
+#include "SALOME_Component.idl"
+#include "SALOME_Exception.idl"
+#include "MEDDataManager.idl"
+
+module MED_ORB
+{
+  /*!
+    \brief Operation result codes
+  */
+  enum status {
+    OP_OK,                   //!< OK result
+    OP_ERROR                 //!< ERROR: other problems
+  };
+
+  typedef sequence<long> PresentationsList;
+
+  interface
+  MED_Gen : Engines::EngineComponent
+  {
+    status addDatasourceToStudy(in MEDCALC::DatasourceHandler datasourceHandler)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    status registerPresentationField(in long fieldId,
+                                     in string name,
+                                     in string type,
+                                     in string ico,
+                                     in long presentationId)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    status registerPresentationMesh(in long meshId,
+                                    in string name,
+                                    in string type,
+                                    in string ico,
+                                    in long presentationId)
+          raises (SALOME_CMOD::SALOME_Exception);
+
+    status unregisterPresentation(in long presentationId)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+//    PresentationsList getSiblingPresentations(in long presentationId)
+//      raises (SALOME_CMOD::SALOME_Exception);
+
+    // Get all presentations in study:
+    PresentationsList getStudyPresentations()
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    string getStudyPresentationEntry(in long presentationId)
+      raises (SALOME_CMOD::SALOME_Exception);
+
+    void cleanUp();
+  };
+};
+
+#endif

@@ -1,0 +1,182 @@
+/*!
+
+\page tui_test_others_page GEOM_TestOthers.py
+
+\anchor swig_TestOthers
+<br><h2>GEOM_TestOthers.py</h2>
+
+\dontinclude GEOM_TestOthers.py
+
+\skipline import os
+
+\anchor swig_Import_Export
+\until print("OK")
+
+\until id_w3
+
+\anchor swig_MakeFaces
+\until id_f12
+
+\until TestExportImport
+
+\anchor swig_OrientationChange
+\until id_Orientation
+
+\anchor swig_MakeCommon
+\until id_Fuse2
+
+\anchor swig_Partition
+\until id_Partition
+
+\anchor swig_MakeMultiRotation
+\until id_MultiRot2D
+
+\anchor swig_MakeFilletAll
+\until id_MakeFilletAll
+
+\anchor swig_MakeChamferAll
+\until id_MakeChamferAll
+
+\anchor swig_MakeChamfer
+\until id_MakeChamfer
+
+\anchor swig_NumberOf
+\until Bad number of shapes
+
+\anchor swig_MakeBlockExplode
+\until id_MakeBlockExplode
+
+\anchor swig_CheckCompoundOfBlocks
+\until VALID Blocks Compound
+
+\anchor swig_GetSame
+\until id_Cone_ss
+
+\anchor swig_CreateGroup
+\until id_CreateGroup
+
+\anchor swig_AddObject
+\until Now contains
+
+\anchor swig_UnionList
+\until Now contains
+
+\anchor swig_RemoveObject
+\until Now contains
+
+\anchor swig_DifferenceList
+\until Now contains
+
+\anchor swig_GetObjectIDs
+\until sorted
+
+\anchor swig_GetMainShape
+\until BoxCopy
+
+\anchor swig_DifferenceIDs
+\until Now contains
+
+\anchor swig_UnionIDs
+\until sorted
+
+\anchor swig_bop_on_groups
+\until Box, Group_CL_2_4
+
+\anchor swig_GetType
+\until assert
+
+\until freeFaces, "freeFaces"
+
+\until Solid_1 = geompy.MakeSolid
+
+\anchor swig_RemoveExtraEdges
+\until "freeFacesWithoutExtra"
+
+\anchor swig_UnionFaces
+\until "unitedFaces"
+
+\anchor swig_GetSharedShapes
+\until "sharedEdge_"
+
+\anchor swig_TransferData
+\until subBlackWhite[1]
+
+\anchor swig_CheckAndImprove
+\until "CheckCompoundOfBlocks"
+
+\anchor swig_Propagate
+\until "propagation chain"
+
+\anchor swig_GetPoint
+\until blocksComp (-50, -50, -50)
+
+\anchor swig_GetVertexNearPoint
+\until near (40,  40,  40)
+
+\anchor swig_GetEdge
+\until by two points
+
+\anchor swig_GetEdgeNearPoint
+\until edge near point
+
+\anchor swig_GetBlockByParts
+\until "b0 image"
+
+\anchor swig_GetShapesNearPoint
+\until faces near point
+
+\anchor swig_GetShapesOnPlane
+\until Face on Plane
+
+\anchor swig_GetShapesOnPlaneIDs
+\until Group of faces
+
+\anchor swig_GetShapesOnPlaneWithLocation
+\until Edge on Plane
+
+\anchor swig_GetShapesOnPlaneWithLocationIDs
+\until group_edges_on_pln, grname
+
+\anchor swig_GetShapesOnCylinder
+\until Edge out of Cylinder
+
+\anchor swig_GetShapesOnCylinderIDs
+\until Group of edges
+
+\anchor swig_GetShapesOnCylinderWithLocation
+\until Edge out of
+
+\anchor swig_GetShapesOnCylinderWithLocationIDs
+\until Group of edges
+
+\anchor swig_GetShapesOnSphere
+\until Vertex on Sphere
+
+\anchor swig_GetShapesOnSphereIDs
+\until Group of vertices
+
+\anchor swig_GetShapesOnQuadrangle
+\until Error in GetShapesOnQuadrangle
+
+\anchor swig_GetShapesOnQuadrangleIDs
+\until Group of vertices
+
+\anchor swig_GetShapesOnBox
+\until "Error in GetShapesOnBox()"
+
+\anchor swig_GetShapesOnBoxIDs
+\until Group of faces
+
+\anchor swig_GetShapesOnShape
+\until "Error in GetShapesOnShape()"
+
+\anchor swig_GetShapesOnShapeAsCompound
+\until (as compound)
+
+\anchor swig_GetShapesOnShapeIDs
+\until "Error in GetShapesOnShapeIDs()"
+
+\anchor swig_GetInPlace
+\until #END
+
+*/

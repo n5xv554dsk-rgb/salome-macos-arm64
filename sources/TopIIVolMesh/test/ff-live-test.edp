@@ -1,0 +1,70 @@
+load "top-ii-vol"
+load "PETSc"
+
+func Pk = P1;
+macro grad(u)[dx(u), dy(u), dz(u)]// // three-dimensional gradient
+macro def(u)u//
+
+include "getARGV.idp"    	// Enables importing commandline arguments
+//10m  20m  40m  80m 160m      
+//500; 250; 125; 63; 32;
+//451; 226; 113; 57; 29;
+int totaltsets=getARGV("-tests", 1);
+real t0,t1,tt;
+for(int i=0; i < totaltsets; i++){
+mpiBarrier(mpiCommWorld);
+if(mpirank == 0) t0 = mpiWtime();
+
+		topiivolpart("./../data/DEM_40m","point-cloud-strip",125,113);
+		mpiBarrier(mpiCommWorld);
+		topiivolmesh("point-cloud-strip","top-ii-vol-mesh",50,-1920.0);
+
+mpiBarrier(mpiCommWorld);
+t1=mpiWtime()-t0;
+if(mpirank == 0)
+cout <<  "  Total time taken for Dmesh construction : " << t1 << " s"<< endl;
+
+
+{
+    macro dimension()3// EOM
+    include "./../macro_ddm.idp"
+    mesh3 Th;
+
+	mpiBarrier(mpiCommWorld);
+    if(mpirank == 0) t0 = mpiWtime();
+
+    Th=readmesh3("top-ii-vol-mesh_"+mpirank+".meshb");
+    mpiBarrier(mpiCommWorld);
+    reconstructDmesh(Th)
+
+	mpiBarrier(mpiCommWorld);
+    if(mpirank == 0)
+    cout <<  "  Total time taken for Dmesh reconstruction : " << mpiWtime()-t0 << " s"<< endl;
+
+
+    fespace Wh(Th, Pk);
+    Wh<real> u;
+
+    Mat A;
+    createMat(Th, A, Pk)
+
+    varf vPb(u, v) = intN(Th)(grad(u)' * grad(v)) /*+ intN(Th)(1e6*(x<.6)*(x>.4)*x*y*v)*/ + on(6, u = 15.0)+ on(3, u = 1.0);
+    real[int] rhs = vPb(0, Wh);
+
+    set(A, sparams = "-ksp_type cg" );
+    A = vPb(Wh, Wh);
+    u[] = A^-1 * rhs; 
+
+    plotMPI(Th, u, Pk, def, real, cmm = "u"); 
+    int[int] fforder=[1];
+    savevtk("vtk.vtu",Th,u,order=fforder, dataname = "u");
+
+//saveDmesh(Th, "saved-Dmesh");
+}
+
+
+if(i>2)tt=t1+tt;
+}
+
+if(mpirank == 0 && totaltsets>3)
+cout <<  "  Total average time taken for "<< totaltsets-3  << " runs : " << tt/(totaltsets-3) << " s"<< endl;

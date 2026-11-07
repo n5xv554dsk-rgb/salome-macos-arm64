@@ -1,0 +1,5 @@
+[c_pre_polymer_data_management]
+gui = True
+data_base = local/
+backup = False
+folder_output = /tmp

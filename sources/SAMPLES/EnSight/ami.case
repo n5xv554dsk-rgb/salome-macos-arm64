@@ -1,0 +1,17 @@
+# 
+# Tue Jun 27 16:23:49 2006
+# EnSight 8.0.7 ((o))
+# Case File: ami.case
+
+FORMAT
+
+type:  ensight gold
+
+GEOMETRY
+
+model:                     ami.geo
+
+VARIABLE
+
+scalar per node:           pressure ami.pressure
+vector per node:           velocity ami.velocity

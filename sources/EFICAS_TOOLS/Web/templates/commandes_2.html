@@ -1,0 +1,1603 @@
+{% extends 'new_dataset.html' %}
+
+{% block content %}
+
+
+<!-- DOC : arrow functions () => x is short for () => { return x; } -->
+
+<!--     {#- for key, value in mcTraite.items() recursive #} -->
+<!-- 	<h3>{#{ key }#} </h3> -->
+<!-- 	{#- if value #} -->
+<!-- 	    {# if value is mapping #} -->
+<!-- 	      <ul>{#{ loop(value.items())}#}</ul> -->
+<!-- 	    {#- else #} -->
+<!-- 	      type {#{value[0]}#} valeur{#{value[1]}#} -->
+<!-- 	    {#- endif #} -->
+<!-- 	{#- endif #} -->
+<!-- 	 <\!-- </li> -\-> -->
+<!--     {#- endfor #}                                  -->
+
+<!-- <div id="tree2"></div> -->
+
+<!-- <div class="row"> -->
+<!-- <hr> -->
+<!-- <h2>MyDataModel : Testing the WebAPP approach</h2> -->
+
+<!--  <div class="col-sm-4"> -->
+<!--    <h2>Searching</h2> -->
+<!--    <\!-- <form> -\-> -->
+<!--      <div class="form-group"> -->
+<!--        <label for="input-search" class="sr-only">Search Tree:</label> -->
+<!--        <input type="input" class="form-control" id="input-search" placeholder="Type to search..." value=""> -->
+<!--      </div> -->
+<!--      <div class="checkbox"> -->
+<!--        <label> -->
+<!--          <input type="checkbox" class="checkbox" id="chk-ignore-case" value="false"> -->
+<!--          Ignore Case -->
+<!--        </label> -->
+<!--      </div> -->
+<!--      <div class="checkbox"> -->
+<!--        <label> -->
+<!--          <input type="checkbox" class="checkbox" id="chk-exact-match" value="false"> -->
+<!--          Exact Match -->
+<!--        </label> -->
+<!--      </div> -->
+<!--      <div class="checkbox"> -->
+<!--        <label> -->
+<!--          <input type="checkbox" class="checkbox" id="chk-reveal-results" value="false"> -->
+<!--          Reveal Results -->
+<!--        </label> -->
+<!--      </div> -->
+<!--      <button type="button" class="btn btn-success" id="btn-search">Search</button> -->
+<!--      <button type="button" class="btn btn-default" id="btn-clear-search">Clear</button> -->
+<!--    <\!-- </form> -\-> -->
+<!--  </div> -->
+<!--  <div class="col-sm-4"> -->
+<!--    <h2>Results</h2> -->
+<!--    <div id="search-output"></div> -->
+<!-- </div> -->
+<!-- </div> -->
+
+
+<!-- <div class="row panel panel-default"> -->
+<!--     <h2> </h2> -->
+<!--     <\!-- <div id="treeview-searchable" class=""></div> -\-> -->
+<!-- </div> -->
+
+ <!-- TODO : Créer une feuille de style-->
+<div class="row" id="row-navtabs-and-main-and-optionals">
+
+  <!-- NavTab -->
+  <div class="panel-heading" style="padding-top: 0px; padding-bottom: 0px; padding-left: 0px;padding-right: 0px;">
+    <ul class="nav nav-tabs" id="efi-nav-tabs"></ul>
+  </div>
+  
+  <!-- tab-content-->
+  <div class="row" style="margin-left: 0px;margin-right: 0px;">
+    <div class="jumbotron" id="Welcome">
+       <h2>Hello, world!</h2>
+       <p class="text-center">Here is the Eficas/MdM WebApp prototype.</p>
+       <p class="text-center">Try Menu/File/NewDataset to open/create a dataset.</p>
+       <p class="text-center"><a class="btn btn-primary btn-lg" href="" role="button">Learn more about Eficas/MdM</a></p>
+    </div>
+    <!-- efi-tab-content -->
+    <div class="tab-content" id="efi-tab-content"></div>
+  </div>
+
+</div> <!-- row-navtabs-and-main-and-optionals -->
+
+<!-- <div id='handsontable_test1'/> -->
+    
+<div class="row row-tree-messages-style" data-spy="affix" id="row-tree0-messages">
+    <nav class="navbar" id="WelcomeNavBar">
+      <!-- <span id="tree1-messages" class="nav navbar-nav col-sm-12 navbar-right alert alert-success"  >....</span> -->
+      <!-- <footer class="footer alert alert-success" id="tree1-messages" >No message.</footer> -->
+      <div id="tree0-messages" class="tree-messages-style">
+	<nav class="nav-bar alert alert-success">No message.</nav>
+      </div>
+    </nav>
+</div> <!-- row-tree0-messages -->
+
+<script>
+  'use strict';
+
+  //$("#navbar-optionals").affix({offset: {top: $("#row-commands_menu").outerHeight(true)} }); 
+  //$("#col-optional_tree").affix({offset: {top: $("#row-commands_menu").outerHeight(true)} }).css('right',0);
+ 
+  let efiNewTab=function(catalogName,datasetName,commands,treeId) {
+      let _treeId = treeId;
+      if (treeId === undefined  || treeId ==  "") {
+	  _treeId = "tree"+ ($("#efi-tab-content > div").size()+1)
+      };
+      
+      let cmdList = commands.map((cmd) => { return '<li class="nav-item"><div class="btn-group nav-link" data-toggle="buttons"'+
+					           'onclick="clickOnCommand(\'#'+_treeId+'\',\'#'+_treeId+'-messages\',\''+cmd+'\', \'\')">'+
+					    '<button class="btn btn-primary navbar-btn efi-cmds" for=\''+cmd+'\'>'+cmd+'</button></div></li> ';
+					  }
+				).join('');
+      //console.log(cmdList);
+
+      $("#efi-nav-tabs").prepend(function(treeId){
+	  // let efiNavTab='<li class="active"><a data-toggle="tab" href="#@treeId@Tab">'+catalogName+'/'+datasetName+'</a></li>';
+	  let efiNavTab='<li><a id="@treeId@Nav" data-toggle="tab" href="#@treeId@Tab">'+catalogName+'/'+datasetName+'</a></li>';
+	  return efiNavTab.replaceAll("@treeId@",treeId);
+      }(_treeId));
+	  
+      $("#efi-tab-content").prepend(function(treeId){
+	  let efiFancyTreeTempl = `
+          <div class="tab-pane fade" id="@treeId@Tab">
+
+            <!-- Row Commandes du Dataset -->
+            <div class="row affix" id="row-commands_menu"> <!-- data-spy="affix" -->
+              <nav class="navbar flex-column flex-md-row" style="margin-bottom:0px">  <!-- data-spy="affix" -->
+        	<ul class="nav navbar-nav">
+                    @cmdList@
+        	</ul>
+              </nav>
+            </div> <!-- row -->
+
+            <!-- Panel Arbre Principal -->
+            <!-- col-main_tree-->
+            <div class="col-sm-8 panel panel-default" id="col-main_tree"
+        	 style="border-top-width: 0px; padding-left: 0px; padding-right: 0px;"> 
+                     <table id="@treeId@" class="table table-condensed table-hover table-striped fancytree-fade-expander">
+                  	<!-- TODO : Manage the space between Title and Value while choosing a Value size adapted to the value -->
+                  	<colgroup>
+                  	  <col width="80px"></col>
+                  	  <col width="30px"></col>
+                  	  <col width="300px"></col>
+                  	  <col width="300px"></col>
+                  	  <col width="20px"></col>
+                  	  <col width="20px"></col>
+                  	  <col width="20px"></col>
+                  	  <col width="*"></col>
+                  	</colgroup>
+                  	<thead>
+                  	  <tr> <th></th> <th></th> <th>Mot Clé</th> <th>Value</th> <th></th> <th></th> <th></th> <th></th> </tr>
+                  	</thead>
+                  	<tbody>
+                  	  <tr> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+                  	</tbody>
+                     </table>
+            </div> <!-- col-main_tree-->
+        
+            <!-- Panel Arbre Options -->
+            <!-- col-optional_tree -->
+            <div class="col-sm-4 panel panel-default affix" id="col-optional_tree" data-spy="affix" data-offset-top="0" 
+                 style="right: 0px;">  <!-- border-top-width: 0px; -->
+              <nav class="navbar" id="navbar-optionals" >
+        	<div class="panel-heading">Optionals (@treeId@)</div>
+        	<div class="panel-body">
+        	  <!-- <nav class="navbar" id="navbar-optionals" data-spy="affix" data-offset-top="0"> -->
+        	    <div id="@treeId@Optionals"></div>
+        	    <div id="Opt-testing"></div>
+        	</div> <!-- panel-body -->
+              </nav>
+            </div>  <!-- col-optional_tree -->
+
+            <div class="row row-tree-messages-style" data-spy="affix" id="row-@treeId@-messages">
+                <nav class="navbar" >
+                  <!-- <span id="tree1-messages" class="nav navbar-nav col-sm-12 navbar-right alert alert-success"  >....</span> -->
+                  <!-- <footer class="footer alert alert-success" id="tree1-messages" >No message.</footer> -->
+                  <div id="@treeId@-messages" class="tree-messages-style">
+                     <nav class="nav-bar alert alert-success">No message.</nav>
+                  </div>
+                </nav>
+            </div> <!-- row-@treeId@-messages -->
+        
+          </div> <!-- row @treeId@Tab-->`;
+
+	  return efiFancyTreeTempl.replaceAll("@treeId@" ,treeId).replace("@cmdList@" ,cmdList);
+      }(_treeId));
+      return _treeId;
+  };
+  
+//  efiNewTab();
+  
+const EFI_SUCCESS_COLOR = '#00ff00';
+const EFI_ERROR_COLOR   = '#ff0000';
+const EFI_WARNING_COLOR = '#ffff00';
+
+const handsontable_data0 = [
+    { id: 1, name: 'Ted Right', address: '',col3: 3, col4: 4, col5: 5, col6: 6 },
+    { id: 2, name: 'Frank Honest', address: '' },
+    { id: 3, name: 'Joan Well', address: '' },
+    { id: 4, name: 'Gail Polite', address: '' },
+    { id: 5, name: 'Michael Fair', address: '' },
+];
+const handsontable_data1 = [
+    { id: 1, name: 'Ted Right', address: '',col3: 3, col4: 4, col5: 5, col6: 6 },
+    { id: 2, name: 'Frank Honest', address: '' },
+    { id: 3, name: 'Joan Well', address: '' },
+    { id: 4, name: 'Gail Polite', address: '' },
+    { id: 5, name: 'Michael Fair', address: '' },
+];
+
+    <!-- const container0= document.getElementById('handsontable_test1'); -->
+    <!-- const hot0 = new Handsontable(container0, { -->
+    <!-- 	data: handsontable_data0, -->
+    <!-- 	colHeaders: false, -->
+    <!-- 	height: 'auto', -->
+    <!-- 	width: 'auto', -->
+    <!-- 	minSpareRows: 0, -->
+    <!-- 	licenseKey: 'non-commercial-and-evaluation' -->
+    <!-- }); -->
+
+
+// $(function () {
+//     'use strict';
+//       $('#formfileupload').fileupload({
+//           dataType: 'json',
+//           done: function (e, data) {
+//               $.each(data.result.files, function (index, file) {
+//                  <!-- $('<p></p>').text(file.name).appendTo(document.body); -->
+//                  treeMessage("File :"+file.name+" has been successfully imported","alert-success");
+//               });
+//           }
+//       });
+//  });
+
+// if tree.options.debug is null: use global setting $.ui.fancytree.debugLevel)
+// $.ui.fancytree.debugLevel=4; // Set the fancyTree debug level
+
+//Créer une fonction pour désactiver toutes les classes d'alert et pour en positionner une seule 
+let treeMessage=function(msgCssSelStr,messageClass,message) {
+    'use strict';
+    const messageClasses = new Set(["alert-success","alert-info","alert-warning","alert-danger"]);
+    if (messageClasses.has(messageClass)) {
+	
+	$(msgCssSelStr).removeClass("alert-success alert-info alert-warning alert-danger");
+        // $(msgCssSelStr).addClass(messageClass);
+	
+	if ( messageClass == "alert-danger" ) {
+	    $.ui.fancytree.error(message);    // debugLevel >= 1
+	    // alert(message); // TODO: Activer lorsque la mise au point sera achevée.
+	} else if ( messageClass == "alert-warning" ) {
+	    $.ui.fancytree.warn(message);     // debugLevel >= 2
+	} else if ( messageClass == "alert-info" ) {
+	    $.ui.fancytree.info(message);     // debugLevel >= 3
+	} else {
+            console.debug(message);           // debugLevel >= 4
+	    $.ui.fancytree.debug(message);    // debugLevel >= 4
+	};
+        $(msgCssSelStr).html('<nav class="nav-bar alert">'+message+'</nav>'+$(msgCssSelStr).html());
+        //$("#row-tree1-messages > nav nav:first-child").addClass(messageClass);
+	$(msgCssSelStr+" > nav:first-child").addClass(messageClass);
+        //$(msgCssSelStr).text(message);
+    } else {
+	alert("The messageClass : |"+messageClass+"| is not in "+messageClasses); //TODO afficher la chaine messageClasses
+    }; 
+}
+
+// APPELS EXPLICITES AU SERVER
+function callService(msgCssSelStr, serviceName, obj) {
+    'use strict';
+
+    const  success = function(data, status) {
+        let message="Successfull call to "+serviceName+" with status : " + status;
+        treeMessage(msgCssSelStr,"alert-success",message) ;
+    };
+
+    const  error = function(xhr,status,error) {
+        let message="Unsuccessfull call to "+serviceName+" with status : " + status;
+	alert(error);
+        treeMessage(msgCssSelStr,"alert-danger",message) ;
+    };
+
+    const url        = "{{ url_for('appendChild') }}";                       //WARN : jinja url_for évalué dynamiquement
+    const newurl = url.replace("appendChild", serviceName);     //TODO : Trouver une meilleure solution !
+    return $.ajax({
+        type		        : "POST",
+        url		        : newurl,
+        data		: JSON.stringify(obj),
+        contentType	: "application/json; charset=utf-8",
+        dataType	        : "json", 
+        success		: success,
+        error		: error,
+    });
+};
+
+// Les fonctions clickOn sont associées aux balises html
+function clickOnRemove(treeCssSelStr, msgCssSelStr, key ) {
+    'use strict';
+    
+    const tree  = $.ui.fancytree.getTree(treeCssSelStr);
+    const _key  = key; 
+    if ( tree ==  null) {
+	let message = "Unsuccessfull removeNode tree selection ("+treeCssSelStr+") returned (null)";
+        treeMessage(msgCssSelStr,"alert-danger",message) ;
+	alert(message) ; // TODO: A supprimer lorsque ce sera activé ds treeMssage
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId           =_rootNode.data.eId;
+    
+    if ( key === undefined  || key ==  "") {
+	activeNode = tree.activeNode;
+	if ( activeNode !=  null) {
+	    _key = activeNode.key;
+	} else {
+	    return;
+	};
+    };
+
+    const checkCallBack = function(data) {
+	const errorCode  = data.errorCode;
+	const msgLevel   = data.msgLevel;
+	const rMessage   = data.message;
+
+	if ( errorCode != undefined && errorCode != 0 ) {
+    	    let message = "Unsuccessfull removeNode processing for key " + _key + ". Service removeNode has returned an error ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-warning",message);
+	    treeMessage(msgCssSelStr,msgLevel,rMessage);
+	    return;
+	};
+
+	let message = "Successfull removeNode processing for key " + _key + ". Service removeNode has returned  ("+rMessage+")";
+	treeMessage(msgCssSelStr,msgLevel,message) ;
+    };
+
+    return callService(msgCssSelStr, 'removeNode', {eId:_eId, id: _key} ).done( (data)=>checkCallBack(data) );
+};
+
+function clickOnRemoveRef(treeCssSelStr, msgCssSelStr, key ) {
+    'use strict';
+    
+    const tree  = $.ui.fancytree.getTree(treeCssSelStr);
+    const _key  = key; 
+    if ( tree ==  null) {
+	let message = "Unsuccessfull removeRef processing for key " + _key + ". Tree ("+treeCssSelStr+") returned (null)" ;
+	alert(message) ;
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId           =_rootNode.data.eId;
+  
+    if ( key ==  "") {
+	activeNode = tree.activeNode;
+	if ( activeNode !=  null) {
+	    _key = activeNode.key;
+	} else {
+	    return;
+	};
+    };
+
+   const checkCallBack = function(data) {
+	const errorCode  = data.errorCode;
+	const msgLevel   = data.msgLevel;
+	const rMessage   = data.message;
+
+	if ( errorCode != undefined && errorCode != 0 ) {
+    	    let message = "Unsuccessfull removeRef processing for key " + _key + ". Service removeRef has returned an error ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-warning",message);
+	    treeMessage(msgCssSelStr,msgLevel,rMessage);
+	    return;
+	};
+
+	let message = "Successfull removeRef processing for key " + _key + ". Service removeRef has returned  ("+rMessage+")";
+	treeMessage(msgCssSelStr,msgLevel,message) ;
+    };
+    return callService(msgCssSelStr, 'removeNodeRef', {eId:_eId, id: _key} ).done( (data)=>checkCallBack(data) );
+};
+
+// TODO : Il faudrait s'assurer que si une requête de ce type est envoyée au serveur
+//        on récupère bien l'evenement appendChild --> validation, promise... 
+function sendAppendChild(treeCssSelStr, msgCssSelStr, key, name, pos) {
+    'use strict';
+    
+    const tree  = $.ui.fancytree.getTree(treeCssSelStr);
+    if ( tree ==  null) {
+	let message = "Unsuccessfull appendChild tree selection ("+treeCssSelStr+") returned (null)"
+	alert(message) ;
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId           = _rootNode.data.eId;
+    
+    const checkCallBack = function(data) {
+	const errorCode  = data.errorCode;
+	const msgLevel   = data.msgLevel;
+	const rMessage   = data.message;
+
+	if ( errorCode != undefined && errorCode != 0 ) {
+    	    let message = "Unsuccessfull AppendChild processing for key " + key + ". Service AppendChild has returned an error ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-warning",message);
+	    treeMessage(msgCssSelStr,msgLevel,rMessage);
+	    return;
+	};
+
+	let message = "Successfull AppendChild processing for key " + key + ". Service AppendChild has returned  ("+rMessage+")";
+	treeMessage(msgCssSelStr,msgLevel,message) ;
+    };
+    return callService(msgCssSelStr, 'appendChild', {eId:_eId, id: key, name:name, pos:pos } ).done( (data)=>checkCallBack(data) );
+
+};
+
+function getParentCommandNode(node) {
+    'use strict';
+    if ( node === undefined || node == null ) return null;
+    const parentList = node.getParentList(false,true); // default : (false,false)==(rootNode exclus, not self)
+    return parentList[1];                              // parentList()[0] is always the efficas current dataset
+};
+
+// TODO Vérif assertion : Les functions clickOn ont des arguments en chaîne de caractères pour être facilement
+//                         utilisées dans les attributs des elements html  on="clickOn('arg1','arg2',)"
+function clickOnCommand(treeCssSelStr, msgCssSelStr, cmdName, key ) {
+    'use strict';
+    const tree                      = $.ui.fancytree.getTree(treeCssSelStr); //TODO : Une fonction pour récupérer le tree en paramètre soit par css ou objet
+    if ( tree ==  null) {
+	let message = "Unsuccessfull clickOnCommand processing for key " + key + ". Tree ("+treeCssSelStr+") returned (null)" ;
+	alert(message) ;
+	return;
+    };
+    const rootDatasetNode = tree.rootNode.children[0];
+    let   fromNode             =  null;
+    let   pos;
+    
+    if ( key !== undefined && key !=  "") {
+	fromNode = tree.getNodeByKey(key);
+    } else {
+	fromNode = tree.activeNode;
+    };
+    if ( fromNode ==  null) {
+        pos=0;
+    } else {
+	let activeCommandKey = "";
+	let commandList      = null;
+	let index            = 0;
+        let parentList = fromNode.getParentList(); // default : (false,false)==(rootNode exclus, not self)
+	console.log("clickOnCommand : parentList "+parentList)
+	if ( parentList.length  == 0 ) {       //If the current dataset filename node is activated
+	    console.log("clickOnCommand : index is forced = 0");
+	    pos=0;                                        // The first node is always the current dataset filename
+        } else {
+      	    if ( parentList.length  == 1 ) {
+		activeCommandKey  = fromNode.key;
+	    } else {
+                activeCommandKey  = parentList[1].key;             //fromNode.getParentList()[0] is always the <efficas current dataset> node so [1] is always the eficas command level
+	    };
+	    console.log("clickOnCommand : activeCommandKey "+activeCommandKey)
+            commandList	    = rootDatasetNode.getChildren(); // le premier node est le nom de fichier du dataset d'ou le getChildren() supplémentaire
+	    index           = commandList.findIndex(function(n){return n.key == activeCommandKey;});
+	    pos=index+1;
+        }
+    }
+    console.log("clickOnCommand : pos = "+pos);
+    let request=sendAppendChild(treeCssSelStr, msgCssSelStr, rootDatasetNode.key, cmdName, pos);
+    request.done(()=>{
+	rootDatasetNode.setExpanded();  //WARN: sendAppendChild must be completed/done
+	if ( tree.activeNode == null ) rootDatasetNode.setActive()
+	
+	//tree.activeNode.scrollIntoView(true)
+	//$(tree.activeNode).scrollTop(20)
+	//tree.activeNode.tr.offsetTop
+	$(document).scrollTop(tree.activeNode.tr.offsetTop); //Repostionning of the active node in order to see the newly added command
+                                                                                              //WARN: sendAppendChild must be completed/done
+    });
+
+};  
+
+//key plutôt que node pour les chaînes javascript evenementielles
+function clickOnSelect(treeCssSelStr, msgCssSelStr, key, eltNameWithValue ) {
+    'use strict';
+    const tree  = $.ui.fancytree.getTree(treeCssSelStr); //TODO : Une fonction pour récupérer le tree en paramètre soit par css ou objet
+    var   node  = null;
+    if ( tree ==  null) {
+	let message = "Unsuccessfull clickOnSelect tree selection ("+treeCssSelStr+") returned (null)";
+	alert(message);
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId=_rootNode.data.eId;
+    
+    if ( key !== undefined && key !=  "") {
+	node = tree.getNodeByKey(key);
+    };
+    if ( node == null ) {    
+	alert("clickOnSelect : The given key "+key+" could not be found.");
+	return;
+    };
+    sendUpdateSimp(treeCssSelStr, msgCssSelStr, node, eltNameWithValue);
+};
+
+function sendUpdateSimp(treeCssSelStr, msgCssSelStr, node, eltNameWithValue) {
+    'use strict';
+    
+    const tree        = $.ui.fancytree.getTree(treeCssSelStr); //TODO : Une fonction pour récupérer le tree en paramètre soit par css ou objet
+    //var   node = null;
+    if ( tree ==  null) {
+	let message = "Unsuccessfull sendUpdateSimp tree selection ("+treeCssSelStr+") returned (null)";
+	alert(message);
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId           =_rootNode.data.eId;
+
+    //let $input=$(node.tr).find('input');
+    let $input=$(node.tr).find(eltNameWithValue);
+    let value=$input.val();
+
+    let checkCallBack = function(data) {
+	// Tester data == NULL !
+        // const changeIsAccepted = data.changeIsAccepted;
+	const errorCode = data.errorCode;
+	const msgLevel  = data.msgLevel;
+	const rMessage  = data.message;
+        const source       = data.source;
+
+	//node.fromDict()
+	//source=JSON.parse(getTree1())
+	if ( errorCode != undefined && errorCode != 0 ) {
+	    // TODO: Gérer le input pour laisser le focus et passer en rouge ? Non ou bien rouge avec délai !
+	    let message = "Unsuccessfull SIMP processing for |" + node.getPath() + "|, value |"+value+"| has not been accepted ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-warning",message);
+	    treeMessage(msgCssSelStr,msgLevel         ,rMessage);
+    	    node.render(true,false);  //force rendering the node (not parents nor descendants)
+	    return;
+	};
+
+	if ( source   == undefined) {
+	    let message = "Unsuccessfull SIMP processing for |" + node.getPath() + "|, source is undefined ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-danger",message);
+	    return;
+	};
+        const wValue      = source['wValue'];
+        const validite      = source['validite'];
+	if ( rMessage == undefined) rMessage='';
+	if ( wValue   == undefined) {
+	    let message = "Unsuccessfull SIMP processing for |" + node.getPath() + "|, wValue is undefined ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-danger",message);
+	    return;
+	};
+	if ( validite == undefined) {
+	    let message = "Unsuccessfull SIMP processing for |" + node.getPath() + "|, validite is undefined ("+rMessage+")";
+	    treeMessage(msgCssSelStr,"alert-danger",message);
+	    return;
+	};
+	
+	// Il faudrait gérer les représentations des types pour activer cet assert (ex: string vs int,double,...)
+	// or on laisse le kernel eficas vérifier des strings (ex. PI).
+	// $.ui.fancytree.assert(value == wValue);
+	node.data.wValue  = wValue;
+	node.data.validite  = validite;
+	let message = "Changing SIMP "+node.title+" value to "+value+" has been accepted ("+rMessage+")";
+	treeMessage(msgCssSelStr,"alert-success",message);
+	//node.data        = data.source ?? A priori, il est inutile d'essayer de remplacer la source complète du noeud  
+	console.log('wValue    : '+ node.data.wValue);
+	console.log('validite  : '+validite);
+	//alert("sendUpdateSimp-2");
+	
+	node.render(true,false);  //force rendering the node (not parents nor descendants)
+	// if (eltNameWithValue != 'select') node.render(true,false);  //force rendering the node (not parents nor descendants)
+	//node.renderStatus();    //CSS element updates
+    };
+    
+    //alert("sendUpdateSimp-1");
+    return callService(msgCssSelStr, 'updateSimp', {eId:_eId, id: node.key, value:value } ).done( (data)=>checkCallBack(data) );
+
+
+};
+
+function sendNewDataset(catalogName, datasetName) {
+    'use strict';
+
+    let      _msgCssSelStr;
+    const $currentTabAnchor    = $('#efi-nav-tabs > li[class~="active"] > a');
+    if ( $currentTabAnchor.length != 0 ) {
+        _msgCssSelStr = '#'+$currentTabAnchor.attr('id').replace("Nav","")+'-messages';
+    } else {
+	_msgCssSelStr  = '#tree0-messages'; 
+    };
+
+    let checkCallBack = function(data) {
+	// Tester data == NULL !
+	let   _treeId;
+	let   _treeCssIdTab;
+	let   _treeCssIdNav;
+	let   _treeCssSelStr;
+
+	const errorCode   = data.errorCode;
+	const msgLevel    = data.msgLevel;
+	const rMessage    = data.message;
+        const source        = data.source;
+        const commands = data.commands;
+        const title             = data.title;
+
+	if ( errorCode != undefined && errorCode != 0 ) {
+	    treeMessage(_msgCssSelStr,msgLevel,rMessage);
+	    return;
+	};
+	
+	//console.log(source);
+	
+	// //tree.destroy();
+	// let message = "New Dataset has been loaded ("+rMessage+")";
+	// tree.clear(); //Remove all the nodes but keep the configuration
+	// tree.setOption('source', source);
+	// //?? FAIT BUGGER  tree.reload().done( ()=>treeMessage(_msgCssSelStr,"alert-success",message));
+	
+	// efiNewTab("tree1");
+	// $("#tree1").fancytree(efiFancytreeOptions("#tree1",source));
+	
+	_treeId             = efiNewTab(catalogName, datasetName,commands);
+	_treeCssSelStr = '#'+_treeId;
+	_treeCssIdTab  = _treeCssSelStr+'Tab';
+	_treeCssIdNav  = _treeCssSelStr+'Nav';
+	_msgCssSelStr = _treeCssSelStr+'-messages'; 
+	
+	$("#Welcome").hide()
+	$("#row-tree0-messages").hide()
+	// $(_msgCssSelStr).affix({offset: {bottom: 0px} }).css({
+        //      "width"            : "100%",
+        //      "height"           : "50px",
+        //      "z-index"          : "8000",
+        //      "bottom"          : "0px",
+        //      "position"         : "sticky",
+        //      "overflow-y"     : "scroll"
+        //     }); 
+
+	 $("#col-optional_tree").affix({offset: {top: $("#row-commands_menu").outerHeight(true)} }).css('right',0); 
+
+	//$(_msgCssSelStr).affix({offset: {bottom: "0px"} });
+	// $(_msgCssSelStr).css({
+        //      "width"            : "100%",
+        //      "height"           : "50px",
+        //      "z-index"          : "8000",
+        //      "bottom"          : "0px",
+        //      "position"         : "sticky",
+        //      "overflow-y"     : "scroll"
+        //     });
+	
+        $(".row-tree-messages-style").affix({offset: {bottom: "0px"} }); //BUG: Ne se met pas à jour tant que l'on est ds la fenêtre modale NewDataSet
+	// $(_msgCssSelStr).affix({offset: {bottom: "0px"} }); // SURTOUT PAS CA EMPECHE LE DEFILEMENT
+	// $(_msgCssSelStr).css({
+        //      "width"            : "100%",
+        //      "height"           : "50px",
+        //      "z-index"          : "8000",
+        //      "bottom"          : "0px",
+        //      "position"         : "sticky",
+        //      "overflow-y"     : "scroll"
+        //     }); 
+
+	$(_treeCssSelStr).fancytree(efiFancytreeOptions(_treeCssSelStr,source,_msgCssSelStr));
+	
+	createNewSetOfEvents(_treeCssSelStr,_msgCssSelStr);
+		
+	// console.log($(_treeCssIdNav));
+        //$("#efi-nav-tabs").css('margin-top',$("#row-commands_menu").height()); //Il faut en fait le recalculer sur redimensionement des commandes...
+	//WARN: Délai d'affichage par rapport à l'activation de l'onglet nécessite un event
+	$('.nav-tabs a[href="'+_treeCssIdTab+'"]').on('shown.bs.tab', function (event) {
+	    // Action to execute once the collapsible area is expanded
+	    $("#efi-nav-tabs").css('margin-top',$(_treeCssIdTab+" > #row-commands_menu").height()); //#row-commands_menu est temporairement vide à la coumutation d'onglets 
+	});                                                                                                                      //En fait il n'a pas été activé par l'onglet ?
+	
+	$('.nav-tabs a[href="'+_treeCssIdTab+'"]').tab('show');
+
+
+	//$(_treeCssIdNav).tab('show');
+	// if ( tree ==  null) {
+	//     let message = "Unsuccessfull sendNewDataset processing. Tree ("+_treeCssSelStr+") returned (null)" ;
+	//     alert(message);
+	//     return;
+	// };
+
+	let message = "New Dataset has been loaded ("+rMessage+")";
+    };
+    
+    return callService(_msgCssSelStr, 'newDataset', { catalogName:catalogName, datasetName:datasetName } ).done( (data)=>checkCallBack(data) );
+
+
+};
+
+
+//GESTION DES EVENEMENTS PROVENANT DU SERVEUR
+//TODO: Tant que le serveur Flask/Eficas n'est pas relancé, le nbre d'éditeur augmente
+//      et le nombre d'évenement par type le suit
+//TODO: Penser à la libération  
+    
+const source = new EventSource("{{ url_for('sse.stream' , channel=efi_update_channel ) }}");
+      
+source.addEventListener('error', function(event) {
+    alert("Failed to connect to event stream. Is Redis running?");
+}, false);
+source.addEventListener('message', function(event) {
+   const data      = JSON.parse(event.data);
+   const message   = data.message;
+    alert(message);
+}, false);
+
+// --- displayMessage ---
+(function (treeCssSelStr, msgCssSelStr) {
+	'use strict';
+	source.addEventListener('displayMessage', function(event) {
+            const data         = JSON.parse(event.data);
+            const color        = data.color;
+            const message      = data.message;
+            const messageClass = data.messageClass;
+            const _message      = "The server says " + message;
+	    //const tree         = $.ui.fancytree.getTree(_treeCssSelStr);
+            //const _rootNode    = tree.rootNode.children[0];
+            //const _eId         = _rootNode.data.eId;
+        
+            //if ( eId != _eId ) return; //TODO:Lorsque l'on modifiera Flask/affiche{Message/Alerte}
+            if ( messageClass == 'alert-danger' ) {
+		alert(_message);
+	    } else {
+		treeMessage(msgCssSelStr,messageClass,_message);
+	    };
+	}, false);
+})('','#tree1-messages'); //TODO: Changer la balise
+
+function createNewSetOfEvents(treeCssSelStr, msgCssSelStr) {
+	  
+    // --- propageValid ---
+    (function (treeCssSelStr, msgCssSelStr) {
+	'use strict';
+	let _treeCssSelStr  = treeCssSelStr; //inutile
+	let _msgCssSelStr   = msgCssSelStr;  //inutile
+	// var  _tree          = $.ui.fancytree.getTree(_treeCssSelStr);
+	source.addEventListener('propageValide', function(event) {
+            const data           = JSON.parse(event.data);
+            const id               = data.id;
+            const eId             = data.eId;
+            const valid          = data.valid;
+            const message   = "The server says " + data.message +" , id: "+id;
+            const msgerror  = "Event propageValid : can't find node with key :"+id;
+	    const tree           = $.ui.fancytree.getTree(_treeCssSelStr);
+            const _rootNode = tree.rootNode.children[0];
+            const _eId           = _rootNode.data.eId;
+            
+	    if ( eId != _eId ) return;
+            treeMessage(_msgCssSelStr,"alert-info",message);
+            // console.log("_tree : "+ _tree); //?Expliquer pourquoi null: à cause de $.?
+            let node=tree.getNodeByKey(id);
+	    if (node == null) {
+		treeMessage(_msgCssSelStr,"alert-danger",msgerror);
+		return;
+	    };
+            node.data.validite=valid;       //TODO : ?? Pas encore réussi à tester ... ??
+	    //alert("propageValid");
+            node.render(true,false);       //force rendering the node (not parents nor descendants)
+            //node.renderStatus();          //CSS element updates only
+	}, false);
+    })(treeCssSelStr,msgCssSelStr);
+
+    // // --- displayMessage ---
+    // (function (treeCssSelStr, msgCssSelStr) {
+    // 	'use strict';
+    // 	source.addEventListener('displayMessage', function(event) {
+    //         const data         = JSON.parse(event.data);
+    //         const id           = data.id;
+    //         const eId          = data.eId;
+    //         const txt          = data.txt;
+    //         const color        = data.color;
+    //         const message      = data.message;
+    //         const messageClass = data.messageClass;
+    //         const _message     = "The server says " + data.message;
+    // 	    const tree      = $.ui.fancytree.getTree(_treeCssSelStr);
+    //         const _rootNode = tree.rootNode.children[0];
+    //         const _eId      = _rootNode.data.eId;
+            
+    // 	    if ( eId != _eId ) return; //TODO:Lorsque l'on modifiera Flask/affiche{Message/Alerte}
+    //         treeMessage(_msgCssSelStr,messageClass,_message);
+    //         treeMessage(_msgCssSelStr,messageClass,txt);
+    // 	}, false);
+    // })(treeCssSelStr,msgCssSelStr);
+
+    // --- updateNodeInfo ---
+    (function (treeCssSelStr, msgCssSelStr) {
+	'use strict';
+	const _treeCssSelStr  = treeCssSelStr; //inutile
+	const _msgCssSelStr   = msgCssSelStr;  //inutile
+	// var  _tree          = $.ui.fancytree.getTree(_treeCssSelStr);
+	source.addEventListener('updateNodeInfo', function(event) {
+            const data      = JSON.parse(event.data);
+            const id        = data.id;
+            const eId       = data.eId;
+            const info      = data.info;
+            const message   = "The server says " + data.message +" , id: "+id;
+            const msgerror  = "Event updateNodeInfo : can't find node with key :"+id;
+	    const tree      = $.ui.fancytree.getTree(_treeCssSelStr);
+            const _rootNode = tree.rootNode.children[0];
+            const _eId      = _rootNode.data.eId;
+
+	    if ( eId != _eId ) return;
+            treeMessage(_msgCssSelStr,"alert-info",message);
+	    // treeMessage(_msgCssSelStr,"alert-info","data.wValue : "+data.wValue);
+            const node=tree.getNodeByKey(id);
+	    if (node == null) {
+		treeMessage(_msgCssSelStr,"alert-danger",msgerror);
+		return;
+	    };
+            // console.log("-------------  message 2a: "+ node.data.title); 
+            // console.log("-------------  message 2b: "+ info.title);
+	    // En fait, il faut que fancytree trie les propriétés qui l'interesse de celles qui vont dans data
+	    // Object.assign(node.data,info); //merge new options to node.data
+	    node.fromDict(info);   //WARN : Merge data.info only
+            // console.log("-------------  message 2c: "+ node.data.title);
+	    //alert("updateNodeInfo");
+            node.render(true,false);       //force rendering the node (not parents nor descendants)
+            //node.renderStatus();         //CSS element updates only	    
+	}, false);
+    })(treeCssSelStr,msgCssSelStr);
+
+    // --- appendChildren ---
+    (function (treeCssSelStr, msgCssSelStr) {
+	'use strict';
+	const _treeCssSelStr = treeCssSelStr;  //inutile
+	const _msgCssSelStr = msgCssSelStr;  //inutile
+	const _tree                = $.ui.fancytree.getTree(_treeCssSelStr);
+	source.addEventListener('appendChildren', function(event) {
+            const data      = JSON.parse(event.data);
+            const id          = data.id;
+            const eId        = data.eId;
+            const source  = data.fcyTreeSrc;
+            const pos       = data.pos;
+            //var   message = data.message;
+            const message   = "The server says " + data.message +" , id: "+id;
+            const msgerror  = "Event appendChildren : can't find node with key :"+id;
+	    const tree      = $.ui.fancytree.getTree(_treeCssSelStr);
+            const _rootNode = tree.rootNode.children[0];
+            const _eId      = _rootNode.data.eId;
+	    
+	    if ( eId != _eId ) return;
+            treeMessage(_msgCssSelStr,"alert-info",message);
+            console.log("_tree : "+ _tree); //?Expliquer pourquoi null: à cause de $.?
+            const node          = tree.getNodeByKey(id);
+	    if (node == null) {
+		treeMessage(_msgCssSelStr,"alert-danger",msgerror);
+		return;
+	    };   	
+            const countChildren = node.countChildren(false);
+            console.log("countChildren : "+ countChildren); 
+            console.log("pos           : "+ pos); 
+            if ( pos >= countChildren) {
+		node.addChildren(source);
+            } else {
+		node.addChildren(source,pos);
+            }
+		<!-- node.addChildren({ -->
+					<!--   title: "Document using a custom icon", -->
+					<!--   icon: "customdoc1.gif" -->
+					<!-- }); -->
+	}, false);
+    })(treeCssSelStr,msgCssSelStr);
+
+    // --- deleteChildren ---    
+    (function (treeCssSelStr, msgCssSelStr) {
+	'use strict';
+	const _treeCssSelStr  = treeCssSelStr; //inutile
+	const _msgCssSelStr   = msgCssSelStr;  //inutile
+	const  _tree          = $.ui.fancytree.getTree(_treeCssSelStr);
+	source.addEventListener('deleteChildren', function(event) {
+	    const data        = JSON.parse(event.data);
+            const eId         = data.eId;
+	    // const keySet = new Set(data.idList); 
+	    const keyList     = data.idList;
+	    const tree        = $.ui.fancytree.getTree(treeCssSelStr);
+            const _rootNode   = tree.rootNode.children[0];
+            const _eId        = _rootNode.data.eId;
+	    const message     = "The server says " + data.message +" , keyList: "+keyList;
+
+	    if ( eId != _eId ) return;
+            treeMessage(_msgCssSelStr,"alert-info",message);
+            // const nodeAsKey = function (node,keys) {
+            //   //?keySet = _isFunction(match) ? keys : _makeNodeTitleMatcher(match);
+            //   if (node.key === key ) return true;
+            //   return false;
+            // };
+	    // var myNodeAsKey= function(n) {return nodeAsKey(n,'efbab07c5d8e11ecbd14ac220bca9aa6');}
+	    //alert("The server says " + data.message);
+	    //TODO : Vérifier les keys doublons demandées en supression !    
+	    let nodeList       = keyList.map( (x) => { return tree.getNodeByKey(x) } );
+	    nodeList.map( (x) => { x.remove()} );
+	    
+	    //tree.findAll(match);
+	    //var fromNode = tree.getActiveNode();
+	    //fromNode.addChildren({
+	    //  title: "Document using a custom icon",
+	    //  icon: "customdoc1.gif"
+	    //});
+	}, false);
+    })(treeCssSelStr,msgCssSelStr);
+};
+
+    
+// function getTree() {
+//     // Some logic to retrieve, or generate tree structure
+//     return  {#{ tree|tojson }#};
+// };
+
+// $(function(){
+//     'use strict';
+//     $("#tree1").fancytree(efiFancytreeOptions("#tree1",[]));
+//     sendNewDataset("","");
+// });
+
+// $("#tree1").fancytree({ source: [ {title: "Node 1", key: "1000"},{title: "Folder 2", key: "2", folder: true, children: [ {title: "Node 2.1", key: "3000"},{title: "Node 2.2", key: "44"} ]}    ], })
+// $("#tree1").fancytree({ source: JSON.parse(getTree1()), })
+
+//Doublon cf. base.html
+var glyph_opts = {
+    preset: "bootstrap3",
+    // preset: "awesome3",
+    // preset: "awesome4",
+    // preset: "awesome5",
+    // preset: "material",
+    map: {
+    }
+};
+
+function efiIconRendering(event, data) {
+    // if( data.node.isFolder() ) {
+    //    return "glyphicon glyphicon-book";
+    // }
+    let classeAccas = data.node.data.classeAccas;
+    if( classeAccas ==  "MCSIMP") {
+	return "glyphicon glyphicon-leaf";
+    } else if( classeAccas ==  "PROCEDURE") {
+	return "glyphicon glyphicon-tree-deciduous";
+    } else if( classeAccas ==  "MCFACT") {
+	return "glyphicon glyphicon-grain";
+    } else {
+	return "glyphicon glyphicon-tree-deciduous";
+    };
+};
+
+
+//créer une fonction pour changer l'appel à getTree
+  let efiFancytreeOptions=function(treeCssSelStr,source,msgCssSelStr){
+    'use strict';
+    return {
+	//focusOnSelect:true,
+	debug:4,     //if null: use global setting $.ui.fancytree.debugLevel
+	debuLevel:4, //if null: use global setting $.ui.fancytree.debugLevel
+	//extensions: ["dnd5", "edit", "glyph", "wide", "table", "gridnav"],
+	extensions: [ "glyph", "table", "ariagrid"], // https://github.com/mar10/fancytree/wiki/ExtTable
+	//extensions: [ "glyph", "table", "gridnav"], // utilisation d'ariagrid et non de gridnav
+	checkbox: true, // Activate the use of checkboxes next to the nodes
+
+	// selectMode: 1: single selection
+	//   Only one node is selected at any time.
+	// selectMode: 2: multiple selection (default)
+	//   Every node may be selected independently.
+	// selectMode: 3: hierarchical selection
+	//   (De)selecting a node will propagate to all descendants. Mixed states will be displayed as partially selected using a tri-state checkbox.
+	selectMode: 1,
+	escapeTitles: true,
+	dnd5: { // unused drag&drop module
+            dragStart: function(node, data) { return true; },
+            dragEnter: function(node, data) { return true; },
+            dragDrop : function(node, data) { data.otherNode.copyTo(node, data.hitMode); }
+	},
+	glyph: glyph_opts,
+	source: source,
+	//source: JSON.parse(getTree()), //TODO: Vérifier que la transformation JSON n'est pas double avec Flask
+	//source: getTree(),
+	//wide: {
+	//  iconWidth: "1em",       // Adjust this if @fancy-icon-width != "16px"
+	//  iconSpacing: "0.5em",   // Adjust this if @fancy-icon-spacing != "3px"
+	//  labelSpacing: "0.1em",  // Adjust this if padding between icon and label != "3px"
+	//  levelOfs: "1.5em"       // Adjust this if ul padding != "16px"
+	//},
+	icon:  efiIconRendering,
+	// icon: function(event, data) {
+	//  if( data.node.type ) {
+	//    return "ft-ico-" + data.node.type;
+	//  }
+	// },
+	tooltip: function(event, data) {
+            // Create dynamic tooltips
+            return data.node.title + " (" + data.node.key + ")";
+	},      
+	table: {                // Options for the table extension
+            checkboxColumnIdx: 1, // Tree Nodes Checkboxes are rendered at column #1 (numbered from #0)
+            nodeColumnIdx: 2,     // Tree Nodes are rendered at column #2
+	    indentation : 10      // Tree Nodes indentation between levels
+	},
+	gridnav: {
+	    autofocusInput:   true,  // Focus first embedded input if node gets activated
+	    handleCursorKeys: false  // Allow UP/DOWN in inputs to move to prev/next node
+	},
+	ariagrid:	{
+            cellFocus: 'allow'
+	},
+	// viewport: {
+        //     enabled: true,
+        //     count: 15,
+	// },
+	//TODO : Mettre en place le lazyload
+	//lazyLoad: function(event, data) {
+	//  data.result = {url: "ajax-sub2.json", debugDelay: 1000};
+	//}
+	renderStatusColumns: function(event, data) {
+	},
+	renderColumns: function(event, data) { //TODO : use createNode event to avoid recreating content when rendering
+            // WARN : The <td> content is deleted before the rendering
+	    // TODO : Split renderColumns to renderColumns & renderColumnsStatus 
+            // Pour tester ds la console :
+            //var tree=$.ui.fancytree.getTree("#tree1")
+            //p1=tree.getNodeByKey('8304986a334211ec853cac220bca9aa6')
+            //$(p1.tr).find(">td")
+
+            //import {createTree, version} from 'jquery.fancytree'
+            //const tree = createTree('#tree', { ... });
+            //var node = tree.getActiveNode();      
+
+            const node		 = data.node,
+		$tdList		 = $(node.tr).find(">td");
+            const classeAccas	 = node.data.classeAccas;  //TODO : Utiliser les types fancytree
+            const validite	 = node.data.validite;
+            const wValue         = node.data.wValue;
+            const sdnom          = node.data.sdnom;
+            const statut         = node.data.statut;
+	    const cmdName 	 = node.data.nomCommande;  // undefined if classeAccas != 'MCFACT'
+	    const repeatable	 = node.data.repetable;    // ?? undefined if classeAccas != 'MCFACT' ??
+	    const into           = node.data.into;     // only used for SIMP //TODO: BUG: un into reel xx.0 devient ici un entier chaîne
+	                                                                // eficas doit envoyer tjrs des chaînes 
+            console.log("into :"+into);    //All JavaScript numbers are stored as decimal numbers (floating point).
+	                                                  //Numbers can be written with, or without decimals:
+	    const infoOptionnels = node.data.infoOptionnels;
+            const key		 = node.key;
+            const name		 = node.title;
+            var   _attr		 = '';
+	    const parent         = node.parent;
+	    const parentKey      = parent != null ? parent.key : null;
+
+            //Render Column #0
+            $tdList.eq(0).text(node.getIndexHier());
+
+	    //Render Column #1
+	    // unused checkBox by now
+
+            //Render Column #2
+	    //Fancy Tree Node
+	    let $tdList2    = $tdList.eq(2);
+	    //$customIcon = $tdList.eq(2).find("span").filter(".fancytree-custom-icon");
+	    let $customIcon = $tdList2.filter(".fancytree-custom-icon");
+	    //VALIDATION STATES - Bootstrap includes validation styles for error, warning, and success messages.
+	    //To use it, add .has-warning, .has-error, or .has-success to the parent element
+            // Jaune Eficas #ffff00, Rouge Eficas #ff0000, Vert  Eficas #00ff00
+	    $customIcon = $tdList.eq(2).find("span").filter(".fancytree-custom-icon");
+	    switch(validite) { //TODO : les deux attributs crées un dépacement du input du row
+	    case 1:
+		_attr='has-success has-feedback';
+		// $(".fancytree-exp-n > td:nth-child(2) span").filter(".fancytree-checkbox").css('background-color','blue')
+		//$tdList.eq(1).find("span").filter(".fancytree-checkbox").css('background-color','#00ff00'); // Update the checkbox validation state TODO: create a CSS class
+		$customIcon.css('color',EFI_SUCCESS_COLOR); // Update the checkbox validation state TODO: create a CSS class
+		break;
+	    case 0:
+		_attr='has-error has-feedback';
+		//$tdList.eq(1).css('background-color','red'); // Update the checkbox validation state TODO: create a CSS class
+		// $tdList.eq(1).find("span").filter(".fancytree-checkbox").css('background-color','#ff0000'); // Update the checkbox validation state TODO: create a CSS class
+		$customIcon.css('color',EFI_ERROR_COLOR); // Update the checkbox validation state TODO: create a CSS class
+		break;
+	    case 2:
+		_attr='has-warning has-feedback';
+		$customIcon.css('color',EFI_WARNING_COLOR); // Update the checkbox validation state TODO: create a CSS class
+		break;
+	    default:
+		alert("The validite value : |"+validite+"| is not in range [0-2]"); //TODO afficher la chaine messageClasses
+		// code block
+	    } //TODO: paramétrer l'attribut/framework
+            // console.log("node.data.validite, _attr :"+validite+" , "+_attr);
+	    
+ 
+            //Render Column #3 (input field)
+	    let $tdList3=$tdList.eq(3);
+            if ( classeAccas ==  "MCSIMP" ) {
+		//	$tdList.eq(3).html("<simp><input type='input' class='form-control-sm' id='simp1' placeholder='"+wValue+"' value='"+wValue+"'></simp>");
+
+		if (into == undefined ) {
+		    let html=
+			"<form>"+ 
+			"<div class='form-group'>" +
+			"<input type='input' class='form-control input-sm' required>"+
+			// "<div id='handsontable_"+key+"' />"+
+			"</div>"+
+			"</form>";
+		    $tdList3
+			.html(html)
+			.addClass(_attr)
+			.attr('id',key);
+		    let $input = $tdList3.find("input");
+		    $input.attr('placeholder',wValue) //TODO:intosugg
+			.attr('value',wValue)
+			.css('color','black');      //TODO : A placer ds le CSS
+		} else { //WITH INTO
+		    //TODO : GERER LA NAVIGATION CLAVIER
+		    // alert("SELECT ENTER");
+		    let selectFunction = "clickOnSelect(\""+treeCssSelStr+"\",\""+msgCssSelStr+ "\", \""+key+"\", \"select\")";
+		    //let selectFunction = "clickOnSelect(\""+treeCssSelStr+"\", \"#tree1-messages\", \""+key+"\", \"select\")";
+		    //let selectFunction = "alert(\"SELECT EVENT\");setTimeout(clickOnSelect(\"#tree1\", \"#tree1-messages\", \""+key+"\", \"select\"),50000)";
+		    // console.log("----AVANT html :------"+$tdList.eq(3).html());
+		    // console.log($tdList.eq(3).find("select").length);
+		    let html=
+			"<form>"+ 
+			  "<div class='form-group'>" +
+			    "<select class='form-control input-sm'></select>"+
+			  "</div>"+
+			"</form>";
+		    $tdList3
+			.html(html)
+			.addClass(_attr)
+			.attr('id',key);
+			//.find("select").val(wValue).css('color','black');
+		    //	$(node.tr).find("select").get(0).value=wValue;
+		    let $select    = $tdList3.find("select");
+		    let selectInto = into.map((cV) => { return "<option>"+cV+"</option>" }).join('');
+		    $select.html(selectInto)
+			.val(wValue)
+			.css('color','black')
+			.change( ()=>clickOnSelect(treeCssSelStr, msgCssSelStr, key, "select") );
+		    //			.find("select").val(wValue).css('color','black'); //TODO : A placer ds le CSS
+		    //  console.log("----APRES------"+$tdList.eq(3).html());
+
+		    //alert("SELECT EXIT");
+		}; //FIN WITH INTO
+		
+		    // const container = document.getElementById('handsontable_'+key);
+		    // const hot = new Handsontable(container, {
+		    // 	data: handsontable_data0,
+		    // 	colHeaders: false,
+		    // 	height: 'auto',
+		    // 	width: 'auto',
+		    // 	minSpareRows: 1,
+		    // 	licenseKey: 'non-commercial-and-evaluation'
+		    // });
+		    // hot.render();
+		    // hot.addHook('afterCreateRow', (row, amount) => {
+		    // 	console.log(`${amount} row(s) were created, starting at index ${row}`);
+		    // });
+				
+            }; // Not classeAccas ==  "MCSIMP"
+
+            if ( classeAccas ==  "OPERATEUR" ) {
+
+		// if (validite && (sdnom === undefined || sdnom == "") ) { //TODO : Mutualiser ailleurs
+		//     _attr='has-warning has-feedback';
+		//     $tdList.eq(2).find("span").filter(".fancytree-custom-icon").css('color','#ffff00'); // Update the checkbox validation state TODO: create a CSS class
+		// }
+		    
+		//VALIDATION STATES - Bootstrap includes validation styles for error, warning, and success messages.
+		//To use, add .has-warning, .has-error, or .has-success to the parent element
+		let html="<form>"+ 
+		    "<div class='form-group'>" +
+		    "<input type='input' class='form-control input-sm' required>"+
+		    "</div>"+
+		    "</form>";
+		$tdList3
+		    .html(html)
+		    .addClass(_attr)
+		    .attr('id',key);
+		let $input = $tdList3.find("input");
+		$input.attr('value',sdnom)
+		    .css('color','black');      //TODO : A placer ds le CSS
+				
+            }; // Not classeAccas ==  "OPERATEUR"
+
+
+
+	    //Render Column from #2 or #3 to #?+2 depending of the kind of classeAccas
+	    // WHATEVER IS THE CLASSEACCAS DEFINE THE THREE ICONS MANAGEMENT : +, Trash, ?
+
+	    let actionListIndex = 0;
+	    let plusFunction  = undefined;
+	    //trashFunction = "alert(\"glyphicon-trash : "+key+"\")";
+	    let trashFunction = "clickOnRemove( \""+treeCssSelStr+"\", \""+ msgCssSelStr +"\", \""+key+"\" )";
+	    //let trashFunction = "clickOnRemove( \""+treeCssSelStr+"\", \"#tree1-messages\", \""+key+"\" )";
+	    
+	    if ( classeAccas ==  "MCSIMP" || classeAccas ==  "OPERATEUR" ) {
+		actionListIndex = 4;              //TODO : Le paramétrer, dépend du colspan
+	    } else {
+		//$tdList.eq(2).prop("colspan", 2).nextAll().remove(); //Merge unused columns for easy keyboard navigation
+		$tdList.eq(2).prop("colspan", 2); //Merge unused columns for easy keyboard navigation
+		actionListIndex=3;                //TODO : Le paramétrer, dépend du colspan    
+	    }
+
+	    // Define plusFunction
+	    if ( classeAccas ==  "PROCEDURE" || classeAccas ==  "OPERATEUR" ) {
+		plusFunction  = "clickOnCommand( \""+treeCssSelStr+"\", \""+ msgCssSelStr+"\", \""+name+"\", \""+key+"\" )";
+	    } else if ( classeAccas ==  "MCFACT" ) {
+		if (repeatable) {
+		    plusFunction = "sendAppendChild(\""+treeCssSelStr+"\", \""+msgCssSelStr+"\", \""+parentKey+"\", \""+cmdName+"\",null)";
+		};
+	    };
+
+	    // Render the three icons
+	    if ( plusFunction != undefined ) {
+		$tdList.eq(actionListIndex)
+		    .html("<span class='glyphicon glyphicon-plus-sign' onclick='"+plusFunction+"'></span>");
+	    };
+	    if ( trashFunction != undefined ) {
+		if (statut == 'f') {
+		    $tdList.eq(actionListIndex+1)
+			.html("<span class='glyphicon glyphicon-trash' onclick='"+trashFunction+"'></span>");
+		};
+	    };
+	    $tdList.eq(actionListIndex+2)
+		.html("<span class='glyphicon glyphicon-question-sign' onclick='alert(\"glyphicon-question-sign : "+key+"\")'></span>");
+
+
+	    // OPTIONALS MANAGEMENT :
+	    
+	    // La souris entre dans un row :
+	    // cmdHasOptional:   Si mon topLevelParent (ma Commande) a       des facultatifs, le optTopLevelParent doit être le mien   // topLevelParent peut être moi
+	    // cmdHasNoOptional: Si mon topLevelParent (ma Commande) n'a pas de  facultatifs, le optTopLevelParent doit être vide      // topLevelParent peut être moi
+	    // If (cmdHasOptional): { displayAllOptUntilMyParent: L'arbre des facultatifs partant de mon topLevelParent jusqu'à mon parent doit d'afficher }
+
+	    //let optTree             = $.ui.fancytree.getTree("#Optionals");
+	    // let optTreeCommandName  = optTree.getFirstChild().title;
+	    // let parentCommandNode   = getParentCommandNode(node);
+	    // console.debug(parentCommandNode);
+	    //let parentCommandName   = parentCommandNode.name;
+
+
+	    $(node.tr).mouseenter(function(){
+		let optTreeSrc=buildOptionalTreeSrc(node);
+		let optFunction = "sendAppendChild(\""+treeCssSelStr+"\", \""+msgCssSelStr+"\", \""+key+"\", \""+cmdName+"\",null)";
+		let optTreeOptions = {
+		    glyph: glyph_opts,
+		    icon: function(event, data) { return efiIconRendering(event, data); },
+		    click:function(event, data) {
+			const targetType  = data.targetType;
+			const node        = data.node;
+			const title       = node.title ;
+			const parent      = node.parent;
+			const parentKey   = parent != null ? parent.key   : null;
+			// const parentTitle = parent != null ? parent.title : "" ;
+			if ( targetType == 'title' ) {
+
+			    //TODO : demander à Pascale de renvoyer l'id et non True ou False
+			    // const checkCallBack = function(data) {
+			    // 	console.log('TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTt');
+			    // 	// Tester data == NULL !
+			    // 	rId = data['id'];
+			    // 	if ( rId != 0 && rId != null ) {
+			    // 	    let addedNode = node.tree.getNodeByKey(rId);
+			    // 	    addedNode.setActive();
+			    // 	    addedNode.setExpanded();
+			    // 	};
+			    // };
+			    sendAppendChild(treeCssSelStr, msgCssSelStr, parentKey, title, null); //TODO : retun node and apply expanded
+			    //sendAppendChild( parentKey, title, null).done( (data)=>checkCallBack(data) );
+			    // tree.visit(function(node){
+			    // 	node.setExpanded(true);
+			    // });
+			};
+		    },
+		    source: optTreeSrc, };
+		//$("#bebe").text("---------"+optTreeSrc);
+		//console.debug('optTreeSrc :'+optTreeSrc);
+		// if ( optTreeSrc.length == 0 ) {
+		    let optTree     = $.ui.fancytree.getTree(treeCssSelStr+"Optionals");
+		    if (optTree != null) { optTree.destroy();};
+		// } else {
+		    // let $optTree   = $("#Optionals").fancytree( { source: optTreeSrc } );
+		    let $optTree   = $(treeCssSelStr+"Optionals").fancytree( optTreeOptions );
+		    //let optTree    = $optTree.fancytree;
+		    optTree    = $.ui.fancytree.getTree(treeCssSelStr+"Optionals");
+		    optTree.expandAll();
+		// };
+		
+	    });
+	    
+	    let hasOpt=function(node) {
+		if ( node == null )                         return false;
+		if ( node.data.infoOptionnels !== undefined &&
+		     node.data.infoOptionnels[0] !== undefined &&
+		     node.data.infoOptionnels[0].length > 0 )
+		    return true ; //TODO: Verif avec Pascale
+		return false;
+	    };
+	    
+	    let buildOptionalTreeSrc=function(node) {
+		if ( node == null ) return [];
+		let parentList = node.getParentList(false,hasOpt(node)); // default : (false,false)==(rootNode exclus, not self)
+		if ( parentList.length > 0 ) { parentList=parentList.slice(1);}; // The first node is the current dataset name node
+		// La construction des optionals en suivant les parents fonctionnent car les SIMP ne portent pas les optionnals
+		// [ {title: "Node 1"}, {title: "Folder 2", children: [ {title: "Node 2.1"}, {title: "Node 2.2"} ]} ]
+		// [ {title: "Node 1"} ] + [ {title: "Folder 2", children: [ {title: "Node 2.1"}, {title: "Node 2.2"} ]} ]
+
+		let _optToChild=function(optKeywords) {
+		    return  optKeywords.map((o)=>{ return {'title':o} });
+		};
+
+		let _build=function(parentList) {
+		    let optKeywords=null;
+		    if ( parentList.length == 0 ) return [];
+		    node = parentList[0];
+		    if (hasOpt(node))  {
+			optKeywords = node.data.infoOptionnels[0];
+		    } else {	
+			// optKeywords = [];
+			return [];
+		    };
+                    return [{"title"       : node.title,
+                             "key"         : node.key,
+                             "classeAccas" : node.data.classeAccas,
+                             "children"    : _optToChild(optKeywords).concat(_build(parentList.slice(1))) }];
+		};
+		return _build(parentList);
+	    };
+	    	    
+	},
+
+	// blur: function(event, data) {
+        //     console.log("------ event.type, data :"+event.type+" , "+data);
+	//     //TODO: Générer un event  defaultGridAction si le input a été modifié !
+	//     const widget  = data.widget
+	//     const node    = data.node
+	//     const tree    = data.node.tree
+	//     const options = data.options
+	//     //const e      = jQuery.Event("fancytreedefaultgridaction",data); //pas de sens
+	//     //$(node).trigger(e)
+	//     //$(widget).trigger(e)
+	//     //TODO : Je n'ai pas trouvé comment lancer un evenement pour qu'il soit pris en compte par fancytree
+	//     options.defaultGridAction(event,data)
+
+	//     // var e = jQuery.Event( "keydown", { keyCode: 64 } );
+	//     // $(tree1).trigger(e)
+	    
+	//     // $td = $(event.target).closest("td");
+	//     // $(event.target).is(":input")
+	    
+	// },
+	
+	//defaultGridAction: efiDefaultGridAction,
+	defaultGridAction: (event, data) => { return efiDefaultGridAction(treeCssSelStr, msgCssSelStr, event, data); },
+	lazyLoad: function(event, data) {
+            var node = data.node;
+            console.log("event.type, data :"+event.type+" , "+data);
+            // Issue an Ajax request to load child nodes
+            data.result = {
+		url: "/getBranchData",
+		data: {key: node.key}
+            }
+	},
+	activate: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	deactivate: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	beforeActivate: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	beforeSelect: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	activateCell: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	select: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	beforeUpdateViewport: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	click: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	blurTree: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	focusTree: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	keydown: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	// renderColumns: function(event, data) {
+        //     console.log("event.type, data :"+event.type+" , "+data);
+	// },
+	renderStatusColumns: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+	renderNode: function(event, data) {
+            console.log("event.type, data :"+event.type+" , "+data);
+	},
+    };
+};
+    
+
+function efiDefaultGridAction(treeCssSelStr, msgCssSelStr, event, data) { //(used by ext-aria) The user hit enter on the active row or cell.
+
+    const tree        = $.ui.fancytree.getTree(treeCssSelStr); //TODO : Une fonction pour récupérer le tree en paramètre soit par css ou objet
+    //var   node = null;
+    if ( tree ==  null) {
+	let message = "Unsuccessfull efiDefaultGridAction tree selection ("+treeCssSelStr+") returned (null)";
+	alert(message);
+	return;
+    };
+    const _rootNode = tree.rootNode.children[0];
+    const _eId=_rootNode.data.eId;
+    
+    const node = data.node
+    // var   rValue,rValidite,rChangeIsAccepted
+    console.log("event.type, data :"+event.type+" , "+data);
+    
+    let $input=$(node.tr).find('input');
+    let value=$input.val();
+
+    // Called when ENTER is pressed in cell-mode.
+    // Return false to prevent default
+    // data.activeTd contains the currently active <td> element or null
+    // data.colIdx   contains the 0-based column index or -1
+    if( !data.activeTd ) {
+	alert( "Custom default action for row: " + data.node.title );
+	// we don't return false, so default action is applied:
+    } else if ( data.colIdx != 3 ) {
+	// eslint-disable-next-line no-alert
+	alert( "Custom default action: " + data.node.title );
+	return false;
+    };
+    
+    if (node.data.classeAccas == "MCSIMP") {
+	sendUpdateSimp(treeCssSelStr, msgCssSelStr, node, 'input');
+
+	// let checkCallBack = function(data) {
+	//     // Tester data == NULL !
+        //     const changeIsAccepted = data.changeIsAccepted;
+        //     const wValue           = data.source['wValue'];
+        //     const validite         = data.source['validite'];
+	//     const rMessage         = data.message
+
+	//     //node.fromDict()
+	//     //source=JSON.parse(getTree1())
+	//     if ( changeIsAccepted ) {
+	// 	// Il faudrait gérer les représentations des types pour activer cet assert (ex: string vs int)
+	// 	//  or on laisse le kernel eficas vérifier des strings.
+	// 	// $.ui.fancytree.assert(value == wValue);
+	// 	node.data.wValue   = wValue
+	// 	node.data.validite = validite
+	// 	let message = "Changing SIMP "+node.title+" value to "+value+" has been accepted ("+rMessage+")";
+	// 	treeMessage(_msgCssSelStr,"alert-success",message);
+	// 	//node.data        = data.source ?? A priori, il est inutile d'essayer de remplacer la source complète du noeud  
+	// 	console.log('wValue    : '+wValue);
+	// 	console.log('validite  : '+validite);
+	//     } else {
+	// 	// Gérer le input pour laisser le focus et passer en rouge
+	// 	let message = "Unsuccessfull SIMP processing for |" + node.getPath() + "|, value |"+value+"| has not been accepted ("+rMessage+")";
+	// 	treeMessage(_msgCssSelStr,"alert-warning",message) ;
+	//     };
+	//     node.render(true,false);  //force rendering the node (not parents nor descendants)
+	//     //node.renderStatus();    //CSS element updates
+	// };
+	
+	// //callService('updateSimp', {id: node.key, value:value }, checkCallBack);
+	// callService('updateSimp', {id: node.key, value:value } ).done( (data)=>checkCallBack(data) );
+
+	
+    } // MCSIMP
+
+    if (node.data.classeAccas == "OPERATEUR") {
+	
+	let checkCallBack = function(data) { //TODO: L'implémentation de ce callback diverge de celui plus haut.
+	    // Tester data == NULL !
+            var   changeIsAccepted = data.changeIsAccepted
+	    const rMessage         = data.message
+
+	    if ( changeIsAccepted ) {
+		node.data.sdnom    = value
+		node.data.validite = 1
+		let message = "Changing OPERATOR "+node.title+" sdnom to |"+value+"| has been accepted ("+rMessage+")";
+		treeMessage(msgCssSelStr,"alert-success",message);
+		//node.data        = data.source ?? A priori, il est inutile d'essayer de remplacer la source complète du noeud  
+		console.log('sdnom    : '+value);
+	    } else {
+		// Gérer le input pour laisser le focus et passer en rouge
+		let message = "Unsuccessfull OPERATOR processing for |" + node.getPath() + "|, sdnom |"+value+"| has not been accepted ("+rMessage+")";
+		treeMessage(msgCssSelStr,"alert-warning",message) ;
+	    };
+	    node.render(true,false);  //force rendering the node (not parents nor descendants)
+	    //node.renderStatus();    //CSS element updates
+	};
+	
+	callService(msgCssSelStr, 'updateSDName', {eId:_eId, id: node.key, sdnom:value } ).done( (data)=>checkCallBack(data) );
+
+    } // FIN OPERATEUR
+
+};
+
+         <!-- var $searchableTree = $('#tree1').treeview({ -->
+         <!-- data: getTree1() -->
+         <!-- }); -->
+
+         <!-- var search = function(e) { -->
+         <!--   var pattern = $('#input-search').val(); -->
+         <!--   var options = { -->
+         <!--     ignoreCase: $('#chk-ignore-case').is(':checked'), -->
+         <!--     exactMatch: $('#chk-exact-match').is(':checked'), -->
+         <!--     revealResults: $('#chk-reveal-results').is(':checked') -->
+         <!--   }; -->
+         <!--   var results = $searchableTree.treeview('search', [ pattern, options ]); -->
+  
+         <!--   var output = '<p>' + results.length + ' matches found</p>'; -->
+         <!--   $.each(results, function (index, result) { -->
+         <!--   output += '<p>- ' + result.text + '</p>'; -->
+         <!--   }); -->
+         <!--   $('#search-output').html(output); -->
+         <!-- } -->
+
+         <!-- $('#btn-search').on('click', search); -->
+         <!-- $('#input-search').on('keyup', search); -->
+
+         <!-- $('#btn-clear-search').on('click', function (e) { -->
+         <!--   $searchableTree.treeview('clearSearch'); -->
+         <!--   $('#input-search').val(''); -->
+         <!--   $('#search-output').html(''); -->
+         <!-- }); -->
+	 
+    </script>
+
+    <!-- <script src="myscript.js"></script> -->
+
+{% endblock %}
+
+
+
+
+
+
+// # Différents tests :
+
+// var tree1=$.ui.fancytree.getTree("#tree1")
+// a={ source: [ {title: "Node 1", key: "1000"},{title: "Folder 2", key: "2", folder: true, children: [ {title: "Node 2.1", key: "3000"},{title: "Node 2.2", key: "44"} ]}    ], }
+// $("#Optionals").fancytree( a )
+// ou
+// $.ui.fancytree.createTree('#Optionals', a)
+
+// var tree2=$.ui.fancytree.getTree("#Optionals")
+// b=tree2.toDict()
+// $("#bebe").fancytree( { source: b} )
+// $("#bebe").fancytree( { source: tree1.toDict()} )
+// classeAccas ==  "MCSIMP"
+// p1=tree1.getNodeByKey("f819c96ebfbc11ec8ad0ace2d37200a0")
+// let myOpt=[}
+// p1.visit( (n)=>{if (n.data.classeAccas ==  "MCSIMP") {myOpt.push(n)}}, true)
+// ------
+
+// var tree1=$.ui.fancytree.getTree("#tree1")
+// p1=tree1.getNodeByKey("721bcb347adc11ec8c2a64c901d49bcd")
+// opt=p1.data.infoOptionnels[0]
+
+// var optNodes= opt.map((o)=>{return {'title':o} })
+// optTreeSrc=[{'title': p1.title+' (optionals)', 'children': optNodes}];
+// $optTree=$("#bebe").fancytree( { source: optTreeSrc} )
+// optTree=$optTree.fancytree()
+// #var optTree=$.ui.fancytree.getTree("#bebe")
+// optTree.expandAll()
+
+//TRICKS :
+// Tester si un objet existe :
+// if (typeof myObj !== "undefined" && myObj !== null)  
+
+
+
+
+// // let findName(treeObj,name){ return treeObj.findFirst((n)=>{if (n.title==name) {return n}}) };
+// $(node.tr).mouseenter(function(){
+// 	if ( optTree != null) {
+// 	    if (  name != optTree.getFirstChild().title ) {
+// 		if ( infoOptionnels != undefined) {
+// 		    console.log("You entered p1! : "+node.title+" , "+infoOptionnels.toString());
+// 		    let opt        = node.data.infoOptionnels[0];
+// 		    if ( opt != [] ) {
+// 			let optNodes   = opt.map((o)=>{return {'title':o} });
+// 			let optTreeSrc = [{'title': node.title, 'children': optNodes}];
+// 			let $optTree   = $("#Optionals").fancytree( { source: optTreeSrc} );
+// 			//let optTree    = $optTree.fancytree;
+// 			let optTree    = $.ui.fancytree.getTree("#Optionals");
+// 			optTree.expandAll();
+// 		    };
+// 		} else {}; // infoOptionnels == undefined
+// 	    } else { 
+// 	    };
+// 	} else { //optTree not null
+// 	};
+// });
+// // $(node.tr).mouseleave(function(){
+// // 	console.log("You leave   p1! : "+node.title+" , infoOptionnels : ",infoOptionnels.toString());
+// // });
+

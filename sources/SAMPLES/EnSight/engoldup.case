@@ -1,0 +1,42 @@
+# 
+# Thu Dec 23 14:11:24 1999
+# EnSight 7.0.1 ((a))
+# Case File: engoldup.case
+
+FORMAT
+
+type:  ensight gold
+
+GEOMETRY
+
+model:                       engold.geo
+
+VARIABLE
+
+constant per case:           Cden 0.8
+
+scalar per element:          Esca engold.Esca
+scalar per node:             Nsca engold.Nsca
+
+vector per element:          Evec engold.Evec
+vector per node:             Nvec engold.Nvec
+
+tensor symm per element:     Eten engold.Eten
+tensor symm per node:        Nten engold.Nten
+
+complex scalar per element:  Ecmp engold.Ecmp_r engold.Ecmp_i 2
+complex scalar per node:     Ncmp engold.Ncmp_r engold.Ncmp_i 4
+
+#
+# Undefined scalars
+#
+
+scalar per element:          Esca_undef engold.Esca_u
+scalar per node:             Nsca_undef engold.Nsca_u
+
+#
+# Partial scalars
+#
+
+scalar per element:          Esca_partial engold.Esca_p
+scalar per node:             Nsca_partial engold.Nsca_p

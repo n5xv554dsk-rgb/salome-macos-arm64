@@ -1,0 +1,17 @@
+/*!
+
+\page tui_blocks_operations_page Blocks Operations
+
+\anchor tui_multi_transformation
+<br><h2>Multi Transformation</h2>
+\tui_script{blocks_operations_ex01.py}
+
+\anchor tui_explode_on_blocks
+<br><h2>Explode on Blocks</h2>
+\tui_script{blocks_operations_ex02.py}
+
+\anchor tui_propagate
+<br><h2>Propagate</h2>
+\tui_script{blocks_operations_ex03.py}
+
+*/

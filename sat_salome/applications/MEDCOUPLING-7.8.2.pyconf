@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+APPLICATION :
+{
+    name : 'MEDCOUPLING-7.8.2'
+    workdir : $LOCAL.workdir + $VARS.sep + $APPLICATION.name + '-' + $VARS.dist
+    tag : 'V7_8_0'
+    base : 'no'
+    debug : 'no'
+    environ :
+    {
+    }
+    products :
+    {
+        # PREREQUISITES :
+
+        Python : '2.7.16'
+        boost : '1.58.0'
+        hdf5 : '1.8.14'
+        swig : '2.0.8'
+        medfile : '3.2.0'
+        doxygen : '1.8.14'
+        graphviz : '2.38.0'
+        libxml2 : '2.9.0'
+        cppunit : '1.12.1'
+        Sphinx : '1.2.3'
+        setuptools : '0.6c11'
+        numpy : '1.9.2'
+        scipy : '0.15.1'
+        lapack : '3.5.0'
+        cmake : '3.5.2'
+        Pygments : '2.0.2'
+        Jinja2 : '2.7.3'
+        docutils : '0.12'
+        markupsafe : '0.23'
+        'MEDCOUPLING' : {section: 'version_V7_8_0', tag : 'V7_8_2'}
+    }
+    test_base : 
+    {
+        name : "SALOME"
+        tag : "7.8.0"
+    }
+}
+
+__overwrite__ :
+[
+    {
+        __condition__ : "VARS.dist in ['CO8']"
+        'APPLICATION.products.MEDCOUPLING' : {tag:'V7_8_2', base : 'no', section: 'version_V7_8_2_CO8'}
+    }
+]

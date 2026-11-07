@@ -1,0 +1,82 @@
+<!--
+  Copyright (C) 2006-2026  CEA/DEN, EDF R&D
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+-->
+<proc>
+    <!--types -->
+    <objref name="Obj" id="IDL:eo/Obj:1.0"/>
+    <objref name="eo/C" >
+      <base>Obj</base>
+    </objref>
+    <sequence name="objvec" content="Obj"/>
+
+    <!--nodes -->
+
+    <service name="corba0" >
+      <ref>corbaname:rir:#test.my_context/Echo.Object</ref>
+      <method>echoObj2</method>
+      <inport name="p1" type="Obj"/>
+      <outport name="p1" type="Obj"/>
+    </service>
+
+    <service name="corba1" >
+      <ref>corbaname:rir:#test.my_context/Echo.Object</ref>
+      <method>createC</method>
+      <outport name="p1" type="eo/C"/>
+    </service>
+
+    <inline name="pyth0" >
+      <script>
+        <code>print("p1",p1)</code>
+        <code>print("p2",p2)</code>
+        <code>p1=[p1,p2,p2,p1]</code>
+      </script>
+      <inport name="p1" type="Obj"/>
+      <inport name="p2" type="eo/C"/>
+      <outport name="p1" type="objvec"/>
+    </inline>
+
+    <service name="corba2" >
+      <ref>corbaname:rir:#test.my_context/Echo.Object</ref>
+      <method>echoObjVec</method>
+      <inport name="p1" type="objvec"/>
+      <outport name="p1" type="objvec"/>
+    </service>
+
+    <!--parameters -->
+    <parameter>
+        <tonode>corba0</tonode> <toport>p1</toport>
+        <value><objref>corbaname:rir:#test.my_context/Obj.Object</objref></value>
+    </parameter>
+
+    <!--datalinks -->
+    <datalink>
+      <fromnode>corba0</fromnode><fromport>p1</fromport>
+      <tonode>pyth0</tonode> <toport>p1</toport>
+    </datalink>
+    <datalink>
+      <fromnode>corba1</fromnode><fromport>p1</fromport>
+      <tonode>pyth0</tonode> <toport>p2</toport>
+    </datalink>
+    <datalink>
+      <fromnode>pyth0</fromnode><fromport>p1</fromport>
+      <tonode>corba2</tonode> <toport>p1</toport>
+    </datalink>
+
+</proc>

@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Vimmp"
+xmlns:Vimmp="http://chercheurs.edf.com/logiciels/Vimmp"
+targetNamespace="http://chercheurs.edf.com/logiciels/Vimmp"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="T_Title">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Initial_Time">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Duration">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Shape">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Simplified Shape"/>
+			<xs:enumeration value="CAD or Mesh"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Box">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cube"/>
+			<xs:enumeration value="Sphere"/>
+			<xs:enumeration value="Cylinder"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Size_Of_Bounding_Box">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:float">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Center">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:float">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+			<xs:maxLength value = "3"/>
+			<xs:minLength value = "3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Heigth">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Radius">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_FileFormat">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="txt"/>
+			<xs:enumeration value="med"/>
+			<xs:enumeration value="I-deas"/>
+			<xs:enumeration value="Gmsh"/>
+			<xs:enumeration value="top"/>
+			<xs:enumeration value="others"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_FileName">
+			<xs:union>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+			</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="T_SurfaceName">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_General_Level_Of_Description">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Microscopic"/>
+			<xs:enumeration value="Mesoscopic"/>
+			<xs:enumeration value="Macroscopic"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Component">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Quantum System"/>
+			<xs:enumeration value="Classical_Particle System"/>
+			<xs:enumeration value="Continuum Sytem"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Number_Of_Species">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Name_Of_Specie">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Mass_Molaire">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Mass_Fraction">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Number_of_Particle">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value = "1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Charge">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Name_Of_Bonded_Particles">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Species_in_Particle">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+			<xs:minLength value = "2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Bonded_Interaction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="No"/>
+			<xs:enumeration value="Covalent Bond Length"/>
+			<xs:enumeration value="FENE"/>
+			<xs:enumeration value="Covalent Bond Angle"/>
+			<xs:enumeration value="Dihedral Angles"/>
+			<xs:enumeration value="Improper Dihedral"/>
+			<xs:enumeration value="Frozen Motion"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Apply_To_Bonded_Particles">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Spring_Stifness">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Mean_Bond_Length">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Mean_Bond_Angle">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Applies_To_All_Particles">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Species_Pair">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+			<xs:maxLength value = "2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Spring_Constant_H">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_LMax">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Particle_Name">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Unbonded_Interaction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="No"/>
+			<xs:enumeration value="electro_magnetic"/>
+			<xs:enumeration value="Repulsion_and_VdW"/>
+			<xs:enumeration value="Soft_Potentiel"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Permittivity">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Magnetic">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Permability">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Repulsion_and_VdW">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Lennard_Jones"/>
+			<xs:enumeration value="Hard_sphere_model"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_VdW_Radius">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Depth_Of_The_Potential_Well">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Groot_Warren_Repulsion">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Groot_Warren_Cutoff">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Drag_Coefficient">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Drag_Force_Cutoff">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Interaction_With_An_External_Field">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="No"/>
+			<xs:enumeration value="gravitational field"/>
+			<xs:enumeration value="electric field"/>
+			<xs:enumeration value="magnetic field"/>
+			<xs:enumeration value="Hydrodynamic_Field"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_G">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Input_Mode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="uniform value"/>
+			<xs:enumeration value="values directly assigned"/>
+			<xs:enumeration value="values read in file"/>
+			<xs:enumeration value="analytical function"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_E">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Field">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:float">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Format">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="txt"/>
+			<xs:enumeration value="Med"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_File">
+			<xs:union>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+			</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="T_FieldName">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Function">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_B">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_File_1">
+			<xs:union>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+			</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="T_U">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_File_2">
+			<xs:union>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+			</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="T_Field_Applies_On_All_Species">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Species_List">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Statistical_Physics">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="No"/>
+			<xs:enumeration value="Equilibrium"/>
+			<xs:enumeration value="Non_Equilibrium"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Distribution">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="nvt"/>
+			<xs:enumeration value="nve"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Target_Temperature">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Target_Energie">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Non_Equilibrium_Driving_Force">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Temperature"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Imposed_Temperature">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Applied_On_Surface">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Representation_Type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Particle_Representation"/>
+			<xs:enumeration value="Field_Representation"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Entity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Electron"/>
+			<xs:enumeration value="Atom"/>
+			<xs:enumeration value="Grain"/>
+			<xs:enumeration value="CVE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_State_Vector">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Position"/>
+			<xs:enumeration value="Kinetic"/>
+			<xs:enumeration value="Extended_Kinetic"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Angular_Velocity">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Numerical_Model">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="DPD"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Numerical_Model_DPD">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DPD"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Structure_Of_The_Evolution_Law">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Newton equations"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Of_Boundary_Condition">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Inlet"/>
+			<xs:enumeration value="Outlet"/>
+			<xs:enumeration value="Symmetry"/>
+			<xs:enumeration value="Periodic"/>
+			<xs:enumeration value="Wall"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Direction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="X"/>
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="Z"/>
+			<xs:enumeration value="XYZ"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Boundary_Face">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Apply_to_Wich_Quantity">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Mass FLux"/>
+			<xs:enumeration value="Velocity"/>
+			<xs:enumeration value="Temperature"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Formulation_of_Boundary">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Dirichlet"/>
+			<xs:enumeration value="Neumann"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Value">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Applies_To_The_Complete_State_Vector">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_State_Vector_Variable">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Type_Initials_Conditions">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Initial distribution of the state vector"/>
+			<xs:enumeration value="Initial values of the state vector variables"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_State_Vector_Initial_Distribution">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MaxWell"/>
+			<xs:enumeration value="Uniform"/>
+			<xs:enumeration value="Auto"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Injection_Subdomain">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_File_Vecteur_Etat_Initial">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Format_File_Vecteur_Etat_Initial">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="txt"/>
+			<xs:enumeration value="a definir avec Eric"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="T_Simulated_Time_Lapse" >
+		<xs:sequence>
+			<xs:element name="Initial_Time" type="Vimmp:T_Initial_Time" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Duration" type="Vimmp:T_Duration" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Cube">   
+		<xs:sequence>
+			<xs:element name="Size_Of_Bounding_Box" type="Vimmp:T_Size_Of_Bounding_Box" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Boule">   
+		<xs:sequence>
+			<xs:element name="Center" type="Vimmp:T_Center" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Cylinder">   
+		<xs:sequence>
+			<xs:element name="Heigth" type="Vimmp:T_Heigth" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Boule_ou_Cylinder">   
+		<xs:sequence>
+			<xs:element name="Radius" type="Vimmp:T_Radius" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Shape">   
+		<xs:sequence>
+			<xs:element name="Box" type="Vimmp:T_Box" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Cube"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Boule"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Cylinder"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Boule_ou_Cylinder"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_format_fichiertxt_b_format_fichier_others_1">
+		<xs:sequence>
+			<xs:element name="FileName" type="Vimmp:T_FileName" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_CAO">   
+		<xs:sequence>
+			<xs:element name="FileFormat" type="Vimmp:T_FileFormat" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_format_fichiertxt_b_format_fichier_others_1"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Surface" >
+		<xs:sequence>
+			<xs:element name="SurfaceName" type="Vimmp:T_SurfaceName" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Geometric_Domain" >
+		<xs:sequence>
+			<xs:element name="Shape" type="Vimmp:T_Shape" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Shape"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_CAO"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Surface" type="Vimmp:T_Surface" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Electrostatique">   
+		<xs:sequence>
+			<xs:element name="Charge" type="Vimmp:T_Charge" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Specie" >
+		<xs:sequence>
+			<xs:element name="Name_Of_Specie" type="Vimmp:T_Name_Of_Specie" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Mass_Molaire" type="Vimmp:T_Mass_Molaire" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Mass_Fraction" type="Vimmp:T_Mass_Fraction" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Number_of_Particle" type="Vimmp:T_Number_of_Particle" minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Electrostatique"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_List_Of_Species" >
+		<xs:sequence>
+			<xs:element name="Number_Of_Species" type="Vimmp:T_Number_Of_Species" minOccurs="1" maxOccurs="1" default="1"/>
+			<xs:element name="Specie" type="Vimmp:T_Specie" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Bonded_Particles" >
+		<xs:sequence>
+			<xs:element name="Name_Of_Bonded_Particles" type="Vimmp:T_Name_Of_Bonded_Particles" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Species_in_Particle" type="Vimmp:T_Species_in_Particle" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_List_Of_Bonded_Particles" >
+		<xs:sequence>
+			<xs:element name="Bonded_Particles" type="Vimmp:T_Bonded_Particles" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Interaction_Length_Parameters" >
+		<xs:sequence>
+			<xs:element name="Apply_To_Bonded_Particles" type="Vimmp:T_Apply_To_Bonded_Particles" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Spring_Stifness" type="Vimmp:T_Spring_Stifness" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Mean_Bond_Length" type="Vimmp:T_Mean_Bond_Length" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_bloc_covalent_length">   
+		<xs:sequence>
+			<xs:element name="Interaction_Length_Parameters" type="Vimmp:T_Interaction_Length_Parameters" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Interaction_Angles_Parameters" >
+		<xs:sequence>
+			<xs:element name="Apply_To_Bonded_Particles" type="Vimmp:T_Apply_To_Bonded_Particles" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Spring_Stifness" type="Vimmp:T_Spring_Stifness" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Mean_Bond_Angle" type="Vimmp:T_Mean_Bond_Angle" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_bloc_covalent_angle">   
+		<xs:sequence>
+			<xs:element name="Interaction_Angles_Parameters" type="Vimmp:T_Interaction_Angles_Parameters" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_FENE_Parameters" >
+		<xs:sequence>
+			<xs:element name="Species_Pair" type="Vimmp:T_Species_Pair" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Spring_Constant_H" type="Vimmp:T_Spring_Constant_H" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="LMax" type="Vimmp:T_LMax" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_bloc_not_on_all">   
+		<xs:sequence>
+			<xs:element name="FENE_Parameters" type="Vimmp:T_FENE_Parameters" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_bloc_on_all">   
+		<xs:sequence>
+			<xs:element name="Spring_Constant_H" type="Vimmp:T_Spring_Constant_H" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="LMax" type="Vimmp:T_LMax" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_bloc_FENE">   
+		<xs:sequence>
+			<xs:element name="Applies_To_All_Particles" type="Vimmp:T_Applies_To_All_Particles" minOccurs="1" maxOccurs="1" default="true"/>
+			<xs:group ref="Vimmp:T_bloc_not_on_all"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_on_all"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_bloc_le_reste">   
+		<xs:sequence>
+			<xs:element name="Particle_Name" type="Vimmp:T_Particle_Name" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Bonded_Interactions" >
+		<xs:sequence>
+			<xs:element name="Type_Of_Bonded_Interaction" type="Vimmp:T_Type_Of_Bonded_Interaction" minOccurs="1" maxOccurs="1" default="No"/>
+			<xs:group ref="Vimmp:T_bloc_covalent_length"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_covalent_angle"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_FENE"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_le_reste"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_bloc_magnetic">   
+		<xs:sequence>
+			<xs:element name="Permability" type="Vimmp:T_Permability" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_bloc_elec">   
+		<xs:sequence>
+			<xs:element name="Permittivity" type="Vimmp:T_Permittivity" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Magnetic" type="Vimmp:T_Magnetic" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_magnetic"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Lennard">   
+		<xs:sequence>
+			<xs:element name="Depth_Of_The_Potential_Well" type="Vimmp:T_Depth_Of_The_Potential_Well" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Species_Pair_Parameters" >
+		<xs:sequence>
+			<xs:element name="Type_Repulsion_and_VdW" type="Vimmp:T_Type_Repulsion_and_VdW" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Species_Pair" type="Vimmp:T_Species_Pair" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="VdW_Radius" type="Vimmp:T_VdW_Radius" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Lennard"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_bloc_VdW">   
+		<xs:sequence>
+			<xs:element name="Species_Pair_Parameters" type="Vimmp:T_Species_Pair_Parameters" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Param_Soft_Potentiel">   
+		<xs:sequence>
+			<xs:element name="Groot_Warren_Repulsion" type="Vimmp:T_Groot_Warren_Repulsion" minOccurs="1" maxOccurs="1" default="25.0"/>
+			<xs:element name="Groot_Warren_Cutoff" type="Vimmp:T_Groot_Warren_Cutoff" minOccurs="1" maxOccurs="1" default="1.0"/>
+			<xs:element name="Drag_Coefficient" type="Vimmp:T_Drag_Coefficient" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Drag_Force_Cutoff" type="Vimmp:T_Drag_Force_Cutoff" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Unbonded_Interactions" >
+		<xs:sequence>
+			<xs:element name="Type_Of_Unbonded_Interaction" type="Vimmp:T_Type_Of_Unbonded_Interaction" minOccurs="1" maxOccurs="1" default="No"/>
+			<xs:group ref="Vimmp:T_bloc_elec"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_bloc_VdW"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Param_Soft_Potentiel"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_gravite">   
+		<xs:sequence>
+			<xs:element name="G" type="Vimmp:T_G" minOccurs="1" maxOccurs="1" default="9.81"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_uniforme">   
+		<xs:sequence>
+			<xs:element name="E" type="Vimmp:T_E" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_vsaisies">   
+		<xs:sequence>
+			<xs:element name="Field" type="Vimmp:T_Field" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_td_txt_td_med_1_15">
+		<xs:sequence>
+			<xs:element name="File" type="Vimmp:T_File" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_td_med_2">   
+		<xs:sequence>
+			<xs:element name="FieldName" type="Vimmp:T_FieldName" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_vdsfich">   
+		<xs:sequence>
+			<xs:element name="Format" type="Vimmp:T_Format" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_txt_td_med_1_15"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_med_2"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_vfct">   
+		<xs:sequence>
+			<xs:element name="Function" type="Vimmp:T_Function" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Electric_Field" >
+		<xs:sequence>
+			<xs:element name="Input_Mode" type="Vimmp:T_Input_Mode" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_uniforme"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vsaisies"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vdsfich"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vfct"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_elect">   
+		<xs:sequence>
+			<xs:element name="Electric_Field" type="Vimmp:T_Electric_Field" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_uniforme_1">   
+		<xs:sequence>
+			<xs:element name="B" type="Vimmp:T_B" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_td_txt_td_med_1_16">
+		<xs:sequence>
+			<xs:element name="File" type="Vimmp:T_File_1" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_vdsfich_1">   
+		<xs:sequence>
+			<xs:element name="Format" type="Vimmp:T_Format" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_txt_td_med_1_16"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_med_2"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Magnetic_Field" >
+		<xs:sequence>
+			<xs:element name="Input_Mode" type="Vimmp:T_Input_Mode" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_uniforme_1"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vsaisies"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vdsfich_1"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vfct"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_magnetic">   
+		<xs:sequence>
+			<xs:element name="Magnetic_Field" type="Vimmp:T_Magnetic_Field" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_uniforme_2">   
+		<xs:sequence>
+			<xs:element name="U" type="Vimmp:T_U" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_td_txt_td_med_1_17">
+		<xs:sequence>
+			<xs:element name="File" type="Vimmp:T_File_2" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_vdsfich_2">   
+		<xs:sequence>
+			<xs:element name="Format" type="Vimmp:T_Format" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_txt_td_med_1_17"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_td_med_2"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Hydrodynamic_Field" >
+		<xs:sequence>
+			<xs:element name="Input_Mode" type="Vimmp:T_Input_Mode" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_uniforme_2"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vsaisies"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vdsfich_2"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_vfct"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_hydrodynamic">   
+		<xs:sequence>
+			<xs:element name="Hydrodynamic_Field" type="Vimmp:T_Hydrodynamic_Field" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_porte_espece">   
+		<xs:sequence>
+			<xs:element name="Species_List" type="Vimmp:T_Species_List" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_External_Field_Interaction">   
+		<xs:sequence>
+			<xs:element name="Field_Applies_On_All_Species" type="Vimmp:T_Field_Applies_On_All_Species" minOccurs="1" maxOccurs="1" default="true"/>
+			<xs:group ref="Vimmp:T_b_porte_espece"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_External_Field_Interaction" >
+		<xs:sequence>
+			<xs:element name="Type_Of_Interaction_With_An_External_Field" type="Vimmp:T_Type_Of_Interaction_With_An_External_Field" minOccurs="1" maxOccurs="1" default="No"/>
+			<xs:group ref="Vimmp:T_b_gravite"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_elect"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_magnetic"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_hydrodynamic"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_External_Field_Interaction"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_List_Of_Interactions" >
+		<xs:sequence>
+			<xs:element name="Bonded_Interactions" type="Vimmp:T_Bonded_Interactions" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Unbonded_Interactions" type="Vimmp:T_Unbonded_Interactions" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="External_Field_Interaction" type="Vimmp:T_External_Field_Interaction" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_nvt">   
+		<xs:sequence>
+			<xs:element name="Target_Temperature" type="Vimmp:T_Target_Temperature" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_nve">   
+		<xs:sequence>
+			<xs:element name="Target_Energie" type="Vimmp:T_Target_Energie" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Statistical_Physics_Equilibrium">   
+		<xs:sequence>
+			<xs:element name="Distribution" type="Vimmp:T_Distribution" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_nvt"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_nve"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Imposed_non_isothermal" >
+		<xs:sequence>
+			<xs:element name="Imposed_Temperature" type="Vimmp:T_Imposed_Temperature" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Applied_On_Surface" type="Vimmp:T_Applied_On_Surface" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Statistical_Physics_Equilibrium_false">   
+		<xs:sequence>
+			<xs:element name="Non_Equilibrium_Driving_Force" type="Vimmp:T_Non_Equilibrium_Driving_Force" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Imposed_non_isothermal" type="Vimmp:T_Imposed_non_isothermal" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Statistical_Physics" >
+		<xs:sequence>
+			<xs:element name="Type_Of_Statistical_Physics" type="Vimmp:T_Type_Of_Statistical_Physics" minOccurs="1" maxOccurs="1" default="No"/>
+			<xs:group ref="Vimmp:T_b_Statistical_Physics_Equilibrium"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Statistical_Physics_Equilibrium_false"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Physical_Description_Particle" >
+		<xs:sequence>
+			<xs:element name="List_Of_Species" type="Vimmp:T_List_Of_Species" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="List_Of_Bonded_Particles" type="Vimmp:T_List_Of_Bonded_Particles" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="List_Of_Interactions" type="Vimmp:T_List_Of_Interactions" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Statistical_Physics" type="Vimmp:T_Statistical_Physics" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Extended_Kinetic">   
+		<xs:sequence>
+			<xs:element name="Angular_Velocity" type="Vimmp:T_Angular_Velocity" minOccurs="1" maxOccurs="1" default="true"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Numerical_Particle_Model" >
+		<xs:sequence>
+			<xs:element name="Type_Of_State_Vector" type="Vimmp:T_Type_Of_State_Vector" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Extended_Kinetic"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_State_Vector_Kinetic">   
+		<xs:sequence>
+			<xs:element name="Numerical_Model" type="Vimmp:T_Numerical_Model" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_State_Vector_Extanded_Kinetic">   
+		<xs:sequence>
+			<xs:element name="Numerical_Model_DPD" type="Vimmp:T_Numerical_Model_DPD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Definition_Numerical_Model" >
+		<xs:sequence>
+			<xs:group ref="Vimmp:T_b_State_Vector_Kinetic"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_State_Vector_Extanded_Kinetic"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Structure_Of_The_Evolution_Law" type="Vimmp:T_Structure_Of_The_Evolution_Law" minOccurs="1" maxOccurs="1" default="Newton equations"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_repr_particle">   
+		<xs:sequence>
+			<xs:element name="Numerical_Particle_Model" type="Vimmp:T_Numerical_Particle_Model" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Definition_Numerical_Model" type="Vimmp:T_Definition_Numerical_Model" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Particle_Representation" >
+		<xs:sequence>
+			<xs:element name="Representation_Type" type="Vimmp:T_Representation_Type" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Type_Of_Entity" type="Vimmp:T_Type_Of_Entity" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_repr_particle"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_component_particle">   
+		<xs:sequence>
+			<xs:element name="Physical_Description_Particle" type="Vimmp:T_Physical_Description_Particle" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Particle_Representation" type="Vimmp:T_Particle_Representation" minOccurs="1" maxOccurs="2"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_System_Component" >
+		<xs:sequence>
+			<xs:element name="General_Level_Of_Description" type="Vimmp:T_General_Level_Of_Description" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Component" type="Vimmp:T_Component" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_component_particle"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_periodique">   
+		<xs:sequence>
+			<xs:element name="Direction" type="Vimmp:T_Direction" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_Formulation_of_Boundary_dirichlet">   
+		<xs:sequence>
+			<xs:element name="Value" type="Vimmp:T_Value" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_non_periodique">   
+		<xs:sequence>
+			<xs:element name="Boundary_Face" type="Vimmp:T_Boundary_Face" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Apply_to_Wich_Quantity" type="Vimmp:T_Apply_to_Wich_Quantity" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Formulation_of_Boundary" type="Vimmp:T_Formulation_of_Boundary" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_Formulation_of_Boundary_dirichlet"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Boundary_Conditions" >
+		<xs:sequence>
+			<xs:element name="Type_Of_Boundary_Condition" type="Vimmp:T_Type_Of_Boundary_Condition" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_periodique"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_non_periodique"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Variable_CI">   
+		<xs:sequence>
+			<xs:element name="State_Vector_Variable" type="Vimmp:T_State_Vector_Variable" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_distrib">   
+		<xs:sequence>
+			<xs:element name="State_Vector_Initial_Distribution" type="Vimmp:T_State_Vector_Initial_Distribution" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Injection_Subdomain" type="Vimmp:T_Injection_Subdomain" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_initials">   
+		<xs:sequence>
+			<xs:element name="File_Vecteur_Etat_Initial" type="Vimmp:T_File_Vecteur_Etat_Initial" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Format_File_Vecteur_Etat_Initial" type="Vimmp:T_Format_File_Vecteur_Etat_Initial" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Initial_Condition" >
+		<xs:sequence>
+			<xs:group ref="Vimmp:T_b_Variable_CI"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Type_Initials_Conditions" type="Vimmp:T_Type_Initials_Conditions" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_distrib"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_initials"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Initials_Conditions" >
+		<xs:sequence>
+			<xs:element name="Applies_To_The_Complete_State_Vector" type="Vimmp:T_Applies_To_The_Complete_State_Vector" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Initial_Condition" type="Vimmp:T_Initial_Condition" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_CDM" >
+		<xs:sequence>
+			<xs:element name="Title" type="Vimmp:T_Title" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Simulated_Time_Lapse" type="Vimmp:T_Simulated_Time_Lapse" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Geometric_Domain" type="Vimmp:T_Geometric_Domain" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="System_Component" type="Vimmp:T_System_Component" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Boundary_Conditions" type="Vimmp:T_Boundary_Conditions" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Initials_Conditions" type="Vimmp:T_Initials_Conditions" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="accasType" type="xs:string" fixed="ASSD"/>
+		<xs:attribute name="typeUtilisateur" type="xs:string" fixed="CDM_SD"/>
+	</xs:complexType>
+	<xs:complexType name="T_Vimmp">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="CDM" type="Vimmp:T_CDM"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="Vimmp" type="Vimmp:T_Vimmp">
+	<xs:key name="Key_Name_For_BondedParticle">
+		<xs:selector xpath="."/>
+		<xs:field xpath="./Vimmp:CDM/System_Component/Physical_Description_Particle/List_Of_Bonded_Particles/Bonded_Particles/Name_Of_Bonded_Particles "/>
+	</xs:key>
+	<xs:key name="Key_Name_For_CDM_SD">
+		<xs:selector xpath="."/>
+		<xs:field xpath="./Vimmp:CDM/@name"/>
+	</xs:key>
+	<xs:key name="Key_Name_For_Specie">
+		<xs:selector xpath="."/>
+		<xs:field xpath="./Vimmp:CDM/System_Component/Physical_Description_Particle/List_Of_Species/Specie/Name_Of_Specie "/>
+	</xs:key>
+	<xs:key name="Key_Name_For_ElementarySurface">
+		<xs:selector xpath="."/>
+		<xs:field xpath="./Vimmp:CDM/Geometric_Domain/Surface/SurfaceName "/>
+	</xs:key>
+
+	<xs:keyref name="CDM_System_Component_b_component_particle_Physical_Description_Particle_List_Of_Interactions_Bonded_Interactions_bloc_covalent_length_Interaction_Length_Parameters_Apply_To_Bonded_Particles_Name_ref_aBondedParticle" refer="Vimmp:Key_Name_For_BondedParticle"> 
+		<xs:selector xpath="./Vimmp:CDM/System_Component/Physical_Description_Particle/List_Of_Interactions/Bonded_Interactions/Interaction_Length_Parameters/Apply_To_Bonded_Particles"/>
+		<xs:field xpath="."/>
+	</xs:keyref>
+
+	<xs:keyref name="CDM_System_Component_b_component_particle_Physical_Description_Particle_List_Of_Interactions_Bonded_Interactions_bloc_covalent_angle_Interaction_Angles_Parameters_Apply_To_Bonded_Particles_Name_ref_aBondedParticle" refer="Vimmp:Key_Name_For_BondedParticle"> 
+		<xs:selector xpath="./Vimmp:CDM/System_Component/Physical_Description_Particle/List_Of_Interactions/Bonded_Interactions/Interaction_Angles_Parameters/Apply_To_Bonded_Particles"/>
+		<xs:field xpath="."/>
+	</xs:keyref>
+
+	<xs:keyref name="CDM_System_Component_b_component_particle_Physical_Description_Particle_List_Of_Bonded_Particles_Bonded_Particles_Species_in_Particle_Name_ref_aSpecie" refer="Vimmp:Key_Name_For_Specie"> 
+		<xs:selector xpath="./Vimmp:CDM/System_Component/PhysicalDescription_Particle/List_Of_Bonded_Particles/Bonded_Particles/Species_in_Particle"/>
+		<xs:field xpath="."/>
+	</xs:keyref>
+
+	<xs:keyref name="CDM_System_Component_b_component_particle_Physical_Description_Particle_Statistical_Physics_b_Statistical_Physics_Equilibrium_false_Imposed_non_isothermal_Applied_On_Surface_Name_ref_aElementarySurface" refer="Vimmp:Key_Name_For_ElementarySurface"> 
+		<xs:selector xpath="./Vimmp:CDM/System_Component/Physical_Description_Particle/Statistical_Physics/Imposed_non_isothermal/Applied_On_Surface"/>
+		<xs:field xpath="."/>
+	</xs:keyref>
+
+	<xs:keyref name="CDM_Boundary_Conditions_b_non_periodique_Boundary_Face_Name_ref_aElementarySurface" refer="Vimmp:Key_Name_For_ElementarySurface"> 
+		<xs:selector xpath="./Vimmp:CDM/Boundary_Conditions/Boundary_Face"/>
+		<xs:field xpath="."/>
+	</xs:keyref>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='us-ascii' ?>
+<!-- XML component catalog -->
+<begin-catalog>
+    <path-prefix-list></path-prefix-list>
+    <type-list></type-list>
+    <component-list>
+        <component>
+            <component-name>PVSERVER</component-name>
+            <component-username>ParaView</component-username>
+            <component-type>PARAVIS</component-type>
+            <component-author>vsv</component-author>
+            <component-version>@SALOMEPARAVIS_VERSION@</component-version>
+            <component-comment>PVServer control service</component-comment>
+            <component-impltype>1</component-impltype>
+            <component-icone>pqAppIcon22.png</component-icone>
+            <constraint></constraint>
+            <component-interface-list>
+                <component-interface-name>PVSERVER_Gen</component-interface-name>
+                <component-interface-comment>unknown</component-interface-comment>
+                <component-service-list>
+                    <component-service>
+                        <service-name>ImportFile</service-name>
+                        <service-author>vsv</service-author>
+                        <service-version>INF_VERSION</service-version>
+                        <service-comment>unknown</service-comment>
+                        <service-by-default>0</service-by-default>
+                        <inParameter-list>
+                            <inParameter>
+                                <inParameter-name>theFileName</inParameter-name>
+                                <inParameter-type>string</inParameter-type>
+                                <inParameter-comment>unknown</inParameter-comment>
+                            </inParameter>
+                        </inParameter-list>
+                        <outParameter-list></outParameter-list>
+                        <DataStream-list></DataStream-list>
+                    </component-service>
+                </component-service-list>
+            </component-interface-list>
+        </component>
+
+        <component>
+              <!-- Component identification -->
+              <component-name>VisualizationComponent</component-name>
+              <component-username>VisualizationComponent</component-username>
+              <component-type>Data</component-type>
+              <component-author>EDF-RD</component-author>
+              <component-version>@SALOMEPARAVIS_VERSION@</component-version>
+              <component-comment></component-comment>
+              <component-multistudy>0</component-multistudy>
+              <component-impltype>SO</component-impltype>
+              <component-implname></component-implname>
+              <component-interface-list>
+                  <component-interface-name>
+                    VisualizationComponent
+                  </component-interface-name>
+                  <component-interface-comment></component-interface-comment>
+                  <component-service-list>
+                      <component-service>
+                          <!-- service-identification -->
+                          <service-name>Visualize</service-name>
+                          <service-author>EDF-RD</service-author>
+                          <service-version>1.0</service-version>
+                          <service-comment></service-comment>
+                          <service-by-default>0</service-by-default>
+                          <!-- service-connexion -->
+                          <inParameter-list>
+                              <inParameter>
+                                <inParameter-name>field</inParameter-name>
+                                <inParameter-type>SALOME_MED/ParaMEDCouplingFieldDoubleCorbaInterface</inParameter-type>
+                            </inParameter>
+                              <inParameter>
+                                <inParameter-name>path_python_file</inParameter-name>
+                                <inParameter-type>string</inParameter-type>
+                            </inParameter>
+                          </inParameter-list>
+                          <outParameter-list>
+                          </outParameter-list>
+                          <DataStream-list>
+                          </DataStream-list>
+                      </component-service>
+                  </component-service-list>
+              </component-interface-list>
+  </component>
+
+    </component-list>
+</begin-catalog>

@@ -1,0 +1,162 @@
+default:
+{
+    name : "qt"
+    build_source : "script"
+    compil_script : $name + $VARS.scriptExtension
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["freetype"]
+    patches : []
+    check_install : ["lib/libQt5DBus.so"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+    }
+}
+
+default_win:
+{
+   check_install : []
+}
+
+version_5_15_17 :
+{
+  compil_script : "qt-5.15.17" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+}
+
+version_5_15_17_win :
+{
+  depend : ["freetype"]
+  build_depend : ["llvm", "jom"]
+  opt_depend : ["openssl", "libpng"]
+  patches : ['qt-5.15.17-p01.JSCell-NAN-windowsSDK.patch']
+}
+
+version_5_15_15 :
+{
+  compil_script : "qt-5.15.15" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+}
+
+version_5_15_15_win :
+{
+  depend : ["freetype"]
+  build_depend : ["llvm"]
+  opt_depend : ['openssl']
+}
+
+version_5_15_15_CO9 :
+{
+  compil_script : "qt-5.15.15" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+  patches: []
+}
+
+version_5_15_2 :
+{
+  compil_script : "qt-5.15.2" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+}
+
+version_5_15_2_CO9 :
+{
+  compil_script : "qt-5.15.2" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+  patches: ["qt_5_15_2_numeric_limits.patch"]
+}
+
+version_5_15_2_win :
+{
+  depend : ["freetype"]
+  build_depend : ["llvm"]
+  opt_depend : ['openssl']
+}
+
+version_5_12_10 :
+{
+  compil_script : "qt-5.12.10" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+  patches : ['qt-mapbox-FD32-gcc-10.0.patch']
+}
+
+version_5_12_10_CO9 :
+{
+  compil_script : "qt-5.12.10" + $VARS.scriptExtension
+  depend : ["freetype", 'llvm']
+  patches : ['qt-mapbox-FD32-gcc-10.0.patch', 'qt_numeric_limits_CO9.patch']
+}
+
+version_5_12_10_win :
+{
+  depend : ["freetype"]
+  build_depend : ["llvm"]
+  opt_depend : ['openssl']
+  patches : []
+}
+
+version_5_9_1 :
+{
+  compil_script :  "qt-5.9.1.sh"
+  patches : []
+}
+
+version_5_9_1_FD32 :
+{
+  compil_script :  "qt-5.9.1.sh"
+  patches : ['qt-5.9.1-UB20-FD32-socketcanbackend.patch',
+             'qt-5.9.1-mapbox-FD32.patch'
+	    ]
+}
+
+version_5_9_1_UB20_04 :
+{
+  compil_script :  "qt-5.9.1.sh"
+  patches : ['qt-5.9.1-UB20-FD32-socketcanbackend.patch',
+  	     'qt_mysql_UB20.patch'
+            ]
+}
+
+version_5_6_1_1:
+{
+    compil_script : "qt-5.6.1" + $VARS.scriptExtension
+    depend : []
+}
+
+version_5_5_1:
+{
+    compil_script :  "qt-5.5.1.sh"
+    patches : [
+                  "qt-5.5.1-qlockfile.patch",
+                  "qt_5.5.1-qwebengine.patch"
+              ]
+    depend : []
+}
+
+version_4_8_4 :
+{
+    compil_script :  "qt-4.8.4.sh"
+    patches : ["qt-4.8.4-enable-webkit-compilation-whith-gcc5.patch"]
+    depend : []
+    check_install : []
+}
+
+version_4_6_3:
+{
+    compil_script :  "qt-4.6.3.sh"
+    patches : ["qt-463-gcc46.patch"]
+    depend : []
+    check_install : []
+}
+
+version_test:
+{
+    compil_script : "qt-5.6.1_test.sh"
+    depend : []
+}

@@ -1,0 +1,65 @@
+// Copyright (C) 2014-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#ifndef SketcherPrs_Perpendicular_H
+#define SketcherPrs_Perpendicular_H
+
+#include "SketcherPrs_SymbolPrs.h"
+
+class SketchPlugin_Sketch;
+
+
+DEFINE_STANDARD_HANDLE(SketcherPrs_Perpendicular, SketcherPrs_SymbolPrs)
+
+/**
+* \ingroup GUI
+* A redefinition of standard AIS Interactive Object in order to provide  
+* presentation of perpendicular constraint
+*/
+class SketcherPrs_Perpendicular: public SketcherPrs_SymbolPrs
+{
+public:
+  /// Constructor
+  /// \param theConstraint a constraint feature
+  /// \param theSketcher a sketcher object
+  Standard_EXPORT SketcherPrs_Perpendicular(ModelAPI_Feature* theConstraint,
+    SketchPlugin_Sketch* theSketcher);
+
+  DEFINE_STANDARD_RTTIEXT(SketcherPrs_Perpendicular, SketcherPrs_SymbolPrs)
+
+  /// Returns true if the constraint feature arguments are correctly filled to build AIS presentation
+  /// \param theConstraint a constraint feature
+  /// \param thePlane a coordinate plane of current sketch
+  /// \return boolean result value
+  static bool IsReadyToDisplay(ModelAPI_Feature* theConstraint,
+                               const std::shared_ptr<GeomAPI_Ax3>& thePlane);
+protected:
+  virtual const char* iconName(bool isActiveIcon = true) const { return isActiveIcon ? "perpendicular.png" : "perpendicular_deactivate.png"; }
+
+  /// Redefine this function in order to add additional lines of constraint base
+  /// \param thePrs a presentation
+  /// \param theColor a color of additional lines
+  virtual void drawLines(const Handle(Prs3d_Presentation)& thePrs, Quantity_Color theColor) const;
+
+  /// Update myPntArray according to presentation positions
+  /// \return true in case of success
+  virtual bool updateIfReadyToDisplay(double theStep, bool withColor) const;
+};
+
+#endif

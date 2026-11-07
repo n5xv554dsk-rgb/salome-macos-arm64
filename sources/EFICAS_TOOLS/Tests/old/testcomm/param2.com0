@@ -1,0 +1,4 @@
+POURSUITE();
+l1=DEFI_LIST_ENTI(DEBUT=mon_param,);
+FIN();
+

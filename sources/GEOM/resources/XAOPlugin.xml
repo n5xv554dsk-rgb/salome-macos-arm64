@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE meshers PUBLIC "" "desktop.dtd">
+
+<geom-plugins>
+
+  <geom-plugin name="XAOPlugin"
+               server-lib="XAOPluginEngine"
+               gui-lib="XAOPluginGUI">
+    <actions>
+      <action label="Import_XAO"
+              menu="FILE/IMPORT:10/IMPORTXAO"
+              status-bar="IMPORTXAO">
+      </action>
+      <action label="Export_XAO"
+              menu="FILE/EXPORT:10/EXPORTXAO"
+              status-bar="EXPORTXAO">
+      </action>
+    </actions>
+  </geom-plugin>
+
+</geom-plugins>

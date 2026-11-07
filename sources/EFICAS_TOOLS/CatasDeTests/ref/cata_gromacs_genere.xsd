@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Vimmp"
+xmlns:Vimmp="http://chercheurs.edf.com/logiciels/Vimmp"
+targetNamespace="http://chercheurs.edf.com/logiciels/Vimmp"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="T_Remove_Center_Of_Mass_Motion">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Linear"/>
+			<xs:enumeration value="Angular"/>
+			<xs:enumeration value="Non Activ"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nstcomm">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Apply_On_The_Complete_System">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_List_Of_Groups">
+		<xs:restriction>
+			<xs:simpleType>
+				<xs:list>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:list>
+			 </xs:simpleType>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Bond_Constraint_Type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BC_none"/>
+			<xs:enumeration value="h-bonds"/>
+			<xs:enumeration value="all-bonds"/>
+			<xs:enumeration value="h-angles"/>
+			<xs:enumeration value="all-angles"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Bond_Constraint_Algorithm">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LINCS"/>
+			<xs:enumeration value="SHAKE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_lincs_order">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_lincs_iter">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_lincs_warnangle">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value = "0"/>
+			<xs:maxInclusive value = "359"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_shake_tol">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Morse">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="no"/>
+			<xs:enumeration value="yes"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_tcoupl">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Non Activ"/>
+			<xs:enumeration value="Berendsen"/>
+			<xs:enumeration value="Nos-Hoover"/>
+			<xs:enumeration value="Andersen"/>
+			<xs:enumeration value="Andersen-Massive"/>
+			<xs:enumeration value="V-Rescale"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Groups_Separatly_Coupled">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Name_Of_Group">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_tau-t">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_ref_t">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Integrator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="steep"/>
+			<xs:enumeration value="md"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_emtol">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_emstep">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nstcgsteep">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nbfgscorr">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Nb_Of_Steps">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value = "1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nsttcouple">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_cutoff_scheme">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="verlet"/>
+			<xs:enumeration value="group"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nstlist">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_nst_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="grid"/>
+			<xs:enumeration value="simple"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_periodic_molecules">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_rlist">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_rcoulomb">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_rvdw">
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value = "0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_gen_vel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="yes"/>
+			<xs:enumeration value="no"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_gen_temp">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_gen_seed">
+		<xs:restriction base="xs:float">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_UserDef">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="-DFLEX_SRC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_MDP_Initial_Input_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Gromos_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Gromacs_Topology_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Gromacs_Index_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_MDP_Generated_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Run_Generated_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_log_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Energie_Output_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Trajectory_Output_File">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="T_b_porte_sur_tout_le_system">   
+		<xs:sequence>
+			<xs:element name="List_Of_Groups" type="Vimmp:T_List_Of_Groups" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_recalage_cgt">   
+		<xs:sequence>
+			<xs:element name="nstcomm" type="Vimmp:T_nstcomm" minOccurs="1" maxOccurs="1" default="100"/>
+			<xs:element name="Apply_On_The_Complete_System" type="Vimmp:T_Apply_On_The_Complete_System" minOccurs="1" maxOccurs="1" default="true"/>
+			<xs:group ref="Vimmp:T_b_porte_sur_tout_le_system"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_bond_constraint_algorithm_lincs">   
+		<xs:sequence>
+			<xs:element name="lincs_order" type="Vimmp:T_lincs_order" minOccurs="1" maxOccurs="1" default="4"/>
+			<xs:element name="lincs_iter" type="Vimmp:T_lincs_iter" minOccurs="1" maxOccurs="1" default="1"/>
+			<xs:element name="lincs_warnangle" type="Vimmp:T_lincs_warnangle" minOccurs="1" maxOccurs="1" default="30"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_bond_constraint_algorithm_shake">   
+		<xs:sequence>
+			<xs:element name="shake_tol" type="Vimmp:T_shake_tol" minOccurs="1" maxOccurs="1" default="0.0001"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Bond_Constraints" >
+		<xs:sequence>
+			<xs:element name="Bond_Constraint_Type" type="Vimmp:T_Bond_Constraint_Type" minOccurs="1" maxOccurs="1" default="BC_none"/>
+			<xs:element name="Bond_Constraint_Algorithm" type="Vimmp:T_Bond_Constraint_Algorithm" minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_bond_constraint_algorithm_lincs"  minOccurs="0" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_bond_constraint_algorithm_shake"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Morse" type="Vimmp:T_Morse" minOccurs="0" maxOccurs="1" default="no"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_tau_t">   
+		<xs:sequence>
+			<xs:element name="ref_t" type="Vimmp:T_ref_t" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_TC_Group_Param" >
+		<xs:sequence>
+			<xs:element name="Name_Of_Group" type="Vimmp:T_Name_Of_Group" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="tau-t" type="Vimmp:T_tau-t" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_tau_t"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_groups_separatly_coupled">   
+		<xs:sequence>
+			<xs:element name="TC_Group_Param" type="Vimmp:T_TC_Group_Param" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_t_coupling">   
+		<xs:sequence>
+			<xs:element name="Groups_Separatly_Coupled" type="Vimmp:T_Groups_Separatly_Coupled" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_groups_separatly_coupled"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Temperature_Coupling" >
+		<xs:sequence>
+			<xs:element name="tcoupl" type="Vimmp:T_tcoupl" minOccurs="1" maxOccurs="1" default="Non Activ"/>
+			<xs:group ref="Vimmp:T_b_t_coupling"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Gromacs_Physical_Constraints" >
+		<xs:sequence>
+			<xs:element name="Remove_Center_Of_Mass_Motion" type="Vimmp:T_Remove_Center_Of_Mass_Motion" minOccurs="1" maxOccurs="1" default="Non Activ"/>
+			<xs:group ref="Vimmp:T_b_recalage_cgt"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Bond_Constraints" type="Vimmp:T_Bond_Constraints" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Temperature_Coupling" type="Vimmp:T_Temperature_Coupling" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_steep">   
+		<xs:sequence>
+			<xs:element name="emtol" type="Vimmp:T_emtol" minOccurs="1" maxOccurs="1" default="10.0"/>
+			<xs:element name="emstep" type="Vimmp:T_emstep" minOccurs="1" maxOccurs="1" default="0.001"/>
+			<xs:element name="nstcgsteep" type="Vimmp:T_nstcgsteep" minOccurs="0" maxOccurs="1" default="1000"/>
+			<xs:element name="nbfgscorr" type="Vimmp:T_nbfgscorr" minOccurs="0" maxOccurs="1" default="10"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="T_b_t_coupling_num">   
+		<xs:sequence>
+			<xs:element name="nsttcouple" type="Vimmp:T_nsttcouple" minOccurs="1" maxOccurs="1" default="-1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Gromacs_Numerical_Description" >
+		<xs:sequence>
+			<xs:element name="Integrator" type="Vimmp:T_Integrator" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_steep"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Nb_Of_Steps" type="Vimmp:T_Nb_Of_Steps" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_t_coupling_num"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_rlist">   
+		<xs:sequence>
+			<xs:element name="rlist" type="Vimmp:T_rlist" minOccurs="1" maxOccurs="1" default="-1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Gromacs_Neighbor_Searching" >
+		<xs:sequence>
+			<xs:element name="cutoff_scheme" type="Vimmp:T_cutoff_scheme" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nstlist" type="Vimmp:T_nstlist" minOccurs="1" maxOccurs="1" default="10"/>
+			<xs:element name="nst_type" type="Vimmp:T_nst_type" minOccurs="1" maxOccurs="1" default="grid"/>
+			<xs:element name="periodic_molecules" type="Vimmp:T_periodic_molecules" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Vimmp:T_b_rlist"  minOccurs="0" maxOccurs="1"/>
+			<xs:element name="rcoulomb" type="Vimmp:T_rcoulomb" minOccurs="1" maxOccurs="1" default="1"/>
+			<xs:element name="rvdw" type="Vimmp:T_rvdw" minOccurs="1" maxOccurs="1" default="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="T_b_Velocity_Generation">   
+		<xs:sequence>
+			<xs:element name="gen_temp" type="Vimmp:T_gen_temp" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="gen_seed" type="Vimmp:T_gen_seed" minOccurs="1" maxOccurs="1" default="-1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_Gromacs_Initial_Conditions" >
+		<xs:sequence>
+			<xs:element name="gen_vel" type="Vimmp:T_gen_vel" minOccurs="1" maxOccurs="1" default="yes"/>
+			<xs:group ref="Vimmp:T_b_Velocity_Generation"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Files" >
+		<xs:sequence>
+			<xs:element name="MDP_Initial_Input_File" type="Vimmp:T_MDP_Initial_Input_File" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Gromos_File" type="Vimmp:T_Gromos_File" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Gromacs_Topology_File" type="Vimmp:T_Gromacs_Topology_File" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Gromacs_Index_File" type="Vimmp:T_Gromacs_Index_File" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="MDP_Generated_File" type="Vimmp:T_MDP_Generated_File" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Run_Generated_File" type="Vimmp:T_Run_Generated_File" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="log_File" type="Vimmp:T_log_File" minOccurs="0" maxOccurs="1" default="/tmp/EM.log"/>
+			<xs:element name="Energie_Output_File" type="Vimmp:T_Energie_Output_File" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Trajectory_Output_File" type="Vimmp:T_Trajectory_Output_File" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Gromacs_Run_Options" >
+		<xs:sequence>
+			<xs:element name="UserDef" type="Vimmp:T_UserDef" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Files" type="Vimmp:T_Files" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_CodeSpecific" >
+		<xs:sequence>
+			<xs:element name="Gromacs_Physical_Constraints" type="Vimmp:T_Gromacs_Physical_Constraints" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Gromacs_Numerical_Description" type="Vimmp:T_Gromacs_Numerical_Description" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Gromacs_Neighbor_Searching" type="Vimmp:T_Gromacs_Neighbor_Searching" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Gromacs_Initial_Conditions" type="Vimmp:T_Gromacs_Initial_Conditions" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Gromacs_Run_Options" type="Vimmp:T_Gromacs_Run_Options" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="T_Vimmp">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="CodeSpecific" type="Vimmp:T_CodeSpecific"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="Vimmp" type="Vimmp:T_Vimmp"/>
+</xs:schema>

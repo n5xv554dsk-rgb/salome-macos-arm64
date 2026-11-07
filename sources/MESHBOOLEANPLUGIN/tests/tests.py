@@ -1,0 +1,152 @@
+import os
+import subprocess
+import sys
+import argparse
+from itertools import permutations
+from meshbooleanplugin import usePySide
+if usePySide():
+  from PySide2.QtWidgets import QApplication
+else:
+  from PyQt5.QtWidgets import QApplication
+
+sys.path.append(os.path.join(os.environ["SMESH_ROOT_DIR"], "share", "salome", "plugins", "smesh", "meshbooleanplugin"))
+sys.path.append(os.path.join(os.environ["SMESH_ROOT_DIR"], "share", "salome", "plugins", "smesh"))
+MESHBOOLEANGPLUGIN_ROOT_DIR = None
+try:
+  MESHBOOLEANGPLUGIN_ROOT_DIR = os.environ["MESHBOOLEANGPLUGIN_ROOT_DIR"]
+except KeyError:
+  pass
+
+if MESHBOOLEANGPLUGIN_ROOT_DIR:
+  sys.path.append(os.path.join(MESHBOOLEANGPLUGIN_ROOT_DIR, "plugins", "meshbooleanplugin"))
+  ROOT_PATH = os.path.join(MESHBOOLEANGPLUGIN_ROOT_DIR, "plugins", "meshbooleanplugin", "tests")
+else:
+  ROOT_PATH = os.path.join(os.environ["SMESH_ROOT_DIR"], "share", "salome", "plugins", "smesh", "meshbooleanplugin", "tests")
+
+from mesh_boolean_dialog import *
+
+# Initialize QApplication
+app = QApplication(sys.argv)
+
+result_dict = {}
+
+SAMPLES_PATH = os.path.join(ROOT_PATH, 'samples')
+
+
+DEFAULT_ENGINE = ['CGAL', 'vtk']
+DEFAULT_OPERATION = ['union']
+
+OPERATOR_DICT = { 'union' : 0, 'intersection' : 1, 'difference' : 2 }
+ENGINE_DICT = { 'CGAL' : 0, 'igl' : 1, 'vtk' : 2, 'irmb' : 3, 'cork' : 4, 'mcut' : 5}
+BOLD = '\033[1m'
+RESET = '\033[0m'
+
+class Test:
+    def __init__(self, obj, tool, op, engine):
+        self.obj = obj
+        self.tool = tool
+        self.op = op
+        self.engine = engine
+    def pretty_print(self):
+        symbol = ''
+        if self.op == 'union':
+            symbol = '\u222A'
+        elif self.op == 'intersection':
+            symbol = '\u2229'
+        else:
+            symbol = '\u2216'
+        with open('logs.txt', 'a') as file:
+            file.write(f'{self.engine}: {BOLD}{self.obj}{RESET} {symbol} {BOLD}{self.tool}{RESET}\n')
+
+
+def generate_tests(path=SAMPLES_PATH):
+    """generate all test cases possible from a directory"""
+    def perform_ls(path):
+      """perform a simple ls of the path parameter, return a list of files"""
+      with subprocess.Popen(["ls", path], stderr = subprocess.PIPE, stdout=subprocess.PIPE, text=True) as ls_process:
+        output, _ = ls_process.communicate()
+        return [os.path.join("samples", file) for file in output.splitlines()]
+    lst = perform_ls(path)
+    lst = list(permutations(lst, 2))
+    res = []
+    for op, _ in OPERATOR_DICT.items():
+        for engine, _ in ENGINE_DICT.items():
+            res += [Test(elt[0], elt[1], op, engine) for elt in lst]
+    return res
+
+def check_ok(test, test_number):
+
+    print(f"\nTest #{test_number}: ")
+    print(f"   Engine      : {test.engine}")
+    print(f"   Operation   : {test.op}")
+    print(f"   Tool Mesh   : {test.tool}")
+    print(f"   Object Mesh : {test.obj}\n")
+
+    dialog = MeshBooleanDialog()
+
+    # Fake PBMeshFilePressed without Qt interface
+    ###
+    dialog.LE_MeshFile_L.setText(test.obj)
+    dialog.meshIn_L=str(test.obj)
+    dialog.isFile_L=True
+    dialog.LE_MeshSmesh_L.setText("")
+    dialog.__selectedMesh_L=None
+    
+    dialog.LE_MeshFile_R.setText(test.tool)
+    dialog.meshIn_R=str(test.tool)
+    dialog.isFile_R=True
+    dialog.LE_MeshSmesh_R.setText("")
+    dialog.__selectedMesh_R=None
+    ###
+    # Set all the parameter to be conform with the yaml
+    ###
+
+    dialog.COB_Operator.setCurrentIndex(OPERATOR_DICT[test.op])
+    # the engine item list is populated at the dialog box startup, we have to explicitely add an item
+    # otherwise, there is no item and the default engine is always selected
+    # => add the tested engine in the QComboBox
+    dialog.COB_Engine.addItem(test.engine)
+    # set to the last added item
+    # note that, as there was no item before, we could set the current index to 0
+    dialog.COB_Engine.setCurrentIndex(dialog.COB_Engine.count()-1)
+
+    # Compute Mesh
+    ###
+    res = dialog.onPBComputePressed()
+    ###
+
+    if dialog.myWindow is not None:
+        dialog.myWindow.theClose()
+
+    # Close the dialog
+    ###
+    dialog.onPBClosePressed()
+    ###
+
+    test.pretty_print()
+    with open('logs.txt', 'a') as file:
+        file.write(f'    {res}\n')
+
+    return res
+
+def main(engine_list, operation_list):
+    tests = generate_tests()
+    for i, test in enumerate(tests, start=1):
+        if test.engine in engine_list and test.op in operation_list:
+            check_ok(test, i)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Mesh Boolean Tests')
+    parser.add_argument('-t', nargs='+', help='Run tests in TUI')
+    parser.add_argument('--engine', nargs='+', help='List of engines to test')
+    parser.add_argument('--operation', nargs='+', help='List of operations to test')
+    args = parser.parse_args()
+
+    # Check if both engine and operation arguments are provided
+    if args.engine is None:
+        args.engine = DEFAULT_ENGINE
+    if args.operation is None:
+        args.operation = DEFAULT_OPERATION
+
+    main(args.engine, args.operation)
+

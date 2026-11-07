@@ -1,0 +1,357 @@
+default :
+{
+    name : "medfile"
+    build_source : "script"
+    compil_script :  "medCMake" + $VARS.scriptExtension
+    test_build : "make test"
+    get_source : "archive"
+    archive_info : {archive_prefix : "med"}
+    environ :
+    {
+       env_script : "med.py"
+    }
+    depend : ["hdf5", "Python"]
+    opt_depend : ["openmpi"]
+    build_depend : ["cmake"]
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+        incremental : "yes"
+        has_unit_tests : "yes"
+    }
+}
+
+default_win:
+{
+    properties :
+    {
+       incremental : "yes"
+       single_install_dir: "yes" # aimed to solve sat #18914
+    }
+    build_depend : ["cmake", "swig"]
+}
+
+default_Autotools :
+{
+    compil_script :  "med.sh"
+    test_build : "make check"
+    build_depend : []
+}
+
+version_6_0_1 :
+{
+    archive_info :
+    {
+        archive_name : "med-6.0.1.tar.gz"
+    }
+    compil_script : "med-6.0.1" + $VARS.scriptExtension
+    test_build : "make check"
+    build_depend : ['swig']
+    patches : ['med-6.0.1_win_3x_files_support.patch']
+}
+
+version_6_0_0 :
+{
+    archive_info :
+    {
+        archive_name : "med-6.0.0.tar.gz"
+    }
+    compil_script : 'med-6.0.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_6_0_0_win :
+{
+    compil_script :  "med-6.0.0.bat"
+    archive_info :
+    {
+        archive_name : "med-6.0.0beta2.tar.gz" # FIXME
+    }
+    patches : []
+    build_depend : ["cmake", "swig"]
+}
+
+version_5_1_0 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.1.0beta1.tar.gz"
+    }
+    compil_script : 'med-5.1.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_5_1_0_win :
+{
+    compil_script :  "med-5.1.0.bat"
+    patches : []
+    build_depend : ["cmake", "swig"]
+}
+
+version_5_1_0_DB13 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.1.0beta1.tar.gz"
+    }
+    compil_script : 'med-5.1.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['medfile-5.1.0-python-3.13-p001.patch']
+}
+
+version_5_1_0_FD42 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.1.0beta1.tar.gz"
+    }
+    compil_script : 'med-5.1.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['medfile-5.1.0-python-3.13-p001.patch']
+}
+
+version_5_0_2 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.0.2rc1.tar.gz"
+    }
+    compil_script : 'med-5.0.2.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_5_0_2_win :
+{
+    compil_script :  "med-5.0.2.bat"
+    patches : ["medfile-5.0.2-python-3.13-p002.patch"]
+    build_depend : ["cmake", "swig"]
+}
+
+version_5_0_2_DB13 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.0.2rc1.tar.gz"
+    }
+    compil_script : 'med-5.0.2.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['medfile-5.0.2-python-3.13-p001.patch']
+}
+
+version_5_0_2_FD42 :
+{
+    archive_info :
+    {
+        archive_name : "med-5.0.2rc1.tar.gz"
+    }
+    compil_script : 'med-5.0.2.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['medfile-5.0.2-python-3.13-p001.patch']
+}
+
+version_4_2_0 :
+{
+    archive_info :
+    {
+        archive_name : "med-4.2.0.tar.gz"
+    }
+    compil_script : 'med-4.2.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_4_2_0_DB13 :
+{
+    archive_info :
+    {
+        archive_name : "med-4.2.0.tar.gz"
+    }
+    compil_script : 'med-4.2.0.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches : ['med-4.2.0-py313.patch']
+}
+
+version_4_2_0_FD42 :
+{
+    archive_info :
+    {
+        archive_name : "med-4.2.0.tar.gz"
+    }
+    compil_script : 'med-4.2.0.sh'
+    test_build : "make check"
+    build_depend : ['cmake', 'swig']
+    patches : ['med-4.2.0-py313.patch']
+}
+
+version_4_2_0_win :
+{
+    compil_script :  "med-4.2.0.bat"
+    patches : ['med-4.2.0_win_3x_files_support.patch']
+    properties :
+    {
+       incremental : "yes"
+       single_install_dir: "yes"
+    }
+    build_depend : ["cmake", "swig"]
+}
+
+version_4_1_2 :
+{
+    compil_script : 'med-4.1.2.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_4_1_2_win :
+{
+    compil_script :  "med-4.1.2.bat"
+    patches : []
+    properties :
+    {
+       incremental : "yes"
+       single_install_dir: "yes" # aimed to solve sat #18914
+       has_unit_tests : "yes"
+    }
+}
+
+version_4_1_2_UB24_04 :
+{
+    compil_script : 'med-4.1.2.sh'
+    patches : ['med-4.1.2.p001-Test_MEDnStructElement_Rd.UB24.04.patch']
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_4_1_1 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+}
+
+version_4_1_1_win :
+{
+    compil_script :  "med-4.1.1.bat"
+    patches : ['med-4.1.0_win_3x_files_support.patch',
+               'med-4.1.1-symlink-or-copy.patch',
+               'med-4.1.1-fix_symbol_export_Win.patch'
+              ]
+    properties :
+    {
+       incremental : "yes"
+       single_install_dir: "yes" # aimed to solve sat #18914
+    }
+}
+
+version_4_1_1_UB24_04 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile_FD40.patch', 'medfile_py-compile.patch']
+}
+
+version_4_1_1_UB22_04 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile.patch']
+}
+
+version_4_1_1_DB12 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile_FD40.patch', 'medfile_py-compile.patch']
+}
+
+version_4_1_1_FD40 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile_FD40.patch', 'medfile_py-compile.patch']
+}
+
+version_4_1_1_FD38 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile.patch']
+}
+
+version_4_1_1_FD37 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile.patch']
+}
+
+version_4_1_1_FD36 :
+{
+    compil_script : 'med-4.1.1.sh'
+    test_build : "make check"
+    build_depend : ['swig']
+    patches: ['SPNS-29880-medfile.patch']
+}
+
+version_4_1_0 :
+{
+  compil_script :  "med-4.1.0.sh"
+  patches : []
+}
+
+version_4_1_0_hdf5 :
+{
+  compil_script :  "med-4.1.0.sh"
+  test_build : "make check"
+  patches : ['medfile-4.1.0-hdf5.patch']
+}
+
+version_4_1_0_hdf5_1_12 :
+{
+  compil_script :  "med-4.1.0.sh"
+  test_build : "make check"
+  patches : ['med-4.1.0_hdf5-1.12.0.patch']
+}
+
+version_4_1_0_win :
+{
+  patches : ['med-4.1.0_win_3x_files_support.patch', 'med-4.1.0_hdf5_native_long.patch']
+}
+
+version_4_0_0 :
+{
+  patches : []
+}
+
+version_4_0_0_win :
+{
+  patches : ['med-4.0.0_unicode.patch', 'medfile-4.0.0.patch']
+}
+
+version_4_0_0alpha3 :
+{
+    patches : [ "med-4.0.0alpha3.patch" ]
+}
+
+version_3_0_6 :
+{
+    compil_script :  "med.sh"
+    depend : ["hdf5"]
+}

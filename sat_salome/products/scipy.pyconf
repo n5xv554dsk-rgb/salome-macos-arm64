@@ -1,0 +1,177 @@
+default :
+{
+    name : "scipy"
+    build_source : "script"
+    compil_script : "pip_install" + $VARS.scriptExtension
+    get_source : "archive"
+    patches : []
+    system_info :
+    {
+        rpm : ["python3-scipy"]
+        rpm_dev : []
+        apt : ["python3-scipy"]
+        apt_dev : []
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['numpy', 'lapack']
+    build_depend : ["cmake"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
+default_win :
+{
+   archive_info : {archive_name : "scipy-" + $APPLICATION.products.scipy + "_windows.tar.gz"}
+    depend : ['numpy']
+    opt_depend: ['lapack', 'openblas']
+    build_depend : ["cmake"]
+}
+
+version_1_11_4:
+{
+    depend : ['Python', 'setuptools', 'wheel', 'Cython', 'numpy', 'openblas', 'meson_python', 'pythran']
+    build_depend : ["cmake", "pybind11"]
+    compil_script : "scipy-1.7.1.sh"
+    archive_info : {archive_name : "scipy-1.11.4.tar.gz"}
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_11_4_win:
+{
+    compil_script : "scipy-1.11.4.bat"
+    archive_info : {archive_name : "scipy-1.11.4-cp39-windows.tar.gz"}
+    depend : ['numpy']
+    opt_depend : ['Python', 'setuptools', 'wheel', 'Cython', 'numpy', 'openblas', 'meson_python', 'pythran', 'pybind11']
+    properties :
+    {
+      incremental : "yes"
+      pip : "no" # TODO: for now on, we use the pip wheel. in order to compile scipy, we need to compile flang which requires a bump in the llvm version
+    }
+}
+
+version_1_7_1:
+{
+    depend : ['Python', 'setuptools', 'wheel', 'Cython', 'numpy', 'openblas', 'pythran']
+    build_depend : ["cmake", "pybind11"]
+    compil_script : "scipy-1.7.1.sh"
+    archive_info : {archive_name : "scipy-1.7.1-deps.tar.gz"}
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_6_2:
+{
+}
+
+version_1_6_2_win:
+{
+  compil_script : "scipy-1.6.2.bat"
+  properties :
+  {
+    incremental : "yes"
+    pip : "yes"
+  }
+  archive_info : {archive_name : "scipy-1.6.2.tar.gz"}
+  depend : ['numpy']
+  opt_depend : ['pybind11', 'openblas', 'lapack']
+}
+
+version_1_6_2_cp38_x86_64:
+{
+    depend : ['Python', 'setuptools', 'Cython', 'numpy']
+    compil_script : "scipy-1.6.2.sh"
+    archive_info : {archive_name : "scipy-1.6.2-cp38-x86_86.tar.gz"}
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_4_1 :
+{
+    patches : [ "scipy-1.4.1_limit_pybind11_version_for_py36.patch" ]
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_5_2_no_pip :
+{
+    compil_script : "scipy-1.5.2.sh"
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_5_2_DB10 :
+{
+    patches : [ "scipy-1.5.2_limit_pybind11_version_for_py37.patch"]
+    compil_script : "scipy-1.5.2.sh"
+    properties :
+    {
+      incremental : "yes"
+      pip : "no"
+    }
+}
+
+version_1_3_0 :
+{
+}
+
+version_1_3_0_win :
+{
+    compil_script : "scipy-1.3.0.bat"
+}
+
+version_0_18_1 :
+{
+    compil_script : "scipy.sh"
+    depend : ['numpy','lapack', 'setuptools']
+}
+
+version_0_18_1_x86_64 :
+{
+    archive_info : {archive_name : "scipy-0.18.1-x86_64.tar.gz"}
+    compil_script : "scipy-0.18.1.sh"
+    depend : ['numpy','lapack', 'setuptools']
+}
+
+version_0_15_1 :
+{
+    compil_script : "scipy.sh"
+    depend : ['Python','numpy','lapack']
+    patches : [ "scipy-0.14.1.patch" ]
+}
+
+version_0_15_1_win :
+{
+    compil_script : "scipy-0.15.1.bat"
+}
+
+version_0_13_3 :
+{
+    compil_script : "scipy.sh"
+    depend : ['numpy','lapack']
+    patches : [ "scipy-0.13.3.patch" ]
+}

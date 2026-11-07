@@ -1,0 +1,93 @@
+<source>
+  <toolbox id="CreationMethod">
+    <box id="AxisByDimensionsCase" title="By three dimensions" icon="icons/Construction/axis_dxyz_32x32.png">
+      <doublevalue id="DX" label="DX " tooltip="X dimension" default="0"/>
+      <doublevalue id="DY" label="DY " tooltip="Y dimension" default="0"/>
+      <doublevalue id="DZ" label="DZ " tooltip="Z dimension" default="10"/>
+    </box>
+    <box id="AxisByPointsCase" title="By two points" icon="icons/Construction/by_two_points_32x32.png">
+      <shape_selector id="FirstPoint"
+        label="First point"
+        icon="icons/Construction/point.png"
+        tooltip="Select a first point"
+        shape_types="vertex">
+        <validator id="GeomValidators_ConstructionComposite"/>
+        <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+      </shape_selector>
+      <shape_selector id="SecondPoint"
+        label="Second point"
+        icon="icons/Construction/point.png"
+        tooltip="Select a second point"
+        shape_types="vertex">
+        <validator id="GeomValidators_ConstructionComposite"/>
+        <validator id="GeomValidators_ShapeType" parameters="vertex"/>
+        <validator id="GeomValidators_DifferentShapes"/>
+      </shape_selector>
+    </box>
+    <box id="by_line" title="By line" icon="icons/Construction/axis_by_line_32x32.png">
+      <shape_selector id="line"
+                      label="Line"
+                      tooltip="Select line."
+                      icon="icons/Construction/edge.png"
+                      shape_types="edge"
+                      geometrical_selection="true">
+        <validator id="GeomValidators_ShapeType" parameters="line"/>
+      </shape_selector>
+    </box>
+    <box id="AxisByCylindricalFaceCase" title="As axis of cylindrical face" icon="icons/Construction/cylindrical_face_32x32.png">
+      <shape_selector id="CylindricalFace"
+        label="Main object"
+        icon="icons/Construction/circle.png"
+        tooltip="Select a cylindrical object"
+        shape_types="face"
+        geometrical_selection="true">
+        <validator id="GeomValidators_Face" parameters="cylinder"/>
+      </shape_selector>
+    </box>
+    <box id="by_plane_and_point" title="By plane and point" icon="icons/Construction/axis_by_plane_and_point_32x32.png">
+      <shape_selector id="plane"
+                      label="Plane"
+                      tooltip="Select a planar face."
+                      icon="icons/Construction/face.png"
+                      shape_types="face"
+                      geometrical_selection="true">
+        <validator id="GeomValidators_Face" parameters="plane"/>
+      </shape_selector>
+      <shape_selector id="point"
+                      label="Point"
+                      tooltip="Select point."
+                      icon="icons/Construction/point.png"
+                      shape_types="vertex">
+      </shape_selector>
+    </box>
+    <box id="by_two_planes" title="By two planes" icon="icons/Construction/axis_by_two_planes_32x32.png">
+      <shape_selector id="plane1"
+                      label="1st plane"
+                      tooltip="Select a planar face."
+                      icon="icons/Construction/face.png"
+                      shape_types="face"
+                      geometrical_selection="true">
+        <validator id="GeomValidators_Face" parameters="plane"/>
+        <validator id="ConstructionPlugin_ValidatorAxisTwoNotParallelPlanes" parameters="plane2"/>
+      </shape_selector>
+      <optionalbox id="use_offset1" title="Offset from 1st plane">
+        <doublevalue id="offset1" label="Distance " tooltip="Distance value" min="0" default="0"/>
+        <boolvalue id="reverse_offset1" label="Reverse" tooltip="Reverse offset value" default="false"/>
+      </optionalbox>
+      <shape_selector id="plane2"
+                      label="2nd plane"
+                      tooltip="Select a planar face."
+                      icon="icons/Construction/face.png"
+                      shape_types="face"
+                      geometrical_selection="true">
+        <validator id="GeomValidators_Face" parameters="plane"/>
+        <validator id="ConstructionPlugin_ValidatorAxisTwoNotParallelPlanes" parameters="plane1"/>
+      </shape_selector>
+      <optionalbox id="use_offset2" title="Offset from 2nd plane">
+        <doublevalue id="offset2" label="Distance " tooltip="Distance value" min="0" default="0"/>
+        <boolvalue id="reverse_offset2" label="Reverse" tooltip="Reverse offset value" default="false"/>
+      </optionalbox>
+    </box>
+  </toolbox>
+
+</source>

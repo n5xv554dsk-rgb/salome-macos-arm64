@@ -1,0 +1,23 @@
+to run this example, one has first to untar the cpp_component archive, compile it, 
+and install it in directory COMPONENTCPP_INSTALL
+
+ tar xvfz cpp_component.tgz
+ mkdir COMPONENTCPP_INSTALL COMPONENTCPP_BUILD
+ cd COMPONENTCPP_SRC
+ ./build_configure
+ cd ../COMPONENTCPP_BUILD
+ ../COMPONENTCPP_SRC/configure --prefix=...
+ make
+ make install
+
+
+Generate the components with :
+
+  python component.py
+
+
+Test them with 
+
+  appli/runAppli test_compohxx.py
+
+

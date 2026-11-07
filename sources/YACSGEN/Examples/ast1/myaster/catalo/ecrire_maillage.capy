@@ -1,0 +1,4 @@
+#& MODIF COMMANDE  DATE 24/06/2002   AUTEUR F1BHHAJ J.ANGLES
+ECRIRE_MAILLAGE=PROC(nom="ECRIRE_MAILLAGE",op=78,
+                     fr="Ecriture du maillage",
+                    )

@@ -1,0 +1,89 @@
+default :
+{
+    name : "YDEFX"
+    build_source : "cmake"
+    #build_source : "script"
+    compil_script  : $name + $VARS.scriptExtension
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/ydefx.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "ydefx.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/ydefx.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+              "CONFIGURATION",
+              "Python",
+              "KERNEL",
+              "PY2CPP",
+              "YACS",
+              "qt"
+              ]
+    opt_depend: []
+    build_depend : ["cmake", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+    }
+    patches : []
+}
+
+default_win :
+{
+    build_source : "cmake"
+    cmake_options : " -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON "
+    patches : []
+}
+
+version_master_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V10_0_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_16_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_15_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_14_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_13_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_12_0_CO9 :
+{
+    cmake_options : " -DQt5_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5 -DQt5Core_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Core -DQt5Gui_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Gui -DQt5Widgets_DIR=${QT5_ROOT_DIR}/lib/cmake/Qt5Widgets"
+}
+
+version_V9_10_0 :
+{
+    # prescription de EDF ne fonctionne pas en dehors de YAMS
+    # solution temporaire pour utiliser l'approche standard de SALOME
+    # patch integre post-9.10
+    patches : ['YDEFX-CMakeLists.patch']
+}

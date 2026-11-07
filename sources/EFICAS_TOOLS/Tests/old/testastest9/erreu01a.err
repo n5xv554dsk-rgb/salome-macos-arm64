@@ -1,0 +1,4 @@
+Compilation impossible :   File "erreu01a.comm", line 44
+     UELAS=MECA_STATIQUE(MODELE=MOD,
+     ^
+ SyntaxError: invalid syntax

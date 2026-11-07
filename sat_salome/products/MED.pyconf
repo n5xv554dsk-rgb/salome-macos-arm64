@@ -1,0 +1,106 @@
+default :
+{
+    name : "MED"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/med.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "med.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/med.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING" 
+    ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}
+
+default_MPI :
+{
+    name : "MED"
+    build_source : "cmake"
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/med.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "med.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/med.git"
+      }
+    }
+    environ :
+    {
+    }
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}
+
+version_V6_6_0 :
+{
+    name : "MED"
+    build_source : "autotools"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/med.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "med.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/med.git"
+      }
+    }
+    environ :
+    {
+    }
+    nb_proc : 4
+    depend : [
+      "medfile",
+      "GUI", 
+      "KERNEL", 
+    ]
+    patches : [
+                #avoid the horrible medmem traces!
+               "med_mode_non_debug.patch" 
+    ]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_salome_gui : "yes"
+        has_unit_tests
+    }
+}
+

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<!DOCTYPE application PUBLIC "" "desktop.dtd">
+
+<!--  GUI customization for EFICAS component  -->
+
+<application
+	     title="EFICAS component"
+	     date="9/12/2001"
+	     author="Paul RASCLE"
+	     appId="EFICAS" >
+
+  <desktop>
+
+  <!-- Menubar and toolbar are now created dynamically depending on the catalogs installed with Eficas.
+       Check file EFICASGUI.py for more details. -->
+
+  <!-- ### POPUP MENU ###  -->
+     <popupmenu label-id="Popup for Viewer" context-id="" parent-id="ObjectBrowser" object-id="" pos_id="1">
+	<popup-item item-id="9041" pos-id="" label-id="Open with Eficas" icon-id="" tooltip-id="Edit with Eficas" execute-action=""/>
+    </popupmenu>
+
+  </desktop>	
+
+</application>

@@ -1,0 +1,8 @@
+<document>
+  <section name="resources">
+    <parameter name="HEXABLOCKPlugin" value="${HEXABLOCKPLUGIN_ROOT_DIR}/share/salome/resources/hexablockplugin"/>
+  </section>
+  <section name="smesh_help">
+    <parameter name="User's Guide/Mesh module/Plug-ins/HEXABLOCK plugin" value="${HEXABLOCKPLUGIN_ROOT_DIR}/share/doc/salome/gui/HEXABLOCKPLUGIN/index.html"/>
+  </section>
+</document>

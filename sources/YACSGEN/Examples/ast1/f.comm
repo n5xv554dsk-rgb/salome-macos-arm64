@@ -1,0 +1,9 @@
+print a,b,c
+DEBUT(PAR_LOT="NON")
+YACS_INIT(COMPO=component)
+
+ECRIRE_MAILLAGE()
+LECTURE_FORCE()
+
+d=36.5
+

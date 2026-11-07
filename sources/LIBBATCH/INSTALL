@@ -1,0 +1,165 @@
+# Copyright (C) 2007-2021  CEA/DEN, EDF R&D, OPEN CASCADE
+#
+# Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+# CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+
+
+-------------------------------- Quick install --------------------------------
+
+
+This library is based on CMake build system (http://www.cmake.org/), which
+means that you must have CMake installed on your system (minimum version 2.4)
+in order to build and install libBatch.
+
+You can then go to the directory where you extracted libBatch package and type:
+
+$ cmake
+$ make
+$ make install
+
+That's all!
+
+
+--------------------- Detailed installation instructions ----------------------
+
+
+1. Prerequisites
+
+
+First of all, you have to check (or install if needed) the dependant software
+programs on your system. These programs are:
+
+- CMake build system version 2.4 or newer (http://www.cmake.org/)
+- C++ compiler with standard libraries
+- pthread library
+
+Other products are optional and used to build libBatch interfaces to various
+batch systems and to generate wrappings and documentation:
+
+- LSF headers and libraries (to build the interface to LSF batch system)
+- OpenPBS headers and libraries (to build the interface to OpenPBS)
+- Several Unix remote control commands like ssh and scp (for local submission)
+- Python and SWIG (to build Python wrappings)
+- makeinfo (to generate the documentation)
+
+
+2. Building and installing the library
+
+
+To build the library, you will have to extract the source package in a
+directory where you have write permissions (probably done since you're reading
+this file). You can then build the library directly in the source tree, but it
+is strongly advised to use an independant build tree. For that, just go to the
+directory where you extracted libBatch and type for instance:
+
+$ mkdir ../libBatch-build
+$ cd ../libBatch-build
+
+After that, you will just need to run cmake to generate the Makefiles and to
+run make and make install:
+
+$ cmake ../libBatch-X.X.X                             (X's are version numbers)
+$ make
+$ make install
+
+Note that CMake will look for the prerequisites and optional products in the
+standard directories and environment variables. To change this behavior, you
+can either preset the environment variables CMAKE_INCLUDE_PATH and
+CMAKE_LIBRARY_PATH (see CMake documentation for more details) or use CMake
+graphical interface. For this, run cmake one time to populate the cache and
+then run ccmake:
+
+$ cmake ../libBatch-X.X.X                             (X's are version numbers)
+$ ccmake ../libBatch-X.X.X                            (X's are version numbers)
+
+You will then be able to change several variables to control the way libBatch
+is built (i.e. install path, products path, components to install, ...). Then
+run make and make install like before to build and install the library.
+
+Also note that you won't be able to install libBatch in the default directory
+if you don't have administrators rights on your machine (and anyway, it's not
+advised to install anything manually in the /usr directory). To specify the
+installation directory, you can either use the graphical interface or directly
+type on cmake command line:
+
+$ cmake ../libBatch-X.X.X -DCMAKE_INSTALL_PREFIX=<installdir>
+
+
+3. Testing
+
+
+The build system creates a test target that can be used to automatically test
+some features of the library. The test coverage for this library is currently
+quite poor. Remember that since the tests use connections to remote batch
+systems, the first causes of failure are network and authentication errors. To
+run the tests, you will first have to enable them by setting CMake variable
+LIBBATCH_BUILD_TESTS to ON. Then copy the file src/Core/Test/batchtest.conf to your
+home directory for instance. Edit this file according to your local
+configuration. Set the environment variable BATCH_TEST_CONFIG_FILE to the path
+to your own configuration file. To execute the autotests, just go to your build
+directory and type:
+
+$ make test
+
+The tests will be run successively and a summary will show you how many of them
+passed without error. Note that several tests need passwordless SSH
+authentication to succeed. You can configure this authentication with ssh-agent
+for instance. If one or several tests failed, you can find more detailed
+results in the file <build-dir>/Testing/Temporary/LastTest.log
+
+
+4. Building source and binary packages (for developers)
+
+
+You can directly build source or binary tgz packages for libBatch with CPack
+(included with CMake) packaging process. For this, just go to your build
+directory and type:
+
+$ cmake ../libBatch-X.X.X                             (X's are version numbers)
+$ make package                                             (for binary package)
+$ make package_source                                      (for source package)
+
+
+5. Note for the users of Microsoft Windows operating system
+
+
+The support for this library on Windows operating system is still partial and
+experimental. Some features are not and will not be implemented for this
+system. Nevertheless it is possible to compile the library and launch some
+batch jobs from a computer running Windows. This section only gives some
+guidelines, without any warranty, to install libBatch on Windows.
+
+First you will need to install a library providing pthread implementation. For
+this we tested Pthreads-win32 (http://sourceware.org/pthreads-win32/) but other
+implementations may exist.
+
+You will also need a compiler for Win32 platform. We tested MinGW with MSYS
+environment (http://www.mingw.org/), and Microsoft Visual C++ 2005 Express.
+Other compilers might also work but it is not guaranteed.
+
+Then you will have to install and run CMake, and you should be able to compile
+libBatch and run some basic examples.
+
+If you need to use SSH protocol to submit jobs to your cluster, you will need
+a SSH implementation for Windows operating system. PuTTY is a good choice for
+that (http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html). Once
+installed, add the path to your PuTTY installation in the PATH environment
+variable and run CMake. The build system will detect it and the libBatch will
+use it for SSH-based transfers with the server.

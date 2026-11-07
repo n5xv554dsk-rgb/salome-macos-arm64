@@ -1,0 +1,100 @@
+<!--
+  Copyright (C) 2006-2026  CEA/DEN, EDF R&D
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+-->
+<proc>
+
+    <!-- types -->
+    <!-- inline -->
+    <!-- service -->
+
+    <inline name="node1" >
+                <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou node1" </code>
+                </function>
+                <outport name="p1" type="string"/>
+    </inline>
+    <inline name="node2" >
+                <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou node2" </code>
+                </function>
+                <outport name="p1" type="string"/>
+    </inline>
+    <bloc name="b1" >
+        <inline name="node1" >
+                <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou b1.node1" </code>
+                </function>
+                <outport name="p1" type="string"/>
+        </inline>
+        <inline name="node2" >
+                <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou b1.node2" </code>
+                </function>
+                <outport name="p1" type="string"/>
+        </inline>
+        <bloc name="b2" >
+            <inline name="node1" >
+                <function name="f">
+                    <code>def f(p1):</code>
+                    <code>  print(p1);p1=2*p1 </code>
+                    <code>  print("coucou b1.b2.node1") </code>
+                    <code>  return p1 </code>
+                </function>
+                <inport name="p1" type="string"/>
+                <outport name="p1" type="string"/>
+            </inline>
+            <inline name="node2" >
+                <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou b1.b2.node2" </code>
+                </function>
+                <outport name="p1" type="string"/>
+            </inline>
+            <forloop name="loop1" nsteps="3">
+               <inline name="node1" >
+                 <function name="f">
+                    <code>def f():</code>
+                    <code>  return "coucou b1.b2.loop1.node1" </code>
+                 </function>
+                 <outport name="p1" type="string"/>
+               </inline>
+            </forloop>
+            <control> <fromnode>loop1</fromnode> <tonode>node2</tonode> </control>
+        </bloc>
+        <control> <fromnode>node1</fromnode> <tonode>b2</tonode> </control>
+        <control> <fromnode>b2</fromnode> <tonode>node2</tonode> </control>
+    </bloc>
+
+    <!--control -->
+    <control> <fromnode>b1</fromnode> <tonode>node2</tonode> </control>
+
+    <!--datalinks -->
+
+    <!--parameters -->
+    <parameter>
+        <tonode>b1.b2.node1</tonode> <toport>p1</toport>
+        <value><string>coucou</string></value>
+    </parameter>
+
+</proc>

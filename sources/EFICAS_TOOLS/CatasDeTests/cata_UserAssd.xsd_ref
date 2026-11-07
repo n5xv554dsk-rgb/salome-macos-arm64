@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Essai"
+xmlns:Essai="http://chercheurs.edf.com/logiciels/Essai"
+targetNamespace="http://chercheurs.edf.com/logiciels/Essai"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="AccasUserAssd">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="laClasseUser">
+		<xs:restriction base="AccasUserAssd">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="laClasseUser_U">
+		<xs:restriction base="AccasUserAssd">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="laClasseUser_C">
+		<xs:restriction base="AccasUserAssd">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_creeUserAssd">
+		<xs:restriction base="laClasseUser_C">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_utiliseUnUserAssd">
+		<xs:restriction base="laClasseUser_U">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="T_DefinitionDsSimpDsOper" >
+	 <xs:complexContent>
+	  <xs:extension base="T_step_Essai">
+		<xs:sequence>
+			<xs:element name="creeUserAssd" type="Essai:T_creeUserAssd" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="accasType" type="xs:string" fixed="ASSD"/>
+		<xs:attribute name="typeUtilisateur" type="xs:string" fixed="lASSD"/>
+	  </xs:extension>
+	 </xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="T_UtiliseUnUserAssD" >
+	 <xs:complexContent>
+	  <xs:extension base="T_step_Essai">
+		<xs:sequence>
+			<xs:element name="utiliseUnUserAssd" type="Essai:T_utiliseUnUserAssd" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	  </xs:extension>
+	 </xs:complexContent>
+	</xs:complexType>
+	<xs:element name="DefinitionDsSimpDsOper" type="Essai:T_DefinitionDsSimpDsOper" substitutionGroup="step_Essai"/>
+	<xs:element name="UtiliseUnUserAssD" type="Essai:T_UtiliseUnUserAssD" substitutionGroup="step_Essai"/>
+	<xs:complexType name="T_step_Essai" abstract="true"/>
+	<xs:element name="step_Essai" type="Essai:T_step_Essai"/>
+	<xs:element name="Essai" type="Essai:T_Essai"/>
+		<xs:complexType name="T_Essai">
+		  <xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="step_Essai" minOccurs="0" maxOccurs="1"/>
+		  </xs:choice>
+		</xs:complexType>
+</xs:schema>

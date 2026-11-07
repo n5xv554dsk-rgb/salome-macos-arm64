@@ -1,0 +1,11 @@
+POURSUITE();
+l1=DEFI_LIST_ENTI(DEBUT=2*mon_param+1,);
+l2=DEFI_LIST_ENTI(DEBUT=a[1]);
+INCLUDE_MATERIAU(   NOM_AFNOR='18MND5',      TYPE_MODELE='REF',
+                    VARIANTE='A',          TYPE_VALE='NOMI',
+                    NOM_MATER='MAT3',       INFO=1               )
+INCLUDE(UNITE=11)
+INCLUDE(UNITE=12)
+
+FIN();
+

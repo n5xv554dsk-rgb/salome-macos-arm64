@@ -1,0 +1,34 @@
+default :
+{
+    name : "SALOMEBOOTSTRAP"
+    build_source : "cmake"
+    cmake_options : ""
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/salome_bootstrap.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "salome_bootstrap.git"
+      }
+    }
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ["Python"]
+    build_depend : ["cmake", "swig", "doxygen", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        is_SALOME_product: "yes"
+    }
+    patches: []
+}
+
+default_win:
+{
+    depend : ["Python", "pthreads"]
+}

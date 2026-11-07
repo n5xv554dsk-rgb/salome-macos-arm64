@@ -1,0 +1,63 @@
+
+<proc>
+
+<!-- types -->
+
+
+<container name="A">
+</container>
+
+<container name="B">
+</container>
+
+<service name="node1" >
+  <component>compo1</component>
+  <method>s1</method>
+  <load container="A"/>
+  <inport name="a" type="double"/>
+  <inport name="b" type="double"/>
+  <outport name="c" type="double"/>
+  <instream name="aa" type="CALCIUM_double"/>
+  <outstream name="ba" type="CALCIUM_double"/>
+</service>
+
+<service name="node2" >
+  <component>compo1</component>
+  <method>s1</method>
+  <load container="B"/>
+  <inport name="a" type="double"/>
+  <inport name="b" type="double"/>
+  <outport name="c" type="double"/>
+  <instream name="aa" type="CALCIUM_double"/>
+  <outstream name="ba" type="CALCIUM_double"/>
+</service>
+
+<!--datalinks -->
+<stream>
+  <fromnode>node1</fromnode><fromport>ba</fromport>
+  <tonode>node2</tonode><toport>aa</toport>
+</stream>
+<stream>
+  <fromnode>node2</fromnode><fromport>ba</fromport>
+  <tonode>node1</tonode><toport>aa</toport>
+</stream>
+
+<parameter>
+  <tonode>node1</tonode> <toport>a</toport>
+  <value><double>23</double> </value>
+</parameter>
+<parameter>
+  <tonode>node1</tonode> <toport>b</toport>
+  <value><double>53</double> </value>
+</parameter>
+<parameter>
+  <tonode>node2</tonode> <toport>a</toport>
+  <value><double>63</double> </value>
+</parameter>
+<parameter>
+  <tonode>node2</tonode> <toport>b</toport>
+  <value><double>73</double> </value>
+</parameter>
+
+</proc>
+

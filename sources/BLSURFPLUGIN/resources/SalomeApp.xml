@@ -1,0 +1,9 @@
+<document>
+  <section name="resources">
+    <parameter name="BLSURFPlugin" value="${BLSURFPLUGIN_ROOT_DIR}/share/salome/resources/blsurfplugin"/>
+  </section>
+  <section name="smesh_help" >
+    <parameter name="User's Guide/Mesh module/MG-CADSurf plugin/User's Guide"    value="${BLSURFPLUGIN_ROOT_DIR}/share/doc/salome/gui/BLSURFPLUGIN/index.html;;http://docs.salome-platform.org/latest/gui/BLSURFPLUGIN/index.html"/>
+    <parameter name="User's Guide/Mesh module/MG-CADSurf plugin/Reference guide" value="${MESHGEMS_ROOT_DIR}/Docs/mg-cadsurf_user_manual.pdf"/>
+  </section>
+</document>

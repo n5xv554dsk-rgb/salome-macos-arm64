@@ -1,0 +1,59 @@
+<BR>
+-------------------------------------------------------------------------------------------------------------
+                        FAQs et Limitations d'EFICAS
+-------------------------------------------------------------------------------------------------------------
+
+<BR>
+<BR>
+
+1. Mots réservés :
+<BR>
+
+        Tous les mots du langage Python sont des mots réservés.
+        On ne peut donc pas appeler une variable ou un concept 'fin' ou 'dir'
+        Pour la liste complète de ces mots-clés, veuillez vous référer à la 
+        documentation Python
+<BR>
+<BR>
+
+2. Concepts réentrants :
+<BR>
+
+        Ne pas indiquer par un '&' devant son nom qu'un concept est utilisé comme
+        concept réentrant. En effet EFICAS le sait !
+<BR> <BR>
+
+3. Carte commentaire :
+<BR>
+
+        La carte commentaire est désormais le '#' (dièse) au lieu du '%' (pourcent)
+   Les commentaires sont gérés comme des objets de même niveau que les
+   commandes ; il n'est plus possible de placer des commentaires "dans"
+   une commande. Attention, lors de la traduction d'un fichier de version 5
+   en 6, les commentaires "dans" les commandes seront perdus.
+
+<BR> <BR>
+4. Nommer le concept produit par un opérateur :
+<BR>
+
+        Vous ne pouvez nommer le concept produit d'un opérateur que lorsque
+        celui-ci aura été entièrement et correctement rempli.
+
+<BR> <BR>
+5. Règle de rémanence dans les mots-clés facteurs répétés :
+
+        La règle de rémanence qui permettait pour certains mots-clés facteurs
+        et pour certains de leurs mots-clés simples de ne pas répeter la valeur
+        de ces derniers dans toutes les occurrences du mot-clé facteur n'est pas 
+        connue d'EFICAS.
+        En conséquence, vous devez répéter les mots-clés simples concernés dans 
+        toutes les occurrences des mots-clés facteurs.
+
+<BR> <BR>
+6. Besoin d'aide ?
+<BR>
+        
+        La documentation d'utilisation d'EFICAS a pris un peu de retard sur le produit ...
+        Néanmoins, vous disposez sur la plupart des panneaux contextuels ( les panneaux à
+        droite de l'arbre) d'une aide en ligne que vous pouvez activer en maintenant le 
+        bouton droit de votre souris enfoncé.

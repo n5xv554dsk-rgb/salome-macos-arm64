@@ -1,0 +1,22 @@
+<source>
+  <shape_selector id="object"
+                  label="Shape:"
+                  tooltip="Select a shape to modify."
+                  shape_types="Vertices Edges Wires Faces Shells Solids Compounds Compsolids"
+                  concealment="true"
+                  geometrical_selection="true">
+    <validator id="GeomValidators_BodyShapes"/>
+  </shape_selector>
+  <groupbox>
+    <doublevalue id="tolerance"
+                  label="Tolerance"
+                  min="1.0e-7"
+                  max="1"
+                  default="1.0e-7"
+                  tooltip="Tolerance"/>
+    <boolvalue id="exact_check"
+               label="Exact check of edge tolerances"
+               tooltip="Take into account maximal distance of curve to its surfaces"
+               default="false"/>
+  </groupbox>
+</source>

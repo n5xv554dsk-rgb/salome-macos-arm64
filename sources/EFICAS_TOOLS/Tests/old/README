@@ -1,0 +1,37 @@
+Pour executer tous les tests faire::
+
+   python run.py
+
+Pour executer seulement un module de test (testsimp1.py par exemple), faire::
+
+   python run.py testelem/testsimp1.py
+
+Un test correspond à l'exécution d'une méthode dont le nom commence par test ou Test
+d'une classe dont le nom commence par test ou Test dans un module dont le nom
+commence par test ou Test éventuellement dans un répertoire dont le nom commence
+par test ou Test.
+
+Quelques tests dont le nom commence par futuretest ne sont pas exécutés. Ils identifient 
+des limites actuelles d'Accas.
+
+Certains tests doivent etre exécutés séparément à cause d'un problème d'import de catalogue.
+En particulier, les tests d'ihm (testihm*.py) entrent dans cette catégorie.
+
+Par ordre de complexité :
+
+  - testelem7
+  - testelem
+
+  - testcomm7
+  - testcomm9
+  - testcomm
+
+  - testastest
+  - testastest9
+
+  - testihm9
+  - testihm
+  - testihm7
+
+Les tests suffixés 7 ou 9 sont spécifiques d'une version d'ASTER
+

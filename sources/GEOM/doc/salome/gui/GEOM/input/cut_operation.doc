@@ -1,0 +1,58 @@
+/*!
+
+\page cut_operation_page Cut
+
+\b Cut operation cuts a shape with a list of other shapes.
+
+To produce it, select in the main menu <b>Operations - > Boolean - > Cut</b>
+
+\image html bool3.png "Cut dialog"
+
+In this dialog:
+- Input or accept the default \b Name of the resulting shape. 
+- Click the arrow button and select in the Object Browser or in the Viewer the <b>Main Object</b>, which will be cut by tool objects.
+- Select the <b>Tool objects</b>, which will cut the main object.
+- Activate the corresponding check-box if you wish to <b> Detect Self-intersections </b>.
+- Activate the corresponding check-box if you wish to use a <b> fuzzy parameter </b>.  
+  If activated, you can define the fuzzy tolerance in the <b> fuzzy parameter </b> input box.
+- Activate \ref restore_presentation_parameters_page "Advanced options" if required.
+- Press "Apply" or "Apply & Close" button to get the result (GEOM_Object).
+
+\note This algorithm does not find all types of self-intersections. It is tuned
+      to detect vertex/vertex, vertex/edge, edge/edge, vertex/face and edge/face
+      intersections. Face/face intersections detection is switched off as it
+      is a time-consuming operation that gives an impact on performance. To find
+      all self-intersections use \ref check_self_intersections_page
+      "Detect Self-intersection tool".
+
+This operation can be performed using a <b>TUI Command:</b> 
+
+<em>geompy.MakeCutList(theMainShape, theShapesList, checkSelfInte, name, fuzzyParam)</em>
+
+<b>Arguments:</b> a main shape + a list of other shapes + an optional flag for self-intersection 
+check + an optional name + an optional fuzzy parameter.
+
+There is also a special <b>TUI Command:</b> for the Cut operation on two shapes (object and tool) :
+
+<em>geompy.MakeCut(s1, s2, checkSelfInte, name, fuzzyParam)</em>
+
+<b>Arguments:</b> the object + the tool + an optional flag for self-intersection check + an
+optional name + an optional fuzzy parameter.
+
+<b>Example:</b>
+
+\image html fusesn1.png "The initial shapes"
+
+\image html cutsn.png "The resulting object"
+
+Our <b>TUI Scripts</b> provide you with useful examples of the use of
+\ref tui_cut "Boolean Operations".
+
+<b> More details </b>
+
+Please refer to <a href="SALOME_BOA_PA.pdf">this document</a> for a detailed description of Boolean operations.
+It provides a general review of the Partition and Boolean
+operations algorithms, describes the usage methodology and highlights
+major limitations of these operations.
+
+*/

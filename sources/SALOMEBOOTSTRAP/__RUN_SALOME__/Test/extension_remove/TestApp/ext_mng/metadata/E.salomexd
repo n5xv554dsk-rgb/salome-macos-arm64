@@ -1,0 +1,17 @@
+{
+    "name": "E",
+    "version": "DEV",
+    "descr": "SALOME extension",
+    "salomegui": false,
+    "salomemodule_name": "E",
+    "depends_on": [],
+    "author": "SALOME Team",
+    "ModelVersion": "1.0.0",
+    "License": "lgpl_2.1",
+    "suffix": 1,
+    "depends_on_removed": [
+        "D",
+        "C"
+    ],
+    "trl": 8
+}

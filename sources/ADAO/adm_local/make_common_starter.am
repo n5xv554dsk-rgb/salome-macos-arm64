@@ -1,0 +1,59 @@
+# Copyright (C) 2008-2026 EDF R&D
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+#
+# Author: André Ribes, andre.ribes@edf.fr, EDF R&D
+
+# Standard directory for installation
+salomeincludedir   = $(includedir)/salome
+libdir             = $(prefix)/lib/salome
+bindir             = $(prefix)/bin/salome
+salomescriptdir    = $(bindir)
+salomepythondir    = $(prefix)/lib/python$(PYTHON_VERSION)/site-packages/salome
+
+# Directory for installing idl files
+salomeidldir       = $(prefix)/idl/salome
+
+# Directory for installing resource files
+salomeresdir       = $(prefix)/share/salome/resources/${MODULE_NAME}
+
+# Directory for installing tests files
+testsdir             = $(prefix)/tests
+testsdasalomedir     = $(testsdir)/daSalome
+testsplateformedir   = $(testsdir)/daComposant/Plateforme
+
+# Directory for installing examples files
+examplesdir               = $(prefix)/share/salome/adao_examples
+examplesdasalomedir       = $(examplesdir)/daSalome
+examplesdaskeletonsdir    = $(examplesdir)/daSkeletons
+externaldatadefinitiondir = $(examplesdaskeletonsdir)/External_data_definition_by_scripts
+
+# Directories for installing admin files
+admlocaldir       = $(prefix)/adm_local
+admlocalunixdir     = $(admlocaldir)/unix
+admlocalm4dir        = $(admlocaldir)/unix/config_files
+
+# Shared modules installation directory
+sharedpkgpythondir =$(pkgpythondir)/shared_modules
+
+# Documentation directory
+docdir             = $(datadir)/doc/salome/gui/ADAO
+
+IDL_INCLUDES = -I$(KERNEL_ROOT_DIR)/idl/salome
+KERNEL_LIBS= -L$(KERNEL_ROOT_DIR)/lib/salome -lSalomeContainer -lOpUtil -lSalomeDSCContainer -lSalomeDSCSuperv -lSalomeDatastream -lSalomeDSCSupervBasic -lCalciumC
+KERNEL_INCLUDES= -I$(KERNEL_ROOT_DIR)/include/salome $(OMNIORB_INCLUDES) $(BOOST_CPPFLAGS)
+

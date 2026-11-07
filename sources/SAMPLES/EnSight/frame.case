@@ -1,0 +1,9 @@
+#
+# casefile for: frame model
+#
+ 
+FORMAT
+type:			ensight
+  
+GEOMETRY
+model:			frame.geo

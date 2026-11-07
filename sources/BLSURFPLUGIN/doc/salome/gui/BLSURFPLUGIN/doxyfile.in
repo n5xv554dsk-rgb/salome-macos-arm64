@@ -1,0 +1,60 @@
+#---------------------------------------------------------------------------
+# Project related configuration options
+#---------------------------------------------------------------------------
+PROJECT_NAME      = "MG-CADSurf Module Reference Manual v.@SALOMEBLSURFPLUGIN_VERSION@"
+OUTPUT_DIRECTORY  = BLSURFPLUGIN
+CREATE_SUBDIRS	  = NO
+OUTPUT_LANGUAGE   = English
+TAB_SIZE          = 5
+
+#---------------------------------------------------------------------------
+# configuration options related to warning and progress messages
+#---------------------------------------------------------------------------
+QUIET             = NO
+WARNINGS          = YES
+
+#---------------------------------------------------------------------------
+#Input related options
+#---------------------------------------------------------------------------
+INPUT             = @CMAKE_CURRENT_SOURCE_DIR@/input
+FILE_PATTERNS     = *.doc
+IMAGE_PATH        = @CMAKE_CURRENT_SOURCE_DIR@/images
+EXAMPLE_PATH      = @CMAKE_SOURCE_DIR@/doc/salome/examples 
+
+#---------------------------------------------------------------------------
+#HTML related options
+#---------------------------------------------------------------------------
+GENERATE_HTML     = YES
+HTML_OUTPUT       = .
+HTML_HEADER       = @CMAKE_CURRENT_BINARY_DIR@/static/header.html
+HTML_FOOTER       = @CMAKE_CURRENT_SOURCE_DIR@/static/footer.html
+HTML_EXTRA_STYLESHEET = @CMAKE_CURRENT_SOURCE_DIR@/static/salome_extra.css
+HTML_EXTRA_FILES      = @CMAKE_CURRENT_SOURCE_DIR@/images/head.png
+TOC_EXPAND        = YES
+DISABLE_INDEX     = NO
+GENERATE_TREEVIEW = YES
+TREEVIEW_WIDTH    = 300
+
+#---------------------------------------------------------------------------
+#LaTeX related option
+#---------------------------------------------------------------------------
+GENERATE_LATEX    = NO
+
+#---------------------------------------------------------------------------
+#RTF related options
+#---------------------------------------------------------------------------
+GENERATE_RTF      = NO
+
+#---------------------------------------------------------------------------
+#External reference options
+#---------------------------------------------------------------------------
+
+#rnv: 07.04.2011 Workaround for the doxygen 1.7.3:
+#because it wrongly defines location of the html files for search.
+TAGFILES          = blsurfpluginpy_doc.tag=../BLSURFPLUGIN/blsurfpluginpy_doc
+SEARCHENGINE      = YES
+
+#---------------------------------------------------------------------------
+#Custom commands
+#---------------------------------------------------------------------------
+ALIASES += tui_script{1}="\include \1 <a href=\"../../examples/BLSURFPLUGIN/\1\">Download this script</a>"

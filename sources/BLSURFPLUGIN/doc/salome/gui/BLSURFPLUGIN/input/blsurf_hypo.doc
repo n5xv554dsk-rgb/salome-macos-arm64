@@ -1,0 +1,475 @@
+/*!
+
+\page blsurf_hypo_page MG-CADSurf Parameters hypothesis
+
+\anchor blsurf_top
+
+\tableofcontents
+
+\section blsurf_general_parameters General parameters
+
+\image html blsurf_parameters.png
+
+- <b>Name</b> - allows defining the name of the hypothesis (MG-CADSurf
+Parameters_n by default).
+
+- <b>Physical Size</b> group defines a \a physical sizemap.
+
+- \b Type of the physical sizemap can be set to <em>None</em>, <em>Global size</em>
+  or <em>Local size</em>
+
+  - if set to <em>Global size</em>, only the <b>User size</b>,
+  <b>Max Size</b> and <b>Min Size</b> fields are taken into account.
+
+  - if set to <em>Local size</em>, behaves like <em>Custom</em> mode and takes into
+  account the "Gradation" parameter and the custom elements sizes given in the
+  "Local size" tab.
+
+- <b>Geometrical Size</b> group defines a \a geometrical sizemap.
+
+- \b Type of the geometrical sizemap can be set to <em>None</em>, <em>Global size</em>
+
+  - if set to <em>Global size</em>, allows user input in <b>Mesh angle</b>,
+  <b>Mesh distance</b> and <b>Gradation</b> fields. These fields control
+  computation of the element size, so called <i>geometrical size</i>, conform
+  to the surface geometry considering local curvatures. If both the <b>User size</b>
+  and the <i>geometrical parameters</i> are defined, the  eventual element size
+  corresponds to the least of the two.
+
+- <b>User size</b> - defines the size of the generated mesh elements. If "Relative value"
+is checked, the value is relative to the diagonal of the shape.
+
+- <b>Max Size</b> - defines the upper limit of mesh element size. If "Relative value"
+is checked, the value is relative to the diagonal of the shape.
+
+- <b>Min Size</b> - defines the lower limit of mesh element size. If "Relative value"
+is checked, the value is relative to the diagonal of the shape.
+
+- <b>Mesh angle</b> - Limiting angle (in degree) between the plane of a triangle of the mesh and each of the tangent planes at the three vertices.
+The smaller this angle is, the closer the mesh is to the exact surface, and the denser the resulting mesh is.
+
+- <b>Mesh distance</b> - Maximum desired distance between a triangle and its supporting CAD surface.
+The smaller this distance is, the closer the mesh is to the exact surface (only available in isotropic meshing).
+
+- <b>Quadratic mesh</b> - if checked, quadratic elements will be generated.
+
+- <b>Gradation</b> - maximum ratio between the lengths of two adjacent edges.
+
+- <b>Mesh optimisation</b> - if checked, the mesh will be optimized in order to get better shaped elements.
+
+- <b>Elements type</b> - Type of the elements to generate the mesh with:
+
+  - Triangles: generate a mesh with only triangles.
+
+  - Quadrangle dominant: generate a mesh with a majority of quadrangles and a few triangles.
+
+  - Quadrangles: generate a mesh with only quadrangles.
+
+- <b>Surface proximity</b> - activates surface proximity based refinement.
+
+  - <b>Number of layers</b> - number of surface element layers to be generated.
+
+  - <b>Ratio</b> -  a multiplicative coefficient which will be used to scale the size computed by
+the surface proximity detection.
+
+- <b>Volume proximity</b> - activates volume proximity based refinement.
+
+  - <b>Number of layers</b> - number of surface element layers to be generated.
+
+  - <b>Ratio</b> -  a multiplicative coefficient which will be used to scale the size computed by
+the volume proximity detection.
+
+- <b>Anisotropic</b> - if checked, this parameter defines the maximum anisotropic ratio of the metric governing the anisotropic meshing process.
+The default value (0) means that the metric (and thus the generated elements) can be arbitrarily stretched.
+
+- <b>Optimize tiny edges</b> - if checked, the tiny (nano) edges are
+  removed from the generated mesh during local mesh optimization. The
+  tiny edge will be removed only if the local quality is improved by
+  the deletion. The tiny edge value defines the minimal length under
+  which an edge is considered to be a tiny one.
+
+- <b>Remove tiny edges</b> - if checked, the tiny (nano) edges are
+  removed from the generated mesh \a without taking into account the
+  local quality around the edge. The tiny edge value defines the
+  minimal length under which an edge is considered to be a tiny one.
+
+- <b>Remove bad elements</b> - if checked, the bad elements (slivers) are removed from the generated mesh.
+The bad element value defines the aspect ratio triggering the "bad element” classification.
+
+- <b>Correct surface intersections</b> - if checked, the mesher will try to prevent all surface intersections, which is useful for future volume mesh generation. The value defines the time that will be spent in the intersection prevention process. For example, the value 3 means that the time of the intersection removal process won't be more than 3 times the time required to mesh without processing the intersections.
+
+- <b>Volume Gradation</b> - maximum ratio between the lengths of two adjacent edges affecting quality of a future volume mesh, specially in thin volume areas. The volume gradation parameter must be greater than 1, and should be greater or equal to the value of the classic
+surface gradation (at the risk of increasing the time of convergence of the gradation process).
+The closer it is to 1, the smoother the final volume mesh you will build should be.
+
+
+
+\ref blsurf_top "Back to top"
+
+\section blsurf_advanced_parameters Advanced parameters
+
+The notion of <i>diag</i> used in the descriptions means the diagonal of the bounding box of the geometrical object to mesh.
+
+\image html blsurf_parameters_advanced.png
+
+\b Advanced page tab expose mostly useful advanced options. Initially, default values of the options are displayed and they are not modifiable. If an option is activated using a check-box, its value becomes modifiable.
+
+- \b Meshing options
+
+  - <b>Independent patches</b> - This parameter can be used to activate the more complete patch independent meshing, by generating the mesh on global user-defined hyperpatches.
+
+  - <b>Enforce CAD edge sizes</b> - Relaxes the given sizemap constraint around CAD edges to allow a better
+element quality and a better geometric approximation. It is only useful in combination with the
+gradation option.
+
+  - <b>Priority of geometry over Jacobian</b> - This parameter determines whether or not the geometry accuracy
+is more important than the negative Jacobian correction. When this parameter is set to 0,
+MeshGems-CADSurf is allowed to lose the CAD-mesh associativity in order to correct the last negative Jacobians.
+
+  - <b>Maximal number of points per patch</b> - This parameter controls the maximum amount of points MeshGems-CADSurf
+is allowed to generate on a single CAD patch. For an automatic gestion of the memory, you can set this parameter to ”0”.
+
+  - <b>Rectify Jacobian</b> - The quadratic elements generation is a processing of the MeshGems-CADSurf
+meshing process which inserts the extra nodes on the CAD. This parameter determines whether
+MeshGems-CADSurf will try to correct or not all the elements of the surface mesh with negative
+Jacobians by moving the internal nodes of the mesh.
+
+  - <b>Respect geometry</b> - This patch independent option can be deactivated to allow MeshGems-CADSurf
+to lower the geometry accuracy in its patch independent process.
+
+  - <b>Tiny edges avoid surface intersections</b> - This option defines the priority between the tiny feature
+suppression and the surface intersection prevention. By default, MeshGems-CADSurf gives the priority
+to the surface intersection prevention rather than to tiny edge or bad surface element removal. These
+mesh features are then removed only if it does not lead to surface intersections. This behaviour can be
+deactivated by setting this parameter to 0, giving priority to the tiny edge or bad surface element
+removal.
+
+  - <b>use deprecated patch mesher</b> - This option reproduces the mesher behaviour of previous MG-CADSurf versions
+(MeshGems before 2.3, i.e. before SALOME 8.2). This has proved useful on some particular cases such as very small 
+local size on a vertex situated on a border curve.
+
+- <b>CAD preprocessor</b> options. The CAD preprocessor (formerly known as PreCAD) has two main goals:
+
+  - Complete missing or inadequate CAD descriptions.
+
+  - Perform topology reconstruction and specific geometry
+  enhancement for mesh generation.
+
+  \n All options are unchecked by default. No cleanup is made by default so that the mesh matches the shape. If the user has a bad shape (e.g. imported shape), he can activate some options to improve the mesh.
+
+  - <b>Compute ridges</b> -  If this option is deactivated,
+  MeshGems-CADSurf will not try to preserve lines defined by a sharp
+  angle in the input discrete geometry. Only input ridges, free edges,
+  non manifold edges and separation betwen zones with different
+  attributes will be respected (if tags is set to respect).
+
+  - <b>Closed geometry</b> - describes whether the working geometry should be closed or not. 
+  When activated, this option helps PreCAD to process the dirtiest geometries.
+
+  - \b Debug - If debug = yes PreCAD will be very verbose and will output some intermediate files in the working directory.
+
+  - <b>Discard input topology</b> - compute the CAD topology from scratch,
+  without considering the topological information contained in the original CAD
+  (useful for iges files). This option is unchecked by default.
+
+  - <b>Merge Edges</b> - optimize the geometry by merging some
+  edges.
+
+  - <b>Periodic tolerance</b> - This parameter defines the maximum size difference between two periodic edges and also the maximum distance error between two periodic entities.
+
+  - <b>Remove duplicate CAD faces</b> - optimize the geometry by merging the
+  duplicate CAD faces. This option is unchecked by default.
+
+  - <b>Required entities</b> - The required entities control the correction operations. Accepted values for this parameter are:
+    - respect : MeshGems-CADSurf is not allowed to alter any required entity, even for correction purposes,
+    - ignore : MeshGems-CADSurf will ignore the required entities in its processing,
+    - clear : MeshGems-CADSurf will clear any required status for the entities. There will not be any entity marked as required in the generated mesh.
+
+  - <b>Sewing tolerance</b> - tolerance of the assembly. It rarely requires to be tuned.
+
+  - \b Tags - controls the optimisation process. Possible values are:
+    - "respect" - PreCAD is not allowed to cross the CAD attributes boundaries for optimisation purpose.
+    - "ignore" - PreCAD is allowed to cross the CAD attributes boundaries for optimisation.
+    - "clear" - PreCAD will erase each tgas of each entities, and will thus be allowed to cross the CAD attributes boundaries in its optimisation purpose.
+
+
+- <b>Add option</b> - adds a new line in <b>Other options</b> section where you can type an option name and value. The following advanced MG-CADSurf options can be used:
+
+  - \b create_tag_on_collision (bool) - If this option is activated, MeshGems-CADSurf will create new tags to
+  describe tag collisions (when it locally changes the topology, depending on the patch independent
+  options). When this option is not activated, only one tag is preserved while the other one is dropped.
+  By default this option is 1.
+
+  - \b tiny_edge_respect_geometry (bool) - This option defines the behaviour of the tiny edge removal algorithm
+  regarding volume collapse. By default, all tiny edges will be removed, regardless of any potential
+  volume collapse. When this option is activated, it will prevent volume from being collapsed during the tiny edge removal process.
+  By default this option is 0.
+
+  - \b manifold_geometry (int) - describes whether the working geometry should be manifold or not.
+  When activated, this option helps PreCAD to process the dirtiest
+  geometries. By default this option is 0.
+
+
+
+- <b>Verbosity level</b> - defines the percentage of "verbosity" of
+MeshGems-CADSurf [0-10].
+
+- <b>ExportGMF</b> - saves the computed mesh into a GMF file (.mesh or .meshb).
+
+
+
+\ref blsurf_top "Back to top"
+
+\section blsurf_local_size Local size
+
+Local sizes can be defined on faces, edges or vertices:
+
+- The faces, edges and vertices should belong to the meshed geometrical
+object or to its sub-shapes (created using <b>Explode</b> command).
+
+- Groups of faces, edges and vertices are also handled.
+
+- It is possible to attribute the same size to several geometries using multi-selection.
+
+- The sizes are constant values or python functions.
+
+- In case of a python function, the following rules must be respected:
+
+  - The name of the function is f.
+
+  - If geometry is a face or a group of faces, the function is f(u,v).
+
+  - If geometry is an edge or a group of edges, the function is f(t).
+
+  - If geometry is a vertex or a group of vertices, the function is f().
+
+  - The function must return a double.
+
+3 different types of size maps can be defined:
+
+-# \ref blsurf_sizemap_computation "Computation of the physical size"
+-# \ref blsurf_attractor "Advanced maps"
+-# \ref blsurf_attractor_computation "Computation of attractors"
+
+\ref blsurf_top "Back to top"
+
+\subsection blsurf_sizemap_computation Computation of the physical size
+
+\image html blsurf_parameters_sizemap1.png 
+
+The physical size is obtained by querying sizemap functions associated
+to the input CAD object for surfaces, curves and points.
+Each function can either return a value h (which is then trimmed
+between the two bounds hphymin and hphymax), or "no answer" (by not
+assigning a value to h), thus providing great flexibility in the
+specification of the sizes. The computation depends on whether point P
+is internal to a surface, internal to a curve, or at the end of
+several curves:
+
+- If point P is internal to a surface, the CAD surface size function
+is queried. If no answer is returned, one interpolates with the values
+at the vertices of the discretized interface curves.
+
+- If point P is internal to a curve, the CAD curve size function is
+queried first. If no answer is returned, the surface size function is
+queried for every adjacent surface and the mean value of the returned
+values is computed. If no answer is returned, sizes h1 and h2 at both
+ends of the curve are considered (see next item) and the interpolated
+value is computed.
+
+- If point P is at the extremity of several curves, the CAD point size
+function is queried first. If no answer is returned, the curve size
+function is queried for every adjacent curve and the mean value of the
+returned values is computed. If no answer is returned, the surface
+size function is queried for every adjacent surface and the mean value
+of the returned values is computed. If there is still no answer
+returned, the default value hphydef is kept.
+
+In order to compute the mean of several values, the arithmetic mean is
+used by default, but this can be modified by the parameter
+\ref blsurf_hmean_flag "hmean flag". In the same way, in order to
+interpolate two values, a linear interpolation is used by default, but
+this can be modified by \ref blsurf_hinterpol_flag "hinterpol flag". 
+
+<b>Note:</b> on some particular configurations, the mesher behaviour is
+not the same as before (SALOME versions before 8.2 i.e. MeshGems before 2.3).
+For a small local size defined on a point situated on a border curve,
+the previous mesher behaviour may be prefered: 
+see "use deprecated patch mesher"
+on advanced tag.
+
+
+\ref blsurf_local_size "Back to \"Local size\""\n
+\ref blsurf_top "Back to top"
+
+\subsection blsurf_attractor Advanced maps
+
+\image html blsurf_parameters_sizemap2.png 
+
+More specific size maps can be defined on faces. 
+
+- <i> Attractors </i> allow to define the size of the mesh elements
+on a face so that the mesh is the finest on the attractor shape and
+becomes coarser when getting far from this shape.
+
+  - The selected attractor can be a Vertex, an Edge, a Wire or a
+  Compound mixing several entities of those types.
+
+  - The attractor doesn't have to be a sub-shape of the shape to mesh.
+
+  - The size will grow exponentially (see the formula below) but is
+  bounded by gradation, \n so if you want the formula to be strictly
+  respected, you should set the <i>gradation</i> 
+  to its maximum (2.5) in the <i>arguments</i> tab. 
+
+- Furthermore you can choose to <i> keep the size constant </i>
+until a certain distance from a shape. This option can be combined or
+not with an <i>attractor</i> size map described above. 
+
+  - If the two options are combined the size will remain constant
+  until the distance specified in "constant over" and grow then as
+  prescribed by the attractor function.
+
+  - Else the growing is only controled by the standard arguments of
+  MG-CADSurf (gradation ...).
+
+\image html blsurf_const_size_near_shape2.png "Example of size map with constant size option, the size is kept constant on the left side of the surface until a certain distance"
+
+\note The validation of the hypothesis might take a few seconds if
+attractors are defined or the "constant size" option is used because a
+map of distances has to be built on the whole surface for each face
+where such a hypothesis has been defined.
+
+\sa Sample TUI Script of the \ref tui_blsurf "creation of a MG-CADSurf hypothesis", including size map.
+
+\ref blsurf_local_size "Back to \"Local size\""\n
+\ref blsurf_top "Back to top"
+
+\subsection blsurf_attractor_computation Computation of attractors
+
+The size grows exponentially following the equation : 
+\f$h(d) = \mathrm{User Size} + (\mathrm{h\_start} - \mathrm{User Size}) \times e ^ { - \left( \frac{d}{R} \right) ^ {2} }\f$
+
+Where :
+
+- h_start is the desired size on the given attractor shape
+
+- d is the distance of the current point from the attractor
+shape. The distance is the geodesic distance (i.e. calculated by following the surface to be meshed)
+
+- R is called the distance of influence and allows controlling the growth rate of the mesh
+
+\image html blsurf_attractors2.png "Example of mesh created using attractors, the attractors here are the side edges and the size grows from the side of the surface towards the apex"
+
+\ref blsurf_local_size "Back to \"Local size\""\n
+\ref blsurf_top "Back to top"
+
+\section blsurf_enforced_elements Enforced vertices
+
+\image html blsurf_parameters_enforced_vertices.png
+
+It is possible to define some enforced vertices to MG-CADSurf algorithm.
+An enforced vertex is defined by
+
+- selecting an existing Vertex or Compound,
+
+- or by its coordinates.
+
+The enforced vertex is the projection of a point defined by its
+(x,y,z) coordinates on the closest face found by the application.
+
+- It is possible to define several enforced vertices.
+
+- If the projected point is on the boundary or outside of the face, it will be ignored.
+
+- If a group name is specified : if the group exists, the enforced nodes will be added in the existing group, if the group does not exist it will be created.
+
+All the internal vertices of faces can be considered as enforced vertices if the corresponding checkbox is checked.
+A group can optionnaly be defined on those enforced vertices.
+
+\sa Sample TUI Script of the \ref tui_blsurf "creation of a MG-CADSurf hypothesis", including enforced vertices.
+
+\ref blsurf_top "Back to top"
+
+
+\section blsurf_enforced_meshes Enforced Meshes
+
+\image html blsurf_enforced_meshes.png
+
+MG-CADSurf algorithm can be forced by other 1D meshes, sub-meshes or
+groups. 1D meshes are allowed to pass over face boundaries and to
+intersect other enforced meshes.
+If a group name is given, the enforced 1D elements will be added to the group.
+If the group does not exist, it is created.
+
+\sa Sample TUI Script of the \ref tui_blsurf "creation of a MG-CADSurf hypothesis", including enforced meshes.
+
+\ref blsurf_top "Back to top"
+
+
+\section blsurf_periodicity Periodicity
+
+\subsection periodicity_introduction Introduction
+
+Periodicity is used to have the same discretization on two faces (in 3D) or two edges (in 2D).
+This is useful for instance for a Representative Volume Element so that the translated meshes share the same nodes on the common faces.
+
+Periodicity association uses PreCAD (MG-CADSurf preprocessor). You don't need an extra PreCAD license. It is included in MG-CADSurf since MeshGems V2.2.
+
+\image html blsurf_periodicity_translation.png "Two periodic faces (translation)"
+
+\image html blsurf_periodicity_reflexion.png "Two periodic faces (reflexion)"
+
+\image html blsurf_periodicity_2D.png "Associations of edges in 2D (both red edges are associated with each other)"
+
+\subsection periodicity_gui_usage GUI usage
+
+\image html blsurf_parameters_periodicity.png
+
+The periodicity association can be defined:
+
+- on 2 groups of faces (in 3D)
+- on 2 groups of edges (in 2D)
+
+If the transformation is a translation, PreCAD makes the periodicity association with only this information.
+
+Otherwise, for instance a rotation, the user has to define 3 non-colinear vertices and their image by the transformation.
+
+\subsection periodicity_tui_precad_usage TUI PreCAD usage
+
+The two methods to define periodicity with PreCAD are
+(the former name of <em>MG-CADSurf</em> is \a BLSURF and names
+of the corresponding classes and modules still include \a "BLSURF"):
+- BLSURFPluginBuilder.BLSURF_Algorithm.AddPreCadFacesPeriodicity
+- BLSURFPluginBuilder.BLSURF_Algorithm.AddPreCadEdgesPeriodicity
+
+List of source and target vertices to define a transformation are optional.
+
+\sa Sample TUI Script of the definition of MG-CADSurf periodicity \ref tui_blsurf_periodicity_preCAD "using preCAD".
+
+\section blsurf_hyperpatch Hyper-patch
+
+\image html blsurf_parameters_hyperpatch.png
+
+Hyper-patch tab page allows defining faces that will be meshes together as
+  part of a global hyper-patch.
+
+- <b>Hyper-patch IDs</b> table - shows IDs of faces of defined hyper-patches.
+
+- <b>Face selection</b> - activates selection of faces in the VTK Viewer.
+
+- <b>Group selection</b> - activates selection of faces and groups of
+  faces in the Object Browser.
+
+- \b IDs - allows typing IDs of faces composing a hyper-patch and
+  shows IDs of faces selected in the Viewer or the Object Browser.
+
+- \b Add - adds a new row to the table and moves \b IDs there.
+
+- \b Remove - removes selected hyper-patches from the table.
+
+\ref blsurf_top "Back to top"
+
+For more information on MeshGems-CADSurf, you can read its documentation at $MESHGEMS_ROOT_DIR/Docs/mg-cadsurf_user_manual.pdf
+
+*/

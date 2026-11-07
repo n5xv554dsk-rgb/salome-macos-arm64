@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<proc name="proc">
+   <property name="DefaultStudyID" value="1"/>
+   <objref name="CALCIUM_complex" id="IDL:Ports/Calcium_Ports/Calcium_Complex_Port:1.0"/>
+   <objref name="CALCIUM_double" id="IDL:Ports/Calcium_Ports/Calcium_Double_Port:1.0"/>
+   <objref name="CALCIUM_integer" id="IDL:Ports/Calcium_Ports/Calcium_Integer_Port:1.0"/>
+   <objref name="CALCIUM_logical" id="IDL:Ports/Calcium_Ports/Calcium_Logical_Port:1.0"/>
+   <objref name="CALCIUM_real" id="IDL:Ports/Calcium_Ports/Calcium_Real_Port:1.0"/>
+   <objref name="CALCIUM_string" id="IDL:Ports/Calcium_Ports/Calcium_String_Port:1.0"/>
+   <type name="string" kind="string"/>
+   <struct name="Engines/dataref">
+      <member name="ref" type="string"/>
+   </struct>
+   <type name="bool" kind="bool"/>
+   <sequence name="boolvec" content="bool"/>
+   <type name="double" kind="double"/>
+   <sequence name="dblevec" content="double"/>
+   <objref name="file" id="file"/>
+   <type name="int" kind="int"/>
+   <sequence name="intvec" content="int"/>
+   <objref name="pyobj" id="python:obj:1.0"/>
+   <sequence name="stringvec" content="string"/>
+   <container name="A">
+   </container>
+   <container name="B">
+   </container>
+   <container name="DefaultContainer">
+      <property name="container_name" value="FactoryServer"/>
+      <property name="name" value="localhost"/>
+   </container>
+   <datanode name="datain">
+      <parameter name="f1" type="double">
+         <value><double>23</double></value>
+      </parameter>
+   </datanode>
+   <service name="node1">
+      <component>caster</component>
+      <load container="A"/>
+      <method>s1</method>
+      <inport name="jdc" type="file"/>
+      <inport name="a" type="double"/>
+      <inport name="b" type="int"/>
+      <inport name="c" type="string"/>
+      <instream name="aa" type="CALCIUM_double"/>
+      <instream name="ab" type="CALCIUM_double"/>
+      <instream name="ac" type="CALCIUM_integer"/>
+      <instream name="ad" type="CALCIUM_real"/>
+      <instream name="ae" type="CALCIUM_string"/>
+      <instream name="af" type="CALCIUM_complex"/>
+      <instream name="ag" type="CALCIUM_logical"/>
+      <outport name="fort:8" type="file"/>
+      <outport name="d" type="double"/>
+      <outstream name="ba" type="CALCIUM_double"/>
+      <outstream name="bb" type="CALCIUM_double"/>
+   </service>
+   <service name="node2">
+      <component>cfort</component>
+      <load container="B"/>
+      <method>s1</method>
+      <inport name="a" type="double"/>
+      <inport name="b" type="int"/>
+      <inport name="c" type="string"/>
+      <instream name="a" type="CALCIUM_double"/>
+      <instream name="b" type="CALCIUM_double"/>
+      <outport name="d" type="double"/>
+      <outport name="e" type="int"/>
+      <outport name="f" type="string"/>
+      <outstream name="ba" type="CALCIUM_double"/>
+      <outstream name="bb" type="CALCIUM_double"/>
+      <outstream name="bc" type="CALCIUM_integer"/>
+      <outstream name="bd" type="CALCIUM_real"/>
+      <outstream name="be" type="CALCIUM_string"/>
+      <outstream name="bf" type="CALCIUM_complex"/>
+      <outstream name="bg" type="CALCIUM_logical"/>
+   </service>
+   <inline name="node98">
+      <script><code><![CDATA[print "dans python node:",p1]]></code></script>
+      <inport name="p1" type="double"/>
+   </inline>
+   <outnode name="dataout">
+      <parameter name="f1" type="file"/>
+   </outnode>
+   <control> <fromnode>datain</fromnode> <tonode>node2</tonode> </control>
+   <control> <fromnode>node1</fromnode> <tonode>node98</tonode> </control>
+   <control> <fromnode>node1</fromnode> <tonode>dataout</tonode> </control>
+   <datalink control="false">
+      <fromnode>datain</fromnode> <fromport>f1</fromport>
+      <tonode>node2</tonode> <toport>a</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>node1</fromnode> <fromport>fort:8</fromport>
+      <tonode>dataout</tonode> <toport>f1</toport>
+   </datalink>
+   <datalink control="false">
+      <fromnode>node1</fromnode> <fromport>d</fromport>
+      <tonode>node98</tonode> <toport>p1</toport>
+   </datalink>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>ba</fromport>
+      <tonode>node2</tonode> <toport>a</toport>
+   </stream>
+   <stream>
+      <fromnode>node1</fromnode> <fromport>bb</fromport>
+      <tonode>node2</tonode> <toport>b</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>ba</fromport>
+      <tonode>node1</tonode> <toport>aa</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bb</fromport>
+      <tonode>node1</tonode> <toport>ab</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bc</fromport>
+      <tonode>node1</tonode> <toport>ac</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bd</fromport>
+      <tonode>node1</tonode> <toport>ad</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>be</fromport>
+      <tonode>node1</tonode> <toport>ae</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bf</fromport>
+      <tonode>node1</tonode> <toport>af</toport>
+   </stream>
+   <stream>
+      <fromnode>node2</fromnode> <fromport>bg</fromport>
+      <tonode>node1</tonode> <toport>ag</toport>
+   </stream>
+   <parameter>
+      <tonode>node1</tonode><toport>jdc</toport>
+      <value><objref>f.comm</objref></value>
+   </parameter>
+   <parameter>
+      <tonode>node1</tonode><toport>a</toport>
+      <value><double>23</double></value>
+   </parameter>
+   <parameter>
+      <tonode>node1</tonode><toport>b</toport>
+      <value><int>23</int></value>
+   </parameter>
+   <parameter>
+      <tonode>node1</tonode><toport>c</toport>
+      <value><string>hello</string></value>
+   </parameter>
+   <parameter>
+      <tonode>node2</tonode><toport>b</toport>
+      <value><int>23</int></value>
+   </parameter>
+   <parameter>
+      <tonode>node2</tonode><toport>c</toport>
+      <value><string>hello</string></value>
+   </parameter>
+   <presentation name="datain" x="1.75" y="168.25" width="158" height="63" expanded="1" expx="1.75" expy="168.25" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="node1" x="389.75" y="33.25" width="158" height="333" expanded="1" expx="389.75" expy="33.25" expWidth="158" expHeight="333" shownState="0"/>
+   <presentation name="node2" x="195.75" y="46.75" width="158" height="306" expanded="1" expx="195.75" expy="46.75" expWidth="158" expHeight="306" shownState="0"/>
+   <presentation name="node98" x="583.75" y="208.25" width="158" height="63" expanded="1" expx="583.75" expy="208.25" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="dataout" x="583.75" y="128.25" width="158" height="63" expanded="1" expx="583.75" expy="128.25" expWidth="158" expHeight="63" shownState="0"/>
+   <presentation name="__ROOT__" x="0" y="0" width="745.75" height="370.25" expanded="1" expx="0" expy="0" expWidth="745.75" expHeight="370.25" shownState="0"/>
+</proc>

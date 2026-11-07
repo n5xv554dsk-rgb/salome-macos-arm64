@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://chercheurs.edf.com/logiciels/Essai"
+xmlns:Essai="http://chercheurs.edf.com/logiciels/Essai"
+targetNamespace="http://chercheurs.edf.com/logiciels/Essai"
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:simpleType name="T_unSimp">
+		<xs:restriction base="xs:int">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_Name">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="T_ScalarFluxModel">
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="T_bloc1_bloc2">
+		<xs:sequence>
+			<xs:element name="leFact1" type="Essai:T_leFact1" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="T_leFact1" >
+		<xs:choice>
+		<xs:sequence>
+			<xs:element name="Name" type="Essai:T_Name" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ScalarFluxModel" type="Essai:T_ScalarFluxModel" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:sequence>
+			<xs:element name="Name" type="Essai:T_Name" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="T_leProc" >
+	 <xs:complexContent>
+	  <xs:extension base="T_step_Essai">
+		<xs:sequence>
+			<xs:element name="unSimp" type="Essai:T_unSimp" minOccurs="1" maxOccurs="1"/>
+			<xs:group ref="Essai:T_bloc1_bloc2"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	  </xs:extension>
+	 </xs:complexContent>
+	</xs:complexType>
+	<xs:element name="leProc" type="Essai:T_leProc" substitutionGroup="step_Essai"/>
+	<xs:complexType name="T_step_Essai" abstract="true"/>
+	<xs:element name="step_Essai" type="Essai:T_step_Essai"/>
+	<xs:element name="Essai" type="Essai:T_Essai"/>
+		<xs:complexType name="T_Essai">
+		  <xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="step_Essai" minOccurs="0" maxOccurs="1"/>
+		  </xs:choice>
+		</xs:complexType>
+</xs:schema>

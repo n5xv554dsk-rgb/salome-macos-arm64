@@ -1,0 +1,41 @@
+default :
+{
+    name : "SHAPERSTUDY"
+    build_source : "cmake"
+    get_source : "git"
+    git_info :
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/shaper_study.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "shaper_study.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/shaper_study.git"
+      }
+    }
+    environ :
+    {
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "shaperstudy"
+    }
+    depend :
+    [
+        'Python',
+        'omniORB',
+        'omniORBpy',
+        'qt',
+        'CONFIGURATION',
+        'KERNEL',
+        'GEOM',
+        'SHAPER',
+        'GUI'
+    ]
+    build_depend : ["cmake", "swig"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties :
+    {
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        incremental : "yes"
+        has_unit_tests : "yes"
+    }
+}

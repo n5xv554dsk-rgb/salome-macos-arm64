@@ -1,0 +1,48 @@
+<!DOCTYPE TS><TS>
+<context>
+    <name>QtViewer_ViewFrame</name>
+    <message>
+        <source>ICON_QTV_DUMP</source>
+        <translation>qtviewer_dump.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_ZOOM</source>
+        <translation>qtviewer_zoom.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_PAN</source>
+        <translation>qtviewer_pan.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_GLOBALPAN</source>
+        <translation>qtviewer_glpan.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_FITALL</source>
+        <translation>qtviewer_fitall.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_FITSELECT</source>
+        <translation>qtviewer_fitselect.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_RESET</source>
+        <translation>qtviewer_reset.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_FITAREA</source>
+        <translation>qtviewer_fitarea.png</translation>
+    </message>
+    <message>
+        <source>ICON_QTV_ROTATE</source>
+        <translation>qtviewer_rotate.png</translation>
+    </message>
+</context>
+<context>
+    <name>QtViewer_ViewPort</name>
+    <message>
+        <source>ICON_QTV_CURSOR_ZOOM</source>
+        <translation>qtviewer_cursor_zoom.png</translation>
+    </message>
+</context>
+</TS>

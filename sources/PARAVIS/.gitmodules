@@ -1,0 +1,3 @@
+[submodule "src/Plugins/MEDReader"]
+	path = src/Plugins/MEDReader
+	url = ../medreader

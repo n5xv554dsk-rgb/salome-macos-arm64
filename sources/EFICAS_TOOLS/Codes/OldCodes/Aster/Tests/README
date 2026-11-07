@@ -1,0 +1,8 @@
+Ce repertoire contient quelques tests d'Eficas pour Aster.
+
+Les fichiers tests doivent etre lisibles par Eficas sans probleme.
+Le repertoire Recette contient le cas de recette d'eficas_aster.
+On doit pouvoir le relire tel que et le reconstruire de zero (fichier
+normal et poursuite).
+
+Le test torsion.comm est un test pour format AsterV5

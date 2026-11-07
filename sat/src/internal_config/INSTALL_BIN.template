@@ -1,0 +1,25 @@
+#!/bin/bash
+# ----------------------------------------------------------------------------------
+# This script performs the following actions:
+#  1. Renames the '¤{BINARIES_DIR}' directory to '¤{INSTALL_DIR}'.
+#  2. Substitutes paths to enable further compilation steps.
+#  3. Initializes 'sat' using the 'PROJECT/project.pyconf' configuration file.
+# Note: If the '¤{INSTALL_DIR}' directory already exists, the script will do nothing.
+# ----------------------------------------------------------------------------------
+
+if [ -d ¤{INSTALL_DIR} ]
+then
+    echo WARNING: ¤{INSTALL_DIR} already exists!
+    exit 0
+fi
+if [ ! -d ¤{BINARIES_DIR} ]
+then
+    echo FATAL: ¤{BINARIES_DIR} directory not found!
+    exit 1
+fi
+
+echo INFO: rename ¤{BINARIES_DIR} to ¤{INSTALL_DIR}
+mv ¤{BINARIES_DIR}  ¤{INSTALL_DIR}
+
+echo INFO: perform the substitutions.
+¤{SUBSTITUTION_LOOP}

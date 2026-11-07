@@ -1,0 +1,218 @@
+default :
+{
+    name : "HEXABLOCK"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/hexablock.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "hexablock.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/hexablock.git"
+      }
+    }
+    environ :
+    {
+        _SMESH_MeshersList : "HEXABLOCKPlugin"
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "hexablock"
+    }
+    depend : [
+             "KERNEL", 
+             "GUI", 
+             "GEOM",
+             "boost", 
+             "CAS", 
+             "Python", 
+             "omniORB", 
+             "qt", 
+             "ParaView", 
+             "docutils", 
+             "libxml2", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "six", 
+             "pytz",    
+             "markupsafe" 
+              ]
+    build_depend : ["cmake", "cppunit"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+    patches: []
+} 
+
+default_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL", 
+             "GUI", 
+             "GEOM",
+             "boost", 
+             "CAS", 
+             "Python", 
+             "omniORB", 
+             "qt", 
+             "ParaView", 
+             "docutils", 
+             "libxml2", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "six", 
+             "pytz",    
+             "markupsafe",
+             "openmpi"
+            ]
+} 
+
+version_V10_0_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL", 
+             "GUI", 
+             "GEOM",
+             "boost", 
+             "CAS", 
+             "Python", 
+             "omniORB", 
+             "qt", 
+             "ParaView", 
+             "docutils", 
+             "libxml2", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "six", 
+             "pytz",    
+             "markupsafe",
+             "openmpi"
+            ]
+} 
+
+version_V9_16_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL",
+             "GUI",
+             "GEOM",
+             "boost",
+             "CAS",
+             "Python",
+             "omniORB",
+             "qt",
+             "ParaView",
+             "docutils",
+             "libxml2",
+             "Sphinx",
+             "Jinja2",
+             "setuptools",
+             "Pygments",
+             "six",
+             "pytz",
+             "markupsafe",
+             "openmpi"
+            ]
+}
+
+version_V9_15_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL",
+             "GUI",
+             "GEOM",
+             "boost",
+             "CAS",
+             "Python",
+             "omniORB",
+             "qt",
+             "ParaView",
+             "docutils",
+             "libxml2",
+             "Sphinx",
+             "Jinja2",
+             "setuptools",
+             "Pygments",
+             "six",
+             "pytz",
+             "markupsafe",
+             "openmpi"
+            ]
+}
+
+version_V9_10_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL", 
+             "GUI", 
+             "GEOM",
+             "boost", 
+             "CAS", 
+             "Python", 
+             "omniORB", 
+             "qt", 
+             "ParaView", 
+             "docutils", 
+             "libxml2", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "six", 
+             "pytz",    
+             "markupsafe",
+             "openmpi"
+            ]
+} 
+
+version_V9_9_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON"
+    depend : [
+             "KERNEL", 
+             "GUI", 
+             "GEOM",
+             "boost", 
+             "CAS", 
+             "Python", 
+             "omniORB", 
+             "qt", 
+             "ParaView", 
+             "docutils", 
+             "libxml2", 
+             "Sphinx", 
+             "Jinja2", 
+             "setuptools", 
+             "Pygments", 
+             "six", 
+             "pytz",    
+             "markupsafe",
+             "openmpi"
+            ]
+} 
+
+version_V9_9_0_UB22_04 :
+{
+    patches: ['SPNS-29880-HEXABLOCK_V9_9_0.patch']
+}
+
+version_V9_9_0_FD36 :
+{
+    patches: ['SPNS-29880-HEXABLOCK_V9_9_0.patch']
+}

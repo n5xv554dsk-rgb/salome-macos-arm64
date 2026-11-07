@@ -1,0 +1,14 @@
+File "/home/A96028/QT5Dev/eficasMerge/InterfaceGUI/QT6/qt_eficas.py", line 774, in closeEvent
+    res = self.fileExit()
+  File "/home/A96028/QT5Dev/eficasMerge/InterfaceGUI/QT6/qt_eficas.py", line 702, in fileExit
+    res = self.editorManager.closeAllFiles()
+  File "/home/A96028/QT5Dev/eficasMerge/Tests/testIhm/../../InterfaceGUI/QT6/qt_editor_manager.py", line 146, in closeAllFiles
+    res = self.fileClose(0)
+  File "/home/A96028/QT5Dev/eficasMerge/Tests/testIhm/../../InterfaceGUI/QT6/qt_editor_manager.py", line 109, in fileClose
+    res = self.checkDirty(self.dictEditors[index], tr("&Quitter"))
+  File "/home/A96028/QT5Dev/eficasMerge/Tests/testIhm/../../InterfaceGUI/QT6/qt_editor_manager.py", line 464, in checkDirty
+    msgBox.addButton(tr("&Sauvegarder"), 1)
+TypeError: arguments did not match any overloaded call:
+  addButton(self, button: Optional[QAbstractButton], role: QMessageBox.ButtonRole): argument 1 has unexpected type 'str'
+  addButton(self, text: Optional[str], role: QMessageBox.ButtonRole): argument 2 has unexpected type 'int'
+  addButton(self, button: QMessageBox.StandardButton): argument 1 has unexpected type 'str'

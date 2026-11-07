@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:med="http://chercheurs.edf.com/logiciels/med"
+        targetNamespace="http://chercheurs.edf.com/logiciels/med"
+        attributeFormDefault="qualified"
+        elementFormDefault="qualified">
+   <simpleType name="AT_NAME">
+      <restriction base="string"/>
+   </simpleType>
+   <simpleType name="AT_NUM">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="AT_NAME">
+      <restriction base="string"/>
+   </simpleType>
+   <simpleType name="AT_NBR">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="T_DES">
+      <list itemType="string"/>
+   </simpleType>
+   <simpleType name="T_IDE">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="T_VAL">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="AT_NBR">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="T_NOM">
+      <list itemType="string"/>
+   </simpleType>
+   <simpleType name="AT_NUM">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="AT_NBR">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="T_DES">
+      <list itemType="string"/>
+   </simpleType>
+   <simpleType name="T_IDE">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="T_VAL">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="AT_NUM">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="AT_NAME">
+      <restriction base="string"/>
+   </simpleType>
+   <simpleType name="AT_NBR">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="T_DES">
+      <list itemType="string"/>
+   </simpleType>
+   <simpleType name="T_IDE">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="T_VAL">
+      <list itemType="int"/>
+   </simpleType>
+   <simpleType name="AT_NBR">
+      <restriction base="int"/>
+   </simpleType>
+   <simpleType name="T_NOM">
+      <list itemType="string"/>
+   </simpleType>
+   <complexType name="T_FAS">
+      <sequence>
+         <element name="FAMILY_MESH_NAME_REF" type="med:T_FAMILY_MESH_NAME_REF" minOccurs="1"
+                  maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <complexType name="T_FAMILY_MESH_NAME_REF">
+      <sequence>
+         <element name="ELEME" type="med:T_ELEME" minOccurs="0" maxOccurs="1"/>
+         <element name="FAMILLE_ZERO" type="med:T_FAMILLE_ZERO" minOccurs="1" maxOccurs="1"/>
+         <element name="NOEUD" type="med:T_NOEUD" minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+      <attribute name="NAME" type="med:AT_NAME" use="required"/>
+   </complexType>
+   <complexType name="T_ELEME">
+      <sequence>
+         <element name="FAMILY_NAME_ELEM" type="med:T_FAMILY_NAME_ELEM" minOccurs="0"
+                  maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <complexType name="T_FAMILY_NAME_ELEM">
+      <sequence>
+         <element name="ATT" type="med:T_ATT" minOccurs="0" maxOccurs="1"/>
+         <element name="GRO" type="med:T_GRO" minOccurs="0" maxOccurs="1"/>
+      </sequence>
+      <attribute name="NUM" type="med:AT_NUM" use="required"/>
+      <attribute name="NAME" type="med:AT_NAME" use="required"/>
+   </complexType>
+   <complexType name="T_ATT">
+      <sequence>
+         <element name="DES" type="med:T_DES" minOccurs="1"/>
+         <element name="IDE" type="med:T_IDE" minOccurs="1"/>
+         <element name="VAL" type="med:T_VAL" minOccurs="1"/>
+      </sequence>
+      <attribute name="NBR" type="med:AT_NBR" use="required"/>
+   </complexType>
+   <complexType name="T_GRO">
+      <sequence>
+         <element name="NOM" type="med:T_NOM" minOccurs="1"/>
+      </sequence>
+      <attribute name="NBR" type="med:AT_NBR" use="required"/>
+   </complexType>
+   <complexType name="T_FAMILLE_ZERO">
+      <sequence>
+         <element name="ATT" type="med:T_ATT" minOccurs="0" maxOccurs="1"/>
+      </sequence>
+      <attribute name="NUM" type="med:AT_NUM" use="required"/>
+   </complexType>
+   <complexType name="T_ATT">
+      <sequence>
+         <element name="DES" type="med:T_DES" minOccurs="1"/>
+         <element name="IDE" type="med:T_IDE" minOccurs="1"/>
+         <element name="VAL" type="med:T_VAL" minOccurs="1"/>
+      </sequence>
+      <attribute name="NBR" type="med:AT_NBR" use="required"/>
+   </complexType>
+   <complexType name="T_NOEUD">
+      <sequence>
+         <element name="FAMILY_NAME_NOE" type="med:T_FAMILY_NAME_NOE" minOccurs="0"
+                  maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <complexType name="T_FAMILY_NAME_NOE">
+      <sequence>
+         <element name="ATT" type="med:T_ATT" minOccurs="0" maxOccurs="1"/>
+         <element name="GRO" type="med:T_GRO" minOccurs="0" maxOccurs="1"/>
+      </sequence>
+      <attribute name="NUM" type="med:AT_NUM" use="required"/>
+      <attribute name="NAME" type="med:AT_NAME" use="required"/>
+   </complexType>
+   <complexType name="T_ATT">
+      <sequence>
+         <element name="DES" type="med:T_DES" minOccurs="1"/>
+         <element name="IDE" type="med:T_IDE" minOccurs="1"/>
+         <element name="VAL" type="med:T_VAL" minOccurs="1"/>
+      </sequence>
+      <attribute name="NBR" type="med:AT_NBR" use="required"/>
+   </complexType>
+   <complexType name="T_GRO">
+      <sequence>
+         <element name="NOM" type="med:T_NOM" minOccurs="1"/>
+      </sequence>
+      <attribute name="NBR" type="med:AT_NBR" use="required"/>
+   </complexType>
+   <element type="med:T_FAS" name="FAS"/>
+</schema>

@@ -1,0 +1,62 @@
+############# ENVIRONEMENT DE CONSTRUCTION VIMMP Traning ################
+
+ifndef SHELL
+SHELL=bash
+endif
+
+#ifeq ($(origin PRODUCTS_DIR), undefined)
+#  PRODUCTS_DIR=${HOME}/products
+#endif
+PRODUCTS_DIR           ?=${HOME}/products
+SALOME_ROOT_DIR        ?=${HOME}/salome/Salome-V9_3_0-x86_64
+PREREQUISITES_ROOT_DIR ?=$(shell . ${SALOME_ROOT_DIR}/salome_prerequisites_root.sh; echo $${PREREQUISITES_ROOT_DIR})
+TOOLS_ROOT_DIR         ?=$(shell . ${SALOME_ROOT_DIR}/salome_prerequisites_root.sh; echo $${TOOLS_ROOT_DIR})
+# PREREQUISITES_ROOT_DIR ?=${SALOME_ROOT_DIR}/prerequisites
+
+## PYTHON ET LE MODULE Six DE L'ENV SALOME:
+#  Le mécanisme suivant définit des export Gmake/env qui sont utilisés par les sous-shells de toutes les règles de construction du makefile.
+#  Le mécanisme joue sur le fait que export existe aussi bien en shell qu'en GMakefile
+#  On ne prend que les variables d'environement qui concernent python ds l'environement Salome..
+#  En bash : saved_IFS=${IFS};IFS=',';for i in `grep 'PYTHONHOME' ${SALOME_ROOT_DIR}/salome_prerequisites.sh | tr -s '\n' ','`; do eval $i; done;IFS=${saved_IFS};
+#  En GMake, la ligne suivante ne fonctionne pas car le résultat du shell est multi-lignes (malgré les ;) : $(eval $(shell grep 'PYTHONHOME' ${SALOME_ROOT_DIR}/salome_prerequisites.sh | tr -s '\n' ';'))
+#  En GMake, la ligne suivante ne fonctionne pas pour les variables de salome qui s'auto-référence : export PATH=${PYTHON_HOME}/bin:${PATH}
+#     $(foreach exp, $(shell grep 'PYTHONHOME' ${SALOME_ROOT_DIR}/salome_prerequisites.sh), $(eval $(exp)) )
+#  Le script salome_prerequisites utilise parfois $PATH sans {} et utilise aussi des "
+#  Le script salome_prerequisites utilise parfois $LD_LIBRARY_PATH sans {} 
+#  Il faut donc substituer les = en := (simple expansion GMake), supprimer les " et ajouter les {} si necessaire
+#  Rem : Les retours charriots sont des blancs pour un GMakefile.
+# $(foreach exp, $(subst ",,$(subst =,:=,$(shell grep -e 'PYTHONHOME' -e 'Six' ${SALOME_ROOT_DIR}/salome_prerequisites.sh))), $(info $(exp)) )
+$(foreach exp, $(subst ",,$(subst =,:=,$(subst $$PATH,$${PATH}, $(subst $$LD_LIBRARY_PATH,$${LD_LIBRARY_PATH}, $(shell grep -e 'PYTHONHOME' -e 'Six' ${SALOME_ROOT_DIR}/salome_prerequisites.sh))))), $(eval $(exp)) )
+
+
+## QT ET PYQT DE L'ENV SALOME (la libpng neccessaire à QT vient du prerequis debianforsalome):
+#  En bash : saved_IFS=${IFS};IFS=',';for i in `grep 'QT' ${SALOME_ROOT_DIR}/salome_prerequisites.sh | tr -s '\n' ','`; do eval $i; done;IFS=${saved_IFS};
+#$(foreach exp, $(subst ",,$(subst =,:=, $(subst $$PATH,$${PATH}, $(shell grep -e 'QT' ${SALOME_ROOT_DIR}/salome_prerequisites.sh)))), $(info $(exp)) )
+$(foreach exp, $(subst ",,$(subst =,:=, $(subst $$PATH,$${PATH}, $(subst $$LD_LIBRARY_PATH,$${LD_LIBRARY_PATH}, $(shell grep -e 'GCC' -e 'MPFR' -e 'DEBIAN' -e 'SIP_ROOT' -e 'QT' ${SALOME_ROOT_DIR}/salome_prerequisites.sh))))), $(eval $(exp)) )
+
+# Les modules MEDCOUPLING et MED sont considérés comme devant être disponibles de façon générale pour VIMMP
+$(foreach exp, $(subst ",,$(subst =,:=,$(subst $$PATH,$${PATH}, $(subst $$LD_LIBRARY_PATH,$${LD_LIBRARY_PATH}, $(shell grep -e 'MEDCOUPLING' -e 'NUMPY' -e 'MED3' -e 'HDF5' ${SALOME_ROOT_DIR}/salome_prerequisites.sh))))), $(eval $(exp)) )
+
+## BUG de construction de python dans la version Salome-V9_3_0-univ_withOT.run, python dépend de tk !
+## Un commentaire final gène pour le parsing
+#$(foreach exp,  $(subst ",,$(subst =,:=, $(subst $$PATH,$${PATH}, $(subst $$LD_LIBRARY_PATH,$${LD_LIBRARY_PATH},  $(shell sed 's,#.*,,g' ${SALOME_ROOT_DIR}/salome_prerequisites.sh | grep -e 'TKDIR' ))))), $(info $(exp)) )
+$(foreach exp,  $(subst ",,$(subst =,:=, $(subst $$PATH,$${PATH}, $(subst $$LD_LIBRARY_PATH,$${LD_LIBRARY_PATH},  $(shell sed 's,#.*,,g' ${SALOME_ROOT_DIR}/salome_prerequisites.sh | grep -e 'TKDIR' ))))), $(eval $(exp)) )
+
+
+## " PYXB
+PYXB_ROOT_DIR   ?=${PRODUCTS_DIR}/pyxb/install
+PYXB            ?=${PYXB_ROOT_DIR}/bin/pyxbgen
+PYXB_PYTHONPATH ?=${PYXB_ROOT_DIR}/lib/python3.9/site-packages
+export PYTHONPATH:=${PYXB_PYTHONPATH}:${PYTHONPATH}
+
+
+#  La variable QT_PLUGIN_PATH est necessaire : l'ensemble des variables QT sont incluses pour l'instant 
+# comma:= ,
+# empty:=
+# space:= $(empty) $(empty)
+QTDEF=
+define ADD_2_QTDEF =
+$(if $(findstring export,$(1)),,QTDEF+=export$(1);)
+endef
+$(foreach exp, $(subst ",,$(subst $$PATH,$${PATH},$(shell grep -e 'QT_PLUGIN_PATH' ${SALOME_ROOT_DIR}/salome_prerequisites.sh))), $(eval $(call ADD_2_QTDEF, $(exp))) )
+

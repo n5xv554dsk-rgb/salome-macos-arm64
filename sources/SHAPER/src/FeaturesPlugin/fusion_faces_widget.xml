@@ -1,0 +1,11 @@
+<source>
+  <shape_selector id="base_shape"
+                  label="Shape:"
+                  tooltip="Select a shape to modify."
+                  shape_types="objects"
+                  concealment="true"
+                  greed="true">
+    <validator id="GeomValidators_ShapeType" parameters="shell,solid,compsolid,compound"/>
+    <validator id="GeomValidators_BodyShapes" parameters="toplevel"/>
+  </shape_selector>
+</source>

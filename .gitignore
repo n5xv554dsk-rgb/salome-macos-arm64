@@ -1,0 +1,10 @@
+build/
+install/
+prereq/
+*.tar.gz
+.DS_Store
+**/__pycache__/
+*.pyc
+sources/MESHBOOLEANPLUGIN/irmb/build/
+sources/MEDREADER/plugin/Test/Data/L15_R2_Temp.med
+sources/SAMPLES/MedFiles/ir.resu.med

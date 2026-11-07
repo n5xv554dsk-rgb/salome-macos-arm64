@@ -1,0 +1,10 @@
+<document>
+  <section name="resources">
+    <parameter name="HexoticPLUGIN" value="${HexoticPLUGIN_ROOT_DIR}/share/salome/resources/hexoticplugin"/>
+  </section>
+  <section name="smesh_help" >
+    <parameter name="User's Guide/Mesh module/MG-Hexa plugin/User's Guide" value="${HexoticPLUGIN_ROOT_DIR}/share/doc/salome/gui/HexoticPLUGIN/index.html;;http://docs.salome-platform.org/latest/gui/HexoticPLUGIN/index.html"/>
+    <parameter name="User's Guide/Mesh module/MG-Hexa plugin/Reference"    value="${MESHGEMS_ROOT_DIR}/Docs/mg-hexa_api_manual.pdf"/>
+    <parameter name="User's Guide/Mesh module/MG-Hexa plugin/Manual"       value="${MESHGEMS_ROOT_DIR}/Docs/mg-hexa_user_manual.pdf"/>
+  </section>
+</document>

@@ -1,0 +1,116 @@
+default :
+{
+    name : "FIELDS"
+    build_source : "cmake"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/med.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "med.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/med.git"
+      }
+    }
+    environ :
+    {
+        SalomeAppConfig_ : $install_dir + $VARS.sep + "share" + $VARS.sep + "salome" + $VARS.sep + "resources" + $VARS.sep + "fields"
+    }
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING"
+    ]
+    opt_depend : ["Pillow"]
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+        incremental : "yes"
+        has_salome_gui : "yes"
+        is_SALOME_module : "yes"
+        is_SALOME_product: "yes"
+        has_unit_tests
+    }
+}
+
+default_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}
+
+version_V10_0_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}
+
+version_V9_16_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI",
+      "KERNEL",
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}
+
+version_V9_15_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI",
+      "KERNEL",
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}
+
+version_V9_13_0_UB24_04 :
+{
+  patches: ['FIELDS-UB24.04-V9_13_0-PyUnicode_AsWideCharString.patch']
+}
+
+version_V9_10_0:
+{
+  patches: []
+}
+
+version_V9_10_0_win:
+{
+  patches: ["FIELDS-9.10.0-visual-2019.patch"]
+}
+
+version_V9_10_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}
+
+version_V9_9_0_MPI :
+{
+    cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
+    depend : [
+      "GUI", 
+      "KERNEL", 
+      "MEDCOUPLING",
+      "openmpi"
+    ]
+}

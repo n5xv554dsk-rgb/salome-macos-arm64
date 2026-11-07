@@ -1,0 +1,191 @@
+// Copyright (C) 2007-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+
+#include "BoundingBox.hxx"
+
+#include <iostream>
+#include <algorithm>
+#include <cassert>
+
+namespace INTERP_KERNEL
+{
+
+/**
+ * Constructor creating box from an array of the points corresponding
+ * to the vertices of the element.
+ * Each point is represented by an array of three doubles.
+ *
+ * @param pts     array of points
+ * @param numPts  number of vertices
+ *
+ */
+template <int SPACEDIM>
+BoundingBoxT<SPACEDIM>::BoundingBoxT(const double **pts, const unsigned numPts)
+{
+    initializeWith(pts, numPts);
+}
+
+template <int SPACEDIM>
+void
+BoundingBoxT<SPACEDIM>::fillInXMinXmaxYminYmaxZminZmaxFormat(double data[2 * SPACEDIM]) const
+{
+    for (int i = 0; i < SPACEDIM; ++i)
+    {
+        data[2 * i] = this->getCoordinate(i);
+        data[2 * i + 1] = this->getCoordinate(i + SPACEDIM);
+    }
+}
+
+/**
+ * Constructor creating box from an array of the points corresponding
+ * to the vertices of the element.
+ * Each point is represented by an array of three doubles.
+ *
+ * @param pts     array of points
+ * @param numPts  number of vertices
+ *
+ */
+template <int SPACEDIM>
+void
+BoundingBoxT<SPACEDIM>::initializeWith(const double **pts, const unsigned numPts)
+{
+    // initialize with first two points
+    const double *pt0(pts[0]);
+
+    for (int c = 0; c < SPACEDIM; ++c)
+    {
+        _coords[c] = pt0[c];
+        _coords[c + SPACEDIM] = pt0[c];
+    }
+
+    for (unsigned i = 1; i < numPts; ++i)
+    {
+        updateWithPoint(pts[i]);
+    }
+
+    assert(isValid());
+}
+
+/**
+ * Constructor creating box from union of two boxes, resulting in a box that encloses both of them
+ *
+ * @param  box1  the first box
+ * @param  box2  the second box
+ */
+template <int SPACEDIM>
+BoundingBoxT<SPACEDIM>::BoundingBoxT(const BoundingBoxT<SPACEDIM> &box1, const BoundingBoxT<SPACEDIM> &box2)
+{
+    for (int c = 0; c < SPACEDIM; ++c)
+    {
+        _coords[c] = std::min(box1._coords[c], box2._coords[c]);
+        _coords[c + SPACEDIM] = std::max(box1._coords[c + SPACEDIM], box2._coords[c + SPACEDIM]);
+    }
+
+    assert(isValid());
+}
+
+/**
+ * Determines if the intersection with a given box is empty
+ *
+ * @param    box   BoundingBox with which intersection is tested
+ * @return  true if intersection between boxes is empty, false if not
+ */
+template <int SPACEDIM>
+bool
+BoundingBoxT<SPACEDIM>::isDisjointWith(const BoundingBoxT<SPACEDIM> &box) const
+{
+    for (int c = 0; c < SPACEDIM; ++c)
+    {
+        const double otherMinCoord = box.getCoordinate(c);
+        const double otherMaxCoord = box.getCoordinate(c + SPACEDIM);
+
+        // boxes are disjoint if there exists a direction in which the
+        // minimum coordinate of one is greater than the maximum coordinate of the other
+
+        // more stable version ?
+        // const double tol = 1.0e-2*_coords[c];
+        // if(_coords[c] > otherMaxCoord + tol
+        //   || _coords[c + SPACEDIM] < otherMinCoord - tol)
+
+        if (_coords[c] > otherMaxCoord || _coords[c + SPACEDIM] < otherMinCoord)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Updates the bounding box to include a given point
+ *
+ * @param pt    point to be included
+ *
+ */
+template <int SPACEDIM>
+void
+BoundingBoxT<SPACEDIM>::updateWithPoint(const double *pt)
+{
+    for (int c = 0; c < SPACEDIM; ++c)
+    {
+        const double ptVal = pt[c];
+
+        // update min and max coordinates
+        _coords[c] = std::min(_coords[c], ptVal);
+        _coords[c + SPACEDIM] = std::max(_coords[c + SPACEDIM], ptVal);
+    }
+}
+
+/**
+ * Checks if the box is valid, which it is if its minimum coordinates are
+ * smaller than its maximum coordinates in all directions.
+ *
+ * @return  true if the box is valid, false if not
+ */
+template <int SPACEDIM>
+bool
+BoundingBoxT<SPACEDIM>::isValid() const
+{
+    bool valid = true;
+    for (int c = 0; c < SPACEDIM; ++c)
+    {
+        if (_coords[c] > _coords[c + SPACEDIM])
+        {
+            std::cout << "+++ Error in  BoundingBox |: coordinate " << c << " is invalid : " << _coords[c] << " > "
+                      << _coords[c + SPACEDIM] << std::endl;
+            valid = false;
+        }
+    }
+    return valid;
+}
+
+template <int SPACEDIM>
+void
+BoundingBoxT<SPACEDIM>::toCompactData(double data[2 * SPACEDIM]) const
+{
+    for (int i = 0; i < SPACEDIM; ++i)
+    {
+        data[2 * i] = _coords[i];
+        data[2 * i + 1] = _coords[i + SPACEDIM];
+    }
+}
+
+template class INTERPKERNEL_EXPORT BoundingBoxT<3>;
+template class INTERPKERNEL_EXPORT BoundingBoxT<2>;
+template class INTERPKERNEL_EXPORT BoundingBoxT<1>;
+}  // namespace INTERP_KERNEL

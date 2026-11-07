@@ -1,0 +1,26 @@
+default :
+{
+    name : "RESTRICTED"
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/restricted.git"
+      }
+    }
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    depend : [ ]
+    environ :
+    {
+        env_script : $name + ".py"
+    }
+    properties :
+    {
+        is_SALOME_product: "yes"
+        compilation : "no"
+        not_in_package : "yes"
+        is_opensource  : "no"
+   }
+    patches : []
+}

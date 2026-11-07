@@ -1,0 +1,45 @@
+default :
+{
+    name : "PY2CPP"
+    build_source : "cmake"
+
+    get_source : "git"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/py2cpp.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "py2cpp.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "tools/py2cpp.git"
+      }
+    }
+    environ :
+    {
+        env_script : $name + ".py"
+    }
+    depend : [
+              "CONFIGURATION",
+              "Python",
+              "KERNEL"
+             ]
+    build_depend : ["cmake", "cppunit"]
+
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    properties:
+    {
+      incremental : "yes"
+    }
+}
+
+default_win :
+{
+    cmake_options : " -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON "
+    properties:
+    {
+      incremental : "yes"
+      single_install_dir : "no" # aimed to solve sat #18914
+      is_SALOME_product: "yes"
+    }
+    patches : []
+}

@@ -1,0 +1,1043 @@
+diff -Naur SMESH_ref/src/Tools/CMakeLists.txt SMESH_new/src/Tools/CMakeLists.txt
+--- SMESH_ref/src/Tools/CMakeLists.txt	2022-01-14 16:13:39.350133329 +0100
++++ SMESH_new/src/Tools/CMakeLists.txt	2022-01-14 16:35:41.543110352 +0100
+@@ -26,6 +26,7 @@
+ IF(SALOME_BUILD_GUI)
+   ADD_SUBDIRECTORY(MGCleanerPlug)
+   ADD_SUBDIRECTORY(YamsPlug)
++  ADD_SUBDIRECTORY(Topo2VolMeshPlug)
+ #  ADD_SUBDIRECTORY(ZCracksPlug)
+ ENDIF(SALOME_BUILD_GUI)
+ 
+diff -Naur SMESH_ref/src/Tools/smesh_plugins.py SMESH_new/src/Tools/smesh_plugins.py
+--- SMESH_ref/src/Tools/smesh_plugins.py	2022-01-14 16:13:39.506135336 +0100
++++ SMESH_new/src/Tools/smesh_plugins.py	2022-01-14 16:35:41.543110352 +0100
+@@ -91,3 +91,14 @@
+   #print 'probleme zcracks'
+   salome_pluginsmanager.logger.info('ERROR: Zcrack plug-in is unavailable: {}'.format(e))
+   pass
++
++# Topological to volumic mesh plugin
++try:
++  from Topo2VolMeshPlugin import Topo2VolMeshLct
++  salome_pluginsmanager.AddFunction('Run Topological Volumic mesher',
++                                    'run topological volumic meshing',
++                                    Topo2VolMeshLct)
++except Exception as e:
++  #print 'probleme zcracks'
++  salome_pluginsmanager.logger.info('ERROR: topo2volmesh plug-in is unavailable: {}'.format(e))
++  pass
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/CMakeLists.txt SMESH_new/src/Tools/Topo2VolMeshPlug/CMakeLists.txt
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/CMakeLists.txt	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,56 @@
++# Copyright (C) 2013-2021  EDF R&D
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++IF(SALOME_BUILD_GUI)
++  INCLUDE(UsePyQt)
++ENDIF(SALOME_BUILD_GUI)
++
++# --- scripts ---
++
++# scripts / static
++SET(_plugin_SCRIPTS
++  Topo2VolMeshPluginDialog.py
++  Topo2VolMeshPlugin.py
++  Topo2VolMeshPlugin_plugin.py
++  Topo2VolMeshMonitor.py
++  README
++)
++
++IF(SALOME_BUILD_GUI)
++  # uic files / to be processed by pyuic
++  SET(_pyuic_FILES
++    Topo2VolMeshPluginDialog.ui
++    Topo2VolMeshMonitor.ui
++  )
++  # scripts / pyuic wrappings
++  PYQT_WRAP_UIC(_pyuic_SCRIPTS ${_pyuic_FILES} TARGET_NAME _target_name_pyuic)
++ENDIF(SALOME_BUILD_GUI)
++
++# --- rules ---
++
++SALOME_INSTALL_SCRIPTS("${_plugin_SCRIPTS}" ${SALOME_SMESH_INSTALL_PLUGINS})
++MESSAGE(VERBOSE "iNSTALLATION FOLDER ${SALOME_SMESH_INSTALL_PLUGINS}")
++IF(SALOME_BUILD_GUI)
++  SALOME_INSTALL_SCRIPTS("${_pyuic_SCRIPTS}" ${SALOME_SMESH_INSTALL_PLUGINS} TARGET_NAME _target_name_pyuic_py)
++  # add dependency of compiled py files on uic files in order
++  # to avoid races problems when compiling in parallel
++  ADD_DEPENDENCIES(${_target_name_pyuic_py} ${_target_name_pyuic})
++  # Install the CMake configuration files:
++  INSTALL(FILES "${PROJECT_SOURCE_DIR}/README" DESTINATION "${SALOME_INSTALL_CMAKE_LOCAL}")
++ENDIF(SALOME_BUILD_GUI)
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/README SMESH_new/src/Tools/Topo2VolMeshPlug/README
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/README	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/README	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,109 @@
++******************************
++About SALOME HexaBlock plug-in
++******************************
++
++SALOME HexaBlock plug-in implements meshing of the CAD models created with
++the SALOME HexaBlock module.
++
++SALOME HexaBlock plug-in is integrated into SALOME platform via the SALOME Mesh
++module.
++
++For more information please visit the SALOME platform web site:
++
++  <http://www.salome-platform.org/>
++
++=======
++License
++=======
++
++SALOME platform is distributed under the GNU Lesser General Public License.
++See COPYING file for more details.
++
++Also, additional information can be found at SALOME platform web site:
++
++  <http://www.salome-platform.org/downloads/license/>
++
++============
++Installation
++============
++
++--------------
++Pre-requisites
++--------------
++
++SALOME platform relies on a set of third-party softwares; some of them are needed
++at build time only, while other ones are needed in runtime also.
++
++For more information about the pre-requisites please visit SALOME platform web
++site:
++
++* Check Release Notes and Software Requirements of the latest SALOME release at
++
++  <http://www.salome-platform.org/downloads/current-version/>
++
++* Pre-requisites page at SALOME web site:
++
++  <http://www.salome-platform.org/downloads/license/>
++
++Note: SALOME HexaBlock plug-in needs SALOME KERNEL, SALOME GUI, SALOME Geometry,
++SALOME Mesh and SALOME HexaBlock as pre-requisites.
++
++------------------
++Basic Installation
++------------------
++
++The build procedure of the SALOME platform is implemented with CMake.
++In order to build the plug-in you have to do the following actions:
++
++1. Set up environment for pre-requisites (see "Pre-requisites" section above).
++
++2. Create a build directory:
++
++   % mkdir HEXABLOCKPLUGIN_BUILD
++
++3. Configure the build procedure:
++
++   % cd HEXABLOCKPLUGIN_BUILD
++   % cmake -DCMAKE_BUILD_TYPE=<mode> -DCMAKE_INSTALL_PREFIX=<installation_directory> <path_to_src_dir>
++
++   where
++   - <mode> is either Release or Debug (default: Release);
++   - <installation_directory> is a destination folder to install SALOME HexaBlock
++     plug-in (default: /usr);
++   - <path_to_src_dir> is a path to the SALOME HexaBlock plug-in sources directory.
++
++   Note: by default (if CMAKE_INSTALL_PREFIX option is not given), SALOME HexaBlock
++   plug-in will be configured for installation to the /usr directory that requires
++   root permissions to complete the installation.
++
++4. Build and install:
++
++   % make
++   % make install
++
++   This will install SALOME HexaBlock plug-in to the <installation_directory>
++   specified to cmake command on the previous step.
++
++-------------------
++Custom installation
++-------------------
++
++SALOME HexaBlock plug-in supports a set of advanced configuration options;
++for more details learn CMakeLists.txt file in the root source directory.
++
++You can also use other options of cmake command to customize your installation.
++Learn more about available options by typing
++
++   % cmake --help
++
++=============
++Documentation
++=============
++
++The directory doc contains additional documentation file of SALOME HexaBlock plug-in.
++
++===============
++Troubleshooting
++===============
++
++Please, send a mail to webmaster.salome@opencascade.com.
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.py SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.py
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.py	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.py	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,97 @@
++# -*- coding: utf-8 -*-
++# Copyright (C) 2013-2020  EDF R&D
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++import os
++import sys
++import string
++import types
++import tempfile
++import traceback
++import pprint as PP #pretty print
++
++from qtsalome import *
++
++# Import des panels
++
++from Topo2VolMeshMonitor_ui import Ui_qdLogger
++
++verbose = True
++
++class Topo2VolMeshMonitor(Ui_qdLogger, QDialog):
++  def __init__(self, parent, txt):
++    QDialog.__init__(self,parent)
++    self.setupUi(self)
++    self.resize( QSize(1000,600).expandedTo(self.minimumSizeHint()) )
++    self.qpbOK.clicked.connect( self.OnQpbOKClicked )
++    # Button OK is disabled until computation is finished
++    self.qpbOK.setEnabled(False)
++    self.qpbSave.clicked.connect( self.OnQpbSaveClicked )
++    self.qpbSave.setToolTip("Save trace in log file")
++    self.qpbOK.setToolTip("Close view")
++    self.myExecutable=QProcess(self)
++    self.myExecutable.readyReadStandardOutput.connect( self.readFromStdOut )
++    self.myExecutable.readyReadStandardError.connect( self.readFromStdErr )
++    self.myExecutable.finished.connect( self.computationFinished )
++    self.myExecutable.errorOccurred.connect( self.computationOnError )
++    if os.path.exists(self.parent().outputMesh):
++       os.remove(self.parent().outputMesh)
++    self.myExecutable.start(txt)
++    self.myExecutable.closeWriteChannel()
++    self.show()
++
++  def OnQpbOKClicked(self):
++    self.close()
++
++  def OnQpbSaveClicked(self):
++    outputDirectory=os.path.expanduser("~")
++    fn, mask = QFileDialog.getSaveFileName(None,"Save File",outputDirectory)
++    if not fn:
++      return
++    ulfile = os.path.abspath(str(fn))
++    try:
++      f = open(fn, 'wb')
++      f.write(self.qtbLogWindow.toPlainText().encode("utf-8"))
++      f.close()
++    except IOError as why:
++      QMessageBox.critical(self, 'Save File',
++                                 'The file <b>%s</b> could not be saved.<br>Reason: %s'%(str(fn), str(why)))
++
++  def readFromStdErr(self):
++    a=self.myExecutable.readAllStandardError()
++    aa=a.data().decode(errors='ignore')
++    self.qtbLogWindow.append(aa)
++
++  def readFromStdOut(self) :
++    a=self.myExecutable.readAllStandardOutput()
++    aa=a.data().decode(errors='ignore')
++    self.qtbLogWindow.append(aa)
++
++  def computationFinished(self):
++    self.qpbOK.setEnabled(True)
++    if self.myExecutable.exitCode() == 0:
++      self.parent().saveOutputMesh()
++    else:
++      QMessageBox.critical(self, 'Computation failed',
++                                 'The computation has failed.<br>Please, check the log message.')
++
++  def computationOnError(self):
++    self.qpbOK.setEnabled(True)
++    QMessageBox.critical(self, 'Computation failed',
++                               'The computation has failed.<br>Please, check the log message.')
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.ui SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.ui
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.ui	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshMonitor.ui	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,38 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ui version="4.0">
++ <class>qdLogger</class>
++ <widget class="QDialog" name="qdLogger">
++  <property name="geometry">
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>469</width>
++    <height>489</height>
++   </rect>
++  </property>
++  <property name="windowTitle">
++   <string>Run Topo2VolMesh</string>
++  </property>
++  <layout class="QGridLayout" name="gridLayout">
++   <item row="1" column="1">
++    <widget class="QPushButton" name="qpbSave">
++     <property name="text">
++      <string>Save log</string>
++     </property>
++    </widget>
++   </item>
++   <item row="0" column="0" colspan="2">
++    <widget class="QTextBrowser" name="qtbLogWindow"/>
++   </item>
++   <item row="1" column="0">
++    <widget class="QPushButton" name="qpbOK">
++     <property name="text">
++      <string>Ok</string>
++     </property>
++    </widget>
++   </item>
++  </layout>
++ </widget>
++ <resources/>
++ <connections/>
++</ui>
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.py SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.py
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.py	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.py	2022-01-14 16:36:18.691585755 +0100
+@@ -0,0 +1,162 @@
++# -*- coding: utf-8 -*-
++# Copyright (C) 2013-2020  EDF R&D
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++
++import os, subprocess
++import random
++import getpass
++import time
++import pathlib
++
++# set seed
++from datetime import datetime
++random.seed(datetime.now())
++
++import platform
++import tempfile
++from Topo2VolMeshPluginDialog_ui import Ui_Topo2VolMeshMainFrame
++from Topo2VolMeshMonitor import Topo2VolMeshMonitor
++from qtsalome import *
++
++verbose = True
++
++class Topo2VolMeshPluginDialog(Ui_Topo2VolMeshMainFrame,QWidget):
++  """
++  """
++  def __init__(self):
++    QWidget.__init__(self)
++    self.setupUi(self)
++    self.qpbHelp.clicked.connect(self.OnQpbHelpClicked)
++    self.qpbCompute.clicked.connect(self.OnQpbComputeClicked)
++    self.qpbMeshFile.clicked.connect(self.OnQpbMeshFileClicked)
++    self.qpbMeshFile.setToolTip("hypothesis from Salome Object Browser")
++    self.qpbClose.clicked.connect(self.OnQpbCloseClicked)
++    self.qcbDistributed.stateChanged[int].connect(self.OnqcbDistributedClicked)
++    self.qlbXParts.setVisible(False)
++    self.qlbYParts.setVisible(False)
++    self.qlbZParts.setVisible(False)
++    self.qsbXParts.setVisible(False)
++    self.qsbYParts.setVisible(False)
++    self.qsbZParts.setVisible(False)
++    self.SALOME_TMP_DIR = None
++    try:
++      self.qleTmpDir.setText(os.path.join('/tmp',getpass.getuser(),'top-ii-vol'))
++    except:
++      self.qleTmpDir.setText('/tmp')
++    self.resize(800, 500)
++    self.outputMesh = ''
++
++  def OnQpbHelpClicked(self):
++    import SalomePyQt
++    sgPyQt = SalomePyQt.SalomePyQt()
++    try:
++      mydir=os.environ["SMESH_ROOT_DIR"]
++    except Exception:
++      QMessageBox.warning(self, "Help", "Help unavailable $SMESH_ROOT_DIR not found")
++      return
++
++    myDoc=mydir + "/share/doc/salome/gui/SMESH/Topo2VolMeshPlugin/index.html"
++    sgPyQt.helpContext(myDoc,"")
++
++  def OnQpbMeshFileClicked(self):
++    fd = QFileDialog(self, "select an existing Mesh file", self.qleMeshFile.text(), "Mesh-Files (*.xyz);;All Files (*)")
++    if fd.exec_():
++      infile = fd.selectedFiles()[0]
++      self.qleMeshFile.setText(infile)
++
++  def OnQpbComputeClicked(self):
++    if self.qleMeshFile.text() == '':
++      QMessageBox.critical(self, "Mesh", "select an input mesh")
++      return
++    inputMesh = self.qleMeshFile.text()
++    # retrieve x,y,z and depth parameters
++    xPoints = self.qsbXPoints.value()
++    yPoints = self.qsbYPoints.value()
++    zPoints = self.qsbZPoints.value()
++    depth   = self.qsbDepth.value()
++    nProcs  = self.qsbNBprocs.value()
++    if not self.qcbDistributed.isChecked():
++      if nProcs == 1:
++        shellCmd = "topIIvol_Mesher"
++      else:
++        shellCmd = "mpirun -np {} topIIvol_ParMesher".format(nProcs)
++      shellCmd+= " --xpoints " + str(xPoints)
++      shellCmd+= " --ypoints " + str(yPoints)
++      shellCmd+= " --zpoints " + str(zPoints)
++      shellCmd+= " --depth   " + str(depth)
++      shellCmd+= " --in " + inputMesh
++    else:
++      xParts = self.qsbXParts.value()
++      yParts = self.qsbYParts.value()
++      zParts = self.qsbZParts.value()
++      shellCmd = "mpirun -np {} topIIvol_DistMesher".format(nProcs)
++      shellCmd+= " --xpoints " + str(xPoints)
++      shellCmd+= " --ypoints " + str(yPoints)
++      shellCmd+= " --zpoints " + str(zPoints)
++      shellCmd+= " --depth   " + str(depth)
++      shellCmd+= " --partition_x " + str(xParts)
++      shellCmd+= " --partition_y " + str(xParts)
++      shellCmd+= " --partition_z " + str(xParts)
++      shellCmd+= " --in " + inputMesh
++    if platform.system()=="Windows" :
++      self.SALOME_TMP_DIR = os.getenv("SALOME_TMP_DIR")
++    else:
++      self.SALOME_TMP_DIR = os.path.join(self.qleTmpDir.text(), time.strftime("%Y-%m-%d-%H-%M-%S"))
++      pathlib.Path(self.SALOME_TMP_DIR).mkdir(parents=True, exist_ok=True)
++    self.outputMesh= os.path.join(self.SALOME_TMP_DIR, inputMesh.split('/').pop().replace('.xyz','.mesh'))
++    shellCmd+= " --out " + self.outputMesh
++    print("INFO: ", shellCmd)
++    myMonitorView=Topo2VolMeshMonitor(self, shellCmd)
++
++  def OnqcbDistributedClicked(self):
++    state = self.qcbDistributed.isChecked()
++    self.qlbXParts.setVisible(state)
++    self.qlbYParts.setVisible(state)
++    self.qlbZParts.setVisible(state)
++    self.qsbXParts.setVisible(state)
++    self.qsbYParts.setVisible(state)
++    self.qsbZParts.setVisible(state)
++
++  def OnQpbCloseClicked(self):
++    self.close()
++
++  def saveOutputMesh(self):
++    import salome
++    import  SMESH, SALOMEDS
++    from salome.smesh import smeshBuilder
++    smesh = smeshBuilder.New()
++    self.outputMesh.split('/')
++    for mesh in pathlib.Path(self.SALOME_TMP_DIR).glob('*.mesh'):
++      (outputMesh, status) = smesh.CreateMeshesFromGMF(os.path.join(self.SALOME_TMP_DIR, mesh))
++    if salome.sg.hasDesktop():
++        salome.sg.updateObjBrowser()
++    return True
++
++__instance = None
++
++def getInstance():
++  """
++  This function returns a singleton instance of the plugin dialog.
++  It is mandatory in order to call show without a parent ...
++  """
++  global __instance
++  if __instance is None:
++    __instance = Topo2VolMeshPluginDialog()
++  return __instance
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.ui SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.ui
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.ui	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPluginDialog.ui	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,448 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<ui version="4.0">
++ <class>Topo2VolMeshMainFrame</class>
++ <widget class="QWidget" name="Topo2VolMeshMainFrame">
++  <property name="geometry">
++   <rect>
++    <x>0</x>
++    <y>0</y>
++    <width>780</width>
++    <height>411</height>
++   </rect>
++  </property>
++  <property name="windowTitle">
++   <string>Tetra Mesh from cloud of xyz points mesh generator</string>
++  </property>
++  <widget class="QGroupBox" name="groupBox">
++   <property name="geometry">
++    <rect>
++     <x>10</x>
++     <y>10</y>
++     <width>761</width>
++     <height>101</height>
++    </rect>
++   </property>
++   <property name="font">
++    <font>
++     <pointsize>10</pointsize>
++    </font>
++   </property>
++   <property name="title">
++    <string>Input Mesh</string>
++   </property>
++   <widget class="QPushButton" name="qpbMeshFile">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>50</y>
++      <width>151</width>
++      <height>31</height>
++     </rect>
++    </property>
++    <property name="font">
++     <font>
++      <pointsize>10</pointsize>
++     </font>
++    </property>
++    <property name="text">
++     <string>DEM input file</string>
++    </property>
++    <property name="iconSize">
++     <size>
++      <width>18</width>
++      <height>18</height>
++     </size>
++    </property>
++   </widget>
++   <widget class="QLineEdit" name="qleMeshFile">
++    <property name="geometry">
++     <rect>
++      <x>170</x>
++      <y>50</y>
++      <width>531</width>
++      <height>31</height>
++     </rect>
++    </property>
++    <property name="font">
++     <font>
++      <pointsize>10</pointsize>
++     </font>
++    </property>
++   </widget>
++  </widget>
++  <widget class="QGroupBox" name="gbOptions">
++   <property name="geometry">
++    <rect>
++     <x>10</x>
++     <y>120</y>
++     <width>761</width>
++     <height>231</height>
++    </rect>
++   </property>
++   <property name="title">
++    <string>Options</string>
++   </property>
++   <widget class="QSpinBox" name="qsbXPoints">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>30</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>10</number>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlXpoints">
++    <property name="geometry">
++     <rect>
++      <x>80</x>
++      <y>30</y>
++      <width>201</width>
++      <height>20</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of points in X direction</string>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbYPoints">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>70</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>10</number>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbZPoints">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>110</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>10</number>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlYpoints">
++    <property name="geometry">
++     <rect>
++      <x>80</x>
++      <y>70</y>
++      <width>211</width>
++      <height>20</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of points in Y direction</string>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlZpoints">
++    <property name="geometry">
++     <rect>
++      <x>80</x>
++      <y>110</y>
++      <width>211</width>
++      <height>20</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of points in Z direction</string>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbDepth">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>150</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>-999999999</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>0</number>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlDepth">
++    <property name="geometry">
++     <rect>
++      <x>80</x>
++      <y>150</y>
++      <width>201</width>
++      <height>20</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Depth in Z direction</string>
++    </property>
++   </widget>
++   <widget class="QCheckBox" name="qcbDistributed">
++    <property name="geometry">
++     <rect>
++      <x>630</x>
++      <y>30</y>
++      <width>91</width>
++      <height>21</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string/>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlbNbProcs">
++    <property name="geometry">
++     <rect>
++      <x>370</x>
++      <y>30</y>
++      <width>151</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of processors</string>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlDistributed">
++    <property name="geometry">
++     <rect>
++      <x>660</x>
++      <y>30</y>
++      <width>101</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Distributed</string>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlbXParts">
++    <property name="geometry">
++     <rect>
++      <x>370</x>
++      <y>70</y>
++      <width>261</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of partitions in X direction</string>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlbYParts">
++    <property name="geometry">
++     <rect>
++      <x>370</x>
++      <y>110</y>
++      <width>251</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of partitions in Y direction</string>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlbZParts">
++    <property name="geometry">
++     <rect>
++      <x>370</x>
++      <y>150</y>
++      <width>251</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Number of partitions in Z direction</string>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbNBprocs">
++    <property name="geometry">
++     <rect>
++      <x>300</x>
++      <y>30</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>1</number>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbXParts">
++    <property name="geometry">
++     <rect>
++      <x>300</x>
++      <y>70</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>1</number>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbYParts">
++    <property name="geometry">
++     <rect>
++      <x>300</x>
++      <y>110</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>1</number>
++    </property>
++   </widget>
++   <widget class="QSpinBox" name="qsbZParts">
++    <property name="geometry">
++     <rect>
++      <x>300</x>
++      <y>150</y>
++      <width>62</width>
++      <height>22</height>
++     </rect>
++    </property>
++    <property name="minimum">
++     <number>0</number>
++    </property>
++    <property name="maximum">
++     <number>999999999</number>
++    </property>
++    <property name="value">
++     <number>1</number>
++    </property>
++   </widget>
++   <widget class="QLineEdit" name="qleTmpDir">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>200</y>
++      <width>611</width>
++      <height>23</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string/>
++    </property>
++   </widget>
++   <widget class="QLabel" name="qlTmpDir">
++    <property name="geometry">
++     <rect>
++      <x>10</x>
++      <y>180</y>
++      <width>391</width>
++      <height>16</height>
++     </rect>
++    </property>
++    <property name="text">
++     <string>Workspace</string>
++    </property>
++   </widget>
++  </widget>
++  <widget class="QWidget" name="layoutWidget">
++   <property name="geometry">
++    <rect>
++     <x>10</x>
++     <y>370</y>
++     <width>761</width>
++     <height>27</height>
++    </rect>
++   </property>
++   <layout class="QHBoxLayout" name="horizontalLayout">
++    <item>
++     <widget class="QPushButton" name="qpbCompute">
++      <property name="text">
++       <string>Compute</string>
++      </property>
++     </widget>
++    </item>
++    <item>
++     <widget class="QPushButton" name="qpbClose">
++      <property name="text">
++       <string>Close</string>
++      </property>
++     </widget>
++    </item>
++    <item>
++     <spacer name="horizontalSpacer">
++      <property name="orientation">
++       <enum>Qt::Horizontal</enum>
++      </property>
++      <property name="sizeHint" stdset="0">
++       <size>
++        <width>40</width>
++        <height>20</height>
++       </size>
++      </property>
++     </spacer>
++    </item>
++    <item>
++     <widget class="QPushButton" name="qpbHelp">
++      <property name="font">
++       <font>
++        <pointsize>10</pointsize>
++       </font>
++      </property>
++      <property name="text">
++       <string>Help</string>
++      </property>
++     </widget>
++    </item>
++   </layout>
++  </widget>
++ </widget>
++ <resources/>
++ <connections/>
++</ui>
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin_plugin.py SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin_plugin.py
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin_plugin.py	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin_plugin.py	2022-01-14 16:36:28.963717213 +0100
+@@ -0,0 +1,36 @@
++# -*- coding: utf-8 -*-
++# Copyright (C) 2013-2020  EDF R&D
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++# if you already have plugins defined in a salome_plugins.py file, add this file at the end.
++# if not, copy this file as ${HOME}/Plugins/smesh_plugins.py or ${APPLI}/Plugins/smesh_plugins.py
++
++def Topo2VolMeshLct(context):
++  # get context study, salomeGui
++  study = context.study
++  sg = context.sg
++
++  import os
++  import subprocess
++  import tempfile
++  from qtsalome import QFileDialog, QMessageBox
++
++  import Topo2VolMeshPluginDialog
++  window = Topo2VolMeshPluginDialog.getDialog()
++  window.show()
+diff -Naur SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin.py SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin.py
+--- SMESH_ref/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin.py	1970-01-01 01:00:00.000000000 +0100
++++ SMESH_new/src/Tools/Topo2VolMeshPlug/Topo2VolMeshPlugin.py	2022-01-14 16:35:41.543110352 +0100
+@@ -0,0 +1,36 @@
++# -*- coding: utf-8 -*-
++# Copyright (C) 2013-2020  EDF R&D
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++# if you already have plugins defined in a salome_plugins.py file, add this file at the end.
++# if not, copy this file as ${HOME}/Plugins/smesh_plugins.py or ${APPLI}/Plugins/smesh_plugins.py
++
++def Topo2VolMeshLct(context):
++  # get context study, salomeGui
++  study = context.study
++  sg = context.sg
++
++  import os
++  import subprocess
++  import tempfile
++  from qtsalome import QFileDialog, QMessageBox
++
++  import Topo2VolMeshPluginDialog
++  window = Topo2VolMeshPluginDialog.getInstance()
++  window.show()

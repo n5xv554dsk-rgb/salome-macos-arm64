@@ -1,0 +1,156 @@
+#!/bin/bash
+
+echo "##########################################################################"
+echo SIP + PyQt5_sip $VERSION
+echo "##########################################################################"
+
+fix_lib_path(){
+  mkdir -p $PRODUCT_INSTALL/lib/python$PYTHON_VERSION
+  # ensure that lib is used
+  if [ -d "$PRODUCT_INSTALL/local" ]; then
+    cp -r $PRODUCT_INSTALL/local/* $PRODUCT_INSTALL/
+    rm -rf $PRODUCT_INSTALL/local
+  fi
+
+  if [ -d "$PRODUCT_INSTALL/lib64" ]; then
+    echo "WARNING: renaming lib64 directory to lib"
+    mv $PRODUCT_INSTALL/lib64/* $PRODUCT_INSTALL/lib/
+    rm -rf $PRODUCT_INSTALL/lib64
+  elif [ -d "$PRODUCT_INSTALL/local/lib64" ]; then
+    echo "WARNING: renaming local/lib64 directory to lib"
+    mv $PRODUCT_INSTALL/local/lib64/* $PRODUCT_INSTALL/lib
+    rm -rf $PRODUCT_INSTALL/local
+  else
+    echo "WARNING: unhandled case! Please ensure that script is consistent!"
+  fi
+
+    mkdir -p ${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/site-packages
+  if [ -d ${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/dist-packages ]; then
+      cp -r ${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/dist-packages/* ${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/site-packages/
+      rm -rf "${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/dist-packages"
+  fi
+}
+
+LINUX_DISTRIBUTION="$DIST_NAME$DIST_VERSION"
+
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
+cd $BUILD_DIR
+cp -r $SOURCE_DIR/sip-5.5.0 $BUILD_DIR/sip-5.5.0
+cd $BUILD_DIR/sip-5.5.0
+
+# If Docker rootless, ensure that user can read them
+if [ -f /.dockerenv ]; then
+    find $BUILD_DIR -type f -exec chmod u+rwx {} \;
+fi
+
+USE_SETUP=false
+if [[ "$PYTHON_VERSION" == "3.6" ]]; then
+    USE_SETUP=true
+fi
+
+# we don't install in python directory -> modify environment as described in INSTALL file
+export PATH=$(pwd)/bin:$PATH
+export PYTHONPATH=$(pwd):$PYTHONPATH
+if [ "$USE_SETUP" == "true" ]; then
+    mkdir -p $PRODUCT_INSTALL/lib/python${PYTHON_VERSION}/site-packages
+    export PYTHONPATH=${PRODUCT_INSTALL}/lib/python${PYTHON_VERSION}/site-packages:$PYTHONPATH
+    echo
+    echo "*** build with $PYTHONBIN"
+    $PYTHONBIN setup.py build
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on build"
+        exit 2
+    fi
+
+    echo
+    echo "*** install with $PYTHONBIN"
+    $PYTHONBIN setup.py install --prefix=$PRODUCT_INSTALL
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on install"
+        exit 3
+    fi
+else
+    $PYTHONBIN -m pip install --cache-dir=$BUILD_DIR/cache/pip  .  --no-deps --prefix=$PRODUCT_INSTALL
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on install"
+        exit 3
+    fi
+fi
+
+fix_lib_path
+
+PYQT5_SIP_VERSION=
+case $LINUX_DISTRIBUTION in
+    CO10)
+        PYQT5_SIP_VERSION=12.17.0
+        ;;
+    DB13)
+        PYQT5_SIP_VERSION=12.17.0
+        ;;
+    UB26.04)
+        PYQT5_SIP_VERSION=12.17.0
+        ;;
+    FD44)
+        PYQT5_SIP_VERSION=12.17.0
+        ;;
+    *)
+        PYQT5_SIP_VERSION=12.8.1
+        ;;
+esac
+
+cd $BUILD_DIR
+cp -R $SOURCE_DIR/PyQt5_sip-$PYQT5_SIP_VERSION $BUILD_DIR/PyQt5_sip-$PYQT5_SIP_VERSION
+cd $BUILD_DIR/PyQt5_sip-$PYQT5_SIP_VERSION
+
+echo
+echo "*** build with $PYTHONBIN"
+if [ "$USE_SETUP" == "true" ]; then
+    $PYTHONBIN setup.py build
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on build"
+        exit 2
+    fi
+
+    echo
+    echo "*** install with $PYTHONBIN"
+    $PYTHONBIN setup.py install --prefix=$PRODUCT_INSTALL
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on install"
+        exit 3
+    fi
+else
+    echo
+    echo "*** install with $PYTHONBIN"
+    $PYTHONBIN -m pip install --cache-dir=$BUILD_DIR/cache/pip  .  --no-deps --prefix=$PRODUCT_INSTALL
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR on install"
+        exit 3
+    fi
+fi
+
+fix_lib_path
+
+mkdir $PRODUCT_INSTALL/include
+cp *.h $PRODUCT_INSTALL/include
+
+cd $PRODUCT_INSTALL/bin
+ln -sf sip5 sip
+
+case $LINUX_DISTRIBUTION in
+    DB10)
+        cd $PRODUCT_INSTALL/lib/python3.7/site-packages
+        ln -sf PyQt5_sip-12.8.1-py3.7-linux-x86_64.egg/PyQt5
+        ;;
+    *)
+        ;;
+esac
+
+echo
+echo "########## END"

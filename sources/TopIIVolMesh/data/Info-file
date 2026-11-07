@@ -1,0 +1,10 @@
+//--------------- INFO FILE ----------------//
+
+//Name               x-points           y-points         total-points
+  
+  DEM_2m.xyz          2500              2251             5627500              
+  DEM_10m.xyz         500               451              225500
+  DEM_20m.xyz         250               226              56500
+  DEM_40m.xyz         125               113              14125
+  DEM_80m.xyz         63                57               3591
+  DEM_160m.xyz        32                29               928

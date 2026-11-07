@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//FR">
+<html>
+<head>
+<TITLE> DEFINITION OF THE UNCERTAINTY STUDY
+</TITLE>
+</head>
+
+
+<h2 align="center">
+ DEFINITION OF THE UNCERTAINTY STUDY
+</h2>
+<body>
+
+<h3>
+Limitations of the EFICAS GUI<BR>
+</h3>
+EFICAS version 2.0 has the following limitations : 
+<ul>
+ <li> on models : <ul>
+ <li>- the calculus fucntion f has to have a scalar output variable, which means that f : R^n --> R;</li>
+ <li>- only one model can be defined within a study;</li>
+ </li><\ul>
+ <li> on the input random vector : the probabilistic input variables must be independent or with a normal copula dependence structure;</li>
+ <li> on sample manipulation : there is no statistical functionalities except the evaluation of some correlation coefficients whithin the Central Uncertainty criteria evaluation;</li>
+  <li> on response surface tools : there is no possibility to create a polynomial response surface nor a polynomial chaos expansion.</li>
+  <li> on CRITERIA : only one criteria can be defined within a study.</l>
+</ul>
+<BR>
+
+<h3> Define your uncertainty study</h3>
+
+To perform a uncertainty study through the EFICAS Graphical User Interface, you need to follow these steps. 
+As some concepts need other ones to be created, you have to respect the given order in the study definition. Note that only the two first steps (Step 1 and Step 2) may be exchanged.
+ 
+
+<ul>
+<li> Step 1 : Define the 1D distribution pool you'll need within the study.<BR>
+This step defines all the 1D distributions that will be affected to probabilistic variables of the uncertainty study. To have information on distributions, see the Use Cases guide or User Manual Guide.
+<BR>
+   <ul> <li> - create a DISTRIBUTION :
+         <ul><li> 1. click on SansNom (which is the case study which still has no named until you save it);</li>
+         <li> 2. click on "Nouvelle Commande" on the upright of the board;</li>
+         <li> 3. click on DISTRIBUTION.
+         </ul></li>
+<BR>
+    <li>   - fulfill the DISTRIBUTION :
+<ul><li> 1. click on Kind and choose a probabilistic distribution;</li>
+<li> 2. click on the just created field named by the chosen distribution; </li>
+<li>3. give some values to each parameter of the distribution. In the Histogram case, give one by one the couples (class bandwith, class height) by typing : class bandwith, class height.</li>
+    </ul></li>
+<BR>
+   <li> name the DISTRIBUTION : 
+<ul><li>1. click on DISTRIBUTION; </li>
+<li>2. click on "Name Concept" on the upright of the board; </li>
+<li>3. give a name to the DISTRIBUTION</li>
+    </ul></li>
+<BR>
+   <li>- create another DISTRIBUTION : <ul><li>1. click on the last DISTRIBUTION you created;</li>
+<li> 2. click on "Nouvelle Commande" on the upright of the board; </li>
+<li>3. click on DISTRIBUTION.</li>
+    </ul></li>
+<BR>
+   <li> - visualise the probabilistic density function of the DISTRIBUTION : 
+<ul><li>1. right click on DISTRIBUTION; </li>
+<li>2. click on Graphique.</li>
+    </ul></li>
+</ul>
+<BR>
+<BR>
+
+
+<li> Step 2 : Define your model.<BR>
+This step gives the link towards the calculus function through which uncertainties will be propagated. The model is described thanks to an xml file To have information on wrappers, see Wrapper Guide.
+<ul><li>  - create a MODEL : 
+    <ul><li>1. click on the last DISTRIBUTION you created; </li>
+    <li>2. click on "Nouvelle Commande" on the upright of the board; </li>
+    <li>3. click on MODEL.</li> </ul>
+</li>
+<BR>
+<li> - fulfill the MODEL : 
+    <ul><li>1. click on FileName; </li>
+         <li>2. give the adress of the file.xml corresponding to your calculus function.
+</li></ul></li>
+</ul>
+
+<BR>
+<BR>
+
+
+<li> Step 3 : Define the probabilistic input variables.<BR>
+This step associates a probabilistic distribution function previously defined in Step 1 to each variable defined in the model.
+<ul><li>  - create a VARIABLE : 
+     <ul><li>1. click on the last DISTRIBUTION you created; </li>
+         <li>2. click on "Nouvelle Commande" on the upright of the board; </li>
+         <li>3. click on VARIABLE.</li>
+     </ul> </li> <BR>
+     <li>  - fulfill the VARIABLE :
+         <ul><li>1. click on ModelVariable; </li>
+             <li>2. choose a variable within the list of the variables coming from the previously defined model; </li>
+             <li>3. click on Distribution; </li>
+             <li>4. choose a distribution among the ones previously defined in Step 1 (correctly fulfilled and named).</li>
+         </ul></li> <BR>
+     <li>   - create another VARIABLE : 
+          <ul><li>1. click on the last VARIABLE you created; </li>
+          <li>2. click on "Nouvelle Commande" on the upright of the board; </li>
+          <li>3. click on VARIABLE.</li>
+          </ul></li> 
+</ul><BR>
+
+<li> Step 4 : Define the dependance structure of the probabilistic input variables.<BR>
+This step defines the structure dependence of the probabilistic input variables previously declared.
+<ul>
+<li>  - create a CORRELATION : <ul><li>1. click on the last VARIABLE you created; </li>
+<li>2. click on "Nouvelle Commande" on the upright of the board; </li>
+<li>3. click on CORRELATION.</li></ul><BR>
+<li>  - fulfill the CORRELATION : <ul><li>1. click on Copula; </li>
+<li>2. choose a copula within Normal copula and Independent one; </li>
+<li>3. In case of Normal copula, give the correlation matrix by clicking on CorrelationMatrix.</li>
+</ul></li><BR></ul>
+
+
+<li> Step 5 : Define the criteria you will evaluate.<BR>
+This step defines the criteria which will be evakluated by the uncertainty study. To have more information on criterias, see the Reference Guide.<BR>
+<ul><li>
+  - create a CRITERIA : <ul><li>1. click on the last VaRIABLE you created; </li>
+   <li>2. click on "Nouvelle Commande" on the upright of the board; </li>
+   <li>3. click on CRITERIA;</li></ul> 
+   <li>  - fulfill the CRITERIA : <ul><li>1. click on CRITERIA; </li>
+   <li>2. choose a specific criteria among the three proposed ones.</li><BR></ul>
+The following steps are described just below.</li><BR>
+
+<li>CRITERIA MinMax : <BR>
+This criteria aims at evaluating some extreme values of the output variable of interest, which is the output variable of the model. To have more information on the different methods, see the Use Cases Guide.
+<ul>
+   <li>  - 3. click on MinMax; </li>
+   <li>  - 4. click on the just created field Method which defines how input probabilistic variables will be generated;</li>
+   <li>  - 5. click on the just created field corresponding to the chosen Method; </li>
+   <li>  - 6. fulfill the required fields;</li>
+   <li>  - 7. The Results are the extreme values evaluated on the output variable onf interest.</li>
+</ul></li><BR>
+
+<li>CRITERIA  Central Uncertainty : <BR>
+This criteria aims at evaluating some central probabilistic carateristics of the output variable of interest. To have more information on the different methods, see the Use Cases Guide.
+<ul><li> - 3. click on CentralUncertainty; </li>
+     <li>- 4. click on the just created field Method which defines how the central probabilistic caracteristics will be evaluated and choose one; </li>
+     <li>- 5. click on the just created field corresponding to the chosen Method;</li>
+     <li>- 6. fulfill the required fields;</li>
+     <li>- 7. The Results are the mean, standard deviation whatever the chosen Method and in the case of a Radom sampling Method, also some empirical quantiles previoulsy defined, the evaluation of some correlation coefficients (PCC, PRCC, SRC and SRRC) and the kernel smoothing of the probabilistic density function of the output variable of interest.</li>
+</ul><BR></li>
+
+
+<li>CRITERIA Threshold Exceedance : <BR>
+This criteria aims at evaluating the probability that the ouput variable of interest exceeds or remaines under a define threshold. To have more information on the different methods, see the Use Cases Guide.
+<ul><li>- 3. click on Threshold Exceedence; </li>
+     <li>- 4. click on the just created field Method which defines how the central probabilistic caracteristics will be evaluated;</li>
+     <li>- 5. define the Event : click on Threshold and fulfill it; click on the ComparisonOperator and fulfill it; </li>
+     <li>- 6. define the probability evaluation Method : click on Method  and choose one;</li>
+     <li>- 7. fulfill the required fields. In the FORM and SORM cases, it is possible to perform some importance sampling around the design point : the importance distribution is the standard Normal distribution defined int he stansard space, with independent components, unit variance and centered around the design point.</li>
+     <li>- 8. The Results are the following ones :<BR> in the case of a Simulation Method, the probability evaluation with the standard deviation and the coefficient of vrariation of its estimator, the confidence interval defined previously, the final number of simulation used for the evaluation,  the convergence graph of the estimator; in the case of a FORM Method, the probability evaluation, the associated design point, the Hasofer reliability index, the importance factors also drawed in a graph, the sensitivity factors evaluated on the FORM probability estimation and on the Hasofer reliability index and the calls number of the model; in the case of a SORM Method, the probability evaluation, the associated design point, the Hasofer, Tvedt and HohenBichler reliability indexes, the importance factors also drawed in a graph, the sensitivity factors evaluated on the Hasofer reliability index and the calls number of the model.
+</li>
+</ul><BR></ul>
+
+<h3>
+General rules
+</h3>
+<ul>
+<li> To erase a concept, right click on it  and click on Supprimer.</li>
+<li> While the concept is not colored in green, you have not completely fulfilled the concepts. The orange color means a concept needs to be named.</li>
+<li> To fulfill a list of values (v1, v2, ..., vn), type the whole values separated by coma. For example, to fulfill (1,2,3) in the field Levels of an Experiment plane, type : 1,2,3.</li>
+<li> To fulfill a list of list of values, type one by one each list of values as previously described. For example, ((v1,v2), (v3,v4)), type : v1,v2 then "entered", v3,v4 then 'entered". This is the case in the Histogramm distribution.</li>
+<li> Files names or graphics impression are given without their extensions. Open TURNS will authomatically provide the .eps, .png and .fig formats.</li>
+</ul>
+<BR><BR>
+
+
+<h3>
+Save and Run your uncertainty study
+</h3>
+Once correctly fulfilled, the study can be saved under a specific name chosen by the User, for example "myStudy".<BR>
+Then, two files are authomatically created : 
+<ul>
+<li>- a myStudy.comm which contains all the information declared in the EFICAS GUI. This file myStudy.comm may be opened once more within EFICAS.</li>
+<li>- a myStudy.py which is the corresponding python script. The python script is generated given that each concept has been correctly and entirely fulfilled. </li>
+</ul>
+To run your uncertainty analyses, you nedd to type "python myStudy.py" or "python -i myStudy.py" in your shell. All the graphs are created in the repertory where the python session has been launched.
+To have more information on how to modify the python script, see the Use Cases Guide.
+<BR>
+
+</body>
+</html>

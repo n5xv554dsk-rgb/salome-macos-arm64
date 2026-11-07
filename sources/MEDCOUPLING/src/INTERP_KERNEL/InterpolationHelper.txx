@@ -1,0 +1,84 @@
+// Copyright (C) 2022-2026  CEA, EDF
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+//
+// Author : Anthony Geay (EDF R&D)
+
+#pragma once
+
+#include "BBTreeStandAlone.txx"
+#include "MeshElement.txx"
+#include "Log.hxx"
+
+#include <memory>
+#include <functional>
+
+namespace INTERP_KERNEL
+{
+template <class MyMeshType, int dim, class BBTreeStandAloneClass>
+BBTreeStandAloneClass
+BuildBBTreeWithAdjustmentGen(
+    const MyMeshType &srcMesh, std::function<void(double *, typename MyMeshType::MyConnType)> bboxAdjuster
+)
+{
+    using ConnType = typename MyMeshType::MyConnType;
+    const ConnType numSrcElems = srcMesh.getNumberOfElements();
+    LOG(2, "Source mesh has " << numSrcElems << " elements");
+    // create BBTree structure
+    // - get bounding boxes
+    const ConnType nbElts = 2 * dim * numSrcElems;
+    std::unique_ptr<double[]> bboxes(new double[nbElts]);
+    for (ConnType i = 0; i < numSrcElems; ++i)
+    {
+        MeshElementT<ConnType, dim> srcElem(i, srcMesh);
+        // get source bboxes in right order
+        const BoundingBoxT<dim> *box(srcElem.getBoundingBox());
+        box->fillInXMinXmaxYminYmaxZminZmaxFormat(bboxes.get() + 2 * dim * i);
+    }
+    bboxAdjuster(bboxes.get(), nbElts);
+    return BBTreeStandAloneClass(std::move(bboxes), numSrcElems);
+}
+
+template <class MyMeshType, int dim = 3>
+BBTreeStandAlone<dim, typename MyMeshType::MyConnType>
+BuildBBTreeWithAdjustment(
+    const MyMeshType &srcMesh, std::function<void(double *, typename MyMeshType::MyConnType)> bboxAdjuster
+)
+{
+    return BuildBBTreeWithAdjustmentGen<MyMeshType, dim, BBTreeStandAlone<dim, typename MyMeshType::MyConnType>>(
+        srcMesh, bboxAdjuster
+    );
+}
+
+template <class MyMeshType, int dim = 3>
+BBTreeStandAlone<dim, typename MyMeshType::MyConnType>
+BuildBBTree(const MyMeshType &srcMesh)
+{
+    return BuildBBTreeWithAdjustmentGen<MyMeshType, dim, BBTreeStandAlone<dim, typename MyMeshType::MyConnType>>(
+        srcMesh, [](double *, typename MyMeshType::MyConnType) {}
+    );
+}
+
+template <class MyMeshType, int dim = 3>
+BBTreeClosestStandAlone<dim, typename MyMeshType::MyConnType>
+BuildBBTreeClosest(const MyMeshType &srcMesh)
+{
+    return BuildBBTreeWithAdjustmentGen<MyMeshType, dim, BBTreeClosestStandAlone<dim, typename MyMeshType::MyConnType>>(
+        srcMesh, [](double *, typename MyMeshType::MyConnType) {}
+    );
+}
+}  // namespace INTERP_KERNEL

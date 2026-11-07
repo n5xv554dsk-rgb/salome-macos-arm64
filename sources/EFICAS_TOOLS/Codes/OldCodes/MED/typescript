@@ -1,0 +1,34 @@
+Le script a débuté sur mar. 29 nov. 2016 15:37:06 CET
+]0;A96028@dsp0780471: ~/QT5GitEficasTravail/eficas/monCodeA96028@dsp0780471:~/QT5GitEficasTravail/eficas/monCode$ ./qtEficas_Med.py /tmp/a.commoo.comm
+eficas_en /home/A96028/QT5GitEficasTravail/eficas/monCode/../Extensions/../UiQT4
+()
+{'typ': 'TXM', 'statut': 'o'}
+()
+{'typ': 'TXM', 'statut': 'o'}
+()
+{'typ': 'TXM', 'statut': 'o'}
+()
+{'max': 1, 'typ': 'I', 'statut': 'o'}
+()
+{'max': '**', 'typ': 'TXM', 'statut': 'o'}
+()
+{'max': '**', 'typ': 'I', 'statut': 'o'}
+()
+{'max': '**', 'typ': 'I', 'statut': 'o'}
+()
+{'NBR': <Accas.A_SIMP.SIMP instance at 0x7efbe6617b90>, 'IDE': <Accas.A_SIMP.SIMP instance at 0x7efbe6617c20>, 'DES': <Accas.A_SIMP.SIMP instance at 0x7efbe6617bd8>, 'VAL': <Accas.A_SIMP.SIMP instance at 0x7efbe6617c68>, 'statut': 'f'}
+()
+{'max': 1, 'typ': 'I', 'statut': 'o'}
+()
+{'max': '**', 'typ': 'TXM', 'statut': 'o'}
+()
+{'NOM': <Accas.A_SIMP.SIMP instance at 0x7efbe6617e18>, 'NBR': <Accas.A_SIMP.SIMP instance at 0x7efbe6617dd0>, 'statut': 'f'}
+()
+{'NAME': <Accas.A_SIMP.SIMP instance at 0x7efbe6617b48>, 'statut': 'f', 'max': '**', 'ATT': <Accas.A_FACT.FACT instance at 0x7efbe6617cb0>, 'NUM': <Accas.A_SIMP.SIMP instance at 0x7efbe6617b00>, 'GRO': <Accas.A_FACT.FACT instance at 0x7efbe6617e60>}
+()
+{'NAME': <Accas.A_SIMP.SIMP instance at 0x7efbe6617ab8>, 'ELEM': <Accas.A_FACT.FACT instance at 0x7efbe6617ea8>, 'statut': 'o'}
+()
+{'nom': 'FAS', 'FAMILY_MESH_NAME_REF': <Accas.A_FACT.FACT instance at 0x7efbe6617ef0>, 'op': None}
+]0;A96028@dsp0780471: ~/QT5GitEficasTravail/eficas/monCodeA96028@dsp0780471:~/QT5GitEficasTravail/eficas/monCode$ exit
+
+Script terminé sur mar. 29 nov. 2016 15:37:13 CET

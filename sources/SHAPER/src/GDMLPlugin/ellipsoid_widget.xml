@@ -1,0 +1,39 @@
+<source>
+  <groupbox title="Dimensions">
+    <doublevalue id="ax"
+                 label="ax"
+                 step="1.0"
+                 default="10.0"
+                 tooltip="Enter the x semi axis length">
+    </doublevalue>
+    <doublevalue id="by"
+                 label="by"
+                 step="1.0"
+                 default="20.0"
+                 tooltip="Enter the y semi axis length">
+    </doublevalue>
+    <doublevalue id="cz"
+                 label="cz"
+                 step="1.0"
+                 default="40.0"
+                 tooltip="Enter the z semi axis length">
+    </doublevalue>   
+  </groupbox>
+  <groupbox title="Cuts">
+    <optionalbox id="use_zcut1" title="">
+      <doublevalue id="zcut1" 
+                   label="zcut1" 
+                   tooltip="Enter the lower zcut" 
+                   default="5."
+                   step="1.0"/>
+    </optionalbox>
+    <optionalbox id="use_zcut2" title="">
+      <doublevalue id="zcut2" 
+                   label="zcut2" 
+                   tooltip="Enter the upper zcut" 
+                   default="5."
+                   step="1.0"/>
+    </optionalbox>
+  </groupbox>
+  <label title="" icon="icons/GDML/gui_ellipsoid.png"/>
+</source>

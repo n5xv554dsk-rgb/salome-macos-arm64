@@ -1,0 +1,5 @@
+#& MODIF COMMANDE  DATE 24/06/2002   AUTEUR F1BHHAJ J.ANGLES
+LECTURE_FORCE=PROC(nom="LECTURE_FORCE",op=189,
+                   fr="Lecture de la force",
+                  ) 
+

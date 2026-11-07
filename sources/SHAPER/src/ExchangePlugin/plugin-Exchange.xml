@@ -1,0 +1,152 @@
+<plugin>
+  <workbench id="Part">
+    <group id="Exchange">
+      <feature id="ImportMacro" title="Import" tooltip="Import a file" icon="icons/Exchange/import.png"
+               helpfile="importFeature.html"
+               internal="1">
+        <switch id="ImportType">
+          <case id="Regular" title="BREP, XAO, IGES, STL">
+            <file_selector id="file_path" title="Import file" path="">
+              <validator id="ExchangePlugin_ImportFormat" parameters="BREP|BRP:BREP,IGES|IGS:IGES,XAO:XAO,STL:STL" />
+            </file_selector>
+            <choice id="target_part"
+                    string_list_attribute="target_parts_list"
+                    label="Import to"
+                    tooltip="Select the part to import the document" />
+          </case>
+          <case id="STEP" title="STEP">
+            <file_selector id="step_file_path" title="Import file" path="">
+              <validator id="ExchangePlugin_ImportFormat" parameters="STEP|STP:STEP" />
+            </file_selector>
+            <choice id="step_target_part"
+                    string_list_attribute="step_target_parts_list"
+                    label="Import to"
+                    tooltip="Select the part to import the document" />
+            <groupbox title="STEP options">
+              <boolvalue id="step_scale_inter_units"
+                         label="Scale to International System of Units"
+                         default="true"/>
+              <groupbox title="Create groups from">
+                <boolvalue id="step_materials"
+                           label="Materials"
+                           default="false"/>
+                <boolvalue id="step_colors"
+                           label="Colors"
+                           default="false"/>
+              </groupbox>
+            </groupbox>
+          </case>
+          <case id="XAOMem" title="XAOMem" internal="1">
+          </case>
+        </switch>
+      </feature>
+
+      <feature id="ImportImageMacro" title="Import" tooltip="Import a file" icon="icons/Exchange/import.png"
+               helpfile="importFeature.html"
+               internal="1">
+        <file_selector id="file_path" title="Import image file" path="">
+          <validator id="ExchangePlugin_ImportFormat" parameters="GIF|TIFF|PNG|JPG|JPEG|BMP|PPM|JPE:Image" />
+        </file_selector>
+        <choice id="target_part"
+                string_list_attribute="target_parts_list"
+                label="Import to"
+                tooltip="Select the image to import the document" />
+      </feature>
+
+      <feature id="Import" title="Import" tooltip="Import a file" icon="icons/Exchange/import.png"
+               helpfile="importFeature.html" internal="1">
+        <switch id="ImportType">
+          <case id="Regular" title="BREP, XAO, IGES, STL">
+            <file_selector id="file_path" title="Import file" path="">
+                <validator id="ExchangePlugin_ImportFormat" parameters="BREP|BRP:BREP,IGES|IGS:IGES,XAO:XAO,STL:STL" />
+            </file_selector>
+          </case>
+          <case id="STEP" title="STEP">
+            <file_selector id="step_file_path" title="Import file" path="">
+              <validator id="ExchangePlugin_ImportFormat" parameters="STEP|STP:STEP" />
+            </file_selector>
+            <groupbox title="STEP options">
+              <boolvalue id="step_scale_inter_units"
+                         label="Scale to International System of Units"
+                         default="true"/>
+              <groupbox title="Create groups from">
+                <boolvalue id="step_materials"
+                           label="Materials"
+                           default="false"/>
+                <boolvalue id="step_colors"
+                           label="Colors"
+                           default="false"/>
+              </groupbox>
+            </groupbox>
+          </case>
+          <case id="XAOMem" title="XAOMem" internal="1">
+          </case>
+        </switch>
+      </feature>
+      <feature id="ImportImage" title="Import" tooltip="Import a file" icon="icons/Exchange/import.png"
+               helpfile="importFeature.html"
+               internal="1">
+        <file_selector id="file_path" title="Import image file" path="">
+          <validator id="ExchangePlugin_ImportFormat" parameters="GIF|TIFF|PNG|JPG|JPEG|BMP|PPM|JPE:Image" />
+        </file_selector>
+      </feature>
+      <feature id="Export" title="Export" tooltip="Export to file" icon="icons/Exchange/export.png"
+               helpfile="exportFeature.html" internal="1">
+        <source path="export_widget.xml" />
+      </feature>
+
+      <feature id="Dump" title="Dump" tooltip="Dump Python script" icon="icons/Exchange/dump.png"
+               helpfile="dumpFeature.html" abort_confirmation="false">
+        <export_file_selector id="file_path"
+                              type="save"
+                              title="Dump to file"
+                              path="">
+          <validator id="ExchangePlugin_ExportFormat"
+                     parameters="py:Python" />
+        </export_file_selector>
+        <!--<boolvalue id="topological_naming"
+             label="Topological naming selection"
+             tooltip="To use standard topological naming selection identifier, used for parametric model"
+             default="true"/>-->
+        <boolvalue id="geometric_selection"
+             label="Dump by coordinates"
+             tooltip="To use geometrical point coordinates to identify selected shapes"
+             default="false"/>
+        <!--<boolvalue id="weak_naming"
+             label="Weak naming selection"
+             tooltip="To use geometrical order for identification of selected shapes"
+             default="false"/> -->
+      </feature>
+
+      <feature id="ImportPart" title="Import part" tooltip="Import features from file" icon="icons/Exchange/import_part.png"
+               helpfile="importFeature.html"
+               internal="1">
+        <file_selector id="file_path" title="Import file" path="">
+          <validator id="ExchangePlugin_ImportFormat" parameters="shaperpart:Part" />
+        </file_selector>
+        <choice id="target_part"
+                string_list_attribute="target_parts_list"
+                label="Import to"
+                tooltip="Select the part to import the document" />
+      </feature>
+
+      <feature id="ExportPart" title="Export part" tooltip="Export structure of the Part to file" icon="icons/Exchange/export_part.png"
+               helpfile="exportFeature.html"
+               internal="1">
+        <export_file_selector id="file_path"
+                              type="save"
+                              title="Export file"
+                              path="">
+          <validator id="ExchangePlugin_ExportFormat"
+                     parameters="shaperpart:Part" />
+        </export_file_selector>
+        <multi_selector id="selection_list"
+                        tooltip="Select features or results"
+                        shape_types="Vertices Edges Faces Solids Compsolids Objects">
+          <validator id="GeomValidators_GlobalSelection" />
+          <validator id="ExchangePlugin_InHistory" />
+        </multi_selector>
+      </feature>
+    </group>
+  </workbench>
+</plugin>

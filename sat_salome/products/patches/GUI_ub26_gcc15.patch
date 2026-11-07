@@ -1,0 +1,13 @@
+diff --git a/src/LightApp/LightApp_ExtInfoDlg.cxx b/src/LightApp/LightApp_ExtInfoDlg.cxx
+index 844ff4704..6db48a0ca 100644
+--- a/src/LightApp/LightApp_ExtInfoDlg.cxx
++++ b/src/LightApp/LightApp_ExtInfoDlg.cxx
+@@ -295,7 +295,7 @@ QByteArray LightApp_ExtInfoDlg::renderExtTreeGraph(const GraphWrapper& graph) co
+ 
+   MESSAGE("Render dependency tree...\n");
+   char* buffer = nullptr;
+-  unsigned int bufferLength = 0;
++  long unsigned int bufferLength = 0;
+   res = gvRenderData(gvc, extTreeGraph, "svg", &buffer, &bufferLength);
+   if (res)
+   {

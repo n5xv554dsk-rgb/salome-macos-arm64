@@ -1,0 +1,28 @@
+<source>
+  <multi_selector id="base_objects"
+                  label="Segments and wires:"
+                  tooltip="Select edges or wires."
+                  shape_types="edges wires"
+                  concealment="false">
+    <validator id="PartSet_DifferentObjects"/>
+    <validator id="BuildPlugin_ValidatorFillingSelection"/>
+  </multi_selector>
+  <optionalbox id="advanced_options" title="Advanced options">
+    <switch id="orientation" label="Orientation">
+      <case id="auto_correct" title="Auto-correct edges orientation"/>
+      <case id="curve_info" title="Use curve information"/>
+      <case id="edge_orient" title="Use edges orientation"/>
+    </switch>
+    <integervalue id="min_degree" label="Min deg" min="1" default="2">
+      <validator id="GeomValidators_LessOrEqual" parameters="max_degree"/>
+    </integervalue>
+    <integervalue id="max_degree" label="Max deg" min="1" default="5">
+      <validator id="GeomValidators_GreaterOrEqual" parameters="min_degree"/>
+    </integervalue>
+    <integervalue id="nb_iter" label="Nb iter" min="0" default="0"/>
+    <doublevalue id="tol_2d" label="Tol 2D" min="1.e-5" default="0.0001" step="0.0001"/>
+    <doublevalue id="tol_3d" label="Tol 3D" min="1.e-5" default="0.0001" step="0.0001"/>
+    <boolvalue id="approximation" label="Approximation"/>
+  </optionalbox>
+  <validator id="GeomValidators_MinObjectsSelected" parameters="base_objects,2"/>
+</source>

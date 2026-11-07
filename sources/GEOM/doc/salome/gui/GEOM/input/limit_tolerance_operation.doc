@@ -1,0 +1,41 @@
+/*!
+
+\page limit_tolerance_operation_page Limit Tolerance
+
+\n To perform a <b>Limit Tolerance</b> operation in the <b>Main
+   Menu</b> select <b>Repair - > Limit Tolerance</b>.
+
+\image html limit_tolerance_dlg.png
+
+\n <b>Arguments:</b> Name + 1 shape + 1 value (new tolerance) + 1 boolean value (exact check).
+
+\n It is possible on all kind of shapes.
+
+\n The \b Result will be a \b GEOM_Object.
+
+\n This functionality tries to set a new value of tolerance for the
+   given shape. However, the final tolerance value also depends on the
+   initial shape topology (takes into consideration the existing gaps) to obtain
+   a valid resulting shape.
+   If <b>Exact check of edge tolerances</b> is checked, exact calculation of gaps
+   between curves of edges and surfaces of faces will be performed.
+   It takes more time, but gives better results.
+   Please note, that this gap value will limit the tolerance below, but not above.
+
+\n Example of usage:
+<ol>
+<li>Partition objects obj1 and obj2.</li>
+<li>Partition fails.</li>
+<li>Perform Limit Tolerance on objects obj1 and obj2.</li>
+<li>Try to partition them again.</li>
+</ol>
+See also \ref tui_limit_tolerance "TUI example".
+
+\n <b>TUI Command:</b> <em>geompy.LimitTolerance(Shape, Tolerance, isExact),</em>
+ where \em Shape is a shape with presumably incorrect tolerance, \em
+ Tolerance is the required tolerance value and \em isExact is a boolean flag to enable exact edge tolerance calculation.
+
+Our <b>TUI Scripts</b> provide you with useful examples of
+\ref tui_limit_tolerance "Repairing Operations".
+
+*/

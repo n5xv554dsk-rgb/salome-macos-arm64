@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> Choose command to add </h1>
+    <form action="http://localhost:5000/resultat" method="post">
+         <label>Nom</label> : <input type="text" name="nom" />
+ 	 <label>Prénom</label> : <input type="text" name="prenom" />
+	<input type="submit" value="Envoyer" />
+    </form>
+
+   <form action="/forward/" method="post">
+      <button name="forwardBtn" type="submit">Forward</button>
+   </form>
+
+   <h2>{{message}}</h2>
+
+{% endblock %}
+

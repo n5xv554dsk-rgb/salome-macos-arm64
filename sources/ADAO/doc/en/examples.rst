@@ -1,0 +1,97 @@
+..
+   Copyright (C) 2008-2026 EDF R&D
+
+   This file is part of SALOME ADAO module.
+
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with this library; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+   See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+
+   Author: Jean-Philippe Argaud, jean-philippe.argaud@edf.fr, EDF R&D
+
+.. _section_docu_examples:
+
+================================================================================
+**[DocU]** Examples of ADAO use
+================================================================================
+
+To make reading or searching easier, this section gathers in a synthetic way
+the direct pointers, to the appropriate sections, of simple examples of use of
+the module (mainly but not only in TUI).
+
+These examples are available in the tutorials, in the detailed documentations
+of algorithms or applied problems, and in the advanced uses. They are listed
+here by category and alphabetical order.
+
+General usage guidelines
+------------------------
+
+The examples in this subsection are defined in terms of uses or applications
+(rather than in terms of methods or algorithms, as in the following
+subsections). Their numbers are intentionally kept small to maximize their
+usefulness. We strongly recommend that occasional users start with these
+examples or return to them when analyzing and solving a realistic problem.
+
+#. :ref:`Calibration of a parametric simulation model using "ParameterCalibrationTask"<section_ref_algorithm_ParameterCalibrationTask_examples>`
+#. :ref:`Verifying the correct functioning of a simulation model using "FunctionTest"<section_ref_algorithm_FunctionTest_examples>`
+
+Tutorials
+---------
+
+#. :ref:`section_tutorials_in_salome`
+#. :ref:`section_tutorials_in_python`
+
+Calculation algorithms uses
+---------------------------
+
+#. :ref:`Examples with the "3DVAR" algorithm<section_ref_algorithm_3DVAR_examples>`
+#. :ref:`Examples with the "Blue" algorithm<section_ref_algorithm_Blue_examples>`
+#. :ref:`Examples with the "DerivativeFreeOptimization" algorithm<section_ref_algorithm_DerivativeFreeOptimization_examples>`
+#. :ref:`Examples with the "ExtendedBlue" algorithm<section_ref_algorithm_ExtendedBlue_examples>`
+#. :ref:`Examples with the "KalmanFilter" algorithm<section_ref_algorithm_KalmanFilter_examples>`
+#. :ref:`Examples with the "NonLinearLeastSquares" algorithm<section_ref_algorithm_NonLinearLeastSquares_examples>`
+#. :ref:`Examples with the "ParticleSwarmOptimization" algorithm<section_ref_algorithm_ParticleSwarmOptimization_examples>`
+
+Checking algorithms uses
+------------------------
+
+#. :ref:`Examples with the "AdjointTest" check<section_ref_algorithm_AdjointTest_examples>`
+#. :ref:`Examples with the "ControledFunctionTest"<section_ref_algorithm_ControledFunctionTest_examples>`
+#. :ref:`Examples with the "FunctionTest" check<section_ref_algorithm_FunctionTest_examples>`
+#. :ref:`Examples with the "ObservationSimulationComparisonTest" check<section_ref_algorithm_ObservationSimulationComparisonTest_examples>`
+#. :ref:`Examples with the "ParallelFunctionTest" check<section_ref_algorithm_ParallelFunctionTest_examples>`
+#. :ref:`Examples with the "ReducedModelingTest" check<section_ref_algorithm_ReducedModelingTest_examples>`
+
+Dedicated tasks or study oriented cases uses
+--------------------------------------------
+
+#. :ref:`Examples with the "InterpolationByReducedModelTask" study<section_ref_algorithm_InterpolationByReducedModelTask_examples>`
+#. :ref:`Examples with the "MeasurementsOptimalPositioningTask" study<section_ref_algorithm_MeasurementsOptimalPositioningTask_examples>`
+#. :ref:`Examples with the "ParameterCalibrationTask" study<section_ref_algorithm_ParameterCalibrationTask_examples>`
+
+Comprehensive studies and use case examples
+-------------------------------------------
+
+#. :ref:`section_usecase_3DVAR4_L63a`
+#. :ref:`section_usecase_MOP_Chaturantabut10`
+
+Advanced uses
+-------------
+
+#. :ref:`subsection_tui_advanced_ex11`
+#. :ref:`subsection_tui_advanced_ex12`
+#. :ref:`section_advanced_convert_JDC`
+#. :ref:`section_advanced_YACS_tui`
+#. :ref:`section_advanced_R`

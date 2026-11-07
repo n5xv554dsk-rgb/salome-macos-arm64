@@ -1,0 +1,128 @@
+default :
+{
+    name : "gdal"
+    build_source : "script"
+    compil_script :  $name + $VARS.scriptExtension
+    get_source : "archive"
+    environ :
+    {
+       env_script : $name + ".py"
+    }
+    depend : ['Python', 'lapack', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf']
+    build_depend : ["cmake", "swig"]
+    opt_depend : ['openmpi']
+    patches : []
+    source_dir : $APPLICATION.workdir + $VARS.sep + 'SOURCES' + $VARS.sep + $name
+    build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
+    install_dir : 'base'
+    properties :
+    {
+      single_install_dir : "no"
+      incremental : "yes"
+    }
+}
+
+default_win :
+{
+    properties :
+    {
+      single_install_dir : "yes"
+    }
+    depend : ['Python', 'lapack', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'pthreads']
+    opt_depend : []
+}
+
+version_3_8_5:
+{
+    compil_script :  'gdal-3.8.5' + $VARS.scriptExtension
+    depend : ['Python', 'lapack', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf', 'proj']
+}
+
+version_3_7_1:
+{
+    compil_script :  'gdal-3.7.1' + $VARS.scriptExtension
+    depend : ['Python', 'lapack', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf', 'proj']
+}
+
+version_3_7_1_CO7:
+{
+    compil_script :  'gdal-3.7.1' + $VARS.scriptExtension
+    depend : ['Python', 'openblas', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf', 'proj']
+}
+
+version_3_7_1_CO8:
+{
+    compil_script :  'gdal-3.7.1' + $VARS.scriptExtension
+    depend : ['Python', 'openblas', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf', 'proj']
+}
+
+version_3_7_1_CO9:
+{
+    compil_script :  'gdal-3.7.1' + $VARS.scriptExtension
+    depend : ['Python', 'openblas', 'hdf5', 'tbb', 'nlopt', 'libxml2', 'eigen', 'netcdf', 'proj']
+}
+
+version_2_4_4:
+{
+    compil_script :  'gdal-2.4.4' + $VARS.scriptExtension
+}
+
+version_2_4_0:
+{
+    compil_script :  'gdal-2.4.0' + $VARS.scriptExtension
+    patches : ["gdal.0003-ignore_use2to3.patch", "gdal.0001-r2000.patch"]
+}
+
+version_2_4_0_FD34:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch"]
+}
+
+version_2_4_0_FD32:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch"]
+}
+
+version_2_4_0_CO9:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch",
+               "gdal.0002-GNUmakefile-tooLongLine.patch",
+               "gdal.0003-ignore_use2to3.patch"
+              ]
+}
+
+version_2_4_0_CO8:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch",
+               "gdal.0002-GNUmakefile-tooLongLine.patch",
+               "gdal.0003-ignore_use2to3.patch"
+              ]
+}
+
+version_2_4_0_CO8_native:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch",
+               "gdal.0002-GNUmakefile-tooLongLine.patch"
+              ]
+}
+
+version_2_4_0_DB10:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch",
+               "gdal.0002-GNUmakefile-tooLongLine.patch"
+              ]
+}
+
+version_2_4_0_UB20_04:
+{
+    compil_script :  'gdal-2.4.0.sh'
+    patches : ["gdal.0001-r2000.patch",
+               "gdal.0002-GNUmakefile-tooLongLine.patch"
+              ]
+}
