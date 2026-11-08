@@ -1,6 +1,14 @@
-"""SALOME mesh -> peridynamic nodes (one PD node per 3D cell: centroid + cell volume)."""
+"""SALOME mesh -> peridynamic nodes (cell-centered or vertex-based, MED & UNV)."""
 
 import numpy as np
+
+from .multiscale import (  # noqa: F401
+    DeltaDistributionReport,
+    build_delta_report,
+    read_med_mesh,
+    read_salome_mesh,
+    read_unv_mesh,
+)
 
 
 def read_med_cells(med_file, mesh_name):
