@@ -1,0 +1,36 @@
+==============================================================================
+STAGE 1: GEOM — plate geometry
+==============================================================================
+  plate 100 x 40 x 2.5 mm, volume 1.0000e-05 m^3
+==============================================================================
+STAGE 2: SMESH — structured hexahedral mesh
+==============================================================================
+  80000 hexahedra (200 x 80 x 5), 97686 mesh nodes, 0.1 s
+  PD nodes = cell centres: 80000, total volume 1.0000e-05 m^3 (cell 1.250e-10)
+==============================================================================
+STAGE 3: dynamic OSB peridynamics (libpdcore)
+==============================================================================
+  E = 6.5e+10 Pa, nu = 0.25, rho = 2235.0, G0 = 204.0 J/m^2 -> s0 = 1.1435e-03
+  horizon R = 4 dx = 2 mm, 14144564 bonds (max 212/node), precrack cut 137072 bonds, build 0.07 s
+  traction 12 MPa on 1000 top + 1000 bottom nodes
+  dt = 1e-08 s (local CFL dx/c_p = 8.46e-08 s), 5000 steps, 10 threads
+  t =  10.0 us  broken bonds   143496  crack tip x =  51.8 mm  max|u| = 1.565e-05
+  t =  20.0 us  broken bonds   184036  crack tip x =  64.8 mm  max|u| = 6.095e-05
+  t =  30.0 us  broken bonds   262600  crack tip x =  76.8 mm  max|u| = 1.540e-04
+  t =  40.0 us  broken bonds   378020  crack tip x =  91.3 mm  max|u| = 2.607e-04
+  t =  50.0 us  broken bonds   435124  crack tip x =  99.8 mm  max|u| = 3.966e-04
+  time marching 26.4 s (5.29 ms/step)
+  upper branch: from x = 70.8 mm, reaches |y| = 15.2 mm
+  lower branch: from x = 70.7 mm, reaches |y| = 15.3 mm
+  symmetry check (sorted phi, y>0 vs y<0): max diff 0.00e+00
+==============================================================================
+STAGE 4: PARAVIS — renders
+==============================================================================
+  pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/damage_3d_deformed.png
+  pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/damage_midplane_t12.5us.png
+  pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/damage_midplane_t25.0us.png
+  pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/damage_midplane_t37.5us.png
+  pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/damage_midplane_t50.0us.png
+==============================================================================
+DONE. Open pd_dynamic/results/branching_3d_elastic_dx0.5mm_h2.5mm_m4/solution.med in SALOME (PARAVIS / ParaView) to animate.
+==============================================================================

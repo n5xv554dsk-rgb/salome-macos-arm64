@@ -8,3 +8,8 @@ prereq/
 sources/MESHBOOLEANPLUGIN/irmb/build/
 sources/MEDREADER/plugin/Test/Data/L15_R2_Temp.med
 sources/SAMPLES/MedFiles/ir.resu.med
+
+# pd_dynamic build and results
+pd_dynamic/build/
+pd_dynamic/results/**/*.med
+__pycache__/
