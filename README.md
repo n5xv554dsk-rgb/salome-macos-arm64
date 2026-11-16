@@ -97,6 +97,43 @@ All benchmarks run end-to-end through the native macOS `arm64` SALOME pipeline:
 
 ---
 
+### Benchmark 4: Multiscale Variable-Horizon Peridynamics ($\delta_i = 3\Delta x_i$) — Spurious Wave Reflection & Ghost Force Animations (1D / 2D / 3D)
+
+```bash
+# Run automated verification suite (1D / 2D / 3D patch tests, Newton's 3rd law, wave crossing, SALOME MED/UNV):
+./salome python tests/test_multiscale_pd.py
+
+# Generate slow-motion single-panel animations (5 fps) & single-page summary table:
+./salome python examples/animate_single_panel_slow.py
+
+# Generate multi-panel 1D, 2D, and 3D animations:
+./salome python examples/animate_spurious_wave_and_ghost_force.py
+```
+
+![Variable-Horizon Peridynamics Summary Table](examples/single_page_summary_table.png)
+
+#### Slow-Motion Single-Panel 3D Animations (`5 fps`)
+
+| 3D Uncorrected Variable-Horizon ($g_{ij}=1$): Spurious Reflected Wave | 3D Multiscale Ghost-Free Corrected (Ours): Clean Wave Transmission |
+| :---: | :---: |
+| ![3D Uncorrected Wave](examples/single_3d_uncorrected_spurious_wave.gif) | ![3D Ghost-Free Wave](examples/single_3d_ghost_free_wave.gif) |
+
+| 3D Ghost-Force Wave Radiation Under Uniform Strain | 1D Wave Crossing & Spurious Reflection Comparison |
+| :---: | :---: |
+| ![3D Ghost-Force Radiation](examples/single_3d_ghost_force_radiation.gif) | ![1D Wave Comparison](examples/single_1d_spurious_wave_comparison.gif) |
+
+#### Multi-Panel 3D, 2D & 1D Dashboard Animations
+
+| 3D Wave Crossing Dashboard | 3D Ghost-Force Wall & SALOME Graded Mesh |
+| :---: | :---: |
+| ![3D Wave Dashboard](examples/spurious_wave_reflection_3d.gif) | ![3D Ghost-Force Dashboard](examples/ghost_force_radiation_3d.gif) |
+
+| 2D Graded Plate Wave & Ghost Force | 1D Spurious Wave Reflection | 1D Ghost-Force Wave Radiation |
+| :---: | :---: | :---: |
+| ![2D Wave & Ghost Force](examples/spurious_wave_and_ghost_force_2d.gif) | ![1D Spurious Wave](examples/spurious_wave_reflection_1d.gif) | ![1D Ghost Force](examples/ghost_force_radiation_1d.gif) |
+
+---
+
 ## Launching SALOME Interactively
 
 ```bash
