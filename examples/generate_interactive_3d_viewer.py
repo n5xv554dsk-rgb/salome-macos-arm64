@@ -38,8 +38,11 @@ sys.path.insert(0, ROOT)
 
 from pdsalome.multiscale import MultiscaleBondPD  # noqa: E402
 from tests.test_multiscale_pd import (  # noqa: E402
+    make_1d_fgm_bar,
     make_1d_graded_bar,
+    make_2d_fgm_plate,
     make_2d_graded_plate,
+    make_3d_fgm_block,
     make_3d_graded_block,
 )
 
@@ -75,29 +78,27 @@ def _apply_3d_wave_and_ghost_correction(pd: MultiscaleBondPD):
 
 def _compute_left_right_forces(pd_uncorr: MultiscaleBondPD, pd_corr: MultiscaleBondPD, u_unif: np.ndarray):
     """Compute Left-pull vs Right-pull axial force density on each node under uniform strain."""
-    n = pd_corr.n_nodes
-    fl_u, fr_u = np.zeros(n), np.zeros(n)
-    fl_c, fr_c = np.zeros(n), np.zeros(n)
-    vols = pd_corr.volumes
-    coords = pd_corr.coords
+    def _one_solver_lr(pd_obj: MultiscaleBondPD):
+        n = pd_obj.n_nodes
+        fl, fr = np.zeros(n), np.zeros(n)
+        vols = pd_obj.volumes
+        coords = pd_obj.coords
+        du = u_unif[pd_obj.bond_j] - u_unif[pd_obj.bond_i]
+        s = np.sum(pd_obj.unit_xi * du, axis=1) / pd_obj.xi_len
+        fx = pd_obj.g_ij * pd_obj.c_ij * s * pd_obj.unit_xi[:, 0]
+        for b_idx in range(pd_obj.n_bonds):
+            i = int(pd_obj.bond_i[b_idx])
+            j = int(pd_obj.bond_j[b_idx])
+            xi_x = coords[j, 0] - coords[i, 0]
+            fi, fj = fx[b_idx] * vols[j], -fx[b_idx] * vols[i]
+            if xi_x >= 0:
+                fr[i] += fi; fl[j] += fj
+            else:
+                fl[i] += fi; fr[j] += fj
+        return fl, fr
 
-    du = u_unif[pd_corr.bond_j] - u_unif[pd_corr.bond_i]
-    s = np.sum(pd_corr.unit_xi * du, axis=1) / pd_corr.xi_len
-    fx_u = pd_uncorr.g_ij * pd_uncorr.c_ij * s * pd_corr.unit_xi[:, 0]
-    fx_c = pd_corr.g_ij * pd_corr.c_ij * s * pd_corr.unit_xi[:, 0]
-
-    for b_idx in range(pd_corr.n_bonds):
-        i = int(pd_corr.bond_i[b_idx])
-        j = int(pd_corr.bond_j[b_idx])
-        xi_x = coords[j, 0] - coords[i, 0]
-        fiu, fju = fx_u[b_idx] * vols[j], -fx_u[b_idx] * vols[i]
-        fic, fjc = fx_c[b_idx] * vols[j], -fx_c[b_idx] * vols[i]
-        if xi_x >= 0:
-            fr_u[i] += fiu; fl_u[j] += fju
-            fr_c[i] += fic; fl_c[j] += fjc
-        else:
-            fl_u[i] += fiu; fr_u[j] += fju
-            fl_c[i] += fic; fr_c[j] += fjc
+    fl_u, fr_u = _one_solver_lr(pd_uncorr)
+    fl_c, fr_c = _one_solver_lr(pd_corr)
     return fl_u, fr_u, fl_c, fr_c
 
 
@@ -203,6 +204,66 @@ def build_complete_dataset():
     out1_w_uncorr = pd1_uncorr.run_dynamic(u0_1w, v0_1w, dt=dt1, n_steps=n_steps1, record_every=rec1)
     out1_w_corr = pd1_corr.run_dynamic(u0_1w, v0_1w, dt=dt1, n_steps=n_steps1, record_every=rec1)
 
+    # =========================================================================
+    # 3. FGM Graded Dual-Scale Boundary Datasets (3D, 2D, and 1D)
+    # =========================================================================
+    coords_3fgm, vols_3fgm, bounds_3fgm = make_3d_fgm_block(dx_fine=0.025, dx_coarse=0.05, Lx=1.0, Ly=0.15, Lz=0.15, L_fgm=0.30)
+    x3f, y3f, z3f = coords_3fgm[:, 0], coords_3fgm[:, 1], coords_3fgm[:, 2]
+    pd3_fgm_uncorr = MultiscaleBondPD(coords_3fgm, vols_3fgm, E=E, rho=rho, m=3.0, dim=3, mode="symmetric", stiffness_correction=False, ghost_force_correction=False, domain_bounds=bounds_3fgm)
+    pd3_fgm = MultiscaleBondPD(coords_3fgm, vols_3fgm, E=E, rho=rho, m=3.0, dim=3, mode="fgm", stiffness_correction=True, ghost_force_correction=False, domain_bounds=bounds_3fgm)
+    _apply_3d_wave_and_ghost_correction(pd3_fgm)
+
+    u0_3fw = np.zeros((len(coords_3fgm), 3), dtype=np.float64)
+    v0_3fw = np.zeros((len(coords_3fgm), 3), dtype=np.float64)
+    u0_3fw[:, 0] = amp * np.exp(-((x3f - x0_3) / w3) ** 2)
+    v0_3fw[:, 0] = -c_p3 * amp * (-2.0 * (x3f - x0_3) / (w3 ** 2)) * np.exp(-((x3f - x0_3) / w3) ** 2)
+    fixed_yz3f = np.sort(np.concatenate([np.arange(len(coords_3fgm)) * 3 + 1, np.arange(len(coords_3fgm)) * 3 + 2]))
+    out3_fgm_uncorr = pd3_fgm_uncorr.run_dynamic(u0_3fw, v0_3fw, dt=dt3, n_steps=n_steps3, fixed_dofs=fixed_yz3f, record_every=rec3)
+    out3_fgm_corr = pd3_fgm.run_dynamic(u0_3fw, v0_3fw, dt=dt3, n_steps=n_steps3, fixed_dofs=fixed_yz3f, record_every=rec3)
+
+    u0_3fg = np.zeros((len(coords_3fgm), 3), dtype=np.float64)
+    u0_3fg[:, 0] = eps0 * x3f
+    _, fg3f_uncorr = pd3_fgm_uncorr.compute_forces(u0_3fg)
+    _, fg3f_corr = pd3_fgm.compute_forces(u0_3fg)
+    fl3f_u, fr3f_u, fl3f_c, fr3f_c = _compute_left_right_forces(pd3_fgm_uncorr, pd3_fgm, u0_3fg)
+    x_int3f = (x3f >= pd3_fgm.delta) & (x3f <= 1.0 - pd3_fgm.delta)
+    fixed_3fg = np.unique(np.concatenate([3 * np.where(~x_int3f)[0], fixed_yz3f]))
+    out3_fgm_gu = pd3_fgm_uncorr.run_dynamic(u0_3fg, np.zeros_like(u0_3fg), dt=dt3, n_steps=n_steps3, fixed_dofs=fixed_3fg, record_every=rec3)
+    out3_fgm_gc = pd3_fgm.run_dynamic(u0_3fg, np.zeros_like(u0_3fg), dt=dt3, n_steps=n_steps3, fixed_dofs=fixed_3fg, record_every=rec3)
+
+    lat3f_i, lat3f_j = [], []
+    for b_idx in range(pd3_fgm.n_bonds):
+        i, j = int(pd3_fgm.bond_i[b_idx]), int(pd3_fgm.bond_j[b_idx])
+        length = float(pd3_fgm.xi_len[b_idx])
+        dx_max = max(float(pd3_fgm.dx[i]), float(pd3_fgm.dx[j]))
+        if length <= 1.15 * dx_max and (
+            (abs(y3f[i] - y3f[j]) < 1e-3 and abs(z3f[i] - z3f[j]) < 1e-3)
+            or (abs(x3f[i] - x3f[j]) < 1e-3 and abs(z3f[i] - z3f[j]) < 1e-3)
+            or (abs(x3f[i] - x3f[j]) < 1e-3 and abs(y3f[i] - y3f[j]) < 1e-3)
+        ):
+            lat3f_i.append(i); lat3f_j.append(j)
+    os3f_mask = ~pd3_fgm.bond_is_mutual
+    tz3f_mid = np.where((x3f > 0.44) & (x3f < 0.56) & (y3f > 0.04) & (y3f < 0.11) & (z3f > 0.04) & (z3f < 0.11))[0]
+
+    # 2D FGM Plate
+    coords_2fgm, vols_2fgm, bounds_2fgm = make_2d_fgm_plate(dx_fine=0.025, dx_coarse=0.05, Lx=1.0, Ly=0.30, L_fgm=0.30)
+    pd2_fgm_uncorr = MultiscaleBondPD(coords_2fgm, vols_2fgm, E=E, rho=rho, m=3.0, dim=2, mode="symmetric", stiffness_correction=False, ghost_force_correction=False, domain_bounds=bounds_2fgm)
+    pd2_fgm = MultiscaleBondPD(coords_2fgm, vols_2fgm, E=E, rho=rho, m=3.0, dim=2, mode="fgm", stiffness_correction=True, ghost_force_correction=True, domain_bounds=bounds_2fgm)
+    u2f_unif = np.column_stack([eps0 * coords_2fgm[:, 0], np.zeros(len(coords_2fgm))])
+    _, fg2f_uncorr = pd2_fgm_uncorr.compute_forces(u2f_unif)
+    _, fg2f_corr = pd2_fgm.compute_forces(u2f_unif)
+    fl2f_u, fr2f_u, fl2f_c, fr2f_c = _compute_left_right_forces(pd2_fgm_uncorr, pd2_fgm, u2f_unif)
+    os2f_mask = ~pd2_fgm.bond_is_mutual
+    tz2f_mid = np.where((coords_2fgm[:, 0] > 0.45) & (coords_2fgm[:, 0] < 0.55) & (np.abs(coords_2fgm[:, 1] - 0.15) < 0.04))[0]
+
+    # 1D FGM Bar
+    coords_1fgm, vols_1fgm, bounds_1fgm = make_1d_fgm_bar(dx_fine=0.005, dx_coarse=0.01, L=1.0, L_fgm=0.28)
+    x1f = coords_1fgm[:, 0]
+    u0_1fw = amp * np.exp(-((x1f - 0.24) / 0.055) ** 2)[:, None]
+    v0_1fw = (-c0 * amp * (-2.0 * (x1f - 0.24) / (0.055 ** 2)) * np.exp(-((x1f - 0.24) / 0.055) ** 2))[:, None]
+    pd1_fgm = MultiscaleBondPD(coords_1fgm, vols_1fgm, E=E, rho=rho, m=3.0, dim=1, mode="fgm", stiffness_correction=True, ghost_force_correction=True, domain_bounds=bounds_1fgm)
+    out1_fgm = pd1_fgm.run_dynamic(u0_1fw, v0_1fw, dt=dt1, n_steps=n_steps1, record_every=rec1)
+
     return {
         "block3d": {
             "dims": [1.0, 0.15, 0.15],
@@ -278,6 +339,92 @@ def build_complete_dataset():
             "sym_bonds_g": np.round(pd1_corr.g_ij, 4).tolist(),
             "wave_uncorr": np.round(out1_w_uncorr["history_u"][:, :, 0] / amp, 4).tolist(),
             "wave_corr": np.round(out1_w_corr["history_u"][:, :, 0] / amp, 4).tolist(),
+        },
+        "fgm3d": {
+            "dims": [1.0, 0.15, 0.15],
+            "is_fgm": True,
+            "xa": 0.35,
+            "xb": 0.65,
+            "n_nodes": int(pd3_fgm.n_nodes),
+            "default_fine": int(tz3f_mid[0]) if len(tz3f_mid) else 0,
+            "default_coarse": int(tz3f_mid[-1]) if len(tz3f_mid) else 0,
+            "times_ms": np.round(out3_fgm_corr["history_t"] * 1e3, 2).tolist(),
+            "x": np.round(x3f, 5).tolist(),
+            "y": np.round(y3f, 5).tolist(),
+            "z": np.round(z3f, 5).tolist(),
+            "dx_mm": np.round(pd3_fgm.dx * 1e3, 2).tolist(),
+            "delta_mm": np.round(pd3_fgm.delta * 1e3, 2).tolist(),
+            "fgm_w": np.round(pd3_fgm.fgm_weight_node, 3).tolist(),
+            "fg_uncorr": np.round(fg3f_uncorr[:, 0], 3).tolist(),
+            "fg_corr": np.round(fg3f_corr[:, 0], 14).tolist(),
+            "fl_uncorr": np.round(fl3f_u, 2).tolist(),
+            "fr_uncorr": np.round(fr3f_u, 2).tolist(),
+            "fl_corr": np.round(fl3f_c, 2).tolist(),
+            "fr_corr": np.round(fr3f_c, 2).tolist(),
+            "lattice_i": lat3f_i,
+            "lattice_j": lat3f_j,
+            "sym_bonds": {
+                "i": pd3_fgm.bond_i.tolist(),
+                "j": pd3_fgm.bond_j.tolist(),
+                "len_mm": np.round(pd3_fgm.xi_len * 1e3, 2).tolist(),
+                "g_corr": np.round(pd3_fgm.g_ij, 3).tolist(),
+            },
+            "os_bonds": {
+                "i": pd3_fgm.bond_i[os3f_mask].tolist(),
+                "j": pd3_fgm.bond_j[os3f_mask].tolist(),
+                "len_mm": np.round(pd3_fgm.xi_len[os3f_mask] * 1e3, 2).tolist(),
+            },
+            "wave_uncorr": np.round(out3_fgm_uncorr["history_u"][:, :, 0] / amp, 4).tolist(),
+            "wave_corr": np.round(out3_fgm_corr["history_u"][:, :, 0] / amp, 4).tolist(),
+            "ghost_uncorr_um": np.round((out3_fgm_gu["history_u"][:, :, 0] - u0_3fg[None, :, 0]) * 1e6, 3).tolist(),
+            "ghost_corr_um": np.round((out3_fgm_gc["history_u"][:, :, 0] - u0_3fg[None, :, 0]) * 1e6, 13).tolist(),
+        },
+        "fgm2d": {
+            "Lx": 1.0,
+            "Ly": 0.30,
+            "is_fgm": True,
+            "xa": 0.35,
+            "xb": 0.65,
+            "n_nodes": int(pd2_fgm.n_nodes),
+            "default_fine": int(tz2f_mid[0]) if len(tz2f_mid) else 0,
+            "default_coarse": int(tz2f_mid[-1]) if len(tz2f_mid) else 0,
+            "x": np.round(coords_2fgm[:, 0], 5).tolist(),
+            "y": np.round(coords_2fgm[:, 1], 5).tolist(),
+            "dx_mm": np.round(pd2_fgm.dx * 1e3, 2).tolist(),
+            "delta_mm": np.round(pd2_fgm.delta * 1e3, 2).tolist(),
+            "fgm_w": np.round(pd2_fgm.fgm_weight_node, 3).tolist(),
+            "fg_uncorr": np.round(fg2f_uncorr[:, 0], 4).tolist(),
+            "fg_corr": np.round(fg2f_corr[:, 0], 15).tolist(),
+            "f_left_uncorr": np.round(fl2f_u, 3).tolist(),
+            "f_right_uncorr": np.round(fr2f_u, 3).tolist(),
+            "f_left_corr": np.round(fl2f_c, 3).tolist(),
+            "f_right_corr": np.round(fr2f_c, 3).tolist(),
+            "sym_bonds": {
+                "i": pd2_fgm.bond_i.tolist(),
+                "j": pd2_fgm.bond_j.tolist(),
+                "len_mm": np.round(pd2_fgm.xi_len * 1e3, 2).tolist(),
+                "g_corr": np.round(pd2_fgm.g_ij, 4).tolist(),
+            },
+            "os_bonds": {
+                "i": pd2_fgm.bond_i[os2f_mask].tolist(),
+                "j": pd2_fgm.bond_j[os2f_mask].tolist(),
+                "len_mm": np.round(pd2_fgm.xi_len[os2f_mask] * 1e3, 2).tolist(),
+            },
+        },
+        "fgm1d": {
+            "is_fgm": True,
+            "xa": 0.36,
+            "xb": 0.64,
+            "n_nodes": int(pd1_fgm.n_nodes),
+            "x": np.round(x1f, 5).tolist(),
+            "dx_mm": np.round(pd1_fgm.dx * 1e3, 2).tolist(),
+            "delta_mm": np.round(pd1_fgm.delta * 1e3, 2).tolist(),
+            "times_ms": np.round(out1_fgm["history_t"] * 1e3, 2).tolist(),
+            "sym_bonds_i": pd1_fgm.bond_i.tolist(),
+            "sym_bonds_j": pd1_fgm.bond_j.tolist(),
+            "sym_bonds_g": np.round(pd1_fgm.g_ij, 4).tolist(),
+            "wave_uncorr": np.round(out1_w_uncorr["history_u"][:, :, 0] / amp, 4).tolist(),
+            "wave_corr": np.round(out1_fgm["history_u"][:, :, 0] / amp, 4).tolist(),
         },
     }
 
@@ -416,7 +563,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <div class="sidebar">
     <!-- 1. Phenomenon & Model Selector -->
     <div class="panel-card">
-      <h3>1. What Problem to Show in 3D</h3>
+      <h3>1. Boundary Geometry &amp; Problem</h3>
+      <select id="boundarySelect" style="width:100%;padding:7px 9px;border-radius:7px;border:2px solid #059669;background:#ecfdf5;font-weight:800;font-size:12.5px;color:#065f46;margin-bottom:7px;">
+        <option value="fgm">&#127775; FGM Graded Dual-Scale Boundary (x &isin; [0.35, 0.65] m)</option>
+        <option value="abrupt">&#9889; Abrupt Step Boundary (Sudden Jump at x = 0.50 m)</option>
+      </select>
       <select id="phenomSelect" style="width:100%;padding:7px 9px;border-radius:7px;border:1.5px solid #94a3b8;font-weight:700;font-size:12.5px;color:#1e3a8a;margin-bottom:8px;">
         <option value="wave">Problem A: 3D Wave Crossing &amp; Spurious Reflection</option>
         <option value="ghost_dyn">Problem B: Uniform Strain &rarr; Ghost Force Radiates 3D Waves!</option>
@@ -425,7 +576,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="mode-pill-group">
         <div class="mode-pill active-both" id="pillBoth">&#128064; Compare Both<br><small>Side-by-Side 3D</small></div>
         <div class="mode-pill" id="pillUncorr">&#10060; Uncorrected<br><small>Has Problem!</small></div>
-        <div class="mode-pill" id="pillCorr">&#9989; Ghost-Free<br><small>Solved (Ours)</small></div>
+        <div class="mode-pill" id="pillCorr">&#9989; FGM / Ghost-Free<br><small>Solved (Ours)</small></div>
       </div>
     </div>
 
@@ -527,52 +678,54 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 <script>
 const DATA = __SIM_DATA_JSON__;
-const B3 = DATA.block3d;
-const P2 = DATA.plate2d;
-const B1 = DATA.bar1d;
+let B3 = DATA.fgm3d;
+let P2 = DATA.fgm2d;
+let B1 = DATA.fgm1d;
 
-// Build adjacency lists for 3D block
-const sym3ByNode = Array.from({length: B3.n_nodes}, () => []);
-for (let b = 0; b < B3.sym_bonds.i.length; b++) {
-  const i = B3.sym_bonds.i[b], j = B3.sym_bonds.j[b];
-  sym3ByNode[i].push({ b, nbr: j, len: B3.sym_bonds.len_mm[b], g: B3.sym_bonds.g_corr[b] });
-  sym3ByNode[j].push({ b, nbr: i, len: B3.sym_bonds.len_mm[b], g: B3.sym_bonds.g_corr[b] });
-}
-const os3ByNode = Array.from({length: B3.n_nodes}, () => []);
-for (let b = 0; b < B3.os_bonds.i.length; b++) {
-  const i = B3.os_bonds.i[b], j = B3.os_bonds.j[b];
-  os3ByNode[i].push({ b, nbr: j, len: B3.os_bonds.len_mm[b] });
-  os3ByNode[j].push({ b, nbr: i, len: B3.os_bonds.len_mm[b] });
-}
+let sym3ByNode = [], os3ByNode = [], sym2ByNode = [], os2ByNode = [], sym1ByNode = [];
 
-// Build adjacency lists for 2D plate
-const sym2ByNode = Array.from({length: P2.n_nodes}, () => []);
-for (let b = 0; b < P2.sym_bonds.i.length; b++) {
-  const i = P2.sym_bonds.i[b], j = P2.sym_bonds.j[b];
-  sym2ByNode[i].push({ b, nbr: j, len: P2.sym_bonds.len_mm[b], g: P2.sym_bonds.g_corr[b] });
-  sym2ByNode[j].push({ b, nbr: i, len: P2.sym_bonds.len_mm[b], g: P2.sym_bonds.g_corr[b] });
-}
-const os2ByNode = Array.from({length: P2.n_nodes}, () => []);
-for (let b = 0; b < P2.os_bonds.i.length; b++) {
-  const i = P2.os_bonds.i[b], j = P2.os_bonds.j[b];
-  os2ByNode[i].push({ b, nbr: j, len: P2.os_bonds.len_mm[b] });
-  os2ByNode[j].push({ b, nbr: i, len: P2.os_bonds.len_mm[b] });
-}
+function rebuildAdjacency() {
+  sym3ByNode = Array.from({length: B3.n_nodes}, () => []);
+  for (let b = 0; b < B3.sym_bonds.i.length; b++) {
+    const i = B3.sym_bonds.i[b], j = B3.sym_bonds.j[b];
+    sym3ByNode[i].push({ b, nbr: j, len: B3.sym_bonds.len_mm[b], g: B3.sym_bonds.g_corr[b] });
+    sym3ByNode[j].push({ b, nbr: i, len: B3.sym_bonds.len_mm[b], g: B3.sym_bonds.g_corr[b] });
+  }
+  os3ByNode = Array.from({length: B3.n_nodes}, () => []);
+  for (let b = 0; b < B3.os_bonds.i.length; b++) {
+    const i = B3.os_bonds.i[b], j = B3.os_bonds.j[b];
+    os3ByNode[i].push({ b, nbr: j, len: B3.os_bonds.len_mm[b] });
+    os3ByNode[j].push({ b, nbr: i, len: B3.os_bonds.len_mm[b] });
+  }
 
-// Build adjacency lists for 1D bar
-const sym1ByNode = Array.from({length: B1.n_nodes}, () => []);
-for (let b = 0; b < B1.sym_bonds_i.length; b++) {
-  const i = B1.sym_bonds_i[b], j = B1.sym_bonds_j[b];
-  sym1ByNode[i].push({ b, nbr: j, g: B1.sym_bonds_g[b] });
-  sym1ByNode[j].push({ b, nbr: i, g: B1.sym_bonds_g[b] });
+  sym2ByNode = Array.from({length: P2.n_nodes}, () => []);
+  for (let b = 0; b < P2.sym_bonds.i.length; b++) {
+    const i = P2.sym_bonds.i[b], j = P2.sym_bonds.j[b];
+    sym2ByNode[i].push({ b, nbr: j, len: P2.sym_bonds.len_mm[b], g: P2.sym_bonds.g_corr[b] });
+    sym2ByNode[j].push({ b, nbr: i, len: P2.sym_bonds.len_mm[b], g: B3.sym_bonds ? P2.sym_bonds.g_corr[b] : 1.0 });
+  }
+  os2ByNode = Array.from({length: P2.n_nodes}, () => []);
+  for (let b = 0; b < P2.os_bonds.i.length; b++) {
+    const i = P2.os_bonds.i[b], j = P2.os_bonds.j[b];
+    os2ByNode[i].push({ b, nbr: j, len: P2.os_bonds.len_mm[b] });
+    os2ByNode[j].push({ b, nbr: i, len: P2.os_bonds.len_mm[b] });
+  }
+
+  sym1ByNode = Array.from({length: B1.n_nodes}, () => []);
+  for (let b = 0; b < B1.sym_bonds_i.length; b++) {
+    const i = B1.sym_bonds_i[b], j = B1.sym_bonds_j[b];
+    sym1ByNode[i].push({ b, nbr: j, g: B1.sym_bonds_g[b] });
+    sym1ByNode[j].push({ b, nbr: i, g: B1.sym_bonds_g[b] });
+  }
 }
+rebuildAdjacency();
 
 // Application State
 let activeTab = 1;        // 1 = 3D View, 2 = 2D Microscope, 3 = 1D Wave & Springs
 let compareMode = 'both'; // 'both' (side-by-side 3D), 'uncorr' (bad only), 'corr' (good only)
 let activeNode3D = B3.default_fine;
 let activeNode2D = P2.default_fine;
-let activeNode1D = 99;
+let activeNode1D = Math.floor(B1.n_nodes * 0.55);
 
 // 3D Camera State
 let camYaw = -1.12;
@@ -715,21 +868,24 @@ function renderOne3DBlock(W, H, centerX, centerY, isCorrected, titleText, titleC
     ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
   }
 
-  // Translucent 3D Interface Wall at x = 0.50 m
+  // Translucent 3D Interface Wall (or FGM Zone Walls at xa = 0.35 m and xb = 0.65 m)
   const hWall = Lz + 0.04;
-  const ic = [
-    project3DPoint(0.5, 0, -0.02, centerX, centerY, W, H),
-    project3DPoint(0.5, Ly, -0.02, centerX, centerY, W, H),
-    project3DPoint(0.5, Ly, hWall, centerX, centerY, W, H),
-    project3DPoint(0.5, 0, hWall, centerX, centerY, W, H)
-  ];
-  ctx.fillStyle = 'rgba(37, 99, 235, 0.12)';
-  ctx.strokeStyle = '#1d4ed8';
-  ctx.lineWidth = 1.8;
-  ctx.beginPath();
-  ctx.moveTo(ic[0][0], ic[0][1]); ctx.lineTo(ic[1][0], ic[1][1]);
-  ctx.lineTo(ic[2][0], ic[2][1]); ctx.lineTo(ic[3][0], ic[3][1]);
-  ctx.closePath(); ctx.fill(); ctx.stroke();
+  const wallPlanes = (B3.is_fgm && isCorrected) ? [B3.xa, B3.xb] : [0.50];
+  for (const xPlane of wallPlanes) {
+    const ic = [
+      project3DPoint(xPlane, 0, -0.02, centerX, centerY, W, H),
+      project3DPoint(xPlane, Ly, -0.02, centerX, centerY, W, H),
+      project3DPoint(xPlane, Ly, hWall, centerX, centerY, W, H),
+      project3DPoint(xPlane, 0, hWall, centerX, centerY, W, H)
+    ];
+    ctx.fillStyle = (B3.is_fgm && isCorrected) ? 'rgba(5, 150, 105, 0.12)' : 'rgba(37, 99, 235, 0.12)';
+    ctx.strokeStyle = (B3.is_fgm && isCorrected) ? '#059669' : '#1d4ed8';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.moveTo(ic[0][0], ic[0][1]); ctx.lineTo(ic[1][0], ic[1][1]);
+    ctx.lineTo(ic[2][0], ic[2][1]); ctx.lineTo(ic[3][0], ic[3][1]);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
 
   // Compute deformed 3D node positions (physical horizontal compression + 3D wave crest lift!)
   const nodePts = new Array(B3.n_nodes);
@@ -936,16 +1092,25 @@ function drawTab2_2D(W, H) {
 
   const [xTzL] = worldToScreen2D(0.35, 0, W, H);
   const [xTzR] = worldToScreen2D(0.65, 0, W, H);
-  ctx.fillStyle = 'rgba(254, 215, 170, 0.32)';
+  ctx.fillStyle = P2.is_fgm ? 'rgba(16, 185, 129, 0.16)' : 'rgba(254, 215, 170, 0.32)';
   ctx.fillRect(xTzL, y0, xTzR - xTzL, yBot - y0);
 
-  ctx.font = 'bold 13px -apple-system, sans-serif'; ctx.textAlign = 'center';
-  ctx.fillStyle = '#1e40af'; ctx.fillText('FINE HORIZON REGION (dx = 25 mm, \u03b4_fine = 75 mm)', (x0 + xMid) * 0.5, y0 - 12);
-  ctx.fillStyle = '#b45309'; ctx.fillText('COARSE HORIZON REGION (dx = 50 mm, \u03b4_coarse = 150 mm)', (xMid + x1) * 0.5, y0 - 12);
+  ctx.font = 'bold 12.5px -apple-system, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#1e40af'; ctx.fillText('FINE REGION (dx = 25 mm)', (x0 + xTzL) * 0.5, y0 - 12);
+  if (P2.is_fgm) {
+    ctx.fillStyle = '#047857';
+    ctx.fillText('\u2605 FGM DUAL-SCALE BOUNDARY [0.35, 0.65] m', (xTzL + xTzR) * 0.5, y0 - 12);
+  }
+  ctx.fillStyle = '#b45309'; ctx.fillText('COARSE REGION (dx = 50 mm)', (xTzR + x1) * 0.5, y0 - 12);
 
   ctx.save();
-  ctx.strokeStyle = '#1e3a8a'; ctx.lineWidth = 2.5; ctx.setLineDash([7, 5]);
-  ctx.beginPath(); ctx.moveTo(xMid, y0 - 6); ctx.lineTo(xMid, yBot + 6); ctx.stroke();
+  if (P2.is_fgm) {
+    ctx.strokeStyle = '#059669'; ctx.lineWidth = 2.2; ctx.setLineDash([7, 5]);
+    ctx.beginPath(); ctx.moveTo(xTzL, y0 - 6); ctx.lineTo(xTzL, yBot + 6); ctx.moveTo(xTzR, y0 - 6); ctx.lineTo(xTzR, yBot + 6); ctx.stroke();
+  } else {
+    ctx.strokeStyle = '#1e3a8a'; ctx.lineWidth = 2.5; ctx.setLineDash([7, 5]);
+    ctx.beginPath(); ctx.moveTo(xMid, y0 - 6); ctx.lineTo(xMid, yBot + 6); ctx.stroke();
+  }
   ctx.restore();
 
   ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)'; ctx.lineWidth = 1;
@@ -1042,14 +1207,18 @@ function drawTab3_1D(W, H) {
 
   const lanes = [
     {
-      title: '\u274c 1. UNCORRECTED VARIABLE-HORIZON PD (g_ij = 1) — Spurious Wave Bounces Back at Interface!',
+      title: '\u274c 1. UNCORRECTED VARIABLE-HORIZON PD (g_ij = 1) — Spurious Wave Bounces Back at Interface (7.54% Refl.)!',
       color: '#c2410c',
-      uArr: B1.wave_uncorr[frameIdx],
+      bObj: DATA.bar1d,
+      uArr: DATA.bar1d.wave_uncorr[frameIdx],
       yTop: topY,
     },
     {
-      title: '\u2705 2. MULTISCALE GHOST-FREE PD (OURS) — Wave Glides Cleanly From Fine Nodes to Coarse Nodes!',
+      title: B1.is_fgm
+        ? '\u2605 2. FGM GRADED DUAL-SCALE BOUNDARY + GHOST-FREE PD — 0.03% Reflection (99.97% Pure Transmission!)'
+        : '\u2705 2. MULTISCALE GHOST-FREE PD (OURS) — Wave Glides Cleanly From Fine Nodes to Coarse Nodes (0.30% Refl.)!',
       color: '#047857',
+      bObj: B1,
       uArr: B1.wave_corr[frameIdx],
       yTop: topY + laneH + gapY,
     }
@@ -1060,6 +1229,7 @@ function drawTab3_1D(W, H) {
   }
 
   for (const lane of lanes) {
+    const lb = lane.bObj;
     const y0 = lane.yTop, y1 = y0 + laneH;
     const yCurveMid = y0 + laneH * 0.42;
     const yLattice = y0 + laneH * 0.80;
@@ -1071,9 +1241,18 @@ function drawTab3_1D(W, H) {
     ctx.fillStyle = '#f0f7ff'; ctx.fillRect(sxLeft, y0, sxInt - sxLeft, laneH);
     ctx.fillStyle = '#fffbeb'; ctx.fillRect(sxInt, y0, sxRight - sxInt, laneH);
 
-    ctx.strokeStyle = '#1e3a8a'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
-    ctx.beginPath(); ctx.moveTo(sxInt, y0); ctx.lineTo(sxInt, y1); ctx.stroke();
-    ctx.setLineDash([]);
+    if (lb.is_fgm) {
+      const sxA = wxToSx(lb.xa), sxB = wxToSx(lb.xb);
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+      ctx.fillRect(sxA, y0, sxB - sxA, laneH);
+      ctx.strokeStyle = '#059669'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+      ctx.beginPath(); ctx.moveTo(sxA, y0); ctx.lineTo(sxA, y1); ctx.moveTo(sxB, y0); ctx.lineTo(sxB, y1); ctx.stroke();
+      ctx.setLineDash([]);
+    } else {
+      ctx.strokeStyle = '#1e3a8a'; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+      ctx.beginPath(); ctx.moveTo(sxInt, y0); ctx.lineTo(sxInt, y1); ctx.stroke();
+      ctx.setLineDash([]);
+    }
 
     ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(padX, yCurveMid); ctx.lineTo(padX + plotW, yCurveMid); ctx.stroke();
@@ -1081,39 +1260,29 @@ function drawTab3_1D(W, H) {
     const ampPx = laneH * 0.30;
     ctx.strokeStyle = lane.color; ctx.lineWidth = 3.0;
     ctx.beginPath();
-    for (let i = 0; i < B1.n_nodes; i++) {
-      const sx = wxToSx(B1.x[i]);
+    for (let i = 0; i < lb.n_nodes; i++) {
+      const sx = wxToSx(lb.x[i]);
       const sy = yCurveMid - lane.uArr[i] * ampPx;
       if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
     }
     ctx.stroke();
 
     const dispExag = 0.022;
-    const nodeScreenX = B1.x.map((xVal, i) => wxToSx(xVal + lane.uArr[i] * dispExag));
-    const sel1 = activeNode1D;
+    const nodeScreenX = lb.x.map((xVal, i) => wxToSx(xVal + lane.uArr[i] * dispExag));
+    const sel1 = Math.min(activeNode1D, lb.n_nodes - 1);
     const selSx = nodeScreenX[sel1];
-    const selDeltaPx = (B1.delta_mm[sel1] * 1e-3) * plotW * zoomFactor;
+    const selDeltaPx = (lb.delta_mm[sel1] * 1e-3) * plotW * zoomFactor;
 
     if (document.getElementById('chkShowHorizon').checked) {
       ctx.fillStyle = 'rgba(37, 99, 235, 0.10)'; ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 1.8;
       ctx.beginPath(); ctx.arc(selSx, yLattice, selDeltaPx, Math.PI, 0, false); ctx.fill(); ctx.stroke();
     }
-    if (document.getElementById('chkShowSym').checked) {
-      for (const item of sym1ByNode[sel1]) {
-        const nbrSx = nodeScreenX[item.nbr];
-        const hArch = Math.min(34, 8 + Math.abs(nbrSx - selSx) * 0.25);
-        ctx.strokeStyle = '#059669'; ctx.lineWidth = 2.0;
-        ctx.beginPath(); ctx.moveTo(selSx, yLattice);
-        ctx.quadraticCurveTo((selSx + nbrSx) * 0.5, yLattice - hArch, nbrSx, yLattice);
-        ctx.stroke();
-      }
-    }
-    for (let i = 0; i < B1.n_nodes; i++) {
+    for (let i = 0; i < lb.n_nodes; i++) {
       const sx = nodeScreenX[i];
       if (sx < padX - 20 || sx > padX + plotW + 20) continue;
-      const isCoarse = B1.x[i] > 0.5;
+      const isCoarse = lb.x[i] > 0.5;
       const isSel = (i === sel1);
-      let r = (isCoarse ? 6.5 : 4.2) * Math.pow(zoomFactor, 0.45);
+      let r = (3.0 + 0.4 * lb.dx_mm[i]) * Math.pow(zoomFactor, 0.45);
       if (isSel) r *= 1.4;
       ctx.beginPath(); ctx.arc(sx, yLattice, r, 0, 2 * Math.PI);
       ctx.fillStyle = isSel ? '#1e3a8a' : (Math.abs(lane.uArr[i]) > 0.08 ? lane.color : (isCoarse ? '#f59e0b' : '#3b82f6'));
@@ -1135,12 +1304,18 @@ function updateInspectorPanel() {
     const x = B3.x[i], y = B3.y[i], z = B3.z[i];
     const isFine = x < 0.5;
     document.getElementById('stNodeId').textContent = `3D Node #${i}`;
-    document.getElementById('stRegion').textContent = isFine ? 'Fine 3D Lattice (dx = 25 mm)' : 'Coarse 3D Lattice (dx = 50 mm)';
+    if (B3.is_fgm) {
+      const wc = Math.round(B3.fgm_w[i] * 100);
+      const wf = 100 - wc;
+      document.getElementById('stRegion').textContent = `FGM Dual-Scale (${wf}% Fine + ${wc}% Coarse)`;
+    } else {
+      document.getElementById('stRegion').textContent = isFine ? 'Fine 3D Lattice (dx = 25 mm)' : 'Coarse 3D Lattice (dx = 50 mm)';
+    }
     document.getElementById('stPos').textContent = `(${x.toFixed(3)}, ${y.toFixed(3)}, ${z.toFixed(3)}) m`;
     document.getElementById('stDx').textContent = `${B3.dx_mm[i].toFixed(1)} mm`;
     document.getElementById('stDelta').textContent = `${B3.delta_mm[i].toFixed(1)} mm`;
-    document.getElementById('stSym').textContent = `${sym3ByNode[i].length} symmetric 3D bonds`;
-    document.getElementById('stOs').textContent = `${os3ByNode[i].length} one-sided 3D bonds`;
+    document.getElementById('stSym').textContent = `${sym3ByNode[i].length} active 3D bonds`;
+    document.getElementById('stOs').textContent = `${os3ByNode[i].length} dual-scale bonds`;
 
     const fl = showCorr ? B3.fl_corr[i] : B3.fl_uncorr[i];
     const fr = showCorr ? B3.fr_corr[i] : B3.fr_uncorr[i];
@@ -1159,7 +1334,13 @@ function updateInspectorPanel() {
     const i = activeNode2D;
     const x = P2.x[i], y = P2.y[i];
     document.getElementById('stNodeId').textContent = `2D Node #${i}`;
-    document.getElementById('stRegion').textContent = (x < 0.5) ? 'Fine 2D Mesh (dx = 25 mm)' : 'Coarse 2D Mesh (dx = 50 mm)';
+    if (P2.is_fgm) {
+      const wc = Math.round(P2.fgm_w[i] * 100);
+      const wf = 100 - wc;
+      document.getElementById('stRegion').textContent = `FGM Dual-Scale (${wf}% Fine + ${wc}% Coarse)`;
+    } else {
+      document.getElementById('stRegion').textContent = (x < 0.5) ? 'Fine 2D Mesh (dx = 25 mm)' : 'Coarse 2D Mesh (dx = 50 mm)';
+    }
     document.getElementById('stPos').textContent = `(${x.toFixed(3)}, ${y.toFixed(3)}) m`;
     document.getElementById('stDx').textContent = `${P2.dx_mm[i].toFixed(1)} mm`;
     document.getElementById('stDelta').textContent = `${P2.delta_mm[i].toFixed(1)} mm`;
@@ -1338,6 +1519,17 @@ document.getElementById('pillBoth').addEventListener('click', () => {
 document.getElementById('pillUncorr').addEventListener('click', () => setCompareMode('uncorr'));
 document.getElementById('pillCorr').addEventListener('click', () => setCompareMode('corr'));
 
+document.getElementById('boundarySelect').addEventListener('change', e => {
+  const isFgm = (e.target.value === 'fgm');
+  B3 = isFgm ? DATA.fgm3d : DATA.block3d;
+  P2 = isFgm ? DATA.fgm2d : DATA.plate2d;
+  B1 = isFgm ? DATA.fgm1d : DATA.bar1d;
+  rebuildAdjacency();
+  activeNode3D = B3.default_fine;
+  activeNode2D = P2.default_fine;
+  activeNode1D = Math.floor(B1.n_nodes * 0.55);
+  draw();
+});
 document.getElementById('phenomSelect').addEventListener('change', draw);
 ['chk3DWaveHeight', 'chk3DLattice', 'chkShowSym', 'chkShowOs', 'chkShowHorizon', 'chkShowArrows'].forEach(id => {
   document.getElementById(id).addEventListener('change', draw);

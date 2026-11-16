@@ -598,9 +598,9 @@ class MultiscaleBondPD:
             self.bond_i = np.array(sym_i, dtype=np.int64)
             self.bond_j = np.array(sym_j, dtype=np.int64)
             self.bond_is_mutual = np.ones(len(self.bond_i), dtype=bool)
-        elif self.mode == "dual_horizon":
-            # In Dual-Horizon PD, mutual bonds have both horizons active, and one-sided bonds
-            # have only the larger horizon active (acting on the smaller-horizon node via its dual horizon H'_j).
+        elif self.mode in ("dual_horizon", "fgm"):
+            # In Dual-Horizon PD and FGM Boundary PD, mutual bonds have both horizons active,
+            # and transition-zone extended bonds up to max(delta_i, delta_j) are also retained.
             all_i = list(sym_i)
             all_j = list(sym_j)
             is_mut = [True] * len(sym_i)
@@ -612,7 +612,7 @@ class MultiscaleBondPD:
             self.bond_j = np.array(all_j, dtype=np.int64)
             self.bond_is_mutual = np.array(is_mut, dtype=bool)
         else:
-            raise ValueError(f"Unknown mode={self.mode!r}; expected 'symmetric' or 'dual_horizon'")
+            raise ValueError(f"Unknown mode={self.mode!r}; expected 'symmetric', 'dual_horizon', or 'fgm'")
 
         self.n_bonds = len(self.bond_i)
         self.xi_vec = self.coords[self.bond_j] - self.coords[self.bond_i]
@@ -644,6 +644,26 @@ class MultiscaleBondPD:
             in_j = (self.xi_len <= dj * rtol).astype(np.float64)
             self.delta_ij = 0.5 * (di + dj)
             self.c_ij = 0.5 * (ci * in_i + cj * in_j)
+        elif self.mode == "fgm":
+            # Functionally Graded Material (FGM) Dual-Scale Boundary Blending:
+            # Each node i has normalized coarse volume fraction w_i in [0, 1] based on local horizon delta_i.
+            # In the boundary zone (0 < w_ij < 1), BOTH the fine horizon d_min = min(delta_i, delta_j)
+            # and the coarse horizon d_max = max(delta_i, delta_j) are active and blended via rule of mixtures:
+            #   c_ij^FGM = (1 - w_ij) * c(d_min) * I(|xi| <= d_min) + w_ij * c(d_max) * I(|xi| <= d_max)
+            rtol = 1.0 + 1e-12
+            d_lo = float(self.delta.min())
+            d_hi = float(self.delta.max())
+            span = max(d_hi - d_lo, 1e-30)
+            self.fgm_weight_node = np.clip((self.delta - d_lo) / span, 0.0, 1.0)
+            w_ij = 0.5 * (self.fgm_weight_node[self.bond_i] + self.fgm_weight_node[self.bond_j])
+            d_min = np.minimum(di, dj)
+            d_max = np.maximum(di, dj)
+            c_min = canonical_micromodulus(d_min, self.E, self.dim, self.plane_stress)
+            c_max = canonical_micromodulus(d_max, self.E, self.dim, self.plane_stress)
+            in_min = (self.xi_len <= d_min * rtol).astype(np.float64)
+            in_max = (self.xi_len <= d_max * rtol).astype(np.float64)
+            self.delta_ij = (1.0 - w_ij) * d_min + w_ij * d_max
+            self.c_ij = (1.0 - w_ij) * c_min * in_min + w_ij * c_max * in_max
         else:
             if self.horizon_rule == "min":
                 self.delta_ij = np.minimum(di, dj)
@@ -667,7 +687,8 @@ class MultiscaleBondPD:
         self.W_continuum = W_cont
 
         if self.stiffness_correction:
-            self.lambda_node = np.where(W_i_discrete > 1e-30, W_cont / W_i_discrete, 1.0)
+            self.lambda_node = np.ones(self.n_nodes, dtype=np.float64)
+            np.divide(W_cont, W_i_discrete, out=self.lambda_node, where=W_i_discrete > 1e-30)
             self.g_ij_baseline = 0.5 * (self.lambda_node[self.bond_i] + self.lambda_node[self.bond_j])
         else:
             self.lambda_node = np.ones(self.n_nodes, dtype=np.float64)

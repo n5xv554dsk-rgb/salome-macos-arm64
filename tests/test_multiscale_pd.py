@@ -95,6 +95,88 @@ def make_3d_graded_block(dx_fine: float = 0.05, dx_coarse: float = 0.10, Lx: flo
     return coords, volumes, bounds
 
 
+def make_1d_fgm_bar(dx_fine: float = 0.0025, dx_coarse: float = 0.005, L: float = 1.0, L_fgm: float = 0.24):
+    """
+    Create a 1D bar on [0, L] with a Functionally Graded Material (FGM) transition zone
+    of width L_fgm centered at L/2 where cell size dx(x) and horizon delta(x) = m * dx(x)
+    grade smoothly via w(x) = 0.5 * (1 - cos(pi * (x - xa) / L_fgm)).
+    """
+    xa = 0.5 * (L - L_fgm)
+    xb = 0.5 * (L + L_fgm)
+    x_list, v_list = [], []
+    cur = 0.0
+    while cur < L - 1e-9:
+        xc_est = cur + 0.5 * dx_fine
+        if xc_est <= xa:
+            w = 0.0
+        elif xc_est >= xb:
+            w = 1.0
+        else:
+            w = 0.5 * (1.0 - np.cos(np.pi * (xc_est - xa) / L_fgm))
+        dx_loc = (1.0 - w) * dx_fine + w * dx_coarse
+        if cur + dx_loc > L:
+            dx_loc = L - cur
+        x_list.append(cur + 0.5 * dx_loc)
+        v_list.append(dx_loc)
+        cur += dx_loc
+    coords = np.array(x_list, dtype=np.float64)[:, None]
+    volumes = np.array(v_list, dtype=np.float64)
+    bounds = (np.array([0.0]), np.array([L]))
+    return coords, volumes, bounds
+
+
+def make_2d_fgm_plate(dx_fine: float = 0.025, dx_coarse: float = 0.05, Lx: float = 1.0, Ly: float = 0.30, L_fgm: float = 0.30):
+    """Create a 2D plate with a smooth FGM transition zone across [0.5*(Lx-L_fgm), 0.5*(Lx+L_fgm)]."""
+    xa = 0.5 * (Lx - L_fgm)
+    xb = 0.5 * (Lx + L_fgm)
+    pts, vols = [], []
+    cur_x = 0.0
+    while cur_x < Lx - 1e-9:
+        xc_est = cur_x + 0.5 * dx_fine
+        w = 0.0 if xc_est <= xa else (1.0 if xc_est >= xb else 0.5 * (1.0 - np.cos(np.pi * (xc_est - xa) / L_fgm)))
+        dx_loc = (1.0 - w) * dx_fine + w * dx_coarse
+        if cur_x + dx_loc > Lx:
+            dx_loc = Lx - cur_x
+        xc = cur_x + 0.5 * dx_loc
+        ny = max(1, int(round((1.0 - w) * (Ly / dx_fine) + w * (Ly / dx_coarse))))
+        dy_loc = Ly / ny
+        for yc in np.arange(0.5 * dy_loc, Ly, dy_loc):
+            pts.append([xc, yc])
+            vols.append(dx_loc * dy_loc)
+        cur_x += dx_loc
+    coords = np.array(pts, dtype=np.float64)
+    volumes = np.array(vols, dtype=np.float64)
+    bounds = (np.array([0.0, 0.0]), np.array([Lx, Ly]))
+    return coords, volumes, bounds
+
+
+def make_3d_fgm_block(dx_fine: float = 0.025, dx_coarse: float = 0.05, Lx: float = 1.0, Ly: float = 0.15, Lz: float = 0.15, L_fgm: float = 0.30):
+    """Create a 3D block with a smooth FGM transition zone across [0.5*(Lx-L_fgm), 0.5*(Lx+L_fgm)]."""
+    xa = 0.5 * (Lx - L_fgm)
+    xb = 0.5 * (Lx + L_fgm)
+    pts, vols = [], []
+    cur_x = 0.0
+    while cur_x < Lx - 1e-9:
+        xc_est = cur_x + 0.5 * dx_fine
+        w = 0.0 if xc_est <= xa else (1.0 if xc_est >= xb else 0.5 * (1.0 - np.cos(np.pi * (xc_est - xa) / L_fgm)))
+        dx_loc = (1.0 - w) * dx_fine + w * dx_coarse
+        if cur_x + dx_loc > Lx:
+            dx_loc = Lx - cur_x
+        xc = cur_x + 0.5 * dx_loc
+        ny = max(1, int(round((1.0 - w) * (Ly / dx_fine) + w * (Ly / dx_coarse))))
+        dy_loc = Ly / ny
+        dz_loc = Lz / ny
+        for yc in np.arange(0.5 * dy_loc, Ly, dy_loc):
+            for zc in np.arange(0.5 * dz_loc, Lz, dz_loc):
+                pts.append([xc, yc, zc])
+                vols.append(dx_loc * dy_loc * dz_loc)
+        cur_x += dx_loc
+    coords = np.array(pts, dtype=np.float64)
+    volumes = np.array(vols, dtype=np.float64)
+    bounds = (np.array([0.0, 0.0, 0.0]), np.array([Lx, Ly, Lz]))
+    return coords, volumes, bounds
+
+
 class TestMultiscaleVariableHorizonPD(unittest.TestCase):
     """Comprehensive tests for multiscale variable-horizon Bond-Based Peridynamics."""
 
@@ -396,6 +478,44 @@ class TestMultiscaleVariableHorizonPD(unittest.TestCase):
             # Verify graded mesh has variable horizon (delta_max / delta_min > 3)
             self.assertGreater(rep_med.grading_ratio, 3.0)
             print(rep_med.format_report(unit_scale=1e3, unit_name="mm"))
+
+    def test_06_fgm_boundary_wave_and_ghost_force(self):
+        """
+        Verify Functionally Graded Material (FGM) transition-zone boundary mode ('fgm'):
+          - Exact Newton's 3rd Law (total internal force = 0)
+          - Zero ghost force under uniform strain (< 1e-11)
+          - Further reduction in spurious wave reflection compared to an abrupt interface (< 0.1%)
+        """
+        coords_fgm, vols_fgm, bounds_fgm = make_1d_fgm_bar(dx_fine=0.0025, dx_coarse=0.005, L=1.0, L_fgm=0.24)
+        x = coords_fgm[:, 0]
+        E, rho = 100.0, 1.0
+        c0 = np.sqrt(E / rho)
+
+        pd_fgm = MultiscaleBondPD(
+            coords_fgm, vols_fgm, E=E, rho=rho, m=3.0, dim=1, mode="fgm",
+            stiffness_correction=True, ghost_force_correction=True, domain_bounds=bounds_fgm,
+        )
+        u_unif = 0.002 * coords_fgm
+        F_tot, fg = pd_fgm.compute_forces(u_unif)
+        rel_net = np.linalg.norm(F_tot.sum(axis=0)) / np.linalg.norm(F_tot, axis=1).sum()
+        max_ghost = float(np.abs(fg[pd_fgm.interior_mask, 0]).max())
+
+        amp, w_p, x0 = 1.0e-4, 0.055, 0.20
+        u0 = amp * np.exp(-((x - x0) / w_p) ** 2)[:, None]
+        v0 = (-c0 * amp * (-2.0 * (x - x0) / (w_p ** 2)) * np.exp(-((x - x0) / w_p) ** 2))[:, None]
+        dt = 0.2 * 0.0025 / c0
+        n_steps = int(round(0.055 / dt))
+        out = pd_fgm.run_dynamic(u0, v0, dt=dt, n_steps=n_steps)
+        fine_win = (x > 0.05) & (x < 0.34)
+        refl_fgm_pct = 100.0 * float(np.abs(out["u"][fine_win, 0]).max()) / amp
+
+        print(
+            f"\n  [Test 6: FGM Dual-Scale Boundary Mode] Rel. Net Force = {rel_net:.3e}, "
+            f"Max |f_ghost| = {max_ghost:.3e}, Spurious Wave Reflection = {refl_fgm_pct:.3f}%"
+        )
+        self.assertLess(rel_net, 1e-14)
+        self.assertLess(max_ghost, 1e-11)
+        self.assertLess(refl_fgm_pct, 0.10)
 
 
 if __name__ == "__main__":
